@@ -1,0 +1,74 @@
+/* Header */
+/* 햄버거 아이콘 흰색으로 */
+.navbar-toggler-icon {
+  background-image: url('data:image/svg+xml;charset=UTF8,%3Csvg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath stroke="rgba%28255, 255, 255, 1%29" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" d="M4 7h22M4 15h22M4 23h22"/%3E%3C/svg%3E');
+}
+
+@media (min-width: 992px) {
+  .nav-item.dropdown:hover .dropdown-menu {
+    display: block;
+  }
+  .nav_box {
+    width: 168px;
+  }
+  .nav-link::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background-color: white;
+    visibility: hidden;
+    transition: 0.3s ease-in-out;
+  }
+
+  .nav-link:hover::before,
+  .nav-link.active::before {
+    width: 100%;
+    visibility: visible;
+  }
+}
+
+/* 모바일 및 태블릿 화면에서 .dropdown-toggle::after 표시 */
+@media (max-width: 991.98px) {
+  .nav-link.dropdown-toggle::after {
+    display: inline-block;
+  }
+  .sidebar {
+    background-color: rgb(74, 74, 74, 0.3);
+    backdrop-filter: blur(10px);
+  }
+}
+
+.offcanvas-header {
+  height: 81px;
+}
+
+.nav-link {
+  color: white;
+  position: relative;
+}
+
+.nav-link:hover,
+nav-link.ac {
+  color: rgb(212, 212, 212);
+}
+
+.dropdown-menu .dropdown-item:hover {
+  color: gray;
+}
+
+/* 기본적으로 .dropdown-toggle::after 숨기기 */
+.nav-link.dropdown-toggle::after {
+  display: none;
+}
+
+.dropdown-item:hover {
+  background-color: rgb(127, 129, 129);
+}
+
+body.offcanvas-open {
+  padding-right: 15px;
+}
