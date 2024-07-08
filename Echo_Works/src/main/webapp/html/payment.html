@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>결제하기</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        body {
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .section-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-label {
+            font-weight: bold;
+        }
+        .form-control {
+            max-width: 400px;
+        }
+        .section {
+            border-top: 2px solid #000;
+            padding-top: 20px;
+            margin-top: 20px;
+        }
+        .checkbox-inline {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .input-group .form-control {
+            flex: 1 1 auto;
+        }
+        .input-group .input-group-text {
+            border-right: none;
+        }
+        .input-group .form-control:not(:last-child) {
+            border-right: none;
+        }
+        .input-group .form-control:last-child {
+            border-left: none;
+        }
+    </style>
+</head>
+<body>
+	
+    <div class="container">
+        <div class="section-title">결제하기</div>
+        
+        <div class="section">
+            <div class="form-group">
+            
+                <label for="ordererName" class="form-label">주문자</label>
+                <input type="text" id="ordererName" class="form-control" value="" required>
+            </div>
+            <div class="form-group">
+                <label for="ordererPhone" class="form-label">연락처</label>
+                <div class="input-group">
+                    <select class="form-control" id="ordererPhonePrefix">
+                        <option value="010">010</option>
+                        <option value="011">011</option>
+                        <option value="016">016</option>
+                        <option value="017">017</option>
+                        <option value="018">018</option>
+                        <option value="019">019</option>
+                    </select>
+                    <input type="text" id="ordererPhone1" class="form-control" value="" required>
+                    <input type="text" id="ordererPhone2" class="form-control" value="" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="ordererEmail" class="form-label">이메일</label>
+                <input type="email" id="ordererEmail" class="form-control" value="" required>
+            </div>
+        </div>
+
+		<h3>배송지 작성</h3>
+        <div class="section">
+            <div class="form-group">
+                <input type="checkbox" id="sameAsOrderer" class="form-check-input">
+                <label for="sameAsOrderer" class="form-check-label">주문자 정보와 동일</label>
+            </div>
+            <div class="form-group">
+                <label for="recipientName" class="form-label">받는 사람</label>
+                <input type="text" id="recipientName" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="recipientPhone" class="form-label">연락처</label>
+                <div class="input-group">
+                    <select class="form-control" id="recipientPhonePrefix">
+                        <option value="010">010</option>
+                        <option value="011">011</option>
+                        <option value="016">016</option>
+                        <option value="017">017</option>
+                        <option value="018">018</option>
+                        <option value="019">019</option>
+                    </select>
+                    <input type="text" id="recipientPhone1" class="form-control" required>
+                    <input type="text" id="recipientPhone2" class="form-control" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="recipientEmail" class="form-label">이메일</label>
+                <input type="email" id="recipientEmail" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="recipientZip" class="form-label">우편번호</label>
+                <div class="input-group">
+                    <input type="text" id="recipientZip" class="form-control" required>
+                    <button class="btn btn-secondary">우편번호 검색</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="recipientAddress1" class="form-label">기본주소</label>
+                <input type="text" id="recipientAddress1" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="recipientAddress2" class="form-label">상세주소</label>
+                <input type="text" id="recipientAddress2" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="deliveryNotes" class="form-label">배송 요청사항</label>
+                <textarea id="deliveryNotes" class="form-control" rows="4">배송 요청사항을 입력해 주세요.</textarea>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gybBogGzD6aXktDad3A12dY+qS/2k5p6eUjKOf+2IMaS9WHiJ9" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-Qmr2V+6lM7y4fnFO9gybBogGzD6aXktDad3A12dY+qS/2k5p6eUjKOf+2IMaS9WHiJ9" crossorigin="anonymous"></script>
+    <script>
+        document.getElementById('sameAsOrderer').addEventListener('change', function() {
+            if (this.checked) {
+                document.getElementById('recipientName').value = document.getElementById('ordererName').value;
+                document.getElementById('recipientPhonePrefix').value = document.getElementById('ordererPhonePrefix').value;
+                document.getElementById('recipientPhone1').value = document.getElementById('ordererPhone1').value;
+                document.getElementById('recipientPhone2').value = document.getElementById('ordererPhone2').value;
+                document.getElementById('recipientEmail').value = document.getElementById('ordererEmail').value;
+            } else {
+                document.getElementById('recipientName').value = '';
+                document.getElementById('recipientPhonePrefix').value = '010';
+                document.getElementById('recipientPhone1').value = '';
+                document.getElementById('recipientPhone2').value = '';
+                document.getElementById('recipientEmail').value = '';
+            }
+        });
+    </script>
+</body>
+</html>
