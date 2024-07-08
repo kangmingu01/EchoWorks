@@ -6,59 +6,63 @@
 <title>Insert title here</title>
 <style type="text/css">
 @charset "UTF-8";
-@import url('https://fonts.googleapis.com/css2?family=Kaisei+Tokumin:wght@400;500;700&family=Poppins:wght@300;400;500&display=swap');
 
-:root{
-    --lg-font: 'Kaisei Tokumin', serif;
-    --sm-font: 'Poppins', sans-serif;
-    --pink: #e5345b;
-}
-body{
-    font-family: var(--sm-font);
-}
+@import
+	url('https://fonts.googleapis.com/css2?family=Kaisei+Tokumin:wght@400;500;700&family=Poppins:wght@300;400;500&display=swap')
+	;
 
-#header{
-	box-shadow: 0 3px 9px 3px rgba(0,0,0,0.1);
-	border-bottom: 0.5px solid rgba(0,0,0,0.05);
+:root {
+	--lg-font: 'Kaisei Tokumin', serif;
+	--sm-font: 'Poppins', sans-serif;
+	--pink: #e5345b;
 }
 
-.nav-link:hover{
-	font-weight: bold;	
+body {
+	font-family: var(--sm-font);
 }
-.btn:hover{
+
+#header {
+	box-shadow: 0 3px 9px 3px rgba(0, 0, 0, 0.1);
+	border-bottom: 0.5px solid rgba(0, 0, 0, 0.05);
+}
+
+.nav-link:hover {
 	font-weight: bold;
+}
 
+.btn:hover {
+	font-weight: bold;
 }
 
 .nav-btn {
 	background-color: #fff;
-	color:rgb(85,85,85);
+	color: rgb(85, 85, 85);
 	padding: 10px 28px;
 	border-radius: 25px;
-	border: 1px solid rgb(85,85,85);
+	border: 1px solid rgb(85, 85, 85);
 }
-.Produck-img{
+
+.Produck-img {
 	overflow: hidden;
 }
 
-img{
-    -webkit-transition: all 0.3s ease;
-    -o-transition: all 0.3s ease;
-    transition: all 0.3s ease;
-}
-img:hover {
-    -webkit-transform: scale(1.2);
-        -ms-transform: scale(1.2);
-            transform: scale(1.2);
+img {
+	-webkit-transition: all 0.3s ease;
+	-o-transition: all 0.3s ease;
+	transition: all 0.3s ease;
 }
 
-.dropdown-menu{
+img:hover {
+	-webkit-transform: scale(1.2);
+	-ms-transform: scale(1.2);
+	transform: scale(1.2);
+}
+
+.dropdown-menu {
 	display: none;
 }
-
-
-
 </style>
+
 
 <!-- ==================fontawesome cdn =================-->
 <link rel="stylesheet"
@@ -71,45 +75,43 @@ img:hover {
 	rel="stylesheet"
 	integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
 	crossorigin="anonymous">
-<!-- ==================bootstrap icon ==================-->
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
-
 <!-- ==================jQuery  ======================= -->
 <script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js">	
+</script>
+
 </head>
 <body>
 	<!--================================= =navbar=================================== -->
-	<nav class="navbar navbar-expand-lg bg-transparent w-100">
+	<!-- <nav class="navbar navbar-expand-lg bg-transparent w-100">
 		<div class="container mt-2 align-items-center">
 
-			<!-- Logo -->
+			Logo
 			<a class="navbar-brand fs-4 m-0 p-0 d-flex align-items-center text-white"> 
 				<img src="images/logo_dark.svg" style="width: auto; height: 55px" alt="Logo" id="logogo"/>
 			</a>
 
-			<!-- Toggle -->
+			Toggle
 			<button class="navbar-toggler shadow-none border-0" type="button"
 				data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
 				aria-controls="offcavasNavbar">
 				<span class="navbar-toggler-icon"></span>
 			</button>
 
-			<!-- SideBar -->
+			SideBar
 			<div class="sidebar offcanvas offcanvas-end bg-white" tabindex="-1"
 				id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
 
-				<!-- SideBar Header -->
+				SideBar Header
 				<div class="offcanvas-header border-dark border-bottom border-2">
 					<h5 class="offcanvas-title" id="offcanvasNavbarLabel">EchoWorks</h5>
 					<button type ="button"class="btn-close shadow-none"
 						data-bs-dismiss="offcanvas" aria-label="Close">
 					</button>
 				</div>
-				<!-- SideBar Header end-->
+				SideBar Header end
 
-				<!-- SideBar Body -->
+				SideBar Body
 				<div class="offcanvas-body">
 					<ul class="navbar-nav justify-content-center fs-5 flex-grow-1 ps-lg-5 ms-lg-5">					
 						  <li class="nav-item mx-2"><a href="#" class="nav-link text-dark" id="Keyboards" style="padding: 10px 28px;">Keyboards</a></li>
@@ -118,21 +120,111 @@ img:hover {
 						<li class="nav-item mx-2"><a href="#" class="nav-link text-dark" id="Deskpads" data-bs-dissmiss="offcanvas" style="padding: 10px 28px;">Deskpads</a></li>
 					</ul> 
 					
-					<!-- Login/ Sign up -->
+					Login/ Sign up
 					<div
 						class="d-flex justify-content-center align-items-center gap-3 flex-nowrap">
 						<a href="#login" class="text-decoration-none fs-5 text-dark">Login</a>
 						<a href="#signup"
 							class="text-decoration-none px-3 py-1 fs-5 text-dark">Sign up</a>
 					</div>
-					<!-- Login/ Sign up end-->
+					Login/ Sign up end
 				</div>
-				<!-- SideBar Body end-->
+				SideBar Body end
 			</div>
-			<!-- SideBar end-->
+			SideBar end
+		</div>
+	</nav> -->
+
+	<!--Navbar-->
+	<nav
+		class="navbar navbar-expand-lg bg-transparent w-100 z-1 position-absolute">
+		<div class="container mt-2 align-items-center">
+			<!-- Logo -->
+			<a
+				class="navbar-brand fs-4 m-0 p-0 d-flex align-items-center text-white"
+				href="#"> <img src="../assets/img/logo_light.svg"
+				style="width: auto; height: 55px" alt="Logo" />
+			</a>
+			<!-- Toggle -->
+			<button class="navbar-toggler shadow-none border-0" type="button"
+				data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+				aria-controls="offcanvasNavbar">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<!-- SideBar -->
+			<div class="sidebar offcanvas offcanvas-end" tabindex="-1"
+				id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+				<!-- SideBar Header -->
+				<div class="offcanvas-header text-dark border-bottom border-2">
+					<h5 class="offcanvas-title text-white" id="offcanvasNavbarLabel">
+						EchoWorks</h5>
+					<button type="button" class="btn-close btn-close-white shadow-none"
+						data-bs-dismiss="offcanvas" aria-label="Close"></button>
+				</div>
+
+				<!-- SideBar Body -->
+				<div class="offcanvas-body">
+					<ul
+						class="navbar-nav justify-content-center fs-5 flex-grow-1 ps-lg-5 ms-lg-5">
+						<li class="nav-item dropdown mx-2"><a
+							class="nav-link dropdown-toggle keyboards" href="product.html"
+							id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+							aria-expanded="false" name="keyboards"> Keyboards </a>
+							<ul class="dropdown-menu bg-dark"
+								aria-labelledby="navbarDropdown">
+								<li><a class="dropdown-item text-white key_inStock"
+									name="key_inStock" href="#">KeyBoard In-Stock</a></li>
+								<li><a class="dropdown-item text-white key_group"
+									name="key_group" href="#">KeyBoard Group-buy</a></li>
+							</ul></li>
+						<li class="nav-item dropdown mx-2"><a
+							class="nav-link dropdown-toggle switches" href="product.html"
+							id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+							aria-expanded="false" name="switches"> Switches </a>
+							<ul class="dropdown-menu bg-dark"
+								aria-labelledby="navbarDropdown">
+								<li><a class="dropdown-item text-white linear" href="#"
+									name="linear">리니어</a></li>
+								<li><a class="dropdown-item text-white tactile" href="#"
+									name="tactile">택타일</a></li>
+								<li><a class="dropdown-item text-white low" href="#"
+									name="low ">저소음</a></li>
+								<li><a class="dropdown-item text-white magnet" href="#"
+									name="magnet">마그네틱</a></li>
+							</ul></li>
+						<li class="nav-item dropdown mx-2"><a
+							class="nav-link dropdown-toggle keycaps" href="product.html"
+							id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+							aria-expanded="false" name="keycaps"> Keycaps </a>
+							<ul class="dropdown-menu bg-dark"
+								aria-labelledby="navbarDropdown">
+								<li><a class="dropdown-item text-white sw" href="#"
+									name="sw">SW</a></li>
+								<li><a class="dropdown-item text-white fbb" href="#"
+									name="fbb">FBB</a></li>
+								<li><a class="dropdown-item text-white gmk" href="#"
+									name="gmk">GMK</a></li>
+								<li><a class="dropdown-item text-white hammerworks"
+									href="#" name="hammerworks">Hammerworks</a></li>
+							</ul></li>
+						<li class="nav-item mx-2"><a href="product.html"
+							class="nav-link deskpads" name="deskpads">Deskpads</a></li>
+					</ul>
+
+					<!-- 내일 이 부분 디자인 어떤식으로 진행할지 고민해보기 -->
+					<!-- Login/ Sign up -->
+					<div
+						class="d-flex justify-content-center align-items-center gap-3 flex-nowrap login">
+						<a href="login.html" class="text-decoration-none text-white fs-5">Login</a>
+						<a href="terms.html"
+							class="text-decoration-none px-3 py-1 fs-5 text-white">Sign
+							up</a>
+					</div>
+				</div>
+			</div>
 		</div>
 	</nav>
-
 
 	<!-- product page -->
 
@@ -178,16 +270,16 @@ img:hover {
 				<!--  상품 kb_is -->
 				<div class="col-md-6 col-lg-4 col-xl-3 p-2 Keyboards KBIS PRDC">
 					<a href="detail.html">
-					<div class="Produck-img position-relative">
-						<img src="../assets/img/kb_is_1.jpeg" class="w-100">
-					</div>
-					<div class="text-center">
-						<p class="text-capitalize my-1">Everglide x Haimu 자석축 스위치 마그테닉
-							래피드 트리거.</p>
-						<span class="fw-bold">480원</span>
-					</div>
+						<div class="Produck-img position-relative">
+							<img src="../assets/img/kb_is_1.jpeg" class="w-100">
+						</div>
+						<div class="text-center">
+							<p class="text-capitalize my-1">Everglide x Haimu 자석축 스위치
+								마그테닉 래피드 트리거.</p>
+							<span class="fw-bold">480원</span>
+						</div>
 					</a>
-					
+
 				</div>
 				<!--  상품 1 -->
 				<!--  상품 kb_is -->
@@ -444,7 +536,7 @@ img:hover {
 		// 초기 상품 수량
 		var countt = $(".PRDC").length;
 		$("#inpopo").text("All " + countt);
-	
+
 		//1번째 줄 버튼 키 초기화
 		var reset1 = "$('.nav-link').css({'font-weight':'','color':'rgb(85,85,85)','background-color':'','border':''}); $('#KeyboardsDiv').css({'display':'none'}); $('#SwitchesDiv').css({'display':'none'}); $('#KeycapsDiv').css({'display':'none'}); $('#DeskpadsDiv').css({'display':'none'});";
 		//2번째 줄 버튼 키 초기화 및 정보 창 초기화
@@ -456,7 +548,7 @@ img:hover {
 				eval(reset2);
 				eval(reset1);
 				$(this).css({
-					"font-weight" : "bold"				
+					"font-weight" : "bold"
 				});
 				if ($("#" + this.id + "Div").css("display") == "none") {
 					$("#" + this.id + "Div").slideDown(250);
@@ -508,10 +600,10 @@ img:hover {
 				}
 				return false;
 			});
-		}		
-		
+		}
+
 		//로고 클릭시
-		document.getElementById("logogo").onclick=function(){
+		document.getElementById("logogo").onclick = function() {
 			eval(reset2);
 			eval(reset1);
 			$(".PRDC").css("display", "");
@@ -519,7 +611,6 @@ img:hover {
 			$("#inpopo").text("All " + countt);
 			return false;
 		};
-		
 	</script>
 </body>
 </html>
