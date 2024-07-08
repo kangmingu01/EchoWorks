@@ -93,17 +93,6 @@ input:-moz-placeholder {font-size:13px; color:#999; font-family: 'Noto Sans KR',
 .masitdak_shopping1_sub_m li.sub_m_list:after{content:''; display:block; clear:both;}
 .masitdak_shopping1_sub_m li.sub_m_list a{float:left;  width:55px; height:auto; line-height:0; padding:10px 15px 2.5px;}
 
-/* 다이어트 도시락 & 맛보기 & 맛있찬*/
-.masitdak_shopping1_sub_m li.sub_m_list a.m_long{width:100px;}
-.masitdak_shopping1_sub_m li.sub_m_list a.m_one{padding:10px 52px 2.5px 15px;}
-.masitdak_shopping1_sub_m li.sub_m_list a p{display:inline-block; position:relative;}
-.masitdak_shopping1_sub_m li.sub_m_list a p.mnew_icon:after{content:''; display:inline-block; width:12px; height:12px; position:absolute; top:1px; right:-14px; background:url(/theme/basic/img/head/m_new.png) no-repeat right;}
-.masitdak_shopping1_sub_m:after{content:''; display:block; clear:both;}
-
-/* 검색 창 */
-#stx{width:290px; height:45px; line-height:45px; background:none; border:0; margin:0 20px; box-sizing:border-box;}
-.search_input_area{width:360px; margin:0 auto; background:#f8f8f8; position:relative; border:1px solid #ccc; border-radius:30px; box-sizing:border-box;}
-.search_box_btn{height:44px; position:absolute; top:2px; right:20px; cursor:pointer;}
 </style>
  
 <!-- 상단 -->
@@ -170,37 +159,6 @@ input:-moz-placeholder {font-size:13px; color:#999; font-family: 'Noto Sans KR',
 <!-- 콘텐츠 시작 { -->
 <div id="">
     <div id="">
-
-<!-- 팝업 레이어 css -->
-<style>
-div#textbacklayer{
-    display: none;
-    /*background-color:black;*/
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    left:0;
-    top:0;
-    z-index: 999990;
-    overflow: hidden;
-    padding: 30px 0;
-}
-div#fadedivtext{
-    display: none;
-    background: #fff;
-    position: absolute;
-    z-index: 999999;
-    border:2px solid #999;
-}
-#output_close {
-    position: absolute;
-    right: 8px;
-    top: 8px;
-    z-index: 11;
-    width: 26px;
-    height: 26px;
-}
-</style>
 
 <style>
 @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
@@ -503,7 +461,7 @@ dd, dt{line-height:inherit;}
 #order_delivery_area table.bottom td{font-size:13px;}
 </style>
 
-<form name="fitem" method="post" onsubmit="return fitem_submit(this);" onkeydown="return captureReturnKey(event);">
+<form name="fitem" method="post">
 <div>
     <div id="item_wrap">
         <div class="item_content_box">
@@ -1002,14 +960,6 @@ $('.detail_more').on('click',function(){
     $(window).scroll();
 });
 
-
-function captureReturnKey(e) {
-    if(e.keyCode==13 && e.srcElement.type != 'textarea') {
-        return false;
-    }
-}
-
-
 //상품문의 삭제 패스워드 노출
 function del_btn(val) {
     $("#password_confirm"+val).slideToggle(100);
@@ -1348,74 +1298,7 @@ $(function() {
     });
 });
 
-// 바로구매, 장바구니 폼 전송
-function fitem_submit(f)
-{ 
-    if (document.pressed == "장바구니") {
-        f.sw_direct.value = 0;
-    } else { // 바로구매
-        f.sw_direct.value = 1;
-    }
-    
-    // 판매가격이 0 보다 작다면
-    if (document.getElementById("it_price").value < 0) {
-        alert("전화로 문의해 주시면 감사하겠습니다.");
-        return false;
-    }
 
-    /*if($(".sit_opt_list").size() < 1) {
-        alert("상품의 선택옵션을 선택해 주십시오.");
-        return false;
-    }*/
-
-    var val, io_type, result = true;
-    var sum_qty = 0;
-    var min_qty = parseInt(1);
-    var max_qty = parseInt(0);
-    var $el_type = $("input[name^=io_type]");
-
-    $("input[name^=ct_qty]").each(function(index) {
-        val = $(this).val();
-
-        if(val.length < 1) {
-            alert("수량을 입력해 주십시오.");
-            result = false;
-            return false;
-        }
-
-        if(val.replace(/[0-9]/g, "").length > 0) {
-            alert("수량은 숫자로 입력해 주십시오.");
-            result = false;
-            return false;
-        }
-
-        if(parseInt(val.replace(/[^0-9]/g, "")) < 1) {
-            alert("수량은 1이상 입력해 주십시오.");
-            result = false;
-            return false;
-        }
-
-        io_type = $el_type.eq(index).val();
-        if(io_type == "0")
-            sum_qty += parseInt(val);
-    });
-
-    if(!result) {
-        return false;
-    }
-
-    if(min_qty > 0 && sum_qty < min_qty) {
-        alert("선택옵션 개수 총합 "+number_format(String(min_qty))+"개 이상 주문해 주십시오.");
-        return false;
-    }
-
-    if(max_qty > 0 && sum_qty > max_qty) {
-        alert("선택옵션 개수 총합 "+number_format(String(max_qty))+"개 이하로 주문해 주십시오.");
-        return false;
-    }
-
-    return true;
-}
 
 
 //상품후기 리스트 AJAX
