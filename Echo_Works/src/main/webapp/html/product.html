@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Insert title here</title>
+<style type="text/css">
+@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Kaisei+Tokumin:wght@400;500;700&family=Poppins:wght@300;400;500&display=swap');
+
+:root{
+    --lg-font: 'Kaisei Tokumin', serif;
+    --sm-font: 'Poppins', sans-serif;
+    --pink: #e5345b;
+}
+body{
+    font-family: var(--sm-font);
+}
+
+#header{
+	box-shadow: 0 3px 9px 3px rgba(0,0,0,0.1);
+	border-bottom: 0.5px solid rgba(0,0,0,0.05);
+}
+
+.nav-link:hover{
+	font-weight: bold;	
+}
+.btn:hover{
+	font-weight: bold;
+
+}
+
+.nav-btn {
+	background-color: #fff;
+	color:rgb(85,85,85);
+	padding: 10px 28px;
+	border-radius: 25px;
+	border: 1px solid rgb(85,85,85);
+}
+.Produck-img{
+	overflow: hidden;
+}
+
+img{
+    -webkit-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+img:hover {
+    -webkit-transform: scale(1.2);
+        -ms-transform: scale(1.2);
+            transform: scale(1.2);
+}
+
+.dropdown-menu{
+	display: none;
+}
+
+
+
+</style>
+
+<!-- ==================fontawesome cdn =================-->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+	integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
+<!-- ==================bootstrap css ==================-->
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+	crossorigin="anonymous">
+<!-- ==================bootstrap icon ==================-->
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
+
+<!-- ==================jQuery  ======================= -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+	<!--================================= =navbar=================================== -->
+	<nav class="navbar navbar-expand-lg bg-transparent w-100">
+		<div class="container mt-2 align-items-center">
+
+			<!-- Logo -->
+			<a class="navbar-brand fs-4 m-0 p-0 d-flex align-items-center text-white"> 
+				<img src="images/logo_dark.svg" style="width: auto; height: 55px" alt="Logo" id="logogo"/>
+			</a>
+
+			<!-- Toggle -->
+			<button class="navbar-toggler shadow-none border-0" type="button"
+				data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+				aria-controls="offcavasNavbar">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<!-- SideBar -->
+			<div class="sidebar offcanvas offcanvas-end bg-white" tabindex="-1"
+				id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+
+				<!-- SideBar Header -->
+				<div class="offcanvas-header border-dark border-bottom border-2">
+					<h5 class="offcanvas-title" id="offcanvasNavbarLabel">EchoWorks</h5>
+					<button type ="button"class="btn-close shadow-none"
+						data-bs-dismiss="offcanvas" aria-label="Close">
+					</button>
+				</div>
+				<!-- SideBar Header end-->
+
+				<!-- SideBar Body -->
+				<div class="offcanvas-body">
+					<ul class="navbar-nav justify-content-center fs-5 flex-grow-1 ps-lg-5 ms-lg-5">					
+						  <li class="nav-item mx-2"><a href="#" class="nav-link text-dark" id="Keyboards" style="padding: 10px 28px;">Keyboards</a></li>
+						<li class="nav-item mx-2"><a href="#" class="nav-link text-dark" id="Switches" style="padding: 10px 28px;">Switches</a></li>
+						<li class="nav-item mx-2"><a href="#" class="nav-link text-dark"  id="Keycaps" style="padding: 10px 28px;">Keycaps</a></li>
+						<li class="nav-item mx-2"><a href="#" class="nav-link text-dark" id="Deskpads" data-bs-dissmiss="offcanvas" style="padding: 10px 28px;">Deskpads</a></li>
+					</ul> 
+					
+					<!-- Login/ Sign up -->
+					<div
+						class="d-flex justify-content-center align-items-center gap-3 flex-nowrap">
+						<a href="#login" class="text-decoration-none fs-5 text-dark">Login</a>
+						<a href="#signup"
+							class="text-decoration-none px-3 py-1 fs-5 text-dark">Sign up</a>
+					</div>
+					<!-- Login/ Sign up end-->
+				</div>
+				<!-- SideBar Body end-->
+			</div>
+			<!-- SideBar end-->
+		</div>
+	</nav>
+
+
+	<!-- product page -->
+
+	<section id="PDpage" class="">
+		<div class="container">
+			<!-- button div 모음 -->
+			<div class="row">
+				<div class="flex-wrap justify-content-center sub-btn"
+					id="KeyboardsDiv" style="display: none;">
+					<button type="button" class="btn m-2  active-filter-btn" id="KBIS">Keyboard
+						in-Stoke</button>
+					<button type="button" class="btn m-2 " id="KBGB">Keboard
+						Group-buy</button>
+				</div>
+				<div class="flex-wrap justify-content-center sub-btn"
+					id="SwitchesDiv" style="display: none;">
+					<button type="button" class="btn m-2  active-filter-btn text-sm"
+						id="LN">리니어</button>
+					<button type="button" class="btn m-2 " id="TT">택타일</button>
+					<button type="button" class="btn m-2 " id="MU">저소음</button>
+					<button type="button" class="btn m-2 " id="MG">마그네틱</button>
+				</div>
+				<div class=" flex-wrap justify-content-center sub-btn"
+					id="KeycapsDiv" style="display: none;">
+					<button type="button" class="btn m-2 " id="SW">SW</button>
+					<button type="button" class="btn m-2 " id="FB">FBB</button>
+					<button type="button" class="btn m-2 " id="GM">GMK</button>
+					<button type="button" class="btn m-2 " id="HA">Hammerworks</button>
+
+				</div>
+			</div>
+			<!--  버튼 div 끝  -->
+
+			<!--  상황표 ? 그 숫자 =============================================================================-->
+			<div class="" id="inpo">
+				<p id="inpopo">All</p>
+			</div>
+			<!-- --= -->
+
+			<!--  상품 div -->
+			<!-- keyboards 상품 모음 ====================================== -->
+			<div class="keyboards_list mt-4 row gx-0 gy-3">
+				<!--  상품 kb_is -->
+				<div class="col-md-6 col-lg-4 col-xl-3 p-2 Keyboards KBIS PRDC">
+					<div class="Produck-img position-relative">
+						<img src="../assets/img/kb_is_1.jpeg" class="w-100">
+					</div>
+					<div class="text-center">
+						<p class="text-capitalize my-1">Everglide x Haimu 자석축 스위치 마그테닉
+							래피드 트리거.</p>
+						<span class="fw-bold">480원</span>
+					</div>
+				</div>
+				<!--  상품 1 -->
+				<!--  상품 kb_is -->
+				<div class="col-md-6 col-lg-4 col-xl-3 p-2 Keyboards KBIS PRDC">
+					<div class="Produck-img position-relative">
+						<img src="../assets/img/kb_is_2.jpg" class="w-100">
+					</div>
+					<div class="text-center">
+						<p class="text-capitalize my-1">Everglide x Haimu 자석축 스위치 마그테닉
+							래피드 트리거.</p>
+						<span class="fw-bold">480원</span>
+					</div>
+				</div>
+				<!--  상품 1 -->
+				<!--  상품 kb_gb -->
+				<div class="col-md-6 col-lg-4 col-xl-3 p-2 Keyboards KBGB PRDC">
+					<div class="Produck-img position-relative">
+						<img src="../assets/img/kb_gb_1.jpeg" class="w-100">
+					</div>
+					<div class="text-center">
+						<p class="text-capitalize my-1">Everglide x Haimu 자석축 스위치 마그테닉
+							래피드 트리거.</p>
+						<span class="fw-bold">480원</span>
+					</div>
+				</div>
+				<!--  상품 1 -->
+				<!--  상품 kb_gb -->
+				<div class="col-md-6 col-lg-4 col-xl-3 p-2 Keyboards KBGB PRDC">
+					<div class="Produck-img position-relative">
+						<img src="../assets/img/kb_gb_2.jpeg" class="w-100">
+					</div>
+					<div class="text-center">
+						<p class="text-capitalize my-1">Everglide x Haimu 자석축 스위치 마그테닉
+							래피드 트리거.</p>
+						<span class="fw-bold">480원</span>
+					</div>
+				</div>
+				<!--  상품 1 -->
+				<!--  상품 kc_sw -->
+				<div class="col-md-6 col-lg-4 col-xl-3 p-2 Keycaps SW PRDC">
+					<div class="Produck-img position-relative">
+						<img src="../assets/img/kc_sw_1.jpg" class="w-100">
+					</div>
+					<div class="text-center">
+						<p class="text-capitalize my-1">Everglide x Haimu 자석축 스위치 마그테닉
+							래피드 트리거.</p>
+						<span class="fw-bold">480원</span>
+					</div>
+				</div>
+				<!--  상품 1 -->
+				<!--  상품 kc_sw -->
+				<div class="col-md-6 col-lg-4 col-xl-3 p-2 Keycaps SW PRDC">
+					<div class="Produck-img position-relative">
+						<img src="../assets/img/kc_sw_2.jpg" class="w-100">
+					</div>
+					<div class="text-center">
+						<p class="text-capitalize my-1">Everglide x Haimu 자석축 스위치 마그테닉
+							래피드 트리거.</p>
+						<span class="fw-bold">480원</span>
+					</div>
+				</div>
+				<!--  상품 1 -->
+				<!--  상품 kc_fb -->
+				<div class="col-md-6 col-lg-4 col-xl-3 p-2 Keycaps FB PRDC">
+					<div class="Produck-img position-relative">
+						<img src="../assets/img/kc_fb_1.jpg" class="w-100">
+					</div>
+					<div class="text-center">
+						<p class="text-capitalize my-1">Everglide x Haimu 자석축 스위치 마그테닉
+							래피드 트리거.</p>
+						<span class="fw-bold">480원</span>
+					</div>
+				</div>
+				<!--  상품 1 -->
+				<!--  상품 kc_fb -->
+				<div class="col-md-6 col-lg-4 col-xl-3 p-2 Keycaps FB PRDC">
+					<div class="Produck-img position-relative">
+						<img src="images/kc_fb_2.jpg" class="w-100">
+					</div>
+					<div class="text-center">
+						<p class="text-capitalize my-1">Everglide x Haimu 자석축 스위치 마그테닉
+							래피드 트리거.</p>
+						<span class="fw-bold">480원</span>
+					</div>
+				</div>
+				<!--  상품 1 -->
+				<!--  상품 kc_gm -->
+				<div class="col-md-6 col-lg-4 col-xl-3 p-2 Keycaps GM PRDC">
+					<div class="Produck-img position-relative">
+						<img src="images/kc_gm_1.jpg" class="w-100">
+					</div>
+					<div class="text-center">
+						<p class="text-capitalize my-1">Everglide x Haimu 자석축 스위치 마그테닉
+							래피드 트리거.</p>
+						<span class="fw-bold">480원</span>
+					</div>
+				</div>
+				<!--  상품 1 -->
+				<!--  상품 kc_gm -->
+				<div class="col-md-6 col-lg-4 col-xl-3 p-2 Keycaps GM PRDC">
+					<div class="Produck-img position-relative">
+						<img src="images/kc_gm_2.jpg" class="w-100">
+					</div>
+					<div class="text-center">
+						<p class="text-capitalize my-1">Everglide x Haimu 자석축 스위치 마그테닉
+							래피드 트리거.</p>
+						<span class="fw-bold">480원</span>
+					</div>
+				</div>
+				<!--  상품 1 -->
+				<!--  상품 kc_ha -->
+				<div class="col-md-6 col-lg-4 col-xl-3 p-2 Keycaps HA PRDC">
+					<div class="Produck-img position-relative">
+						<img src="images/kc_ha_1.jpg" class="w-100">
+					</div>
+					<div class="text-center">
+						<p class="text-capitalize my-1">Everglide x Haimu 자석축 스위치 마그테닉
+							래피드 트리거.</p>
+						<span class="fw-bold">480원</span>
+					</div>
+				</div>
+				<!--  상품 1 -->
+				<!--  상품 dk -->
+				<div class="col-md-6 col-lg-4 col-xl-3 p-2 Deskpads PRDC">
+					<div class="Produck-img position-relative">
+						<img src="images/dk_1.jpg" class="w-100">
+					</div>
+					<div class="text-center">
+						<p class="text-capitalize my-1">Everglide x Haimu 자석축 스위치 마그테닉
+							래피드 트리거.</p>
+						<span class="fw-bold">480원</span>
+					</div>
+				</div>
+				<!--  상품 1 -->
+				<!--  상품 dk -->
+				<div class="col-md-6 col-lg-4 col-xl-3 p-2 Deskpads PRDC">
+					<div class="Produck-img position-relative">
+						<img src="images/dk_2.jpg" class="w-100">
+					</div>
+					<div class="text-center">
+						<p class="text-capitalize my-1">Everglide x Haimu 자석축 스위치 마그테닉
+							래피드 트리거.</p>
+						<span class="fw-bold">480원</span>
+					</div>
+				</div>
+				<!--  상품 1 -->
+
+				<!-- Switches 상품 모음 ====================================== -->
+				<!--  상품 s.l -->
+				<div class="col-md-6 col-lg-4 col-xl-3 p-2 Switches LN PRDC">
+					<div class="Produck-img position-relative">
+						<img src="images/s_l_1.jpg" class="w-100">
+					</div>
+					<div class="text-center">
+						<p class="text-capitalize my-1">Everglide x Haimu 자석축 스위치 마그테닉
+							래피드 트리거.</p>
+						<span class="fw-bold">480원</span>
+					</div>
+				</div>
+				<!--  상품 1 -->
+				<!--  상품 s.l -->
+				<div class="col-md-6 col-lg-4 col-xl-3 p-2 Switches LN PRDC">
+					<div class="Produck-img position-relative">
+						<img src="images/s_l_2.jpg" class="w-100">
+					</div>
+					<div class="text-center">
+						<p class="text-capitalize my-1">게이트론 Snow Rabbit 리니어 기계식 키보드
+							스위치 공장윤활 풀트래블.</p>
+						<span class="fw-bold">390원</span>
+					</div>
+				</div>
+				<!--  상품 1 -->
+				<!--  상품 s.t -->
+				<div class="col-md-6 col-lg-4 col-xl-3 p-2 Switches TT PRDC">
+					<div class="Produck-img position-relative">
+						<img src="images/s_t_1.jpg" class="w-100">
+					</div>
+					<div class="text-center">
+						<p class="text-capitalize my-1">체리 택타일 기계식 키보드 쉬치.</p>
+						<span class="fw-bold">740원</span>
+					</div>
+				</div>
+				<!--  상품 1 -->
+				<!--  상품 s.t -->
+				<div class="col-md-6 col-lg-4 col-xl-3 p-2 Switches TT PRDC">
+					<div class="Produck-img position-relative">
+						<img src="images/s_t_2.jpg" class="w-100">
+					</div>
+					<div class="text-center">
+						<p class="text-capitalize my-1">스웨그키 x Haimu MP 기계식 키보드 스취이,</p>
+						<span class="fw-bold">460원</span>
+					</div>
+				</div>
+				<!--  상품 1 -->
+				<!--  상품 s.m -->
+				<div class="col-md-6 col-lg-4 col-xl-3 p-2 Switches MU PRDC">
+					<div class="Produck-img position-relative">
+						<img src="images/s_m_1.jpg" class="w-100">
+					</div>
+					<div class="text-center">
+						<p class="text-capitalize my-1">JKDK Gentle Lucy V2 저소음 기계식
+							키보드 스위치.</p>
+						<span class="fw-bold">760원</span>
+					</div>
+				</div>
+				<!--  상품 1 -->
+				<!--  상품 s.m -->
+				<div class="col-md-6 col-lg-4 col-xl-3 p-2 Switches MU PRDC">
+					<div class="Produck-img position-relative">
+						<img src="images/s_m_2.jpg" class="w-100">
+					</div>
+					<div class="text-center">
+						<p class="text-capitalize my-1">오테뮤 라임 V2 기계식 키보드 스위치,</p>
+						<span class="fw-bold">230원</span>
+					</div>
+				</div>
+				<!--  상품 3 -->
+				<!--  상품 s.g -->
+				<div class="col-md-6 col-lg-4 col-xl-3 p-2 Switches MG PRDC">
+					<div class="Produck-img position-relative">
+						<img src="images/s_g_1.jpg" class="w-100">
+					</div>
+					<div class="text-center">
+						<p class="text-capitalize my-1">NEO Lavender HE 자석축 마그네틱 스위치
+							래피드 트리거 우팅호환.</p>
+						<span class="fw-bold">580원</span>
+					</div>
+				</div>
+				<!--  상품 1 -->
+				<!--  상품 s.g -->
+				<div class="col-md-6 col-lg-4 col-xl-3 p-2 Switches MG PRDC">
+					<div class="Produck-img position-relative">
+						<img src="images/s_g_2.jpg" class="w-100">
+					</div>
+					<div class="text-center">
+						<p class="text-capitalize my-1">Akko Silver V3 Pro 기계식 키보드 게이밍
+							스위치,</p>
+						<span class="fw-bold">280원</span>
+					</div>
+				</div>
+				<!--  상품 1 -->
+			</div>
+		</div>
+	</section>
+	<!-- end product page -->
+
+	<!-- bootstrap js -->
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+		crossorigin="anonymous"></script>
+	<!-- Js -->
+	<script type="text/javascript">
+		// 초기 상품 수량
+		var countt = $(".PRDC").length;
+		$("#inpopo").text("All " + countt);
+	
+		//1번째 줄 버튼 키 초기화
+		var reset1 = "$('.nav-link').css({'font-weight':'','color':'rgb(85,85,85)','background-color':'','border':''}); $('#KeyboardsDiv').css({'display':'none'}); $('#SwitchesDiv').css({'display':'none'}); $('#KeycapsDiv').css({'display':'none'}); $('#DeskpadsDiv').css({'display':'none'});";
+		//2번째 줄 버튼 키 초기화 및 정보 창 초기화
+		var reset2 = "$('.btn').css({'font-weight':'','color':'rgb(85,85,85)','background-color':'#fff'}); $('#inpo').css('display', ''); $('.PRDC').css('display', 'none');";
+		//=========맨 상단 버튼 키=========================================================================
+		var linebtn1 = document.getElementsByClassName("nav-link");
+		for (var i = 0; i < linebtn1.length; i++) {
+			linebtn1[i].addEventListener("click", function() {
+				eval(reset2);
+				eval(reset1);
+				$(this).css({
+					"font-weight" : "bold"				
+				});
+				if ($("#" + this.id + "Div").css("display") == "none") {
+					$("#" + this.id + "Div").slideDown(250);
+					$("#" + this.id + "Div").css({
+						"display" : "flex"
+					});
+				}
+				$("." + this.id + "").css("display", "");
+				var count = $("." + this.id + "").length;
+				$("#inpopo").text("" + this.id + " " + count);
+				return false;
+			});
+		}
+		//================2번째 줄 버튼 키 ===========================================================	
+
+		var linebtn2 = document.getElementsByClassName("btn");
+		for (var i = 0; i < linebtn2.length; i++) {
+			linebtn2[i].addEventListener("click", function() {
+				eval(reset2);
+				$(this).css({
+					"font-weight" : "bold",
+					"color" : "white",
+					"border-radius" : "25px",
+					"background-color" : "rgb(85,85,85)"
+				});
+				$("." + this.id + "").css("display", "");
+				var count = $("." + this.id + "").length;
+				$("#inpo").css("display", "");
+				if (this.id == "KBIS") {
+					$("#inpopo").text("Keyboard in-Stoke " + count);
+				} else if (this.id == "KBGB") {
+					$("#inpopo").text("Keboard Group-buy " + count);
+				} else if (this.id == "LN") {
+					$("#inpopo").text("리니어 " + count);
+				} else if (this.id == "TT") {
+					$("#inpopo").text("텍타일 " + count);
+				} else if (this.id == "MU") {
+					$("#inpopo").text("무소음 " + count);
+				} else if (this.id == "MG") {
+					$("#inpopo").text("마그네틱 " + count);
+				} else if (this.id == "SW") {
+					$("#inpopo").text("SW " + count);
+				} else if (this.id == "FB") {
+					$("#inpopo").text("FBB " + count);
+				} else if (this.id == "GM") {
+					$("#inpopo").text("GMK " + count);
+				} else if (this.id == "HA") {
+					$("#inpopo").text("Hammerworks " + count);
+				}
+				return false;
+			});
+		}		
+		
+		//로고 클릭시
+		document.getElementById("logogo").onclick=function(){
+			eval(reset2);
+			eval(reset1);
+			$(".PRDC").css("display", "");
+			var countt = $(".PRDC").length;
+			$("#inpopo").text("All " + countt);
+			return false;
+		};
+		
+	</script>
+</body>
+</html>
