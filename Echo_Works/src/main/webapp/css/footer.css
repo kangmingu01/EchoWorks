@@ -1,0 +1,10 @@
+/* footer */
+.list-unstyled > li > a {
+  text-decoration: none;
+  color: gray;
+}
+
+.list-inline-item > a > i:hover,
+.list-unstyled > li > a:hover {
+  color: rgb(226, 226, 226);
+}

@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <!-- bootstrap -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- fontawesome -->
     <link
@@ -18,8 +18,12 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-
-    <link rel="stylesheet" type="text/css" href="../css/style.css">
+    <!-- Share Css -->
+    <link rel="stylesheet" href="../css/style.css" />
+    <!-- Main Header Css -->
+    <link rel="stylesheet" href="../css/main_header.css" />
+    <!-- Footer Css -->
+    <link rel="stylesheet" href="../css/footer.css" />
     <style>
       /* Best Selling Keyboards */
       .card img {
@@ -126,17 +130,17 @@
         color: white;
       }
     </style>
-</head>
+  </head>
   <body>
     <!--Navbar-->
     <nav
-      class="navbar navbar-expand-lg bg-transparent w-100 z-1 position-absolute"
+      class="navbar navbar-expand-lg bg-transparent w-100 z-3 position-absolute"
     >
       <div class="container mt-2 align-items-center">
         <!-- Logo -->
         <a
-          class="navbar-brand fs-4 m-0 p-0 d-flex align-items-center text-white"
-          href="#"
+          class="navbar-brand fs-4 m-0 p-0 d-flex align-items-center text-white nav_box"
+          href="index.html"
         >
           <img
             src="../assets/img/logo_light.svg"
@@ -162,24 +166,38 @@
           id="offcanvasNavbar"
           aria-labelledby="offcanvasNavbarLabel"
         >
-          <!-- SideBar Header -->
-          <div class="offcanvas-header text-dark border-bottom border-2">
+          <div
+            class="offcanvas-header text-dark border-bottom border-2 justify-content-between align-items-center d-lg-none d-sm-flex"
+          >
             <h5 class="offcanvas-title text-white" id="offcanvasNavbarLabel">
               EchoWorks
             </h5>
-            <button
-              type="button"
-              class="btn-close btn-close-white shadow-none"
-              data-bs-dismiss="offcanvas"
-              aria-label="Close"
-            ></button>
+
+            <div class="d-flex gap-2 justify-content-center align-items-center">
+              <!-- 로그인 성공 못했을 시 -->
+              <a href="login.html" class="text-decoration-none text-white fs-5"
+                >Login</a
+              >
+
+              <!-- 로그인 성공하면 -->
+              <!-- <a href="#마이페이지" class="text-decoration-none text-white fs-5"
+                >Mypage</a
+              >
+              <a href="#장바구니" class="text-decoration-none text-white fs-5"
+                >Cart</a
+              > -->
+              <button
+                type="button"
+                class="btn-close btn-close-white shadow-none"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"
+              ></button>
+            </div>
           </div>
 
           <!-- SideBar Body -->
           <div class="offcanvas-body">
-            <ul
-              class="navbar-nav justify-content-center fs-5 flex-grow-1 ps-lg-5 ms-lg-5"
-            >
+            <ul class="navbar-nav justify-content-center fs-5 flex-grow-1">
               <li class="nav-item dropdown mx-2">
                 <a
                   class="nav-link dropdown-toggle keyboards"
@@ -189,26 +207,34 @@
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                   name="keyboards"
+                  onclick="handleClick(event, 'keyboards')"
                 >
                   Keyboards
                 </a>
                 <ul
-                  class="dropdown-menu bg-dark"
+                  class="dropdown-menu bg-dark mt-2"
                   aria-labelledby="navbarDropdown"
                 >
                   <li>
-                    <a class="dropdown-item text-white key_inStock" name="key_inStock" href="#"
+                    <a
+                      class="dropdown-item text-white key_inStock"
+                      name="key_inStock"
+                      href="product.html"
                       >KeyBoard In-Stock</a
                     >
                   </li>
                   <li>
-                    <a class="dropdown-item text-white key_group" name="key_group" href="#"
+                    <a
+                      class="dropdown-item text-white key_group"
+                      name="key_group"
+                      href="product.html"
                       >KeyBoard Group-buy</a
                     >
                   </li>
                 </ul>
               </li>
               <li class="nav-item dropdown mx-2">
+                <!-- 부트스트랩 dropdown 고질병으로 인해 onclick이벤트 호출해서 강제 이동 -->
                 <a
                   class="nav-link dropdown-toggle switches"
                   href="product.html"
@@ -217,83 +243,133 @@
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                   name="switches"
+                  onclick="handleClick(event, 'switches')"
                 >
                   Switches
                 </a>
                 <ul
-                  class="dropdown-menu bg-dark"
+                  class="dropdown-menu bg-dark mt-2"
                   aria-labelledby="navbarDropdown"
                 >
                   <li>
-                    <a class="dropdown-item text-white linear" href="#" name="linear">리니어</a>
+                    <a
+                      class="dropdown-item text-white linear"
+                      href="#"
+                      name="linear"
+                      >리니어</a
+                    >
                   </li>
                   <li>
-                    <a class="dropdown-item text-white tactile" href="#" name="tactile">택타일</a>
+                    <a
+                      class="dropdown-item text-white tactile"
+                      href="#"
+                      name="tactile"
+                      >택타일</a
+                    >
                   </li>
                   <li>
-                    <a class="dropdown-item text-white low" href="#" name="low ">저소음</a>
+                    <a class="dropdown-item text-white low" href="#" name="low "
+                      >저소음</a
+                    >
                   </li>
                   <li>
-                    <a class="dropdown-item text-white magnet" href="#" name="magnet">마그네틱</a>
+                    <a
+                      class="dropdown-item text-white magnet"
+                      href="#"
+                      name="magnet"
+                      >마그네틱</a
+                    >
                   </li>
                 </ul>
               </li>
               <li class="nav-item dropdown mx-2">
+                <!-- 부트스트랩 dropdown 고질병으로 인해 onclick이벤트 호출해서 강제 이동 -->
                 <a
                   class="nav-link dropdown-toggle keycaps"
-                  href="product.html"
+                  href="#"
                   id="navbarDropdown"
                   role="button"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                   name="keycaps"
+                  onclick="handleClick(event, 'keycaps')"
                 >
                   Keycaps
                 </a>
                 <ul
-                  class="dropdown-menu bg-dark"
+                  class="dropdown-menu bg-dark mt-2"
                   aria-labelledby="navbarDropdown"
                 >
                   <li>
-                    <a class="dropdown-item text-white sw" href="#" name="sw">SW</a>
+                    <a class="dropdown-item text-white sw" href="#" name="sw"
+                      >SW</a
+                    >
                   </li>
                   <li>
-                    <a class="dropdown-item text-white fbb" href="#" name="fbb">FBB</a>
+                    <a class="dropdown-item text-white fbb" href="#" name="fbb"
+                      >FBB</a
+                    >
                   </li>
                   <li>
-                    <a class="dropdown-item text-white gmk" href="#" name="gmk">GMK</a>
+                    <a class="dropdown-item text-white gmk" href="#" name="gmk"
+                      >GMK</a
+                    >
                   </li>
                   <li>
-                    <a class="dropdown-item text-white hammerworks" href="#" name="hammerworks">Hammerworks</a>
+                    <a
+                      class="dropdown-item text-white hammerworks"
+                      href="#"
+                      name="hammerworks"
+                      >Hammerworks</a
+                    >
                   </li>
                 </ul>
               </li>
               <li class="nav-item mx-2">
-                <a href="product.html" class="nav-link deskpads" name="deskpads">Deskpads</a>
+                <a
+                  href="#"
+                  class="nav-link deskpads"
+                  name="deskpads"
+                  onclick="window.location.href='product.html#deskpads'"
+                  >Deskpads</a
+                >
               </li>
             </ul>
 
-            <!-- 내일 이 부분 디자인 어떤식으로 진행할지 고민해보기 -->
             <!-- Login/ Sign up -->
             <div
-              class="d-flex justify-content-center align-items-center gap-3 flex-nowrap login"
+              class="justify-content-center align-items-center flex-nowrap nav_box nav_box_display d-lg-flex d-sm-none"
             >
+              <!-- 회원 로그인 전 -->
               <a href="login.html" class="text-decoration-none text-white fs-5"
                 >Login</a
               >
-              <a
-                href="terms.html"
-                class="text-decoration-none px-3 py-1 fs-5 text-white"
-                >Sign up</a
+
+              <!-- 로그인 후 -->
+
+              <!-- 아이콘으로 버전 -->
+              <!-- <a href="#마이페이지" class="text-decoration-none text-white fs-5"
+                ><i class="fa-regular fa-circle-user" style="color: #ffffff"></i
+              ></a>
+              <a href="#장바구니" class="text-decoration-none text-white fs-5"
+                ><i class="fa-solid fa-cart-shopping" style="color: #ffffff"></i
+              ></a> -->
+
+              <!-- 글씨 버전 -->
+              <!-- <a href="#마이페이지" class="text-decoration-none text-white fs-5"
+                >Mypage</a
               >
+              <a href="#장바구니" class="text-decoration-none text-white fs-5"
+                >Cart</a
+              > -->
             </div>
           </div>
         </div>
       </div>
     </nav>
-    
+
     <!-- Carousel -->
-    <div id="hero-carousel" class="carousel slide" data-bs-ride="carousel">
+    <div id="hero-carousel" class="carousel slide z-2" data-bs-ride="carousel">
       <div class="carousel-indicators">
         <button
           type="button"
@@ -605,17 +681,31 @@
         </div>
       </div>
     </footer>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <!-- 부트스트랩 JS -->
+    <!-- 부트스트랩 offcanvas -->
     <script
       src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
       integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
       crossorigin="anonymous"
     ></script>
+
+    <!-- 부트스트랩 JS -->
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
       integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
       crossorigin="anonymous"
     ></script>
+
+    <script>
+      function handleClick(event, category) {
+        if ($(window).width() >= 992) {
+          // lg 사이즈 이상
+          event.preventDefault();
+          window.location.href = `product.html#${category}`;
+        }
+      }
+    </script>
   </body>
 </html>
