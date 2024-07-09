@@ -289,45 +289,30 @@
       <div class="container">
         <!-- button div 모음 -->
         <div class="row">
-          <div
-            class="flex-wrap justify-content-center sub-btn"
-            id="KeyboardsDiv"
-            style="display: none"
-          >
-            <button type="button" class="btn m-2 active-filter-btn" id="KBIS">
-              Keyboard in-Stoke
-            </button>
-            <button type="button" class="btn m-2" id="KBGB">
-              Keboard Group-buy
-            </button>
-          </div>
-          <div
-            class="flex-wrap justify-content-center sub-btn"
-            id="SwitchesDiv"
-            style="display: none"
-          >
-            <button
-              type="button"
-              class="btn m-2 active-filter-btn text-sm"
-              id="LN"
-            >
-              리니어
-            </button>
-            <button type="button" class="btn m-2" id="TT">택타일</button>
-            <button type="button" class="btn m-2" id="MU">저소음</button>
-            <button type="button" class="btn m-2" id="MG">마그네틱</button>
-          </div>
-          <div
-            class="flex-wrap justify-content-center sub-btn"
-            id="KeycapsDiv"
-            style="display: none"
-          >
-            <button type="button" class="btn m-2" id="SW">SW</button>
-            <button type="button" class="btn m-2" id="FB">FBB</button>
-            <button type="button" class="btn m-2" id="GM">GMK</button>
-            <button type="button" class="btn m-2" id="HA">Hammerworks</button>
-          </div>
-        </div>
+					<div class="flex-wrap justify-content-center sub-btn"
+						id="keyboardsDiv" style="display: none;">
+						<button type="button" class="btn m-2  active-filter-btn"
+							id="key_inStock">Keyboard in-Stoke</button>
+						<button type="button" class="btn m-2 " id="key_group">Keboard
+							Group-buy</button>
+					</div>
+					<div class="flex-wrap justify-content-center sub-btn"
+						id="switchesDiv" style="display: none;">
+						<button type="button" class="btn m-2  active-filter-btn text-sm"
+							id="linear">리니어</button>
+						<button type="button" class="btn m-2 " id="tactile">택타일</button>
+						<button type="button" class="btn m-2 " id="low">저소음</button>
+						<button type="button" class="btn m-2 " id="magnet">마그네틱</button>
+					</div>
+					<div class=" flex-wrap justify-content-center sub-btn"
+						id="keycapsDiv" style="display: none;">
+						<button type="button" class="btn m-2 " id="sw">SW</button>
+						<button type="button" class="btn m-2 " id="fbb">FBB</button>
+						<button type="button" class="btn m-2 " id="gmk">GMK</button>
+						<button type="button" class="btn m-2 " id="hammerworks">Hammerworks</button>
+
+					</div>
+				</div>
         <!--  버튼 div 끝  -->
 
         <!--  상황표 ? 그 숫자 =============================================================================-->
@@ -650,89 +635,116 @@
         }
       }
 
-      // 초기 상품 수량
-      var countt = $(".PRDC").length;
-      $("#inpopo").text("All " + countt);
+   // 초기 상품 수량
+		var countt = $(".PRDC").length;
+		$("#inpopo").text("All " + countt);
 
-      //1번째 줄 버튼 키 초기화
-      var reset1 = `$('.nav-link').css({'font-weight':'','color':'rgb(85,85,85)','background-color':'','border':''}); 
-				$('#KeyboardsDiv').css({'display':'none'}); 
-				$('#SwitchesDiv').css({'display':'none'}); 
-				$('#KeycapsDiv').css({'display':'none'}); 
-				$('#DeskpadsDiv').css({'display':'none'});`;
-      //2번째 줄 버튼 키 초기화 및 정보 창 초기화
-      var reset2 =
-        "$('.btn').css({'font-weight':'','color':'rgb(85,85,85)','background-color':'#fff'}); $('#inpo').css('display', ''); $('.PRDC').css('display', 'none');";
-      //=========맨 상단 버튼 키=========================================================================
-      var linebtn1 = document.getElementsByClassName("nav-link");
-      for (var i = 0; i < linebtn1.length; i++) {
-        linebtn1[i].addEventListener("click", function () {
-          eval(reset2);
-          eval(reset1);
-          $(this).css({
-            "font-weight": "bold",
-          });
-          if ($("#" + this.id + "Div").css("display") == "none") {
-            $("#" + this.id + "Div").slideDown(250);
-            $("#" + this.id + "Div").css({
-              display: "flex",
-            });
-          }
-          $("." + this.id + "").css("display", "");
-          var count = $("." + this.id + "").length;
-          $("#inpopo").text("" + this.id + " " + count);
-          return false;
-        });
-      }
-      //================2번째 줄 버튼 키 ===========================================================
+		//1번째 줄 버튼 키 초기화
+		//var reset1 = "$('.nav-link').css({'font-weight':'','color':'rgb(85,85,85)','background-color':'','border':''}); $('#KeyboardsDiv').css({'display':'none'}); $('#SwitchesDiv').css({'display':'none'}); $('#KeycapsDiv').css({'display':'none'}); $('#DeskpadsDiv').css({'display':'none'});";
+		var reset1 = "$('.nav-link').css({'font-weight':''}); $('#keyboardsDiv').css({'display':'none'}); $('#switchesDiv').css({'display':'none'}); $('#keycapsDiv').css({'display':'none'});";
+		//2번째 줄 버튼 키 초기화 및 정보 창 초기화
+		var reset2 = "$('.btn').css({'font-weight':'','color':'rgb(85,85,85)','background-color':'#fff'}); $('#inpo').css('display', ''); $('.PRDC').css('display', 'none');";
+		//=========맨 상단 버튼 키=========================================================================
+		var linebtn1 = document.getElementsByClassName("nav-link");
+		for (var i = 0; i < linebtn1.length; i++) {
+			linebtn1[i].addEventListener("click", function() {
+				eval(reset2);
+				eval(reset1);
+				$(this).css({
+					"font-weight" : "bold"
+				});
+				if ($("#" + this.name + "Div").css("display") == "none") {
+					$("#" + this.name + "Div").slideDown(250);
+					$("#" + this.name + "Div").css({
+						"display" : "flex"
+					});
+				}
+				$("." + this.name + "").css("display", "");
+				var count = $("." + this.name + "").length;
+				$("#inpopo").text("" + this.name + " " + count);
+				return false;
+			});
+		}
+		//================아이템 키 ===========================================================	
 
-      var linebtn2 = document.getElementsByClassName("btn");
-      for (var i = 0; i < linebtn2.length; i++) {
-        linebtn2[i].addEventListener("click", function () {
-          eval(reset2);
-          $(this).css({
-            "font-weight": "bold",
-            color: "white",
-            "border-radius": "25px",
-            "background-color": "rgb(85,85,85)",
-          });
-          $("." + this.id + "").css("display", "");
-          var count = $("." + this.id + "").length;
-          $("#inpo").css("display", "");
-          if (this.id == "KBIS") {
-            $("#inpopo").text("Keyboard in-Stoke " + count);
-          } else if (this.id == "KBGB") {
-            $("#inpopo").text("Keboard Group-buy " + count);
-          } else if (this.id == "LN") {
-            $("#inpopo").text("리니어 " + count);
-          } else if (this.id == "TT") {
-            $("#inpopo").text("텍타일 " + count);
-          } else if (this.id == "MU") {
-            $("#inpopo").text("무소음 " + count);
-          } else if (this.id == "MG") {
-            $("#inpopo").text("마그네틱 " + count);
-          } else if (this.id == "SW") {
-            $("#inpopo").text("SW " + count);
-          } else if (this.id == "FB") {
-            $("#inpopo").text("FBB " + count);
-          } else if (this.id == "GM") {
-            $("#inpopo").text("GMK " + count);
-          } else if (this.id == "HA") {
-            $("#inpopo").text("Hammerworks " + count);
-          }
-          return false;
-        });
-      }
+		var linebtn3 = document.getElementsByClassName("dropdown-item");
+		for (var i = 0; i < linebtn3.length; i++) {
+			linebtn3[i].addEventListener("click", function() {
+				//alert(this.name);
+				eval(reset2);
+				$("." + this.name + "").css("display", "");
+				$("#" + this.name + "").css({
+					"font-weight" : "bold",
+					"color" : "white",
+					"border-radius" : "25px",
+					"background-color" : "rgb(85,85,85)"
+				});
+				var count = $("." + this.name + "").length;
+				$("#inpo").css("display", "");
+				if (this.name == "key_inStock") {
+					$("#inpopo").text("Keyboard in-Stoke " + count);
+				} else if (this.name == "key_group") {
+					$("#inpopo").text("Keboard Group-buy " + count);
+				} else if (this.name == "linear") {
+					$("#inpopo").text("리니어 " + count);
+				} else if (this.name == "tactile") {
+					$("#inpopo").text("텍타일 " + count);
+				} else if (this.name == "low") {
+					$("#inpopo").text("무소음 " + count);
+				} else if (this.name == "magnet") {
+					$("#inpopo").text("마그네틱 " + count);
+				} else if (this.name == "sw") {
+					$("#inpopo").text("SW " + count);
+				} else if (this.name == "fbb") {
+					$("#inpopo").text("FBB " + count);
+				} else if (this.name == "gmk") {
+					$("#inpopo").text("GMK " + count);
+				} else if (this.name == "hammerworks") {
+					$("#inpopo").text("Hammerworks " + count);
+				}
+				return false;
+			});
+		}
 
-      //로고 클릭시
-      document.getElementById("logogo").onclick = function () {
-        eval(reset2);
-        eval(reset1);
-        $(".PRDC").css("display", "");
-        var countt = $(".PRDC").length;
-        $("#inpopo").text("All " + countt);
-        return false;
-      };
+		//================2번째 줄 버튼 키 ===========================================================	
+
+		var linebtn2 = document.getElementsByClassName("btn");
+		for (var i = 0; i < linebtn2.length; i++) {
+			linebtn2[i].addEventListener("click", function() {
+				eval(reset2);
+				$(this).css({
+					"font-weight" : "bold",
+					"color" : "white",
+					"border-radius" : "25px",
+					"background-color" : "rgb(85,85,85)"
+				});
+				$("." + this.id + "").css("display", "");
+				var count = $("." + this.id + "").length;
+				$("#inpo").css("display", "");
+				if (this.id == "key_inStock") {
+					$("#inpopo").text("Keyboard in-Stoke " + count);
+				} else if (this.id == "key_group") {
+					$("#inpopo").text("Keboard Group-buy " + count);
+				} else if (this.id == "linear") {
+					$("#inpopo").text("리니어 " + count);
+				} else if (this.id == "tactile") {
+					$("#inpopo").text("텍타일 " + count);
+				} else if (this.id == "low") {
+					$("#inpopo").text("무소음 " + count);
+				} else if (this.id == "magnet") {
+					$("#inpopo").text("마그네틱 " + count);
+				} else if (this.id == "sw") {
+					$("#inpopo").text("SW " + count);
+				} else if (this.id == "fbb") {
+					$("#inpopo").text("FBB " + count);
+				} else if (this.id == "gmk") {
+					$("#inpopo").text("GMK " + count);
+				} else if (this.id == "hammerworks") {
+					$("#inpopo").text("Hammerworks " + count);
+				}
+				return false;
+			});
+		}
     </script>
   </body>
 </html>
