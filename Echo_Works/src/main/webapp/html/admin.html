@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리자 페이지</title>
+    <style type="text/css">
+    /* 기본 스타일 */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #333;
+    padding: 15px 0;
+    color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.header-container h1 a {
+    color: #fff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.header-container h1 img {
+    height: 50px;
+    width: 50px;
+    margin-right: 10px;
+}
+
+.top-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 15px;
+}
+
+.top-nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+}
+
+.top-nav ul li a:hover {
+    background-color: #444;
+    border-radius: 5px;
+}
+
+/* 사이드바 스타일 */
+.sidebar {
+    width: 250px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-right: 1px solid #ddd;
+    height: calc(100vh - 70px); /* header 높이를 제외한 전체 높이 */
+    overflow-y: auto; /* 스크롤이 필요한 경우 자동으로 생성 */
+}
+
+.sidebar nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar nav ul li {
+    margin-bottom: 10px;
+}
+
+.sidebar nav ul li a {
+    text-decoration: none;
+    color: #333;
+    display: block;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.sidebar nav ul li a:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+/* 메인 콘텐츠 스타일 */
+.container {
+    display: flex;
+    min-height: calc(100vh - 60px); /* footer 높이를 제외한 전체 높이 */
+}
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+    background-color: #fff;
+    border-left: 1px solid #ddd;
+}
+
+/* 섹션 스타일 */
+.content-section {
+    display: none;
+}
+
+.content-section.active {
+    display: block;
+}
+
+h2 {
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+/* 버튼 스타일 */
+.add-button {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.add-button:hover {
+    background-color: #218838;
+}
+
+/* 테이블 스타일 */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table th, table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+table th {
+    background-color: #f4f4f4;
+}
+
+/* 버튼 스타일 */
+button.edit-button, button.delete-button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+button.edit-button {
+    background-color: #007bff;
+}
+
+button.edit-button:hover {
+    background-color: #0056b3;
+}
+
+button.delete-button {
+    background-color: #dc3545;
+}
+
+button.delete-button:hover {
+    background-color: #c82333;
+}
+
+/* 모달 스타일 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 5px;
+    width: 80%;
+    max-width: 500px;
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-button:hover, .close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal form label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.modal form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* 버튼 스타일 */
+.modal form button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.modal form button:hover {
+    background-color: #0056b3;
+}
+
+#cancel-button {
+    background-color: #6c757d;
+}
+
+#cancel-button:hover {
+    background-color: #5a6268;
+}
+
+/* 상품 수정 버튼 스타일 */
+.edit-button {
+    background-color: #17a2b8; /* 상품 수정 버튼 색상 */
+}
+
+.edit-button:hover {
+    background-color: #117a8b;
+}
+
+/* 푸터 스타일 */
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+    position: relative;
+    width: 100%;
+    bottom: 0;
+}
+
+.footer-nav {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0 0;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.footer-nav li {
+    display: inline;
+}
+
+.footer-nav li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.footer-nav li a:hover {
+    text-decoration: underline;
+}
+    
+    
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <h1><a href="#"><img src="/Echo_Works/src/main/img/logo_dark.svg" alt="Logo"> 관리자 페이지</a></h1>
+            <nav class="top-nav">
+                <ul>
+                    <li><a href="#" data-section="members">회원 관리</a></li>
+                    <li><a href="#" data-section="orders">주문 관리</a></li>
+                    <li><a href="#" data-section="products">상품 관리</a></li>
+                    <li><a href="#" data-section="inquiries">1:1 문의</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div class="container">
+        <div class="sidebar">
+            <nav>
+                <ul>
+                    <li><a href="#" data-section="members">회원 관리</a></li>
+                    <li><a href="#" data-section="orders">주문 관리</a></li>
+                    <li><a href="#" data-section="products">상품 관리</a></li>
+                    <li><a href="#" data-section="inquiries">1:1 문의</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="main-content">
+            <!-- 회원 관리 섹션 -->
+            <div id="members-section" class="content-section active">
+                <h2>회원 관리</h2>
+                <table id="members-table">
+                    <thead>
+                        <tr>
+                            <th>회원 ID</th>
+                            <th>이름</th>
+                            <th>이메일</th>
+                            <th>가입일</th>
+                            <th>관리</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>홍길동</td>
+                            <td>hong@example.com</td>
+                            <td>2024-07-08</td>
+                            <td>
+                                <button class="delete-button">삭제</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>김철수</td>
+                            <td>kim@example.com</td>
+                            <td>2024-07-08</td>
+                            <td>
+                                <button class="delete-button">삭제</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 주문 관리 섹션 -->
+            <div id="orders-section" class="content-section">
+                <h2>주문 관리</h2>
+                <table id="orders-table">
+                    <thead>
+                        <tr>
+                            <th>주문 번호</th>
+                            <th>고객명</th>
+                            <th>상품명</th>
+                            <th>수량</th>
+                            <th>상태</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>001</td>
+                            <td>홍길동</td>
+                            <td>상품 A</td>
+                            <td>2</td>
+                            <td>배송중</td>
+                        </tr>
+                        <tr>
+                            <td>002</td>
+                            <td>김철수</td>
+                            <td>상품 B</td>
+                            <td>1</td>
+                            <td>완료</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+	
+            <!-- 상품 관리 섹션 -->
+            <div id="products-section" class="content-section">
+                <h2>상품 관리</h2>
+                <button class="add-button" id="add-product-button">상품 추가</button>
+                <table id="products-table">
+                    <thead>
+                        <tr>
+                            <th>상품명</th>
+                            <th>가격</th>
+                            <th>수량</th>
+                            <th>관리</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- 기존 상품 데이터는 JavaScript에서 로드됩니다 -->
+                    </tbody>
+                </table>
+                <div id="add-product-modal" class="modal">
+                    <div class="modal-content">
+                        <span class="close-button">&times;</span>
+                        <h2>상품 추가</h2>
+                        <form id="add-product-form">
+                            <label for="product-name">상품명</label>
+                            <input type="text" id="product-name" name="product-name" required>
+                            <label for="product-price">가격</label>
+                            <input type="text" id="product-price" name="product-price" required>
+                            <label for="product-quantity">수량</label>
+                            <input type="number" id="product-quantity" name="product-quantity" required>
+                            <button type="submit">상품 등록</button>
+                            <button type="button" id="cancel-button">취소</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1:1 문의 관리 섹션 -->
+            <div id="inquiries-section" class="content-section">
+                <h2>1:1 문의</h2>
+                <table id="inquiries-table">
+                    <thead>
+                        <tr>
+                            <th>문의 번호</th>
+                            <th>회원 ID</th>
+                            <th>제목</th>
+                            <th>내용</th>
+                            <th>상태</th>
+                            <th>관리</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>001</td>
+                            <td>user01</td>
+                            <td>배송 지연 문의</td>
+                            <td>주문한 상품이 아직 도착하지 않았습니다.</td>
+                            <td>답변 대기</td>
+                            <td>
+                                <button class="edit-button">답변하기</button>
+                                <button class="delete-button">삭제</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>002</td>
+                            <td>user02</td>
+                            <td>상품 불량 문의</td>
+                            <td>받은 상품이 불량입니다.</td>
+                            <td>처리중</td>
+                            <td>
+                                <button class="edit-button">답변하기</button>
+                                <button class="delete-button">삭제</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="footer-content">
+            <ul class="footer-nav">
+                <li><a href="#">이용약관</a></li>
+                <li><a href="#">개인정보처리방침</a></li>
+            </ul>
+        </div>
+    </footer>
+    <script src="admin.js"></script>
+</body>
+</html>
