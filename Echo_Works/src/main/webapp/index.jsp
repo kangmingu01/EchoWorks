@@ -17,6 +17,14 @@ if (work == null) {
 }
 
 String contentPath = workgroup + "/" + work + ".jsp";
+
+	// Header 교체
+	String headerPath="/header.jsp";
+	
+	if(workgroup.equals("main")) {
+		headerPath="/main_header.jsp";
+	}
+
 %>
 <!DOCTYPE html>
 <html>
@@ -41,19 +49,7 @@ String contentPath = workgroup + "/" + work + ".jsp";
 <body>
 	<%-- Header 영역 --%>
 	<div>
-		
-		<%
-		String uri = request.getRequestURI();
-		if (uri.contains("mainpage")) {
-		%>
-		<jsp:include page="header.jsp" />
-		<%
-		} else {
-		%>
-		<jsp:include page="main_header.jsp" />
-		<%
-		}
-		%>
+		<jsp:include page="<%=headerPath%>"/>
 	</div>
 
 	<%-- Content 영역 --%>
