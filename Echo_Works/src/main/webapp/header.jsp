@@ -69,6 +69,11 @@ body.offcanvas-open {
 }
 </style>
 
+<%-- 자바 loginMember 불러오기(로그인 기능 추가되면 주석 해제)--%>
+<%--
+	MemberDTO loginMember=(MemberDTO)session.getAttribute("loginMember");
+--%>
+
 <!--Navbar-->
 <nav
 	class="navbar navbar-expand-lg bg-white w-100 z-3 sticky-top border-bottom border-2 border-black"
@@ -102,8 +107,13 @@ body.offcanvas-open {
 
 				<div class="d-flex gap-2 justify-content-center align-items-center">
 					<!-- 로그인 성공 못했을 시 -->
+				<%-- if(loginMember == null) { --%>
 					<a href="login.html" class="text-decoration-none text-black fs-5">Login</a>
-
+				<%-- } else if(loginMember.getMemberAuth == 9) { --%>
+				
+				<%-- } else { --%>
+				
+				<%-- } --%>
 					<!-- 로그인 성공하면 -->
 					<!-- <a href="#마이페이지" class="text-decoration-none text-black fs-5"
             >Mypage</a
