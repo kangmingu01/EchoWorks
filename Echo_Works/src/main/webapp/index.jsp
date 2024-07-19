@@ -14,7 +14,7 @@ if (workgroup == null) {
 String work = request.getParameter("work");
 if (work == null) {
 	work = "main_page";
-}
+}  
 
 String contentPath = workgroup + "/" + work + ".jsp";
 
