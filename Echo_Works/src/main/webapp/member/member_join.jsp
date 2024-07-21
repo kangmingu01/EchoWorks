@@ -220,60 +220,77 @@
         var idReg = /^[a-zA-Z]\w{5,19}$/g;
         if ($("#id").val() == "") {
             $("#idMsg").css("display", "inline");
+            $("#id").addClass("is-invalid");
             submitResult = false;
         } else if (!idReg.test($("#id").val())) {
             $("#idRegMsg").css("display", "inline");
+            $("#id").addClass("is-invalid");
             submitResult = false;
         } else if ($("#idCheckResult").val() == "0") {
             $("#idCheckMsg").css("display", "inline");
+            $("#id").addClass("is-invalid");
             submitResult = false;
         }
         var passwdReg = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*_-]).{6,20}$/g;
         if ($("#passwd").val() == "") {
             $("#passwdMsg").css("display", "inline");
+            $("#passwd").addClass("is-invalid");
             submitResult = false;
         } else if (!passwdReg.test($("#passwd").val())) {
             $("#passwdRegMsg").css("display", "inline");
+            $("#passwd").addClass("is-invalid");
             submitResult = false;
         }
         if ($("#repasswd").val() == "") {
             $("#repasswdMsg").css("display", "inline");
+            $("#repasswd").addClass("is-invalid");
             submitResult = false;
         } else if ($("#passwd").val() != $("#repasswd").val()) {
             $("#repasswdMatchMsg").css("display", "inline");
+            $("#repasswd").addClass("is-invalid");
             submitResult = false;
         }
         if ($("#name").val() == "") {
             $("#nameMsg").css("display", "inline");
+            $("#name").addClass("is-invalid");
             submitResult = false;
         }
         var emailReg = /^([a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+(\.[-a-zA-Z0-9]+)+)*$/g;
         if ($("#email").val() == "") {
             $("#emailMsg").css("display", "inline");
+            $("#email").addClass("is-invalid");
             submitResult = false;
         } else if (!emailReg.test($("#email").val())) {
             $("#emailRegMsg").css("display", "inline");
+            $("#email").addClass("is-invalid");
             submitResult = false;
         }
         var mobile2Reg = /\d{3,4}/;
         var mobile3Reg = /\d{4}/;
         if ($("#mobile2").val() == "" || $("#mobile3").val() == "") {
             $("#mobileMsg").css("display", "inline");
+            $("#mobile2").addClass("is-invalid");
+            $("#mobile3").addClass("is-invalid");
             submitResult = false;
         } else if (!mobile2Reg.test($("#mobile2").val()) || !mobile3Reg.test($("#mobile3").val())) {
             $("#mobileRegMsg").css("display", "inline");
+            $("#mobile2").addClass("is-invalid");
+            $("#mobile3").addClass("is-invalid");
             submitResult = false;
         }
         if ($("#zipcode").val() == "") {
             $("#zipcodeMsg").css("display", "inline");
+            $("#zipcode").addClass("is-invalid");
             submitResult = false;
         }
         if ($("#address1").val() == "") {
             $("#address1Msg").css("display", "inline");
+            $("#address1").addClass("is-invalid");
             submitResult = false;
         }
         if ($("#address2").val() == "") {
             $("#address2Msg").css("display", "inline");
+            $("#address2").addClass("is-invalid");
             submitResult = false;
         }
         return submitResult;
@@ -284,21 +301,26 @@
         var idReg = /^[a-zA-Z]\w{5,19}$/g;
         if ($("#id").val() == "") {
             $("#idMsg").css("display", "inline");
+            $("#id").addClass("is-invalid");
             return;
         } else if (!idReg.test($("#id").val())) {
             $("#idRegMsg").css("display", "inline");
+            $("#id").addClass("is-invalid");
             return;
         }
         window.open("<%=request.getContextPath()%>/member/id_check.jsp?id=" + $("#id").val(), "idCheck", "width=450, height=130, left=700, top=400");
     });
     $("#id").change(function() {
         $("#idCheckResult").val("0");
+        $("#id").removeClass("is-invalid");
     });
     $("#postSearch").click(function() {
         new daum.Postcode({
             oncomplete: function(data) {
                 $("#zipcode").val(data.zonecode);
                 $("#address1").val(data.address);
+                $("#zipcode").removeClass("is-invalid");
+                $("#address1").removeClass("is-invalid");
             }
         }).open();
     });

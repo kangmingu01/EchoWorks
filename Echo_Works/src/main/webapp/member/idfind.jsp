@@ -105,6 +105,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     document.getElementById('findIdForm').addEventListener('submit', function(event) {
         event.preventDefault();
@@ -131,11 +132,17 @@
         }
 
         if (valid) {
-            // 여기에서 AJAX 요청을 통해 서버에서 아이디를 받아오는 로직을 추가하세요.
-            // 성공적으로 아이디를 받아오면 아래와 같은 코드를 실행합니다.
-            var resultMessage = document.getElementById('resultMessage');
-            resultMessage.textContent = name + "님의 아이디는 exampleID 입니다.";
-            resultMessage.style.display = 'block';
+            $.ajax({
+                url: 'idfind_action.jsp',
+                type: 'POST',
+                data: { name: name, email: email },
+                success: function(response) {
+                    $('#resultMessage').html(response).show();
+                },
+                error: function() {
+                    alert('아이디 찾기에 실패했습니다. 다시 시도해주세요.');
+                }
+            });
         }
     });
 </script>
