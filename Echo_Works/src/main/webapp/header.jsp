@@ -107,26 +107,42 @@ MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 				<h5 class="offcanvas-title text-black" id="offcanvasNavbarLabel">
 					EchoWorks</h5>
 
-				<div class="d-flex gap-2 justify-content-center align-items-center">
+				<div class="d-flex gap-3 justify-content-evenly align-items-center">
 					<%
 					if (loginMember == null) {
 					%>
 					<!-- 회원 로그인 전 -->
 					<a href="index.jsp?workgroup=member&work=member_login"
 						class="text-decoration-none text-black fs-5"
-					>Login</a>
-					<%
-					} else if (loginMember.getMemberAuth() == 9) {
-					%>
-					<!-- 관리자 -->
-					<a href="#DB" class="text-decoration-none text-black fs-5">DB</a>
-					
+					> <i class="fa-regular fa-circle-user"></i>
+					</a>
 					<%
 					} else {
 					%>
 					<!-- 로그인 후 -->
-					<a href="#마이페이지" class="text-decoration-none text-black fs-5">Mypage</a>
-					<a href="#장바구니" class="text-decoration-none text-black fs-5">Cart</a>
+					<div class="d-flex justify-content-evenly w-100 gap-3">
+						<%
+						if (loginMember.getMemberAuth() == 9) {
+						%>
+						<!-- 관리자 -->
+						<a href="#DB" class="text-decoration-none text-black fs-5">DB</a>
+						<%
+						} else {
+						%>
+						<a href="#마이페이지" class="text-decoration-none text-black fs-5">
+							<i class="fa-regular fa-circle-user"></i>
+						</a> <a href="#장바구니" class="text-decoration-none text-black fs-5">
+							<i class="fa-solid fa-cart-shopping"></i>
+						</a>
+						<%
+						}
+						%>
+						<a href="index.jsp?workgroup=member&work=member_logout_action"
+							class="text-decoration-none text-black fs-5"
+						> <i class="fa-solid fa-right-from-bracket"
+						></i>
+						</a>
+					</div>
 					<%
 					}
 					%>
@@ -208,39 +224,44 @@ MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 				<div
 					class="justify-content-center align-items-center flex-nowrap nav_box nav_box_display d-lg-flex d-sm-none"
 				>
-
 					<%
 					if (loginMember == null) {
 					%>
 					<!-- 회원 로그인 전 -->
-					<a href="index.jsp?workgroup=main&work=main_test"
+					<a href="index.jsp?workgroup=member&work=member_login"
 						class="text-decoration-none text-black fs-5"
-					>Login</a>
-					<%
-					} else if (loginMember.getMemberAuth() == 9) {
-					%>
-					<!-- 관리자 -->
-					<a href="#DB" class="text-decoration-none text-black fs-5">DB</a>
-					
+					> Login </a>
 					<%
 					} else {
 					%>
 					<!-- 로그인 후 -->
-					<a href="#마이페이지" class="text-decoration-none text-black fs-5">Mypage</a>
-					<a href="#장바구니" class="text-decoration-none text-black fs-5">Cart</a>
+					<div class="d-flex justify-content-evenly w-100">
+						<%
+						if (loginMember.getMemberAuth() == 9) {
+						%>
+						<!-- 관리자 -->
+						<a href="#DB" class="text-decoration-none text-black fs-5">DB</a>
+						<%
+						} else {
+						%>
+						<a href="#마이페이지" class="text-decoration-none text-black fs-5">
+							<!-- <i class="fa-regular fa-circle-user" style="color: #ffffff"></i> -->
+							My
+						</a> <a href="#장바구니" class="text-decoration-none text-black fs-5">
+							<!-- <i class="fa-solid fa-cart-shopping" style="color: #ffffff"></i> -->
+							Cart
+						</a>
+						<%
+						}
+						%>
+						<a href="index.jsp?workgroup=member&work=member_logout_action"
+							class="text-decoration-none text-black fs-5"
+						> Logout <!-- <i class="fa-solid fa-right-from-bracket" style="color: #ffffff;"></i> -->
+						</a>
+					</div>
 					<%
 					}
 					%>
-					<!-- 아이콘으로 버전 -->
-					<!-- <a href="#마이페이지" class="text-decoration-none text-black fs-5"
-            ><i class="fa-regular fa-circle-user" style="color: #ffffff"></i
-          ></a>
-          <a href="#장바구니" class="text-decoration-none text-black fs-5"
-            ><i class="fa-solid fa-cart-shopping" style="color: #ffffff"></i
-          ></a> -->
-
-					<!-- 글씨 버전 -->
-
 				</div>
 			</div>
 		</div>

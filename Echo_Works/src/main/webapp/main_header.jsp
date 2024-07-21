@@ -6,9 +6,10 @@
 /* Header */
 /* 햄버거 아이콘 흰색으로 */
 .navbar-toggler-icon {
-	background-image:
-		url('data:image/svg+xml;charset=UTF8,%3Csvg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath stroke="rgba%28255, 255, 255, 1%29" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" d="M4 7h22M4 15h22M4 23h22"/%3E%3C/svg%3E');
+    background-image:
+        url('data:image/svg+xml;charset=UTF8,%3Csvg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath stroke="rgba%28255, 255, 255, 1%29" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" d="M4 7h22M4 15h22M4 23h22"/%3E%3C/svg%3E');
 }
+
 
 @media ( min-width : 992px) {
 	.nav-item.dropdown:hover .dropdown-menu {
@@ -113,26 +114,43 @@ MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 				<h5 class="offcanvas-title text-white" id="offcanvasNavbarLabel">
 					EchoWorks</h5>
 
-				<div class="d-flex gap-2 justify-content-center align-items-center">
+				<div class="d-flex gap-3 justify-content-evenly align-items-center">
 					<%
 					if (loginMember == null) {
 					%>
 					<!-- 회원 로그인 전 -->
 					<a href="index.jsp?workgroup=member&work=member_login"
 						class="text-decoration-none text-white fs-5"
-					>Login</a>
-					<%
-					} else if (loginMember.getMemberAuth() == 9) {
-					%>
-					<!-- 관리자 -->
-					<a href="#DB" class="text-decoration-none text-white fs-5">DB</a>
-					
+					> <i class="fa-regular fa-circle-user" style="color: #ffffff"></i>
+					</a>
 					<%
 					} else {
 					%>
 					<!-- 로그인 후 -->
-					<a href="#마이페이지" class="text-decoration-none text-white fs-5">Mypage</a>
-					<a href="#장바구니" class="text-decoration-none text-white fs-5">Cart</a>
+					<div class="d-flex justify-content-evenly w-100 gap-3">
+						<%
+						if (loginMember.getMemberAuth() == 9) {
+						%>
+						<!-- 관리자 -->
+						<a href="#DB" class="text-decoration-none text-white fs-5">DB</a>
+						<%
+						} else {
+						%>
+						<a href="#마이페이지" class="text-decoration-none text-white fs-5">
+							<i class="fa-regular fa-circle-user" style="color: #ffffff"></i>
+						</a> <a href="#장바구니" class="text-decoration-none text-white fs-5">
+							<i class="fa-solid fa-cart-shopping" style="color: #ffffff"></i>
+						</a>
+						<%
+						}
+						%>
+						<a href="index.jsp?workgroup=member&work=member_logout_action"
+							class="text-decoration-none text-white fs-5"
+						> <i class="fa-solid fa-right-from-bracket"
+							style="color: #ffffff;"
+						></i>
+						</a>
+					</div>
 					<%
 					}
 					%>
@@ -140,6 +158,8 @@ MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 						data-bs-dismiss="offcanvas" aria-label="Close"
 					></button>
 				</div>
+
+
 			</div>
 
 			<!-- SideBar Body -->
@@ -226,19 +246,35 @@ MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 					<!-- 회원 로그인 전 -->
 					<a href="index.jsp?workgroup=member&work=member_login"
 						class="text-decoration-none text-white fs-5"
-					>Login</a>
-					<%
-					} else if (loginMember.getMemberAuth() == 9) {
-					%>
-					<!-- 관리자 -->
-					<a href="#DB" class="text-decoration-none text-white fs-5">DB</a>
-					
+					> Login </a>
 					<%
 					} else {
 					%>
 					<!-- 로그인 후 -->
-					<a href="#마이페이지" class="text-decoration-none text-white fs-5">Mypage</a>
-					<a href="#장바구니" class="text-decoration-none text-white fs-5">Cart</a>
+					<div class="d-flex justify-content-evenly w-100">
+						<%
+						if (loginMember.getMemberAuth() == 9) {
+						%>
+						<!-- 관리자 -->
+						<a href="#DB" class="text-decoration-none text-white fs-5">DB</a>
+						<%
+						} else {
+						%>
+						<a href="#마이페이지" class="text-decoration-none text-white fs-5">
+							<!-- <i class="fa-regular fa-circle-user" style="color: #ffffff"></i> -->
+							My
+						</a> <a href="#장바구니" class="text-decoration-none text-white fs-5">
+							<!-- <i class="fa-solid fa-cart-shopping" style="color: #ffffff"></i> -->
+							Cart
+						</a>
+						<%
+						}
+						%>
+						<a href="index.jsp?workgroup=member&work=member_logout_action"
+							class="text-decoration-none text-white fs-5"
+						> Logout <!-- <i class="fa-solid fa-right-from-bracket" style="color: #ffffff;"></i> -->
+						</a>
+					</div>
 					<%
 					}
 					%>
