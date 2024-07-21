@@ -1,3 +1,4 @@
+<%@page import="echoworks.dto.MemberDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"
 %>
@@ -70,9 +71,9 @@ body.offcanvas-open {
 </style>
 
 <%-- 자바 loginMember 불러오기(로그인 기능 추가되면 주석 해제)--%>
-<%--
-	MemberDTO loginMember=(MemberDTO)session.getAttribute("loginMember");
---%>
+<%
+MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
+%>
 
 <!--Navbar-->
 <nav
@@ -106,21 +107,28 @@ body.offcanvas-open {
 					EchoWorks</h5>
 
 				<div class="d-flex gap-2 justify-content-center align-items-center">
-					<!-- 로그인 성공 못했을 시 -->
-				<%-- if(loginMember == null) { --%>
-					<a href="login.html" class="text-decoration-none text-black fs-5">Login</a>
-				<%-- } else if(loginMember.getMemberAuth == 9) { --%>
-				
-				<%-- } else { --%>
-				
-				<%-- } --%>
-					<!-- 로그인 성공하면 -->
-					<!-- <a href="#마이페이지" class="text-decoration-none text-black fs-5"
-            >Mypage</a
-          >
-          <a href="#장바구니" class="text-decoration-none text-black fs-5"
-            >Cart</a
-          > -->
+					<%
+					if (loginMember == null) {
+					%>
+					<!-- 회원 로그인 전 -->
+					<a href="index.jsp?workgroup=member&work=member_login"
+						class="text-decoration-none text-black fs-5"
+					>Login</a>
+					<%
+					} else if (loginMember.getMemberAuth() == 9) {
+					%>
+					<!-- 관리자 -->
+					<a href="#DB" class="text-decoration-none text-black fs-5">DB</a>
+					
+					<%
+					} else {
+					%>
+					<!-- 로그인 후 -->
+					<a href="#마이페이지" class="text-decoration-none text-black fs-5">Mypage</a>
+					<a href="#장바구니" class="text-decoration-none text-black fs-5">Cart</a>
+					<%
+					}
+					%>
 					<button type="button" class="btn-close shadow-none"
 						data-bs-dismiss="offcanvas" aria-label="Close"
 					></button>
@@ -198,11 +206,29 @@ body.offcanvas-open {
 				<div
 					class="justify-content-center align-items-center flex-nowrap nav_box nav_box_display d-lg-flex d-sm-none"
 				>
+
+					<%
+					if (loginMember == null) {
+					%>
 					<!-- 회원 로그인 전 -->
-					<a href="login.html" class="text-decoration-none text-black fs-5">Login</a>
-
+					<a href="index.jsp?workgroup=member&work=member_login"
+						class="text-decoration-none text-black fs-5"
+					>Login</a>
+					<%
+					} else if (loginMember.getMemberAuth() == 9) {
+					%>
+					<!-- 관리자 -->
+					<a href="#DB" class="text-decoration-none text-black fs-5">DB</a>
+					
+					<%
+					} else {
+					%>
 					<!-- 로그인 후 -->
-
+					<a href="#마이페이지" class="text-decoration-none text-black fs-5">Mypage</a>
+					<a href="#장바구니" class="text-decoration-none text-black fs-5">Cart</a>
+					<%
+					}
+					%>
 					<!-- 아이콘으로 버전 -->
 					<!-- <a href="#마이페이지" class="text-decoration-none text-black fs-5"
             ><i class="fa-regular fa-circle-user" style="color: #ffffff"></i
@@ -212,12 +238,7 @@ body.offcanvas-open {
           ></a> -->
 
 					<!-- 글씨 버전 -->
-					<!-- <a href="#마이페이지" class="text-decoration-none text-black fs-5"
-            >Mypage</a
-          >
-          <a href="#장바구니" class="text-decoration-none text-black fs-5"
-            >Cart</a
-          > -->
+
 				</div>
 			</div>
 		</div>

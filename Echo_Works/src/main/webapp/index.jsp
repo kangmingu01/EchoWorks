@@ -14,17 +14,16 @@ if (workgroup == null) {
 String work = request.getParameter("work");
 if (work == null) {
 	work = "main_page";
-}  
+}
 
 String contentPath = workgroup + "/" + work + ".jsp";
 
-	// Header 교체
-	String headerPath="/header.jsp";
-	
-	if(workgroup.equals("main")) {
-		headerPath="/main_header.jsp";
-	}
+// Header 교체
+String headerPath = "/header.jsp";
 
+/* if (workgroup.equals("main")) {
+	headerPath = "/main_header.jsp";
+} */
 %>
 <!DOCTYPE html>
 <html>
@@ -45,11 +44,14 @@ String contentPath = workgroup + "/" + work + ".jsp";
 />
 
 <link rel="stylesheet" href="css/style.css" />
+
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
 	<%-- Header 영역 --%>
 	<div>
-		<jsp:include page="<%=headerPath%>"/>
+		<jsp:include page="<%=headerPath%>" />
 	</div>
 
 	<%-- Content 영역 --%>
@@ -69,20 +71,10 @@ String contentPath = workgroup + "/" + work + ".jsp";
 		<jsp:include page="footer.jsp" />
 	</div>
 
-	<!-- jQuery -->
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-	<!-- 부트스트랩 offcanvas -->
-	<script
-		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-		integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-		crossorigin="anonymous"
-	></script>
-
 	<!-- 부트스트랩 JS -->
 	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
-		integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
 		crossorigin="anonymous"
 	></script>
 </body>
