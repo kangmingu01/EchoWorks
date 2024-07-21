@@ -52,41 +52,29 @@ public class MemberDAO extends JdbcDAO {
 		return rows;
 	}
 	// 아이디 찾기 기능 추가
-	public MemberDTO findMemberByNameAndEmail(String name, String email) {
-	    Connection con = null;
-	    PreparedStatement pstmt = null;
-	    ResultSet rs = null;
-	    MemberDTO member = null;
-	    try {
-	        con = getConnection();
-	        String sql = "SELECT * FROM member WHERE member_name = ? AND member_email = ?";
-	        pstmt = con.prepareStatement(sql);
-	        pstmt.setString(1, name);
-	        pstmt.setString(2, email);
-	        rs = pstmt.executeQuery();
-	        if (rs.next()) {
-	            member = new MemberDTO();
-	            member.setMemberNum(rs.getInt("member_num"));
-	            member.setMemberId(rs.getString("member_id"));
-	            member.setMemberPasswd(rs.getString("member_passwd"));
-	            member.setMemberName(rs.getString("member_name"));
-	            member.setMemberEmail(rs.getString("member_email"));
-	            member.setMemberMobile(rs.getString("member_mobile"));
-	            member.setMemberZipcode(rs.getString("member_zipcode"));
-	            member.setMemberAddress1(rs.getString("member_address1"));
-	            member.setMemberAddress2(rs.getString("member_address2"));
-	            member.setMemberRegisterDate(rs.getString("member_register_date"));
-	            member.setMemberUpdateDate(rs.getString("member_update_date"));
-	            member.setMemberLastLogin(rs.getString("member_last_login"));
-	            member.setMemberAuth(rs.getInt("member_auth"));
-	        }
-	    } catch (SQLException e) {
-	        System.out.println("[에러]findMemberByNameAndEmail() 메서드의 SQL 오류 = " + e.getMessage());
-	    } finally {
-	        close(con, pstmt, rs);
-	    }
-	    return member;
-	}
+    public MemberDTO findMemberByNameAndEmail(String name, String email) {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        MemberDTO member = null;
+        try {
+            con = getConnection();
+            String sql = "SELECT member_id FROM member WHERE member_name = ? AND member_email = ?";
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, name);
+            pstmt.setString(2, email);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                member = new MemberDTO();
+                member.setMemberId(rs.getString("member_id"));
+            }
+        } catch (SQLException e) {
+            System.out.println("[에러]findMemberByNameAndEmail() 메서드의 SQL 오류 = " + e.getMessage());
+        } finally {
+            close(con, pstmt, rs);
+        }
+        return member;
+    }
 
     // 비밀번호 찾기
     public MemberDTO findPassword(String id, String name, String email) {

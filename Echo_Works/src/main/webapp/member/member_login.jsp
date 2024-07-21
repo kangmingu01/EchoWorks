@@ -146,8 +146,8 @@
     					<a href="<%=request.getContextPath()%>/member/terms.jsp">회원가입</a>
 					</div>
                     <div class="form-text mt-3 links-container">
-                        <a href="http://localhost:8000/Echo_Works/member/idfind.html">아이디 찾기 | </a>
-                        <a href="http://localhost:8000/Echo_Works/member/passwordfind.html">비밀번호 찾기</a>
+                        <a href="<%=request.getContextPath()%>/member/idfind.jsp">아이디 찾기 | </a>
+                        <a href="<%=request.getContextPath()%>/member/passwordfind.jsp">비밀번호 찾기</a>
                     </div>
                 </div>
                 <button type="button" class="btn btn-primary mt-3" id="login_btn">로그인</button>
