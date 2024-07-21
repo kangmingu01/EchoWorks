@@ -1,11 +1,4 @@
-﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%-- 사용자로부터 회원정보를 입력받기 위한 JSP 문서 --%>
-<%-- => [회원가입] 태그를 클릭한 경우 [/member/member_join_action.jsp] 문서를 요청하여 페이지 이동 - 입력값 전달 --%>
-<%-- => [아이디 중복 검사] 태그를 클릭한 경우 새로운 브라우저(팝업창)를 생성하여 
-[/member/id_check.jsp] 문서 요청 - 아이디 전달  --%>
-<%-- => [우편번호 검색] 태그를 클릭한 경우 [Daum 우편번호 서비스]를 사용하여 입력태그(우편번호와
-기본주소)의 입력값 변경 --%>
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!doctype html>
 <html lang="en" data-bs-theme="auto">
 <head>
@@ -13,28 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>회원가입</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>  
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
-
         * {
             padding: 0;
             margin: 0;
             box-sizing: border-box;
             color: black;
         }
-
         body {
             background: white;
             font-family: 'Poppins', sans-serif;
         }
-
         .form-container {
             margin-top: 50px;
             display: flex;
             justify-content: center;
         }
-
         form {
             width: 100%;
             max-width: 600px;
@@ -42,24 +31,21 @@
             border: 2px solid black;
             border-radius: 20px;
             box-shadow: 8px 4px 16px rgba(0, 0, 0, 0.3);
-            height: auto; 
+            height: auto;
             display: flex;
             flex-direction: column;
             justify-content: center;
         }
-
         .btn-primary, .btn-secondary {
             border: none;
             border-radius: 50px;
             background: black;
             transition: transform 0.3s ease;
         }
-
         .btn-primary:hover, .btn-secondary:hover {
             transform: scale(1.05);
             background-color: black;
         }
-
         .form-control {
             color: black;
             border-bottom-color: rgba(0, 0, 0, .42);
@@ -68,36 +54,30 @@
             border-bottom: 1px solid;
             border-radius: 4px 4px 0 0;
         }
-
         h4 {
             font-size: 2rem;
             font-weight: 700;
             text-align: center;
             margin-bottom: 20px;
         }
-
         .form-text a {
             color: black;
             text-decoration: none;
         }
-
         .form-text a:hover {
             color: black;
             text-decoration: underline;
         }
-
         .error {
             color: red;
             font-size: 0.875rem;
             margin-left: 10px; /* 오류 메시지를 입력 필드 옆에 표시 */
              display: none; /* 초기 상태에서 오류 메시지 숨기기 */
         }
-
         .form-control.is-invalid {
             border-color: red;
             animation: shake 0.5s;
         }
-
         @keyframes shake {
             0% { transform: translateX(0); }
             25% { transform: translateX(-5px); }
@@ -105,7 +85,6 @@
             75% { transform: translateX(-5px); }
             100% { transform: translateX(0); }
         }
-
         #idCheck, #postSearch {
             font-size: 12px;
             font-weight: bold;
@@ -114,15 +93,13 @@
             padding: 2px 10px;
             border: 1px solid black;
         }
-
         #idCheck:hover, #postSearch:hover {
             background: aqua;
         }
     </style>
 </head>
 <body>
-
-
+<jsp:include page="/header.jsp" />
 <div class="container">
     <div class="row">
         <div class="col-md-6 offset-md-3 form-container">
@@ -231,17 +208,15 @@
         </div>
     </div>
 </div>
-
+<br>
+<jsp:include page="/footer.jsp" />
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $("#id").focus();
-
     $("#join").submit(function() {
         var submitResult = true;
-
         $(".error").css("display", "none");
-
         var idReg = /^[a-zA-Z]\w{5,19}$/g;
         if ($("#id").val() == "") {
             $("#idMsg").css("display", "inline");
@@ -253,7 +228,6 @@
             $("#idCheckMsg").css("display", "inline");
             submitResult = false;
         }
-
         var passwdReg = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*_-]).{6,20}$/g;
         if ($("#passwd").val() == "") {
             $("#passwdMsg").css("display", "inline");
@@ -262,7 +236,6 @@
             $("#passwdRegMsg").css("display", "inline");
             submitResult = false;
         }
-
         if ($("#repasswd").val() == "") {
             $("#repasswdMsg").css("display", "inline");
             submitResult = false;
@@ -270,12 +243,10 @@
             $("#repasswdMatchMsg").css("display", "inline");
             submitResult = false;
         }
-
         if ($("#name").val() == "") {
             $("#nameMsg").css("display", "inline");
             submitResult = false;
         }
-
         var emailReg = /^([a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+(\.[-a-zA-Z0-9]+)+)*$/g;
         if ($("#email").val() == "") {
             $("#emailMsg").css("display", "inline");
@@ -284,7 +255,6 @@
             $("#emailRegMsg").css("display", "inline");
             submitResult = false;
         }
-
         var mobile2Reg = /\d{3,4}/;
         var mobile3Reg = /\d{4}/;
         if ($("#mobile2").val() == "" || $("#mobile3").val() == "") {
@@ -294,31 +264,23 @@
             $("#mobileRegMsg").css("display", "inline");
             submitResult = false;
         }
-
         if ($("#zipcode").val() == "") {
             $("#zipcodeMsg").css("display", "inline");
             submitResult = false;
         }
-
         if ($("#address1").val() == "") {
             $("#address1Msg").css("display", "inline");
             submitResult = false;
         }
-
         if ($("#address2").val() == "") {
             $("#address2Msg").css("display", "inline");
             submitResult = false;
         }
-
         return submitResult;
     });
-
     $("#idCheck").click(function() {
-        // 아이디 관련 에러메세지를 출력하는 태그가 보여지지 않도록 설정
         $("#idMsg").css("display", "none");
         $("#idRegMsg").css("display", "none");
-
-        // 입력태그(아이디)의 입력값에 대한 검증
         var idReg = /^[a-zA-Z]\w{5,19}$/g;
         if ($("#id").val() == "") {
             $("#idMsg").css("display", "inline");
@@ -327,18 +289,11 @@
             $("#idRegMsg").css("display", "inline");
             return;
         }
-
-        // 새로운 브라우저를 생성하여 [/member/id_check.jsp] 문서 요청
-        window.open("<%=request.getContextPath()%>/member/id_check.jsp?id=" + $("#id").val()
-            , "idCheck", "width=450, height=130, left=700, top=400");
+        window.open("<%=request.getContextPath()%>/member/id_check.jsp?id=" + $("#id").val(), "idCheck", "width=450, height=130, left=700, top=400");
     });
-
-    // 입력태그(아이디)의 입력값이 변경된 경우 호출되는 이벤트 처리 함수 등록
     $("#id").change(function() {
-        // 입력태그(아이디 중복 검사 실행 여부)의 입력값이 변경
         $("#idCheckResult").val("0");
     });
-
     $("#postSearch").click(function() {
         new daum.Postcode({
             oncomplete: function(data) {

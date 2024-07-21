@@ -1,0 +1,294 @@
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="EUC-KR"%>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>결제하기</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f5f5f5;
+            overflow-y: scroll; /* Always show vertical scrollbar */
+        }
+        .container {
+            margin-top: 30px;
+        }
+        .card {
+            margin-bottom: 20px;
+        }
+        .card-header {
+            background-color: #fff;
+            border-bottom: 2px solid #ddd;
+        }
+        .card-body {
+            background-color: #fff;
+        }
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        .form-check-label {
+            margin-left: 10px;
+        }
+        .form-check-input {
+            margin-left: 10px;
+        }
+        .btn-primary {
+            width: 100%;
+            padding: 10px;
+            font-size: 1.2rem;
+            background-color: #000;
+            color: #fff;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #333;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-transparent w-100">
+      <div class="container mt-2 align-items-center">
+        <!-- Logo -->
+        <a class="navbar-brand fs-4 m-0 p-0 d-flex align-items-center text-white" href="#">
+          <img src="../assets/img/logo_dark.svg" style="width: auto; height: 55px" alt="Logo"/>
+        </a>
+        <!-- Toggle -->
+        <button class="navbar-toggler shadow-none border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcavasNavbar">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- SideBar -->
+        <div class="sidebar offcanvas offcanvas-end bg-white" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+          <!-- SideBar Header -->
+          <div class="offcanvas-header border-dark border-bottom border-2">
+            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">EchoWorks</h5>
+            <button type="button" class="btn-close shadow-none" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+
+          <!-- SideBar Body -->
+          <div class="offcanvas-body">
+            <ul class="navbar-nav justify-content-center fs-5 flex-grow-1 ps-lg-5 ms-lg-5">
+              <li class="nav-item mx-2">
+                <a href="#Keyboards" class="nav-link text-dark">Keyboards</a>
+              </li>
+              <li class="nav-item dropdown mx-2">
+                <a href="#" class="nav-link dropdown-toggle text-dark" role="" data-bs-toggle="dropdown" aria-expanded="false">Switches</a>
+                <ul class="dropdown-menu">
+                  <li><a href="#" class="dropdown-item">리니어</a></li>
+                  <li><a href="#" class="dropdown-item">택타일</a></li>
+                  <li><a href="#" class="dropdown-item">저소음</a></li>
+                  <li><a href="#" class="dropdown-item">마그네틱</a></li>
+                </ul>
+              </li>
+              <li class="nav-item mx-2">
+                <a href="#Keycaps" class="nav-link text-dark">Keycaps</a>
+              </li>
+              <li class="nav-item mx-2">
+                <a href="#Deskpads" class="nav-link text-dark">Deskpads</a>
+              </li>
+            </ul>
+
+            <!-- Login/ Sign up -->
+            <div class="d-flex justify-content-center align-items-center gap-3 flex-nowrap">
+              <a href="#login" class="text-decoration-none fs-5 text-dark">Login</a>
+              <a href="#signup" class="text-decoration-none px-3 py-1 fs-5 text-dark">Sign up</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+<div class="container">
+    <h2 class="section-title text-center">결제하기</h2>
+    <div class="row">
+        <div class="col-md-7">
+            <div class="card">
+                <div class="card-header">
+                    주문 상품 정보
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <img src="상품 이미지 경로" alt="상품 이미지" style="width: 100px; height: 100px; margin-right: 20px;">
+                        <div>
+                            <p>스웨그키 SW La Vie en Rose R2 이중사출 키캡 세트, 1개</p>
+                            <p>77,000원</p>
+                            <p>배송비 2,500원</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    주문자 정보
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="ordererName" value="김혜련" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="ordererContact" value="01040773346" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <input type="email" class="form-control" id="ordererEmail" value="tosmreo@naver.com" disabled>
+                    </div>
+                    <button class="btn btn-outline-secondary" id="editOrdererInfo">수정</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    배송 정보
+                </div>
+                <div class="card-body">
+                    <ul class="nav nav-tabs" id="deliveryTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="existing-address-tab" data-bs-toggle="tab" href="#existing-address" role="tab" aria-controls="existing-address" aria-selected="true">배송지 선택</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="new-address-tab" data-bs-toggle="tab" href="#new-address" role="tab" aria-controls="new-address" aria-selected="false">신규 입력</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="deliveryTabContent">
+                        <div class="tab-pane fade show active" id="existing-address" role="tabpanel" aria-labelledby="existing-address-tab">
+                            <p><input type="radio" name="address" checked> 김혜련, 경기 성남시 중원구 금빛로42번길 7 (금광동, 드림하이즈맨션) 501호, 13183</p>
+                        </div>
+                        <div class="tab-pane fade" id="new-address" role="tabpanel" aria-labelledby="new-address-tab">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="sameAsOrderer">
+                                <label class="form-check-label" for="sameAsOrderer">
+                                    주문자 정보와 동일
+                                </label>
+                            </div>
+                            <div class="mt-3">
+                                <div class="mb-3">
+                                    <label for="recipient" class="form-label">수령인</label>
+                                    <input type="text" class="form-control" id="recipient" placeholder="2글자 이상 입력해주세요">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="contact" class="form-label">연락처</label>
+                                    <input type="text" class="form-control" id="contact" placeholder="전화번호를 입력하세요">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="postcode" class="form-label">우편번호</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="postcode" placeholder="우편번호">
+                                        <button class="btn btn-outline-secondary" type="button" id="findPostcode">주소찾기</button>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="address" class="form-label">주소</label>
+                                    <input type="text" class="form-control" id="address" placeholder="주소">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="detailedAddress" class="form-label">상세주소</label>
+                                    <input type="text" class="form-control" id="detailedAddress" placeholder="상세주소">
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="addToAddressBook">
+                                    <label class="form-check-label" for="addToAddressBook">
+                                        배송지 목록에 추가
+                                    </label>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="deliveryMemo" class="form-label">배송메모</label>
+                                    <select class="form-select" id="deliveryMemo">
+                                        <option value="">배송메모를 선택해 주세요.</option>
+                                        <option value="문 앞에 놔주세요">문 앞에 놔주세요</option>
+                                        <option value="경비실에 맡겨주세요">경비실에 맡겨주세요</option>
+                                        <option value="직접 받아야 합니다">직접 받아야 합니다</option>
+                                        <option value="직접입력">직접입력</option>
+                                    </select>
+                                    <input type="text" class="form-control mt-2 hidden" id="deliveryMemoInput" placeholder="배송메모를 입력해 주세요">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <div class="card">
+                <div class="card-header">
+                    주문 요약
+                </div>
+                <div class="card-body">
+                    <p>상품가격: 77,000원</p>
+                    <p>배송비: 2,500원</p>
+                    <p>총 주문금액: 79,500원</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="agreeTerms">
+                        <label class="form-check-label" for="agreeTerms">
+                            구매조건 확인 및 결제진행에 동의
+                        </label>
+                    </div>
+                    <button class="btn btn-primary mt-3">결제하기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-WdcW8+3k9d0WCFQz2O+p44+gd+YoDZlD5oBLfQn3NE6vcegM2KUkc4gF3uH19ajp" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-5IBV6dU1g8kDcHj/YnuP4WTDq0fFhZcLwE4E2LP+ulUGjUxr4/dRSu9moAhxJfDm" crossorigin="anonymous"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+    document.getElementById('editOrdererInfo').addEventListener('click', function() {
+        var inputs = document.querySelectorAll('#ordererName, #ordererContact, #ordererEmail');
+        inputs.forEach(function(input) {
+            input.disabled = false;
+        });
+    });
+
+    document.getElementById('sameAsOrderer').addEventListener('change', function() {
+        if (this.checked) {
+            document.getElementById('recipient').value = document.getElementById('ordererName').value;
+            document.getElementById('contact').value = document.getElementById('ordererContact').value;
+        } else {
+            document.getElementById('recipient').value = '';
+            document.getElementById('contact').value = '';
+        }
+    });
+
+    document.getElementById('deliveryMemo').addEventListener('change', function() {
+        var deliveryMemoInput = document.getElementById('deliveryMemoInput');
+        if (this.value === '직접입력') {
+            deliveryMemoInput.classList.remove('hidden');
+        } else {
+            deliveryMemoInput.classList.add('hidden');
+        }
+    });
+
+    document.getElementById('findPostcode').addEventListener('click', function() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                document.getElementById('postcode').value = data.zonecode;
+                document.getElementById('address').value = data.address;
+            }
+        }).open();
+    });
+
+    document.getElementById('new-address-tab').addEventListener('click', function() {
+        document.getElementById('new-address').classList.add('show', 'active');
+        document.getElementById('existing-address').classList.remove('show', 'active');
+    });
+
+    document.getElementById('existing-address-tab').addEventListener('click', function() {
+        document.getElementById('existing-address').classList.add('show', 'active');
+        document.getElementById('new-address').classList.remove('show', 'active');
+    });
+</script>
+</body>
+</html>
+
+
