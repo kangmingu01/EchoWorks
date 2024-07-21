@@ -21,9 +21,9 @@ String contentPath = workgroup + "/" + work + ".jsp";
 // Header 교체
 String headerPath = "/header.jsp";
 
-if (workgroup.equals("main")) {
+/* if (workgroup.equals("main")) {
 	headerPath = "/main_header.jsp";
-}
+} */
 %>
 <!DOCTYPE html>
 <html>
