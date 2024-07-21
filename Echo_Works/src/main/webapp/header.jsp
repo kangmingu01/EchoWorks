@@ -131,66 +131,66 @@ body.offcanvas-open {
 			<div class="offcanvas-body">
 				<ul class="navbar-nav justify-content-center fs-5 flex-grow-1">
 					<li class="nav-item dropdown mx-2"><a
-						class="nav-link dropdown-toggle keyboards" href="product.html"
+						class="nav-link dropdown-toggle keyboards" 
 						id="navbarDropdown" role="button" data-bs-toggle="dropdown"
 						aria-expanded="false" name="keyboards"
 						onclick="handleClick(event, 'keyboards')"
 					> Keyboards </a>
 						<ul class="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
 							<li><a class="dropdown-item text-white key_inStock"
-								name="key_inStock" href="product.html"
+								name="key_inStock" href="<%=request.getContextPath()%>/index.jsp?workgroup=pd&work=product&cateOne=keyboards&cateTwo=key_inStock"
 							>KeyBoard In-Stock</a></li>
 							<li><a class="dropdown-item text-white key_group"
-								name="key_group" href="product.html"
+								name="key_group" href="<%=request.getContextPath()%>/index.jsp?workgroup=pd&work=product&cateOne=keyboards&cateTwo=key_group"
 							>KeyBoard Group-buy</a></li>
 						</ul></li>
 					<li class="nav-item dropdown mx-2">
 						<!-- 부트스트랩 dropdown 고질병으로 인해 onclick이벤트 호출해서 강제 이동 --> <a
-						class="nav-link dropdown-toggle switches" href="product.html"
+						class="nav-link dropdown-toggle switches" 
 						id="navbarDropdown" role="button" data-bs-toggle="dropdown"
 						aria-expanded="false" name="switches"
 						onclick="handleClick(event, 'switches')"
 					> Switches </a>
 						<ul class="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
-							<li><a class="dropdown-item text-white linear" href="#"
+							<li><a class="dropdown-item text-white linear" href="<%=request.getContextPath()%>/index.jsp?workgroup=pd&work=product&cateOne=switches&cateTwo=linear"
 								name="linear"
 							>리니어</a></li>
-							<li><a class="dropdown-item text-white tactile" href="#"
+							<li><a class="dropdown-item text-white tactile" href="<%=request.getContextPath()%>/index.jsp?workgroup=pd&work=product&cateOne=switches&cateTwo=tactile"
 								name="tactile"
 							>택타일</a></li>
-							<li><a class="dropdown-item text-white low" href="#"
+							<li><a class="dropdown-item text-white low" href="<%=request.getContextPath()%>/index.jsp?workgroup=pd&work=product&cateOne=switches&cateTwo=low"
 								name="low "
 							>저소음</a></li>
-							<li><a class="dropdown-item text-white magnet" href="#"
+							<li><a class="dropdown-item text-white magnet" href="<%=request.getContextPath()%>/index.jsp?workgroup=pd&work=product&cateOne=switches&cateTwo=magnet"
 								name="magnet"
 							>마그네틱</a></li>
 						</ul>
 					</li>
 					<li class="nav-item dropdown mx-2">
 						<!-- 부트스트랩 dropdown 고질병으로 인해 onclick이벤트 호출해서 강제 이동 --> <a
-						class="nav-link dropdown-toggle keycaps" href="#"
+						class="nav-link dropdown-toggle keycaps" 
 						id="navbarDropdown" role="button" data-bs-toggle="dropdown"
 						aria-expanded="false" name="keycaps"
 						onclick="handleClick(event, 'keycaps')"
 					> Keycaps </a>
 						<ul class="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
-							<li><a class="dropdown-item text-white sw" href="#"
+							<li><a class="dropdown-item text-white sw" href="<%=request.getContextPath()%>/index.jsp?workgroup=pd&work=product&cateOne=keycaps&cateTwo=sw"
 								name="sw"
 							>SW</a></li>
-							<li><a class="dropdown-item text-white fbb" href="#"
+							<li><a class="dropdown-item text-white fbb" href="<%=request.getContextPath()%>/index.jsp?workgroup=pd&work=product&cateOne=keycaps&cateTwo=fbb"
 								name="fbb"
 							>FBB</a></li>
-							<li><a class="dropdown-item text-white gmk" href="#"
+							<li><a class="dropdown-item text-white gmk" href="<%=request.getContextPath()%>/index.jsp?workgroup=pd&work=product&cateOne=keycaps&cateTwo=gmk"
 								name="gmk"
 							>GMK</a></li>
-							<li><a class="dropdown-item text-white hammerworks" href="#"
+							<li><a class="dropdown-item text-white hammerworks" href="<%=request.getContextPath()%>/index.jsp?workgroup=pd&work=product&cateOne=keycaps&cateTwo=hammerworks"
 								name="hammerworks"
 							>Hammerworks</a></li>
 						</ul>
 					</li>
-					<li class="nav-item mx-2"><a href="#"
+					<li class="nav-item mx-2"><a href="<%=request.getContextPath()%>/index.jsp?workgroup=pd&work=product&cateOne=deskpads" class="nav-link deskpads"
 						class="nav-link deskpads" name="deskpads"
-						onclick="window.location.href='product.html#deskpads'"
+						onclick=""
 					>Deskpads</a></li>
 				</ul>
 
@@ -229,7 +229,8 @@ body.offcanvas-open {
 		if ($(window).width() >= 992) {
 			// lg 사이즈 이상
 			event.preventDefault();
-			window.location.href = `product.html#${category}`;
+			//window.location.href = `product.html#${category}`;
+			location.href="<%=request.getContextPath()%>/index.jsp?workgroup=pd&work=product&cateOne="+category;
 		}
 	}
 </script>
