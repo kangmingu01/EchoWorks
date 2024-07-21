@@ -26,6 +26,8 @@
 %>
 <!doctype html>
 <html lang="en" data-bs-theme="auto">
+<!doctype html>
+<html lang="ko" data-bs-theme="auto">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -140,10 +142,12 @@
                     <label for="exampleInputPassword1" class="form-label">비밀번호</label>
                     <input type="password" class="form-control" id="exampleInputPassword1" name="passwd" placeholder="비밀번호를 입력해주세요.">
                     <div id="passwordError" class="error"></div>
-                    <div id="join" class="form-text mt-3"><a href="http://localhost:8000/Echo_Works/member/member_join.jsp">회원가입</a></div>
+                    <div class="form-text mt-3">
+    					<a href="<%=request.getContextPath()%>/member/terms.jsp">회원가입</a>
+					</div>
                     <div class="form-text mt-3 links-container">
-                        <a href="http://localhost:8000/web/project/idfind.html">아이디 찾기 | </a>
-                        <a href="http://localhost:8000/web/project/passwordfind.html">비밀번호 찾기</a>
+                        <a href="http://localhost:8000/Echo_Works/member/idfind.html">아이디 찾기 | </a>
+                        <a href="http://localhost:8000/Echo_Works/member/passwordfind.html">비밀번호 찾기</a>
                     </div>
                 </div>
                 <button type="button" class="btn btn-primary mt-3" id="login_btn">로그인</button>

@@ -2,6 +2,7 @@ package echoworks.util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -79,13 +80,15 @@ public class Utility {
 	public static String escapeTag(String source) {
 		return source.replace("<", "&lt;").replace(">", "&gt;");
 	}
+	
+	// 랜덤 비밀번호 생성 메소드
+    public static String generateRandomPassword() {
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+";
+        Random random = new Random();
+        StringBuilder password = new StringBuilder();
+        for (int i = 0; i < 10; i++) {
+            password.append(characters.charAt(random.nextInt(characters.length())));
+        }
+        return password.toString();
+    }
 }
-
-
-
-
-
-
-
-
-
