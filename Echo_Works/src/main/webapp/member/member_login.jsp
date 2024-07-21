@@ -36,35 +36,20 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
 
-        * {
-            padding: 0;
-            margin: 0;
-            box-sizing: border-box;
-            color: black;
-        }
-
         body {
-            background: white;
             font-family: 'Poppins', sans-serif;
+            background: white;
+            margin: 0;
         }
 
         .form-container {
-            margin-top: 50px;
-            display: flex;
-            justify-content: center;
-        }
-
-        form {
             width: 100%;
             max-width: 450px;
             padding: 30px;
             border: 2px solid black;
             border-radius: 20px;
             box-shadow: 8px 4px 16px rgba(0, 0, 0, 0.3);
-            height: 550px; 
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            margin: 100px auto;
         }
 
         .btn-primary {
@@ -76,8 +61,8 @@
         }
 
         .btn-primary:hover {
-            transform: scale(1.05); /* 호버 시 버튼을 약간 크게 확대 */
-            background-color: black; /* 배경색을 검정색으로 유지 */
+            transform: scale(1.05);
+            background-color: black;
         }
 
         .form-control {
@@ -102,7 +87,7 @@
         }
 
         .form-text a:hover {
-            color: black; /* 링크에 호버 시 검정색으로 유지 */
+            color: black;
             text-decoration: underline;
         }
 
@@ -117,44 +102,50 @@
             animation: shake 0.5s;
         }
 
-        @keyframes shake { /* 흔들리는 효과 */
+        @keyframes shake {
             0% { transform: translateX(0); }
             25% { transform: translateX(-5px); }
             50% { transform: translateX(5px); }
             75% { transform: translateX(-5px); }
             100% { transform: translateX(0); }
         }
+
+        .result-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border: 1px solid #c3e6cb;
+            border-radius: 4px;
+            margin-top: 20px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="row">
-        <div class="col-md-6 offset-md-3 form-container">
-            <form id="loginForm" name="loginForm" method="post" action="<%=request.getContextPath() %>/index.jsp?workgroup=member&work=member_login_action">
-                <input type="hidden" name="url" value="<%=url%>">
-                <h4>로그인</h4>
-                <div class="mb-3">
-                    <label for="exampleInputId" class="form-label">아이디</label>
-                    <input type="text" class="form-control" id="exampleInputId" name="id" value="<%=id%>" aria-describedby="idHelp" placeholder="아이디를 입력해주세요.">
-                    <div id="idError" class="error"></div>
-                </div>
-                <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">비밀번호</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1" name="passwd" placeholder="비밀번호를 입력해주세요.">
-                    <div id="passwordError" class="error"></div>
-                    <div class="form-text mt-3">
-    					<a href="<%=request.getContextPath()%>/member/terms.jsp">회원가입</a>
-					</div>
-                    <div class="form-text mt-3 links-container">
-                        <a href="<%=request.getContextPath()%>/member/idfind.jsp">아이디 찾기 | </a>
-                        <a href="<%=request.getContextPath()%>/member/passwordfind.jsp">비밀번호 찾기</a>
-                    </div>
-                </div>
-                <button type="button" class="btn btn-primary mt-3" id="login_btn">로그인</button>
-                <div id="message"><%=message %></div>
-            </form>
+<div class="form-container">
+    <form id="loginForm" name="loginForm" method="post" action="<%=request.getContextPath() %>/index.jsp?workgroup=member&work=member_login_action">
+        <input type="hidden" name="url" value="<%=url%>">
+        <h4>로그인</h4>
+        <div class="mb-3">
+            <label for="exampleInputId" class="form-label">아이디</label>
+            <input type="text" class="form-control" id="exampleInputId" name="id" value="<%=id%>" aria-describedby="idHelp" placeholder="아이디를 입력해주세요.">
+            <div id="idError" class="error"></div>
         </div>
-    </div>
+        <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">비밀번호</label>
+            <input type="password" class="form-control" id="exampleInputPassword1" name="passwd" placeholder="비밀번호를 입력해주세요.">
+            <div id="passwordError" class="error"></div>
+            <div class="form-text mt-3">
+                <a href="<%=request.getContextPath()%>/member/terms.jsp">회원가입</a>
+            </div>
+            <div class="form-text mt-3 links-container">
+                <a href="<%=request.getContextPath()%>/member/idfind.jsp">아이디 찾기 | </a>
+                <a href="<%=request.getContextPath()%>/member/passwordfind.jsp">비밀번호 찾기</a>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary mt-3" id="login_btn">로그인</button>
+        <div id="message" class="result-message" style="<%= message.isEmpty() ? "display:none;" : "" %>"><%=message %></div>
+    </form>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

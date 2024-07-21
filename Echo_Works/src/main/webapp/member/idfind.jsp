@@ -85,7 +85,6 @@
     </style>
 </head>
 <body>
-<jsp:include page="/header.jsp" />
 <div class="form-container">
     <form id="findIdForm">
         <h4>아이디 찾기</h4>
@@ -146,6 +145,5 @@
         }
     });
 </script>
-<jsp:include page="/footer.jsp" />
 </body>
 </html>

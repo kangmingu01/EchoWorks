@@ -75,7 +75,6 @@
     </style>
 </head>
 <body>
-<jsp:include page="/header.jsp" />
 <div class="form-container">
     <form id="findPasswordForm" method="post" action="passwordfind_action.jsp">
         <h4>비밀번호 찾기</h4>
@@ -143,6 +142,5 @@
         }
     });
 </script>
-<jsp:include page="/footer.jsp" />
 </body>
 </html>

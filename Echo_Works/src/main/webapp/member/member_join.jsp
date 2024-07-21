@@ -25,17 +25,17 @@
             justify-content: center;
         }
         form {
-            width: 100%;
-            max-width: 600px;
-            padding: 30px;
-            border: 2px solid black;
-            border-radius: 20px;
-            box-shadow: 8px 4px 16px rgba(0, 0, 0, 0.3);
-            height: auto;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
+  		  width: 100%;
+   		 max-width: 800px;  /* 여기서 max-width를 800px로 변경합니다 */
+    	padding: 30px;
+  	  border: 2px solid black;
+  	  border-radius: 20px;
+  	  box-shadow: 8px 4px 16px rgba(0, 0, 0, 0.3);
+  	  height: auto;
+  	  display: flex;
+   		 flex-direction: column;
+  	  justify-content: center;
+}
         .btn-primary, .btn-secondary {
             border: none;
             border-radius: 50px;
@@ -71,8 +71,10 @@
         .error {
             color: red;
             font-size: 0.875rem;
-            margin-left: 10px; /* 오류 메시지를 입력 필드 옆에 표시 */
-             display: none; /* 초기 상태에서 오류 메시지 숨기기 */
+            margin-left: 10px;
+            display: block;
+            visibility: hidden;
+            height: 1.2em;
         }
         .form-control.is-invalid {
             border-color: red;
@@ -99,7 +101,6 @@
     </style>
 </head>
 <body>
-<jsp:include page="/header.jsp" />
 <div class="container">
     <div class="row">
         <div class="col-md-6 offset-md-3 form-container">
@@ -209,102 +210,102 @@
     </div>
 </div>
 <br>
-<jsp:include page="/footer.jsp" />
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $("#id").focus();
     $("#join").submit(function() {
         var submitResult = true;
-        $(".error").css("display", "none");
+        $(".error").css("visibility", "hidden");
         var idReg = /^[a-zA-Z]\w{5,19}$/g;
         if ($("#id").val() == "") {
-            $("#idMsg").css("display", "inline");
+            $("#idMsg").css("visibility", "visible");
             $("#id").addClass("is-invalid");
             submitResult = false;
         } else if (!idReg.test($("#id").val())) {
-            $("#idRegMsg").css("display", "inline");
+            $("#idRegMsg").css("visibility", "visible");
             $("#id").addClass("is-invalid");
             submitResult = false;
         } else if ($("#idCheckResult").val() == "0") {
-            $("#idCheckMsg").css("display", "inline");
+            $("#idCheckMsg").css("visibility", "visible");
             $("#id").addClass("is-invalid");
             submitResult = false;
         }
         var passwdReg = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[~!@#$%^&*_-]).{6,20}$/g;
         if ($("#passwd").val() == "") {
-            $("#passwdMsg").css("display", "inline");
+            $("#passwdMsg").css("visibility", "visible");
             $("#passwd").addClass("is-invalid");
             submitResult = false;
         } else if (!passwdReg.test($("#passwd").val())) {
-            $("#passwdRegMsg").css("display", "inline");
+            $("#passwdRegMsg").css("visibility", "visible");
             $("#passwd").addClass("is-invalid");
             submitResult = false;
         }
         if ($("#repasswd").val() == "") {
-            $("#repasswdMsg").css("display", "inline");
+            $("#repasswdMsg").css("visibility", "visible");
             $("#repasswd").addClass("is-invalid");
             submitResult = false;
         } else if ($("#passwd").val() != $("#repasswd").val()) {
-            $("#repasswdMatchMsg").css("display", "inline");
+            $("#repasswdMatchMsg").css("visibility", "visible");
             $("#repasswd").addClass("is-invalid");
             submitResult = false;
         }
         if ($("#name").val() == "") {
-            $("#nameMsg").css("display", "inline");
+            $("#nameMsg").css("visibility", "visible");
             $("#name").addClass("is-invalid");
             submitResult = false;
         }
         var emailReg = /^([a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+(\.[-a-zA-Z0-9]+)+)*$/g;
         if ($("#email").val() == "") {
-            $("#emailMsg").css("display", "inline");
+            $("#emailMsg").css("visibility", "visible");
             $("#email").addClass("is-invalid");
             submitResult = false;
         } else if (!emailReg.test($("#email").val())) {
-            $("#emailRegMsg").css("display", "inline");
+            $("#emailRegMsg").css("visibility", "visible");
             $("#email").addClass("is-invalid");
             submitResult = false;
         }
         var mobile2Reg = /\d{3,4}/;
         var mobile3Reg = /\d{4}/;
         if ($("#mobile2").val() == "" || $("#mobile3").val() == "") {
-            $("#mobileMsg").css("display", "inline");
+            $("#mobileMsg").css("visibility", "visible");
             $("#mobile2").addClass("is-invalid");
             $("#mobile3").addClass("is-invalid");
             submitResult = false;
         } else if (!mobile2Reg.test($("#mobile2").val()) || !mobile3Reg.test($("#mobile3").val())) {
-            $("#mobileRegMsg").css("display", "inline");
+            $("#mobileRegMsg").css("visibility", "visible");
             $("#mobile2").addClass("is-invalid");
             $("#mobile3").addClass("is-invalid");
             submitResult = false;
         }
         if ($("#zipcode").val() == "") {
-            $("#zipcodeMsg").css("display", "inline");
+            $("#zipcodeMsg").css("visibility", "visible");
             $("#zipcode").addClass("is-invalid");
             submitResult = false;
         }
         if ($("#address1").val() == "") {
-            $("#address1Msg").css("display", "inline");
+            $("#address1Msg").css("visibility", "visible");
             $("#address1").addClass("is-invalid");
             submitResult = false;
         }
         if ($("#address2").val() == "") {
-            $("#address2Msg").css("display", "inline");
+            $("#address2Msg").css("visibility", "visible");
             $("#address2").addClass("is-invalid");
             submitResult = false;
         }
         return submitResult;
     });
     $("#idCheck").click(function() {
-        $("#idMsg").css("display", "none");
-        $("#idRegMsg").css("display", "none");
+        $("#idMsg").css("visibility", "hidden");
+        $("#idRegMsg").css("visibility", "hidden");
         var idReg = /^[a-zA-Z]\w{5,19}$/g;
         if ($("#id").val() == "") {
-            $("#idMsg").css("display", "inline");
+            $("#idMsg").css("visibility", "visible");
             $("#id").addClass("is-invalid");
             return;
         } else if (!idReg.test($("#id").val())) {
-            $("#idRegMsg").css("display", "inline");
+            $("#idRegMsg").css("visibility", "visible");
             $("#id").addClass("is-invalid");
             return;
         }

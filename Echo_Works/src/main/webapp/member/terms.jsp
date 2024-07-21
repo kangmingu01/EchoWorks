@@ -83,7 +83,6 @@
   </style>
 </head>
 <body>
-<jsp:include page="/header.jsp" />
 <div class="container mt-5 clause">
   <form id="termsForm" action="<%=request.getContextPath()%>/member/terms_action.jsp" method="post">
     <div class="row">
@@ -259,6 +258,5 @@
   });
 </script>
 <br>
-<jsp:include page="/footer.jsp" />
 </body>
 </html>
