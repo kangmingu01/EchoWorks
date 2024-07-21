@@ -1,6 +1,8 @@
+<%@page import="echoworks.dto.MemberDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"
 %>
+
 <style>
 @media ( min-width : 992px) {
 	.nav-item.dropdown:hover .dropdown-menu {
@@ -70,9 +72,9 @@ body.offcanvas-open {
 </style>
 
 <%-- 자바 loginMember 불러오기(로그인 기능 추가되면 주석 해제)--%>
-<%--
-	MemberDTO loginMember=(MemberDTO)session.getAttribute("loginMember");
---%>
+<%
+MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
+%>
 
 <!--Navbar-->
 <nav
@@ -106,21 +108,28 @@ body.offcanvas-open {
 					EchoWorks</h5>
 
 				<div class="d-flex gap-2 justify-content-center align-items-center">
-					<!-- 로그인 성공 못했을 시 -->
-				<%-- if(loginMember == null) { --%>
-					<a href="login.html" class="text-decoration-none text-black fs-5">Login</a>
-				<%-- } else if(loginMember.getMemberAuth == 9) { --%>
-				
-				<%-- } else { --%>
-				
-				<%-- } --%>
-					<!-- 로그인 성공하면 -->
-					<!-- <a href="#마이페이지" class="text-decoration-none text-black fs-5"
-            >Mypage</a
-          >
-          <a href="#장바구니" class="text-decoration-none text-black fs-5"
-            >Cart</a
-          > -->
+					<%
+					if (loginMember == null) {
+					%>
+					<!-- 회원 로그인 전 -->
+					<a href="index.jsp?workgroup=member&work=member_login"
+						class="text-decoration-none text-black fs-5"
+					>Login</a>
+					<%
+					} else if (loginMember.getMemberAuth() == 9) {
+					%>
+					<!-- 관리자 -->
+					<a href="#DB" class="text-decoration-none text-black fs-5">DB</a>
+					
+					<%
+					} else {
+					%>
+					<!-- 로그인 후 -->
+					<a href="#마이페이지" class="text-decoration-none text-black fs-5">Mypage</a>
+					<a href="#장바구니" class="text-decoration-none text-black fs-5">Cart</a>
+					<%
+					}
+					%>
 					<button type="button" class="btn-close shadow-none"
 						data-bs-dismiss="offcanvas" aria-label="Close"
 					></button>
@@ -130,8 +139,8 @@ body.offcanvas-open {
 			<!-- SideBar Body -->
 			<div class="offcanvas-body">
 				<ul class="navbar-nav justify-content-center fs-5 flex-grow-1">
-					<li class="nav-item dropdown mx-2"><a
-						class="nav-link dropdown-toggle keyboards" href="product.html"
+					<li class="nav-item dropdown mx-2">
+					<a class="nav-link dropdown-toggle keyboards" href="product.html"
 						id="navbarDropdown" role="button" data-bs-toggle="dropdown"
 						aria-expanded="false" name="keyboards"
 						onclick="handleClick(event, 'keyboards')"
@@ -190,19 +199,38 @@ body.offcanvas-open {
 					</li>
 					<li class="nav-item mx-2"><a href="#"
 						class="nav-link deskpads" name="deskpads"
-						onclick="window.location.href='product.html#deskpads'"
+						onclick="handleClick(event, 'Deskpads')"
 					>Deskpads</a></li>
+					<!-- onclick="window.location.href='product.html#deskpads'" -->
 				</ul>
 
 				<!-- Login/ Sign up -->
 				<div
 					class="justify-content-center align-items-center flex-nowrap nav_box nav_box_display d-lg-flex d-sm-none"
 				>
+
+					<%
+					if (loginMember == null) {
+					%>
 					<!-- 회원 로그인 전 -->
-					<a href="login.html" class="text-decoration-none text-black fs-5">Login</a>
-
+					<a href="index.jsp?workgroup=main&work=main_test"
+						class="text-decoration-none text-black fs-5"
+					>Login</a>
+					<%
+					} else if (loginMember.getMemberAuth() == 9) {
+					%>
+					<!-- 관리자 -->
+					<a href="#DB" class="text-decoration-none text-black fs-5">DB</a>
+					
+					<%
+					} else {
+					%>
 					<!-- 로그인 후 -->
-
+					<a href="#마이페이지" class="text-decoration-none text-black fs-5">Mypage</a>
+					<a href="#장바구니" class="text-decoration-none text-black fs-5">Cart</a>
+					<%
+					}
+					%>
 					<!-- 아이콘으로 버전 -->
 					<!-- <a href="#마이페이지" class="text-decoration-none text-black fs-5"
             ><i class="fa-regular fa-circle-user" style="color: #ffffff"></i
@@ -212,12 +240,7 @@ body.offcanvas-open {
           ></a> -->
 
 					<!-- 글씨 버전 -->
-					<!-- <a href="#마이페이지" class="text-decoration-none text-black fs-5"
-            >Mypage</a
-          >
-          <a href="#장바구니" class="text-decoration-none text-black fs-5"
-            >Cart</a
-          > -->
+
 				</div>
 			</div>
 		</div>
@@ -229,7 +252,8 @@ body.offcanvas-open {
 		if ($(window).width() >= 992) {
 			// lg 사이즈 이상
 			event.preventDefault();
-			window.location.href = `product.html#${category}`;
+			alert(category);
+			/* window.location.href = `product.html#${category}`; */
 		}
 	}
 </script>
