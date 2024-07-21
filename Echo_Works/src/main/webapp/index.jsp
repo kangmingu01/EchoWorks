@@ -48,7 +48,7 @@ String headerPath = "/header.jsp";
 <!-- jQuery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
 	<%-- Header 영역 --%>
 	<div>
 		<jsp:include page="<%=headerPath%>" />
@@ -67,7 +67,7 @@ String headerPath = "/header.jsp";
 		%>
 	</div>
 	<%-- Footer 영역 --%>
-	<div id="footer">
+	<div id="footer" class="mt-auto">
 		<jsp:include page="footer.jsp" />
 	</div>
 

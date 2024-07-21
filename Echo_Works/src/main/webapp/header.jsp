@@ -2,6 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"
 %>
+
 <style>
 @media ( min-width : 992px) {
 	.nav-item.dropdown:hover .dropdown-menu {
