@@ -139,8 +139,8 @@ MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 			<!-- SideBar Body -->
 			<div class="offcanvas-body">
 				<ul class="navbar-nav justify-content-center fs-5 flex-grow-1">
-					<li class="nav-item dropdown mx-2"><a
-						class="nav-link dropdown-toggle keyboards" href="product.html"
+					<li class="nav-item dropdown mx-2">
+					<a class="nav-link dropdown-toggle keyboards" href="product.html"
 						id="navbarDropdown" role="button" data-bs-toggle="dropdown"
 						aria-expanded="false" name="keyboards"
 						onclick="handleClick(event, 'keyboards')"
@@ -199,8 +199,9 @@ MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 					</li>
 					<li class="nav-item mx-2"><a href="#"
 						class="nav-link deskpads" name="deskpads"
-						onclick="window.location.href='product.html#deskpads'"
+						onclick="handleClick(event, 'Deskpads')"
 					>Deskpads</a></li>
+					<!-- onclick="window.location.href='product.html#deskpads'" -->
 				</ul>
 
 				<!-- Login/ Sign up -->
@@ -212,7 +213,7 @@ MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 					if (loginMember == null) {
 					%>
 					<!-- 회원 로그인 전 -->
-					<a href="index.jsp?workgroup=member&work=member_login"
+					<a href="index.jsp?workgroup=main&work=main_test"
 						class="text-decoration-none text-black fs-5"
 					>Login</a>
 					<%
@@ -251,7 +252,8 @@ MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 		if ($(window).width() >= 992) {
 			// lg 사이즈 이상
 			event.preventDefault();
-			window.location.href = `product.html#${category}`;
+			alert(category);
+			/* window.location.href = `product.html#${category}`; */
 		}
 	}
 </script>

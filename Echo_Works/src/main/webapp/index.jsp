@@ -21,9 +21,9 @@ String contentPath = workgroup + "/" + work + ".jsp";
 // Header 교체
 String headerPath = "/header.jsp";
 
-/* if (workgroup.equals("main")) {
+if (workgroup.equals("main")) {
 	headerPath = "/main_header.jsp";
-} */
+}
 %>
 <!DOCTYPE html>
 <html>
@@ -48,7 +48,7 @@ String headerPath = "/header.jsp";
 <!-- jQuery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
-<body class="d-flex flex-column min-vh-100">
+<body class="d-flex flex-column min-vh-100" >
 	<%-- Header 영역 --%>
 	<div>
 		<jsp:include page="<%=headerPath%>" />

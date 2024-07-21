@@ -119,20 +119,20 @@ MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 					%>
 					<!-- 회원 로그인 전 -->
 					<a href="index.jsp?workgroup=member&work=member_login"
-						class="text-decoration-none text-black fs-5"
+						class="text-decoration-none text-white fs-5"
 					>Login</a>
 					<%
 					} else if (loginMember.getMemberAuth() == 9) {
 					%>
 					<!-- 관리자 -->
-					<a href="#DB" class="text-decoration-none text-black fs-5">DB</a>
+					<a href="#DB" class="text-decoration-none text-white fs-5">DB</a>
 					
 					<%
 					} else {
 					%>
 					<!-- 로그인 후 -->
-					<a href="#마이페이지" class="text-decoration-none text-black fs-5">Mypage</a>
-					<a href="#장바구니" class="text-decoration-none text-black fs-5">Cart</a>
+					<a href="#마이페이지" class="text-decoration-none text-white fs-5">Mypage</a>
+					<a href="#장바구니" class="text-decoration-none text-white fs-5">Cart</a>
 					<%
 					}
 					%>
@@ -211,8 +211,9 @@ MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 					</li>
 					<li class="nav-item mx-2"><a href="#"
 						class="nav-link deskpads" name="deskpads"
-						onclick="window.location.href='product.html#deskpads'"
+						onclick="handleClick(event, 'Deskpads')"
 					>Deskpads</a></li>
+					<!-- onclick="window.location.href='product.html#deskpads'" -->
 				</ul>
 
 				<!-- Login/ Sign up -->
@@ -224,20 +225,20 @@ MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 					%>
 					<!-- 회원 로그인 전 -->
 					<a href="index.jsp?workgroup=member&work=member_login"
-						class="text-decoration-none text-black fs-5"
+						class="text-decoration-none text-white fs-5"
 					>Login</a>
 					<%
 					} else if (loginMember.getMemberAuth() == 9) {
 					%>
 					<!-- 관리자 -->
-					<a href="#DB" class="text-decoration-none text-black fs-5">DB</a>
+					<a href="#DB" class="text-decoration-none text-white fs-5">DB</a>
 					
 					<%
 					} else {
 					%>
 					<!-- 로그인 후 -->
-					<a href="#마이페이지" class="text-decoration-none text-black fs-5">Mypage</a>
-					<a href="#장바구니" class="text-decoration-none text-black fs-5">Cart</a>
+					<a href="#마이페이지" class="text-decoration-none text-white fs-5">Mypage</a>
+					<a href="#장바구니" class="text-decoration-none text-white fs-5">Cart</a>
 					<%
 					}
 					%>
@@ -246,3 +247,14 @@ MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 		</div>
 	</div>
 </nav>
+
+<script>
+	function handleClick(event, category) {
+		if ($(window).width() >= 992) {
+			// lg 사이즈 이상
+			event.preventDefault();
+			alert(category);
+			/* window.location.href = `product.html#${category}`; */
+		}
+	}
+</script>
