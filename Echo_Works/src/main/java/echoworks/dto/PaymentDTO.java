@@ -1,5 +1,5 @@
 package echoworks.dto;
-
+ 
 public class PaymentDTO {
     private int paymentNo;           // PAYMENT_NO
     private int paymentPsno;         // PAYMENT_PSNO
