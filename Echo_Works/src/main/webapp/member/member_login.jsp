@@ -25,14 +25,11 @@
 
 %>
 <!doctype html>
-<html lang="en" data-bs-theme="auto">
-<!doctype html>
 <html lang="ko" data-bs-theme="auto">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Login Form</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
 
         .form-container {
@@ -129,20 +126,17 @@
             <input type="password" class="form-control" id="exampleInputPassword1" name="passwd" placeholder="비밀번호를 입력해주세요.">
             <div id="passwordError" class="error"></div>
             <div class="form-text mt-3">
-                <a href="<%=request.getContextPath()%>/member/terms.jsp">회원가입</a>
+                <a href="<%=request.getContextPath()%>/index.jsp?workgroup=member&work=terms">회원가입</a>
             </div>
             <div class="form-text mt-3 links-container">
-                <a href="<%=request.getContextPath()%>/member/idfind.jsp">아이디 찾기 | </a>
-                <a href="<%=request.getContextPath()%>/member/passwordfind.jsp">비밀번호 찾기</a>
+                <a href="<%=request.getContextPath()%>/index.jsp?workgroup=member&work=idfind">아이디 찾기 | </a>
+                <a href="<%=request.getContextPath()%>/index.jsp?workgroup=member&work=passwordfind">비밀번호 찾기</a>
             </div>
         </div>
         <button type="button" class="btn btn-primary mt-3" id="login_btn">로그인</button>
         <div id="message" class="result-message" style="<%= message.isEmpty() ? "display:none;" : "" %>"><%=message %></div>
     </form>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {
         $("#exampleInputId").focus();

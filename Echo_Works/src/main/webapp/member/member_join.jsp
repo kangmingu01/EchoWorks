@@ -5,19 +5,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>회원가입</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
-        * {
-            padding: 0;
-            margin: 0;
-            box-sizing: border-box;
-            color: black;
-        }
         body {
             background: white;
-            font-family: 'Poppins', sans-serif;
+            
         }
         .form-container {
             margin-top: 50px;
@@ -25,17 +16,17 @@
             justify-content: center;
         }
         form {
-  		  width: 100%;
-   		 max-width: 800px;  /* 여기서 max-width를 800px로 변경합니다 */
-    	padding: 30px;
-  	  border: 2px solid black;
-  	  border-radius: 20px;
-  	  box-shadow: 8px 4px 16px rgba(0, 0, 0, 0.3);
-  	  height: auto;
-  	  display: flex;
-   		 flex-direction: column;
-  	  justify-content: center;
-}
+  		  	width: 100%;
+   			max-width: 800px;  /* 여기서 max-width를 800px로 변경합니다 */
+    		padding: 30px;
+  	  		border: 2px solid black;
+  	 		border-radius: 20px;
+  	  		box-shadow: 8px 4px 16px rgba(0, 0, 0, 0.3);
+  	 		height: auto;
+  	 		display: flex;
+   		 	flex-direction: column;
+  	 		 justify-content: center;
+		}
         .btn-primary, .btn-secondary {
             border: none;
             border-radius: 50px;
@@ -54,7 +45,7 @@
             border-bottom: 1px solid;
             border-radius: 4px 4px 0 0;
         }
-        h4 {
+        .jointitle {
             font-size: 2rem;
             font-weight: 700;
             text-align: center;
@@ -106,7 +97,7 @@
         <div class="col-md-6 offset-md-3 form-container">
             <form id="join" action="<%=request.getContextPath() %>/index.jsp?workgroup=member&work=member_join_action" method="post">
                 <input type="hidden" id="idCheckResult" value="0">
-                <h4>회원가입</h4>
+                <h4 class="jointitle">회원가입</h4>
                 <div class="mb-3 row">
                     <label for="id" class="col-sm-3 col-form-label">아이디</label>
                     <div class="col-sm-6">
@@ -211,8 +202,7 @@
 </div>
 <br>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
     $("#id").focus();
     $("#join").submit(function() {
