@@ -5,12 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>비밀번호 찾기</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap');
 
         body {
-            font-family: 'Poppins', sans-serif;
             background: white;
             margin: 0;
         }
@@ -47,7 +44,7 @@
             border-radius: 4px 4px 0 0;
         }
 
-        h4 {
+        .passwordfindtitle {
             font-size: 2rem;
             font-weight: 700;
             text-align: center;
@@ -77,7 +74,7 @@
 <body>
 <div class="form-container">
     <form id="findPasswordForm" method="post" action="passwordfind_action.jsp">
-        <h4>비밀번호 찾기</h4>
+        <h4 class="passwordfindtitle">비밀번호 찾기</h4>
         <div class="mb-3">
             <label for="nameInput" class="form-label">이름</label>
             <input type="text" class="form-control" id="nameInput" name="name" placeholder="이름을 입력하세요">
@@ -98,8 +95,7 @@
     <div id="result" class="mt-3"></div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
     document.getElementById('findPasswordForm').addEventListener('submit', function(event) {
         event.preventDefault();
