@@ -1,3 +1,4 @@
+<%@page import="echoworks.dto.MemberDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"
 %>
@@ -5,9 +6,10 @@
 /* Header */
 /* 햄버거 아이콘 흰색으로 */
 .navbar-toggler-icon {
-	background-image:
-		url('data:image/svg+xml;charset=UTF8,%3Csvg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath stroke="rgba%28255, 255, 255, 1%29" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" d="M4 7h22M4 15h22M4 23h22"/%3E%3C/svg%3E');
+    background-image:
+        url('data:image/svg+xml;charset=UTF8,%3Csvg viewBox="0 0 30 30" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath stroke="rgba%28255, 255, 255, 1%29" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" d="M4 7h22M4 15h22M4 23h22"/%3E%3C/svg%3E');
 }
+
 
 @media ( min-width : 992px) {
 	.nav-item.dropdown:hover .dropdown-menu {
@@ -75,6 +77,12 @@ body.offcanvas-open {
 	padding-right: 15px;
 }
 </style>
+<%-- 자바 loginMember 불러오기(로그인 기능 추가되면 주석 해제)--%>
+<%
+MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
+%>
+
+
 <!--Navbar-->
 <nav
 	class="navbar navbar-expand-lg bg-transparent w-100 z-3 position-absolute sticky-top"
@@ -106,21 +114,52 @@ body.offcanvas-open {
 				<h5 class="offcanvas-title text-white" id="offcanvasNavbarLabel">
 					EchoWorks</h5>
 
-				<div class="d-flex gap-2 justify-content-center align-items-center">
-					<!-- 로그인 성공 못했을 시 -->
-					<a href="login.html" class="text-decoration-none text-white fs-5">Login</a>
-
-					<!-- 로그인 성공하면 -->
-					<!-- <a href="#마이페이지" class="text-decoration-none text-white fs-5"
-                >Mypage</a
-              >
-              <a href="#장바구니" class="text-decoration-none text-white fs-5"
-                >Cart</a
-              > -->
+				<div class="d-flex gap-3 justify-content-evenly align-items-center">
+					<%
+					if (loginMember == null) {
+					%>
+					<!-- 회원 로그인 전 -->
+					<a href="index.jsp?workgroup=member&work=member_login"
+						class="text-decoration-none text-white fs-5"
+					> <i class="fa-regular fa-circle-user" style="color: #ffffff"></i>
+					</a>
+					<%
+					} else {
+					%>
+					<!-- 로그인 후 -->
+					<div class="d-flex justify-content-evenly w-100 gap-3">
+						<%
+						if (loginMember.getMemberAuth() == 9) {
+						%>
+						<!-- 관리자 -->
+						<a href="#DB" class="text-decoration-none text-white fs-5">DB</a>
+						<%
+						} else {
+						%>
+						<a href="#마이페이지" class="text-decoration-none text-white fs-5">
+							<i class="fa-regular fa-circle-user" style="color: #ffffff"></i>
+						</a> <a href="#장바구니" class="text-decoration-none text-white fs-5">
+							<i class="fa-solid fa-cart-shopping" style="color: #ffffff"></i>
+						</a>
+						<%
+						}
+						%>
+						<a href="index.jsp?workgroup=member&work=member_logout_action"
+							class="text-decoration-none text-white fs-5"
+						> <i class="fa-solid fa-right-from-bracket"
+							style="color: #ffffff;"
+						></i>
+						</a>
+					</div>
+					<%
+					}
+					%>
 					<button type="button" class="btn-close btn-close-white shadow-none"
 						data-bs-dismiss="offcanvas" aria-label="Close"
 					></button>
 				</div>
+
+
 			</div>
 
 			<!-- SideBar Body -->
@@ -191,35 +230,52 @@ body.offcanvas-open {
 						</ul>
 					</li>
 					<li class="nav-item mx-2"><a href="<%=request.getContextPath()%>/index.jsp?workgroup=pd&work=product&cateOne=deskpads"
-						class="nav-link deskpads" name="deskpads"
-						onclick=""
-					>Deskpads</a></li>
+						class="nav-link deskpads" name="deskpads" onclick="">Deskpads</a></li>
+					<!-- onclick="window.location.href='product.html#deskpads'" -->
 				</ul>
 
 				<!-- Login/ Sign up -->
 				<div
 					class="justify-content-center align-items-center flex-nowrap nav_box nav_box_display d-lg-flex d-sm-none"
 				>
+					<%
+					if (loginMember == null) {
+					%>
 					<!-- 회원 로그인 전 -->
-					<a href="login.html" class="text-decoration-none text-white fs-5">Login</a>
-
+					<a href="index.jsp?workgroup=member&work=member_login"
+						class="text-decoration-none text-white fs-5"
+					> Login </a>
+					<%
+					} else {
+					%>
 					<!-- 로그인 후 -->
-
-					<!-- 아이콘으로 버전 -->
-					<!-- <a href="#마이페이지" class="text-decoration-none text-white fs-5"
-                ><i class="fa-regular fa-circle-user" style="color: #ffffff"></i
-              ></a>
-              <a href="#장바구니" class="text-decoration-none text-white fs-5"
-                ><i class="fa-solid fa-cart-shopping" style="color: #ffffff"></i
-              ></a> -->
-
-					<!-- 글씨 버전 -->
-					<!-- <a href="#마이페이지" class="text-decoration-none text-white fs-5"
-                >Mypage</a
-              >
-              <a href="#장바구니" class="text-decoration-none text-white fs-5"
-                >Cart</a
-              > -->
+					<div class="d-flex justify-content-evenly w-100">
+						<%
+						if (loginMember.getMemberAuth() == 9) {
+						%>
+						<!-- 관리자 -->
+						<a href="#DB" class="text-decoration-none text-white fs-5">DB</a>
+						<%
+						} else {
+						%>
+						<a href="#마이페이지" class="text-decoration-none text-white fs-5">
+							<!-- <i class="fa-regular fa-circle-user" style="color: #ffffff"></i> -->
+							My
+						</a> <a href="#장바구니" class="text-decoration-none text-white fs-5">
+							<!-- <i class="fa-solid fa-cart-shopping" style="color: #ffffff"></i> -->
+							Cart
+						</a>
+						<%
+						}
+						%>
+						<a href="index.jsp?workgroup=member&work=member_logout_action"
+							class="text-decoration-none text-white fs-5"
+						> Logout <!-- <i class="fa-solid fa-right-from-bracket" style="color: #ffffff;"></i> -->
+						</a>
+					</div>
+					<%
+					}
+					%>
 				</div>
 			</div>
 		</div>
@@ -232,6 +288,7 @@ body.offcanvas-open {
 			// lg 사이즈 이상
 			event.preventDefault();			
 			location.href="<%=request.getContextPath()%>/index.jsp?workgroup=pd&work=product&cateOne="+category;
+
 		}
 	}
 </script>
