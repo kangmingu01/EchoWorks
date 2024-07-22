@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <title>회원가입</title>
     <style>
         body {
@@ -94,7 +95,7 @@
 <body>
 <div class="container">
     <div class="row">
-        <div class="col-md-6 offset-md-3 form-container">
+        <div class="col-md-6 offset-md-3 form-container ">
             <form id="join" action="<%=request.getContextPath() %>/index.jsp?workgroup=member&work=member_join_action" method="post">
                 <input type="hidden" id="idCheckResult" value="0">
                 <h4 class="jointitle">회원가입</h4>
@@ -104,7 +105,7 @@
                         <input type="text" class="form-control" name="id" id="id">
                     </div>
                     <div class="col-sm-3">
-                        <span id="idCheck" class="btn btn-outline-secondary btn-sm">아이디 중복 검사</span>
+                        <span id="idCheck" class="btn btn-outline-secondary btn-sm">중복 검사</span>
                     </div>
                     <div class="col-sm-9 offset-sm-3">
                         <div id="idMsg" class="error">아이디를 입력해 주세요.</div>
