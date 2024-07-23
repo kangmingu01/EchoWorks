@@ -9,4 +9,15 @@ body {
   font-family: "Roboto", "Noto Sans KR", sans-serif;
   font-weight: 500;
   font-style: normal;
+  /* 스크롤바 숨기기 
+    -ms-overflow-style: none; IE and Edge
+    scrollbar-width: none; Firefox */
+    
+  /* 요소의 크키에 상관없이, 세로 스크롤 생성*/
+  overflow-y: scroll;
 }
+/* 스크롤바 숨기기 */
+/* ::-webkit-scrollbar {
+    display: none; Chrome, Safari, Opera
+} */
+/* 테스트 */

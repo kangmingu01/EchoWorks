@@ -1,10 +1,13 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.List" %>
+<%@ page import="echoworks.dao.CartDAO" %>
+<%@ page import="echoworks.dto.CartDTO" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>장바구니</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style type="text/css">
         body.sijunBody { 
             background-color: #fff; 
@@ -56,8 +59,10 @@
             cursor: pointer;
             border-radius: 5px;
         }
-        .default { background-color: #fff; border: solid 1px gray; color: black; }
-        .default:hover { background: #ddd; }
+        .default { 
+        background-color: #fff; border: solid 1px gray; color: black; }
+        .default:hover {
+         background: #ddd; }
         .backBtn { background: #fff; border: solid 1px gray; }
         .btnFloat { float: left; }
         .btnFloat2 { float: right; }
@@ -68,65 +73,10 @@
         #productClear { background-color: gray; color: #fff; font-weight: bold; font-size: 12pt; }
         .aa:hover { cursor: pointer; }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </head>
-<nav class="navbar navbar-expand-lg bg-transparent w-100">
-      <div class="container mt-2 align-items-center">
-        <!-- Logo -->
-        <a class="navbar-brand fs-4 m-0 p-0 d-flex align-items-center text-white" href="#">
-          <img src="../assets/img/logo_dark.svg" style="width: auto; height: 55px" alt="Logo" />
-        </a>
-        <!-- Toggle -->
-        <button class="navbar-toggler shadow-none border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcavasNavbar">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <!-- SideBar -->
-        <div class="sidebar offcanvas offcanvas-end bg-white" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-          <!-- SideBar Header -->
-          <div class="offcanvas-header border-dark border-bottom border-2">
-            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">
-              EchoWorks
-            </h5>
-            <button type="button" class="btn-close shadow-none" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-          </div>
-
-          <!-- SideBar Body -->
-          <div class="offcanvas-body">
-            <ul class="navbar-nav justify-content-center fs-5 flex-grow-1 ps-lg-5 ms-lg-5">
-              <li class="nav-item mx-2">
-                <a href="#Keyboards" class="nav-link text-dark">Keyboards</a>
-              </li>
-              <li class="nav-item dropdown mx-2">
-                <a href="#" class="nav-link dropdown-toggle text-dark" role="" data-bs-toggle="dropdown" aria-expanded="false">Switches</a>
-                <ul class="dropdown-menu">
-                  <li><a href="#" class="dropdown-item">리니어</a></li>
-                  <li><a href="#" class="dropdown-item">택타일</a></li>
-                  <li><a href="#" class="dropdown-item">저소음</a></li>
-                  <li><a href="#" class="dropdown-item">마그네틱</a></li>
-                </ul>
-              </li>
-              <li class="nav-item mx-2">
-                <a href="#Keycaps" class="nav-link text-dark">Keycaps</a>
-              </li>
-              <li class="nav-item mx-2">
-                <a href="#Deskpads" class="nav-link text-dark">Deskpads</a>
-              </li>
-            </ul>
-
-            <!-- Login/ Sign up -->
-            <div class="d-flex justify-content-center align-items-center gap-3 flex-nowrap">
-              <a href="#login" class="text-decoration-none fs-5 text-dark">Login</a>
-              <a href="#signup" class="text-decoration-none px-3 py-1 fs-5 text-dark">Sign up</a>
-            </div>
-            
-          </div>
-        </div>
-      </div>
-    </nav>
 <body class="sijunBody">
     <div id="frame">
-        <form>
+        <form action="cart_action.jsp" method="post">
             <div id="frame2">
                 <span style="font-size: 16pt; font-weight: bold;">장바구니</span>
                 <span class="home">홈 > 장바구니</span>
@@ -151,25 +101,40 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <%
+                            int memberId = 1; // 로그인된 회원의 ID를 여기에 설정 (예: 1)
+                            CartDAO dao = new CartDAO();
+                            List<CartDTO> cartList = dao.getCartList(memberId);
+                            int totalProductPrice = 0;
+                            int shippingCost = 2500; // 고정 배송비
+
+                            for (CartDTO cart : cartList) {
+                                int unitPrice = 1000; // 예시 가격 설정 (DB에서 상품 가격을 가져와야 함)
+                                int totalPrice = unitPrice * cart.getCart_num();
+                                totalProductPrice += totalPrice;
+                        %>
                         <tr style="height: 90px; background-color: #fff;">
                             <td><input type="checkbox" class="check-item" /></td>
-                            <td><img style="width: 80%;" src="상품 이미지 등록하기"/></td>
+                            <td><img style="width: 80%;" src=""/></td>
                             <td style="font-weight: bold;">상품 이름 입력하기</td>
-                            <td class="unit-price">1000원</td> <!-- 예시 가격 1000원 설정 -->
+                            <td class="unit-price"><%= unitPrice %>원</td> <!-- 예시 가격 1000원 설정 -->
                             <td>
-                                <input type="number" class="quantity-input" style="text-align: right; width: 43px; margin-bottom: 5px;" min="1" max="99" step="1" value="1"/>
+                                <input type="number" class="quantity-input" style="text-align: right; width: 43px; margin-bottom: 5px;" min="1" max="99" step="1" value="<%= cart.getCart_num() %>"/>
                                 <button type="button" class="btn default update-btn" style="border-radius: 3px; size: 10px;">변경</button>
                             </td>
                             <td>기본배송</td>
                             <td>2,500원<br/>고정</td>
-                            <td class="total-price">1000원</td> <!-- 예시 가격 1000원 설정 -->
+                            <td class="total-price"><%= totalPrice %>원</td> 
                         </tr>
+                        <%
+                            }
+                        %>
                     </tbody>
                     <tfoot>
                         <tr style="height: 60px;">
                             <td colspan="4" style="text-align: left; padding-left: 10px;"><span>[기본배송]</span></td>
                             <td colspan="4" style="text-align: right; padding-right: 10px;">
-                                상품금액<span id="total-product-price">1000</span> + <span>배송비 2,500</span> = 합계<span id="final-price" style="font-weight: bold; font-size: 15pt;">3500</span>원
+                                상품금액<span id="total-product-price"><%= totalProductPrice %></span> + <span>배송비 2,500</span> = 합계<span id="final-price" style="font-weight: bold; font-size: 15pt;"><%= totalProductPrice + shippingCost %></span>원
                             </td>
                         </tr>
                     </tfoot>
@@ -184,9 +149,9 @@
                         <th style="width: 750px; padding: 22px 0;"><span>결제예정금액</span></th>
                     </tr>
                     <tr style="background-color: #fff;">
-                        <td style="padding: 22px 0;"><span id="summary-product-price" class="price">1000</span>원</td>
-                        <td><span id="summary-shipping-price" class="price">2500</span>원</td>
-                        <td><span id="summary-final-price" class="price">3500</span>원</td>
+                        <td style="padding: 22px 0;"><span id="summary-product-price" class="price"><%= totalProductPrice %></span>원</td>
+                        <td><span id="summary-shipping-price" class="price"><%= shippingCost %></span>원</td>
+                        <td><span id="summary-final-price" class="price"><%= totalProductPrice + shippingCost %></span>원</td>
                     </tr>
                 </table>
                 <br/><br/>
@@ -239,8 +204,32 @@
                 var newTotalPrice = newQuantity * unitPrice;
                 
                 priceCell.textContent = newTotalPrice + '원';
-                
-                updateSummary();
+
+                // 수량 변경 후 서버로 요청 보내기
+                var form = document.createElement("form");
+                form.method = "post";
+                form.action = "cart_action.jsp";
+
+                var actionInput = document.createElement("input");
+                actionInput.type = "hidden";
+                actionInput.name = "action";
+                actionInput.value = "update";
+                form.appendChild(actionInput);
+
+                var cartNoInput = document.createElement("input");
+                cartNoInput.type = "hidden";
+                cartNoInput.name = "cart_no";
+                cartNoInput.value = this.closest('tr').getAttribute("data-cart-no");
+                form.appendChild(cartNoInput);
+
+                var quantityInputField = document.createElement("input");
+                quantityInputField.type = "hidden";
+                quantityInputField.name = "quantity";
+                quantityInputField.value = newQuantity;
+                form.appendChild(quantityInputField);
+
+                document.body.appendChild(form);
+                form.submit();
             });
         });
 
@@ -263,9 +252,25 @@
         document.getElementById('delete-selected').addEventListener('click', function() {
             var checkboxes = document.querySelectorAll('.check-item:checked');
             checkboxes.forEach(function(checkbox) {
-                checkbox.closest('tr').remove();
+                var form = document.createElement("form");
+                form.method = "post";
+                form.action = "cart_action.jsp";
+
+                var actionInput = document.createElement("input");
+                actionInput.type = "hidden";
+                actionInput.name = "action";
+                actionInput.value = "delete";
+                form.appendChild(actionInput);
+
+                var cartNoInput = document.createElement("input");
+                cartNoInput.type = "hidden";
+                cartNoInput.name = "cart_no";
+                cartNoInput.value = checkbox.closest('tr').getAttribute("data-cart-no");
+                form.appendChild(cartNoInput);
+
+                document.body.appendChild(form);
+                form.submit();
             });
-            updateSummary();
         });
     </script>
 </body>

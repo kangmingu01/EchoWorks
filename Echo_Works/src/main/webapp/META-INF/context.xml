@@ -10,16 +10,12 @@
 	<!-- => factory 속성 대신 class 속성을 사용해 객체를 생성하는 클래스 속성값으로 설정 가능 -->
 	<!-- type 속성 : Resource 엘리먼트로 제공될 객체의 Java 자료형을 속성값으로 설정 -->
 	<!-- 객체 생성에 필요한 값을 속성(필드명)과 속성값(필드명)으로 사용해 설정 - 필드값 변경 -->
-	<Resource 
-		name="jdbc/oracle" 
-		auth="Container"
-		factory="org.apache.tomcat.dbcp.dbcp2.BasicDataSourceFactory"
-		type="javax.sql.DataSource"
-		driverClassName="oracle.jdbc.driver.OracleDriver"
-		url="jdbc:oracle:thin:@localhost:1521:xe" 
-		username="scott" 
-		password="tiger"
-		initialSize="10" 
-		maxIdle="10" 
-		maxTotal="15"/>
+	<Resource name="jdbc/oracle"
+              auth="Container"
+              type="javax.sql.DataSource"
+              driverClassName="oracle.jdbc.OracleDriver"
+              url="jdbc:oracle:thin:@www.itwill.xyz:1521:xe"
+              username="echoworks"
+              password="echoworks"
+		initialSize="10" maxIdle="10" maxTotal="15"/>
 </Context>
