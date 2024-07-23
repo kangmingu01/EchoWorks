@@ -1,5 +1,34 @@
+<%@page import="java.net.URLEncoder"%>
+<%@page import="echoworks.dto.MemberDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%
+	// 로그인 사용자의 객체를 받아옴
+	MemberDTO loginMember=(MemberDTO)session.getAttribute("loginMember");
+
+	//request.getRequestURI() : 요청 URL 주소에서 JSP 문서의 경로를 반환하는 메소드
+	String requestURI=request.getRequestURI();
+	System.out.println("requestURI = " + requestURI);
+	
+	
+	//request.getQueryString() : 요청 URL 주소에서 질의문자열(QueryString)을 반환하는 메소드
+	String queryString=request.getQueryString();		
+	System.out.println("queryString = " + queryString);//queryString = workgroup=cart&work=cart_list
+	
+	//현재 실행중인 JSP 문서의 URL 주소를 생성하여 저장
+	String url=requestURI;
+	if(queryString != null) {
+		url+="?"+queryString;
+	}
+	
+	//URL 주소를 부호화 처리하여 저장
+	url=URLEncoder.encode(url, "utf-8");
+	System.out.println("url = "+url);
+	
+	String contextPath = request.getContextPath();
+	System.out.println("request.getContextPath() = "+ request.getContextPath());
+	
+%>
     <style>
           .toggle.android {
             border-radius: 30px;
@@ -59,19 +88,35 @@
 
             <div class="d-flex justify-content-between mt-3 align-items-center">
               <div>
-                <button
-                  type="button"
-                  class="btn btn-dark"
-                  style="
-                    --bs-btn-padding-y: 0.25rem;
-                    --bs-btn-padding-x: 0.5rem;
-                    --bs-btn-font-size: 0.75rem;
-                  "
-                  data-bs-toggle="collapse"
-                  data-bs-target="#writeToggle"
-                >
-                  상품 Q&A 작성하기
-                </button>
+
+				<% if(loginMember != null) { %>
+    <button
+        id="writeQnA"
+        type="button"
+        class="btn btn-dark"
+        style="
+            --bs-btn-padding-y: 0.25rem;
+            --bs-btn-padding-x: 0.5rem;
+            --bs-btn-font-size: 0.75rem;
+        "
+        data-bs-toggle="collapse" 
+        data-bs-target="#writeToggle"
+    >
+        상품 Q&A 작성하기
+    </button>
+<% } else { %>
+    <button
+        id="writeQnA"
+        type="button"
+        class="btn btn-dark"
+        style="--bs-btn-padding-y: 0.25rem; --bs-btn-padding-x: 0.5rem; --bs-btn-font-size: 0.75rem;"
+        onclick="checkLogin()"
+    >
+        상품 Q&A 작성하기
+    </button>
+<% } %>
+                
+                
               </div>
               <div
                 class="d-flex flex-nowrap align-items-center text-nowrap gap-2 fs-6"
@@ -79,7 +124,7 @@
                 <input type="checkbox" name="" id="secretWrite" />
                 <label for="secretWrite" class="">비밀글 제외</label>
                 |
-                <label for="my_qna" onclick="toggleChecked()"
+                <label  for="my_qna" onclick="toggleChecked()"
                   >내 Q&A 보기</label
                 >
                 <input
@@ -107,7 +152,7 @@
             로그인 confirm으로 보내기
             class="collapse bg-body-secondary pt-4 pe-4 ps-4 pb-3 mt-3 border border-opacity-25 border-black"
             -->
-
+			
             <div id="writeToggle" class="collapse mt-3">
               <!-- action에 경로 추가 아마도 ajax로 작업할 듯 -->
               <form action="" method="post" class="card card-body">
@@ -175,7 +220,7 @@
                 </div>
               </div>
               <!-- 상품 QnA -->
-              <ul class="ps-0">
+              <ul id="qna_list" class="ps-0">
                 <li class="list-unstyled border-top qnaRows">
                   <div class="d-flex pt-2 pb-2 border-bottom">
                     <div style="width: 15%" class="text-center">
@@ -288,3 +333,18 @@
             </div> -->
           </div>
         </section>
+<script type="text/javascript">
+function checkLogin() {
+    loginConfirm = confirm("로그인이 필요한 서비스입니다. 로그인 하시겠습니까?");
+    
+    if(loginConfirm) {
+		window.location.href = "<%=contextPath%>" + "/index.jsp?workgroup=member&work=member_login&url=" + "<%=url%>";
+		console.log("<%=contextPath%>" + "/index.jsp?workgroup=member&work=member_login&url=" + "<%=url%>");
+    }
+	
+}
+
+function toggleChecked() {
+	
+}
+</script>
