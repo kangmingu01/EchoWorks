@@ -132,7 +132,7 @@
             $.ajax({
                 url: 'idfind_action.jsp',
                 type: 'POST',
-                data: { name: name, email: email },
+                 data: { name: name, email: email },
                 success: function(response) {
                     $('#resultMessage').html(response).show();
                 },

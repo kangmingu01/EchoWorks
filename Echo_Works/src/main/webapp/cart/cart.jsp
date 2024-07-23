@@ -6,7 +6,6 @@
     <meta charset="UTF-8">
     <title>장바구니</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <style type="text/css">
         body.sijunBody { 
             background-color: #fff; 
@@ -58,8 +57,10 @@
             cursor: pointer;
             border-radius: 5px;
         }
-        .default { background-color: #fff; border: solid 1px gray; color: black; }
-        .default:hover { background: #ddd; }
+        .default { 
+        background-color: #fff; border: solid 1px gray; color: black; }
+        .default:hover {
+         background: #ddd; }
         .backBtn { background: #fff; border: solid 1px gray; }
         .btnFloat { float: left; }
         .btnFloat2 { float: right; }
@@ -70,62 +71,7 @@
         #productClear { background-color: gray; color: #fff; font-weight: bold; font-size: 12pt; }
         .aa:hover { cursor: pointer; }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </head>
-<nav class="navbar navbar-expand-lg bg-transparent w-100">
-      <div class="container mt-2 align-items-center">
-        <!-- Logo -->
-        <a class="navbar-brand fs-4 m-0 p-0 d-flex align-items-center text-white" href="#">
-          <img src="../assets/img/logo_dark.svg" style="width: auto; height: 55px" alt="Logo" />
-        </a>
-        <!-- Toggle -->
-        <button class="navbar-toggler shadow-none border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcavasNavbar">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <!-- SideBar -->
-        <div class="sidebar offcanvas offcanvas-end bg-white" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-          <!-- SideBar Header -->
-          <div class="offcanvas-header border-dark border-bottom border-2">
-            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">
-              EchoWorks
-            </h5>
-            <button type="button" class="btn-close shadow-none" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-          </div>
-
-          <!-- SideBar Body -->
-          <div class="offcanvas-body">
-            <ul class="navbar-nav justify-content-center fs-5 flex-grow-1 ps-lg-5 ms-lg-5">
-              <li class="nav-item mx-2">
-                <a href="#Keyboards" class="nav-link text-dark">Keyboards</a>
-              </li>
-              <li class="nav-item dropdown mx-2">
-                <a href="#" class="nav-link dropdown-toggle text-dark" role="" data-bs-toggle="dropdown" aria-expanded="false">Switches</a>
-                <ul class="dropdown-menu">
-                  <li><a href="#" class="dropdown-item">리니어</a></li>
-                  <li><a href="#" class="dropdown-item">택타일</a></li>
-                  <li><a href="#" class="dropdown-item">저소음</a></li>
-                  <li><a href="#" class="dropdown-item">마그네틱</a></li>
-                </ul>
-              </li>
-              <li class="nav-item mx-2">
-                <a href="#Keycaps" class="nav-link text-dark">Keycaps</a>
-              </li>
-              <li class="nav-item mx-2">
-                <a href="#Deskpads" class="nav-link text-dark">Deskpads</a>
-              </li>
-            </ul>
-
-            <!-- Login/ Sign up -->
-            <div class="d-flex justify-content-center align-items-center gap-3 flex-nowrap">
-              <a href="#login" class="text-decoration-none fs-5 text-dark">Login</a>
-              <a href="#signup" class="text-decoration-none px-3 py-1 fs-5 text-dark">Sign up</a>
-            </div>
-            
-          </div>
-        </div>
-      </div>
-    </nav>
 <body class="sijunBody">
     <div id="frame">
         <form>
