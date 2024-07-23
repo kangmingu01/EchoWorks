@@ -47,6 +47,15 @@ if (workgroup.equals("main")) {
 
 <!-- jQuery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<!-- Link to Bootstrap Toggle CSS -->
+        <link
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css"
+          rel="stylesheet"
+        />
+        <!-- Link to Bootstrap Toggle JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+        
 </head>
 <body class="d-flex flex-column min-vh-100" >
 	<%-- Header 영역 --%>
