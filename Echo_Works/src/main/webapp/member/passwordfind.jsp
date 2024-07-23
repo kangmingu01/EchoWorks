@@ -127,7 +127,7 @@
             document.getElementById('idError').textContent = "아이디를 입력해 주세요.";
             document.getElementById('idInput').classList.add('is-invalid');
         } else {
-            document.getElementById('idError').textContent = "";
+            document.getElementById('idError').textContent = ""; 
             document.getElementById('idInput').classList.remove('is-invalid');
         }
 
