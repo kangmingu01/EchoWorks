@@ -1,10 +1,12 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.List" %>
+<%@ page import="echoworks.dao.CartDAO" %>
+<%@ page import="echoworks.dto.CartDTO" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Àå¹Ù±¸´Ï</title>
+    <title>ì¥ë°”êµ¬ë‹ˆ</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style type="text/css">
         body.sijunBody { 
@@ -74,97 +76,112 @@
 </head>
 <body class="sijunBody">
     <div id="frame">
-        <form>
+        <form action="cart_action.jsp" method="post">
             <div id="frame2">
-                <span style="font-size: 16pt; font-weight: bold;">Àå¹Ù±¸´Ï</span>
-                <span class="home">È¨ > Àå¹Ù±¸´Ï</span>
+                <span style="font-size: 16pt; font-weight: bold;">ì¥ë°”êµ¬ë‹ˆ</span>
+                <span class="home">í™ˆ > ì¥ë°”êµ¬ë‹ˆ</span>
             </div>
             <br/>
             <div>
-                <!-- »óÇ°Á¤º¸ Å×ÀÌºí -->
+                <!-- ìƒí’ˆì •ë³´ í…Œì´ë¸” -->
                 <table class="calculation1">
                     <thead>
                         <tr>
-                            <th colspan="8" style="text-align: left; padding-left: 10px;">ÀÏ¹İ»óÇ°(1)</th>
+                            <th colspan="8" style="text-align: left; padding-left: 10px;">ì¼ë°˜ìƒí’ˆ(1)</th>
                         </tr>
                         <tr>
                             <th><input type="checkbox" id="check-all" /></th>
-                            <th><span>ÀÌ¹ÌÁö</span></th>
-                            <th style="width: 550px;"><span>»óÇ°Á¤º¸</span></th>
-                            <th>ÆÇ¸Å°¡</th>
-                            <th>¼ö·®</th>
-                            <th>¹è¼Û±¸ºĞ</th>
-                            <th>¹è¼Ûºñ</th>
-                            <th>ÇÕ°è</th>
+                            <th><span>ì´ë¯¸ì§€</span></th>
+                            <th style="width: 550px;"><span>ìƒí’ˆì •ë³´</span></th>
+                            <th>íŒë§¤ê°€</th>
+                            <th>ìˆ˜ëŸ‰</th>
+                            <th>ë°°ì†¡êµ¬ë¶„</th>
+                            <th>ë°°ì†¡ë¹„</th>
+                            <th>í•©ê³„</th>
                         </tr>
                     </thead>
                     <tbody>
+                        <%
+                            int memberId = 1; // ë¡œê·¸ì¸ëœ íšŒì›ì˜ IDë¥¼ ì—¬ê¸°ì— ì„¤ì • (ì˜ˆ: 1)
+                            CartDAO dao = new CartDAO();
+                            List<CartDTO> cartList = dao.getCartList(memberId);
+                            int totalProductPrice = 0;
+                            int shippingCost = 2500; // ê³ ì • ë°°ì†¡ë¹„
+
+                            for (CartDTO cart : cartList) {
+                                int unitPrice = 1000; // ì˜ˆì‹œ ê°€ê²© ì„¤ì • (DBì—ì„œ ìƒí’ˆ ê°€ê²©ì„ ê°€ì ¸ì™€ì•¼ í•¨)
+                                int totalPrice = unitPrice * cart.getCart_num();
+                                totalProductPrice += totalPrice;
+                        %>
                         <tr style="height: 90px; background-color: #fff;">
                             <td><input type="checkbox" class="check-item" /></td>
-                            <td><img style="width: 80%;" src="»óÇ° ÀÌ¹ÌÁö µî·ÏÇÏ±â"/></td>
-                            <td style="font-weight: bold;">»óÇ° ÀÌ¸§ ÀÔ·ÂÇÏ±â</td>
-                            <td class="unit-price">1000¿ø</td> <!-- ¿¹½Ã °¡°İ 1000¿ø ¼³Á¤ -->
+                            <td><img style="width: 80%;" src=""/></td>
+                            <td style="font-weight: bold;">ìƒí’ˆ ì´ë¦„ ì…ë ¥í•˜ê¸°</td>
+                            <td class="unit-price"><%= unitPrice %>ì›</td> <!-- ì˜ˆì‹œ ê°€ê²© 1000ì› ì„¤ì • -->
                             <td>
-                                <input type="number" class="quantity-input" style="text-align: right; width: 43px; margin-bottom: 5px;" min="1" max="99" step="1" value="1"/>
-                                <button type="button" class="btn default update-btn" style="border-radius: 3px; size: 10px;">º¯°æ</button>
+                                <input type="number" class="quantity-input" style="text-align: right; width: 43px; margin-bottom: 5px;" min="1" max="99" step="1" value="<%= cart.getCart_num() %>"/>
+                                <button type="button" class="btn default update-btn" style="border-radius: 3px; size: 10px;">ë³€ê²½</button>
                             </td>
-                            <td>±âº»¹è¼Û</td>
-                            <td>2,500¿ø<br/>°íÁ¤</td>
-                            <td class="total-price">1000¿ø</td> <!-- ¿¹½Ã °¡°İ 1000¿ø ¼³Á¤ -->
+                            <td>ê¸°ë³¸ë°°ì†¡</td>
+                            <td>2,500ì›<br/>ê³ ì •</td>
+                            <td class="total-price"><%= totalPrice %>ì›</td> 
                         </tr>
+                        <%
+                            }
+                        %>
                     </tbody>
                     <tfoot>
                         <tr style="height: 60px;">
-                            <td colspan="4" style="text-align: left; padding-left: 10px;"><span>[±âº»¹è¼Û]</span></td>
+                            <td colspan="4" style="text-align: left; padding-left: 10px;"><span>[ê¸°ë³¸ë°°ì†¡]</span></td>
                             <td colspan="4" style="text-align: right; padding-right: 10px;">
-                                »óÇ°±İ¾×<span id="total-product-price">1000</span> + <span>¹è¼Ûºñ 2,500</span> = ÇÕ°è<span id="final-price" style="font-weight: bold; font-size: 15pt;">3500</span>¿ø
+                                ìƒí’ˆê¸ˆì•¡<span id="total-product-price"><%= totalProductPrice %></span> + <span>ë°°ì†¡ë¹„ 2,500</span> = í•©ê³„<span id="final-price" style="font-weight: bold; font-size: 15pt;"><%= totalProductPrice + shippingCost %></span>ì›
                             </td>
                         </tr>
                     </tfoot>
                 </table>
-                <button type="button" class="btn default" id="delete-selected" style="margin-top: 10px;">»èÁ¦ÇÏ±â</button>
+                <button type="button" class="btn default" id="delete-selected" style="margin-top: 10px;">ì‚­ì œí•˜ê¸°</button>
                 <br/><br/><br/>
-                <!-- °áÁ¦¿¹Á¤±İ¾× Å×ÀÌºí -->
+                <!-- ê²°ì œì˜ˆì •ê¸ˆì•¡ í…Œì´ë¸” -->
                 <table class="calculation2">
                     <tr>
-                        <th>ÃÑ »óÇ°±İ¾×</th>
-                        <th>ÃÑ ¹è¼Ûºñ</th>
-                        <th style="width: 750px; padding: 22px 0;"><span>°áÁ¦¿¹Á¤±İ¾×</span></th>
+                        <th>ì´ ìƒí’ˆê¸ˆì•¡</th>
+                        <th>ì´ ë°°ì†¡ë¹„</th>
+                        <th style="width: 750px; padding: 22px 0;"><span>ê²°ì œì˜ˆì •ê¸ˆì•¡</span></th>
                     </tr>
                     <tr style="background-color: #fff;">
-                        <td style="padding: 22px 0;"><span id="summary-product-price" class="price">1000</span>¿ø</td>
-                        <td><span id="summary-shipping-price" class="price">2500</span>¿ø</td>
-                        <td><span id="summary-final-price" class="price">3500</span>¿ø</td>
+                        <td style="padding: 22px 0;"><span id="summary-product-price" class="price"><%= totalProductPrice %></span>ì›</td>
+                        <td><span id="summary-shipping-price" class="price"><%= shippingCost %></span>ì›</td>
+                        <td><span id="summary-final-price" class="price"><%= totalProductPrice + shippingCost %></span>ì›</td>
                     </tr>
                 </table>
                 <br/><br/>
                 <div align="center">
-                    <button class="btn default" id="allProduct">ÀüÃ¼»óÇ°ÁÖ¹®</button>
-                    <button class="btn default backBtn" id="productClear">¼±ÅÃ»óÇ°ÁÖ¹®</button>
-                    <button class="btn default footerbtn" id="footerbtn">¼îÇÎ°è¼ÓÇÏ±â</button>
+                    <button class="btn default" id="allProduct">ì „ì²´ìƒí’ˆì£¼ë¬¸</button>
+                    <button class="btn default backBtn" id="productClear">ì„ íƒìƒí’ˆì£¼ë¬¸</button>
+                    <button class="btn default footerbtn" id="footerbtn">ì‡¼í•‘ê³„ì†í•˜ê¸°</button>
                     <span class="clearboth"></span>
                 </div>
                 <br/><br/><br/>
                 <div style="border: solid 1px #e0e0eb; padding: 10px 0; font-size: 12pt; background-color:white-space; padding-left: 10px;">
-                    ÀÌ¿ë¾È³»
+                    ì´ìš©ì•ˆë‚´
                 </div>
                 <div style="border: solid 1px #e0e0eb; height: 350px; font-size: 12pt; padding-left: 10px;">
-                    <br/>Àå¹Ù±¸´Ï ÀÌ¿ë¾È³»
+                    <br/>ì¥ë°”êµ¬ë‹ˆ ì´ìš©ì•ˆë‚´
                     <ol>
-                        <li class="lifont">ÇØ¿Ü¹è¼Û »óÇ°°ú ±¹³»¹è¼Û »óÇ°Àº ÇÔ²² °áÁ¦ÇÏ½Ç ¼ö ¾øÀ¸´Ï Àå¹Ù±¸´Ï º°·Î µû·Î °áÁ¦ÇØ ÁÖ½Ã±â ¹Ù¶ø´Ï´Ù.</li>
-                        <li class="lifont">ÇØ¿Ü¹è¼Û °¡´ÉÇÑ »óÇ°ÀÇ °æ¿ì ±¹³»¹è¼Û Àå¹Ù±¸´Ï¿¡ ´ã¾Ò´Ù°¡ ÇØ¿Ü¹è¼Û Àå¹Ù±¸´Ï·Î ÀÌµ¿ÇÏ¿© °áÁ¦ÇÏ½Ç ¼ö ÀÖ½À´Ï´Ù.</li>
-                        <li class="lifont">¼±ÅÃÇÏ½Å »óÇ°ÀÇ ¼ö·®À» º¯°æÇÏ½Ã·Á¸é ¼ö·®º¯°æ ÈÄ [º¯°æ] ¹öÆ°À» ´©¸£½Ã¸é µË´Ï´Ù.</li>
-                        <li class="lifont">[¼îÇÎ°è¼ÓÇÏ±â] ¹öÆ°À» ´©¸£½Ã¸é ¼îÇÎÀ» °è¼Ó ÇÏ½Ç ¼ö ÀÖ½À´Ï´Ù.</li>
-                        <li class="lifont">Àå¹Ù±¸´Ï¿Í °ü½É»óÇ°À» ÀÌ¿ëÇÏ¿© ¿øÇÏ½Ã´Â »óÇ°¸¸ ÁÖ¹®ÇÏ°Å³ª °ü½É»óÇ°À¸·Î µî·ÏÇÏ½Ç ¼ö ÀÖ½À´Ï´Ù.</li>
-                        <li class="lifont">ÆÄÀÏÃ·ºÎ ¿É¼ÇÀº µ¿ÀÏ»óÇ°À» Àå¹Ù±¸´Ï¿¡ Ãß°¡ÇÒ °æ¿ì ¸¶Áö¸·¿¡ ¾÷·Îµå ÇÑ ÆÄÀÏ·Î ±³Ã¼µË´Ï´Ù.</li>
+                        <li class="lifont">í•´ì™¸ë°°ì†¡ ìƒí’ˆê³¼ êµ­ë‚´ë°°ì†¡ ìƒí’ˆì€ í•¨ê»˜ ê²°ì œí•˜ì‹¤ ìˆ˜ ì—†ìœ¼ë‹ˆ ì¥ë°”êµ¬ë‹ˆ ë³„ë¡œ ë”°ë¡œ ê²°ì œí•´ ì£¼ì‹œê¸° ë°”ëë‹ˆë‹¤.</li>
+                        <li class="lifont">í•´ì™¸ë°°ì†¡ ê°€ëŠ¥í•œ ìƒí’ˆì˜ ê²½ìš° êµ­ë‚´ë°°ì†¡ ì¥ë°”êµ¬ë‹ˆì— ë‹´ì•˜ë‹¤ê°€ í•´ì™¸ë°°ì†¡ ì¥ë°”êµ¬ë‹ˆë¡œ ì´ë™í•˜ì—¬ ê²°ì œí•˜ì‹¤ ìˆ˜ ìˆìŠµë‹ˆë‹¤.</li>
+                        <li class="lifont">ì„ íƒí•˜ì‹  ìƒí’ˆì˜ ìˆ˜ëŸ‰ì„ ë³€ê²½í•˜ì‹œë ¤ë©´ ìˆ˜ëŸ‰ë³€ê²½ í›„ [ë³€ê²½] ë²„íŠ¼ì„ ëˆ„ë¥´ì‹œë©´ ë©ë‹ˆë‹¤.</li>
+                        <li class="lifont">[ì‡¼í•‘ê³„ì†í•˜ê¸°] ë²„íŠ¼ì„ ëˆ„ë¥´ì‹œë©´ ì‡¼í•‘ì„ ê³„ì† í•˜ì‹¤ ìˆ˜ ìˆìŠµë‹ˆë‹¤.</li>
+                        <li class="lifont">ì¥ë°”êµ¬ë‹ˆì™€ ê´€ì‹¬ìƒí’ˆì„ ì´ìš©í•˜ì—¬ ì›í•˜ì‹œëŠ” ìƒí’ˆë§Œ ì£¼ë¬¸í•˜ê±°ë‚˜ ê´€ì‹¬ìƒí’ˆìœ¼ë¡œ ë“±ë¡í•˜ì‹¤ ìˆ˜ ìˆìŠµë‹ˆë‹¤.</li>
+                        <li class="lifont">íŒŒì¼ì²¨ë¶€ ì˜µì…˜ì€ ë™ì¼ìƒí’ˆì„ ì¥ë°”êµ¬ë‹ˆì— ì¶”ê°€í•  ê²½ìš° ë§ˆì§€ë§‰ì— ì—…ë¡œë“œ í•œ íŒŒì¼ë¡œ êµì²´ë©ë‹ˆë‹¤.</li>
                     </ol>
-                    ¹«ÀÌÀÚÇÒºÎ ÀÌ¿ë¾È³»
+                    ë¬´ì´ìí• ë¶€ ì´ìš©ì•ˆë‚´
                     <ol>
-                        <li class="lifont">»óÇ°º° ¹«ÀÌÀÚÇÒºÎ ÇıÅÃÀ» ¹ŞÀ¸½Ã·Á¸é ¹«ÀÌÀÚÇÒºÎ »óÇ°¸¸ ¼±ÅÃÇÏ¿© [ÁÖ¹®ÇÏ±â] ¹öÆ°À» ´­·¯ ÁÖ¹®/°áÁ¦ ÇÏ½Ã¸é µË´Ï´Ù.</li>
-                        <li class="lifont">[ÀüÃ¼ »óÇ° ÁÖ¹®] ¹öÆ°À» ´©¸£½Ã¸é Àå¹Ù±¸´ÏÀÇ ±¸ºĞ¾øÀÌ ¼±ÅÃµÈ ¸ğµç »óÇ°¿¡ ´ëÇÑ ÁÖ¹®/°áÁ¦°¡ ÀÌ·ç¾îÁı´Ï´Ù.</li>
-                        <li class="lifont">´Ü, ÀüÃ¼»óÇ°À» ÁÖ¹®/°áÁ¦ÇÏ½Ç °æ¿ì, »óÇ°º° ¹«ÀÌÀÚÇÒºÎ ÇıÅÃÀ» ¹ŞÀ¸½Ç ¼ö ¾ø½À´Ï´Ù.</li>
-                        <li class="lifont">¹«ÀÌÀÚÇÒºÎ »óÇ°Àº Àå¹Ù±¸´Ï¿¡¼­ º°µµ ¹«ÀÌÀÚÇÒºÎ »óÇ° ¿µ¿ª¿¡ Ç¥½ÃµÇ¾î, ¹«ÀÌÀÚÇÒºÎ »óÇ° ±âÁØÀ¸·Î ¹è¼Ûºñ°¡ Àç½ÃµË´Ï´Ù.<br/>
-                            ½ÇÁ¦ ¹è¼Ûºñ´Â ÇÔ²² ÁÖ¹®ÇÏ´Â »óÇ°¿¡ µû¶ó Àû¿ëµÇ¿À´Ï ÁÖ¹®¼­ ÇÏ´ÜÀÇ ¹è¼Ûºñ Á¤º¸¸¦ Âü°íÇØÁÖ½Ã±â ¹Ù¶ø´Ï´Ù.</li>
+                        <li class="lifont">ìƒí’ˆë³„ ë¬´ì´ìí• ë¶€ í˜œíƒì„ ë°›ìœ¼ì‹œë ¤ë©´ ë¬´ì´ìí• ë¶€ ìƒí’ˆë§Œ ì„ íƒí•˜ì—¬ [ì£¼ë¬¸í•˜ê¸°] ë²„íŠ¼ì„ ëˆŒëŸ¬ ì£¼ë¬¸/ê²°ì œ í•˜ì‹œë©´ ë©ë‹ˆë‹¤.</li>
+                        <li class="lifont">[ì „ì²´ ìƒí’ˆ ì£¼ë¬¸] ë²„íŠ¼ì„ ëˆ„ë¥´ì‹œë©´ ì¥ë°”êµ¬ë‹ˆì˜ êµ¬ë¶„ì—†ì´ ì„ íƒëœ ëª¨ë“  ìƒí’ˆì— ëŒ€í•œ ì£¼ë¬¸/ê²°ì œê°€ ì´ë£¨ì–´ì§‘ë‹ˆë‹¤.</li>
+                        <li class="lifont">ë‹¨, ì „ì²´ìƒí’ˆì„ ì£¼ë¬¸/ê²°ì œí•˜ì‹¤ ê²½ìš°, ìƒí’ˆë³„ ë¬´ì´ìí• ë¶€ í˜œíƒì„ ë°›ìœ¼ì‹¤ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.</li>
+                        <li class="lifont">ë¬´ì´ìí• ë¶€ ìƒí’ˆì€ ì¥ë°”êµ¬ë‹ˆì—ì„œ ë³„ë„ ë¬´ì´ìí• ë¶€ ìƒí’ˆ ì˜ì—­ì— í‘œì‹œë˜ì–´, ë¬´ì´ìí• ë¶€ ìƒí’ˆ ê¸°ì¤€ìœ¼ë¡œ ë°°ì†¡ë¹„ê°€ ì¬ì‹œë©ë‹ˆë‹¤.<br/>
+                            ì‹¤ì œ ë°°ì†¡ë¹„ëŠ” í•¨ê»˜ ì£¼ë¬¸í•˜ëŠ” ìƒí’ˆì— ë”°ë¼ ì ìš©ë˜ì˜¤ë‹ˆ ì£¼ë¬¸ì„œ í•˜ë‹¨ì˜ ë°°ì†¡ë¹„ ì •ë³´ë¥¼ ì°¸ê³ í•´ì£¼ì‹œê¸° ë°”ëë‹ˆë‹¤.</li>
                     </ol>
                 </div>
             </div>
@@ -183,22 +200,46 @@
                 var quantityInput = this.previousElementSibling;
                 var newQuantity = quantityInput.value;
                 var priceCell = this.closest('tr').querySelector('.total-price');
-                var unitPrice = parseInt(this.closest('tr').querySelector('.unit-price').textContent.replace('¿ø', ''));
+                var unitPrice = parseInt(this.closest('tr').querySelector('.unit-price').textContent.replace('ì›', ''));
                 var newTotalPrice = newQuantity * unitPrice;
                 
-                priceCell.textContent = newTotalPrice + '¿ø';
-                
-                updateSummary();
+                priceCell.textContent = newTotalPrice + 'ì›';
+
+                // ìˆ˜ëŸ‰ ë³€ê²½ í›„ ì„œë²„ë¡œ ìš”ì²­ ë³´ë‚´ê¸°
+                var form = document.createElement("form");
+                form.method = "post";
+                form.action = "cart_action.jsp";
+
+                var actionInput = document.createElement("input");
+                actionInput.type = "hidden";
+                actionInput.name = "action";
+                actionInput.value = "update";
+                form.appendChild(actionInput);
+
+                var cartNoInput = document.createElement("input");
+                cartNoInput.type = "hidden";
+                cartNoInput.name = "cart_no";
+                cartNoInput.value = this.closest('tr').getAttribute("data-cart-no");
+                form.appendChild(cartNoInput);
+
+                var quantityInputField = document.createElement("input");
+                quantityInputField.type = "hidden";
+                quantityInputField.name = "quantity";
+                quantityInputField.value = newQuantity;
+                form.appendChild(quantityInputField);
+
+                document.body.appendChild(form);
+                form.submit();
             });
         });
 
         function updateSummary() {
             var totalProductPrice = 0;
             document.querySelectorAll('.total-price').forEach(function(cell) {
-                totalProductPrice += parseInt(cell.textContent.replace('¿ø', ''));
+                totalProductPrice += parseInt(cell.textContent.replace('ì›', ''));
             });
 
-            var shippingCost = 2500; // ¹è¼Ûºñ
+            var shippingCost = 2500; // ë°°ì†¡ë¹„
             var finalPrice = totalProductPrice + shippingCost;
 
             document.getElementById('total-product-price').textContent = totalProductPrice;
@@ -211,9 +252,25 @@
         document.getElementById('delete-selected').addEventListener('click', function() {
             var checkboxes = document.querySelectorAll('.check-item:checked');
             checkboxes.forEach(function(checkbox) {
-                checkbox.closest('tr').remove();
+                var form = document.createElement("form");
+                form.method = "post";
+                form.action = "cart_action.jsp";
+
+                var actionInput = document.createElement("input");
+                actionInput.type = "hidden";
+                actionInput.name = "action";
+                actionInput.value = "delete";
+                form.appendChild(actionInput);
+
+                var cartNoInput = document.createElement("input");
+                cartNoInput.type = "hidden";
+                cartNoInput.name = "cart_no";
+                cartNoInput.value = checkbox.closest('tr').getAttribute("data-cart-no");
+                form.appendChild(cartNoInput);
+
+                document.body.appendChild(form);
+                form.submit();
             });
-            updateSummary();
         });
     </script>
 </body>
