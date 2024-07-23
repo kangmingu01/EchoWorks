@@ -15,24 +15,21 @@
 	<link rel="stylesheet" href="../css/detail.css" />
 </head>
 <body>
-
-<%-- Header 영역 --%>
 <div> <jsp:include page="../header.jsp"/> </div>
-	<main class="mt-5" >
-		<div class="container" style="width:1000px; margin:0 auto;">
+	<main class="mt-3">
+		<div class="container">
 			<div class="row">
-				<!--  상품 이미지 -->
-				<div class="cd-sm-6 col-md-6 col-lg-6">
-					<div style="padding-right:50px; vertical-align:top;">
-						<img src="https://cdn.imweb.me/thumbnail/20240424/eb47e73cc9357.jpg" width="480" height="480" alt="" >
+				<div class="col-md-5">
+					<div>
+						<img src="https://cdn.imweb.me/thumbnail/20240424/eb47e73cc9357.jpg" class="d-block w-100" alt="...">
 					</div>
 				</div>
 
-				<div class="col-md-6">
+				<div class="col-md-7">
 					<div>
 						<div>
-							<h3>SC Studio Bridge 75 기계식 키보드 브릿지 75</h3>
-							<h5 style="display:inline-block; font-size:32px; color: #333; font-weight: bold; font-family:'Tahoma', sans-serif; vertical-align: middle; padding-right:8px;">119,000원</h5>
+							<h3 class="card-title">SC Studio Bridge 75 기계식 키보드 s브릿지 75</h3>
+							<h5 class="card-title pt-3 pb-3 border-top" style="display:inline-block; font-size:32px; color: #333; font-weight: bold; font-family:'Tahoma', sans-serif; vertical-align: middle; padding-right:8px;">119,000원</h5>
 							
 							<div>
 								<select id="select_option" class="form-select form-select-lg mb-3" onchange="selected_item('1441177158', '1441177158', '1441177158','pc')">
@@ -50,9 +47,9 @@
 							<div class="row pt-3 pb-3">
 								<div style="text-align: right;">
 									<div class="itemOption_b">
-                                    	<span class="itemOptionPrice_t">총 상품금액</span> 
+                                    	<span style="font-size:16px; padding:0 20px 0 0;">총 상품금액</span> 
                                     	<input type="hidden" name="total_price" id="total_price" value="0">
-                                    	<span name="cartprice1" id="cartprice1" class="itemOptionPrice_p">0
+                                    	<span name="cartprice1" id="cartprice1" class="itemOptionPrice_p" style="font-size:32px; font-family:'Tahoma', sans-serif; font-weight:bold;">0
                                     	<span class="price_unit">원</span>
                                     </span>
                                     </div>
@@ -61,6 +58,15 @@
 									
 								</div>
 							</div>
+							<div class="d-flex justify-content-between align-items-center">
+								<div class="col-6 d-grid p-1">
+									<button type="button" class="btn btn-lg" style="font-size:18px; font-weight:500; background:#fff; border:1px solid #666; color:#666; cursor:pointer;">장바구니담기</button>
+								</div>
+								<div class="col-6 d-grid p-1">
+									<button type="button" class="btn btn-lg" style="font-size:18px; font-weight:500; background:#666; color:#fff; border:0;  cursor:pointer;">주문하기</button>
+								</div>
+							</div>
+							<!-- 
 							<div class="itemOption_btn" style="width:100%; position:relative; padding:30px 0 0; text-align: right;">
 								<span class="itemOption_cart_btn_area" style="display:inline-block; padding:0 3px 0 0;">
 									<input type="submit" onclick="document.pressed=this.value;" value="장바구니" class="itemOption_cart_btn" style="width:200px; height:54px; font-size:18px; font-weight:500; background:#fff; border:1px solid #666; color:#666; cursor:pointer;">
@@ -69,13 +75,18 @@
 									<input type="submit" onclick="document.pressed=this.value;" value="바로구매" class="itemOption_order_btn" style="width:200px; height:54px; font-size:18px; font-weight:500; background:#666; color:#fff; border:0;  cursor:pointer;">
 								</span>
 							</div>
+							 -->
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="row"  style="margin:10px">
+		</div>
+		<div>
+			<div class="row" style="margin-top:10px;">
+
 				<!-- 탭 -->
-				<aside class="bd-aside sticky-xl-top text-body-secondary align-self-start">
+				<div style="width:100%; margin:0 auto;">
+				<aside class="bd-aside sticky-xl-top text-body-secondary align-self-start mb-3 mb-xl-5 px-2">
 					<ul class="itemMenu_tap_area">
 						<li>
 							<a href="#item_info" class="i_m_selected">상품정보</a>
@@ -92,48 +103,42 @@
 						</li>
 					</ul>
 				</aside>
-				
-				<!-- content -->
-				<div id="itemContent_wrap">
-						<!-- 상품정보상세 -->
-						<div id="item_info">
-								<!-- 상품 정보 시작 { -->
-								<section id="sit_inf">
-        							<!--<h3>상품 상세설명</h3>-->
-    								<div id="sit_inf_explan">
-        								<div style="margin:0px auto;width:100%;text-align:center;"> 
-        									<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/2047495408858.png?w=1536" class="img-fluid" /><br />
-        									<div style="margin:50px;">
-        											<iframe width="560" height="315" src="https://www.youtube.com/embed/yiP6aLpHYfg?si=CF3zWx0-2Xyx5qPA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        									</div>
-        									<div style="margin:50px;text-align:left;">
-        										<span style="font-size:30px;">갤러리</span>
-        										<hr>
-        										<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/09ff5cfd5709b.jpg?w=1536" class="img-fluid" /><br />
-        										<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/4fa0e7d70350a.jpg?w=1536" class="img-fluid" /><br />
-        										<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/35ecdbbf67d4a.jpg?w=1536" class="img-fluid" /><br />
-        										<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/be4ee49fb80bf.jpg?w=1536" class="img-fluid" /><br />
-        										<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/8a78c675434ba.jpg?w=1536" class="img-fluid" /><br />
-        										<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/8daaa931b9ebd.jpg?w=1536" class="img-fluid" /><br />
-        										<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/1a53495882d90.jpg?w=1536" class="img-fluid" /><br />
-        										<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/b990510e2068c.jpg?w=1536" class="img-fluid" /><br />
-        										<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/7d2a5551bca1a.jpg?w=1536" class="img-fluid" /><br />
-        										<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/7eaa11637baa1.jpg?w=1536" class="img-fluid" /><br />
-        										<hr>
-        										<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/08823c1fcc3de.png?w=1536" class="img-fluid" /><br />
-        										<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/18e6c1ccd9ea1.jpg?w=1536" class="img-fluid" /><br />
-        									</div>
-        								</div>
-									</div>
-								</section>
-								<!-- } 상품 정보 끝 -->
+				</div>
+				<!-- 상세 페이지 -->
+				<div>
+					<div class=" col-12" style="text-align: center;">
+						<div id="itemContent_wrap">
+							<div id="item_info">
+								<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/2047495408858.png?w=1536" class="img-fluid" /><br />
+								<div style="margin:50px;">
+									<iframe width="560" height="315" src="https://www.youtube.com/embed/yiP6aLpHYfg?si=CF3zWx0-2Xyx5qPA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+								</div>
+							
+								<span style="font-size:30px;">갤러리</span>
+								<hr>
+								<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/09ff5cfd5709b.jpg?w=1536" class="img-fluid" /><br />
+								<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/4fa0e7d70350a.jpg?w=1536" class="img-fluid" /><br />
+								<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/35ecdbbf67d4a.jpg?w=1536" class="img-fluid" /><br />
+								<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/be4ee49fb80bf.jpg?w=1536" class="img-fluid" /><br />
+								<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/8a78c675434ba.jpg?w=1536" class="img-fluid" /><br />
+								<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/8daaa931b9ebd.jpg?w=1536" class="img-fluid" /><br />
+								<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/1a53495882d90.jpg?w=1536" class="img-fluid" /><br />
+								<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/b990510e2068c.jpg?w=1536" class="img-fluid" /><br />
+								<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/7d2a5551bca1a.jpg?w=1536" class="img-fluid" /><br />
+								<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/7eaa11637baa1.jpg?w=1536" class="img-fluid" /><br />
+								<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/08823c1fcc3de.png?w=1536" class="img-fluid" /><br />
+								<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/18e6c1ccd9ea1.jpg?w=1536" class="img-fluid" /><br />
+							</div>
 						</div>
-				</div>		
-		</div>
-			
+					</div>
+				</div>
+				<!-- 리뷰 -->
+				
+				                                   
+			</div>
 		</div>
 	</main>
-	
+
 <script type="text/javascript" src="//code.jquery.com/jquery-1.12.0.min.js"></script>
 <script type="text/javascript">
 
@@ -366,7 +371,6 @@ $(document).ready(function(){
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-		crossorigin="anonymous">
-	</script>
+		crossorigin="anonymous"></script>
 </body>
 </html>
