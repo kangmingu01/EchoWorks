@@ -130,7 +130,7 @@
 
         if (valid) {
             $.ajax({
-                url: 'idfind_action.jsp',
+            	url: "<%=request.getContextPath()%>/member/idfind_action.jsp",
                 type: 'POST',
                  data: { name: name, email: email },
                 success: function(response) {

@@ -132,7 +132,8 @@
         }
 
         if (valid) {
-            $.post('passwordfind_action.jsp', { name: name, email: email, id: id }, function(response) {
+        	 $.post('<%=request.getContextPath()%>/member/passwordfind_action.jsp', { name: name, email: email, id: id }, function(response) {
+
                 document.getElementById('result').innerHTML = response;
             });
         }
