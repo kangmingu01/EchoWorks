@@ -15,9 +15,10 @@
 	<link rel="stylesheet" href="../css/detail.css" />
 </head>
 <body>
-<div> <jsp:include page="../header.jsp"/> </div>
-	<main class="mt-3">
+
+		
 		<div class="container">
+		<div>
 			<div class="row">
 				<div class="col-md-5">
 					<div>
@@ -28,8 +29,8 @@
 				<div class="col-md-7">
 					<div>
 						<div>
-							<h3 class="card-title">SC Studio Bridge 75 기계식 키보드 s브릿지 75</h3>
-							<h5 class="card-title pt-3 pb-3 border-top" style="display:inline-block; font-size:32px; color: #333; font-weight: bold; font-family:'Tahoma', sans-serif; vertical-align: middle; padding-right:8px;">119,000원</h5>
+							<h3>SC Studio Bridge 75 기계식 키보드 s브릿지 75</h3>
+							<h5 class="pt-3 pb-3 border-top" style="display:inline-block; font-size:32px; color: #333; font-weight: bold; font-family:'Tahoma', sans-serif; vertical-align: middle; padding-right:8px;">119,000원</h5>
 							
 							<div>
 								<select id="select_option" class="form-select form-select-lg mb-3" onchange="selected_item('1441177158', '1441177158', '1441177158','pc')">
@@ -85,9 +86,9 @@
 			<div class="row" style="margin-top:10px;">
 
 				<!-- 탭 -->
-				<div style="width:100%; margin:0 auto;">
-				<aside class="bd-aside sticky-xl-top text-body-secondary align-self-start mb-3 mb-xl-5 px-2">
-					<ul class="itemMenu_tap_area">
+				
+				<div class="container">
+					<ul class="itemMenu_tap_area ps-0 d-flex">
 						<li>
 							<a href="#item_info" class="i_m_selected">상품정보</a>
 						</li>
@@ -102,20 +103,21 @@
 							</a>
 						</li>
 					</ul>
-				</aside>
 				</div>
+		
 				<!-- 상세 페이지 -->
-				<div>
-					<div class=" col-12" style="text-align: center;">
-						<div id="itemContent_wrap">
+				
+					<div  style="text-align: center;">
+						<div id="itemContent_wrap" class="container p-0">
 							<div id="item_info">
 								<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/2047495408858.png?w=1536" class="img-fluid" /><br />
-								<div style="margin:50px;">
-									<iframe width="560" height="315" src="https://www.youtube.com/embed/yiP6aLpHYfg?si=CF3zWx0-2Xyx5qPA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-								</div>
+								<div class="ratio ratio-16x9 w-75 mx-auto mt-5 mb-3">
+  <iframe src="https://www.youtube.com/embed/yiP6aLpHYfg?si=CF3zWx0-2Xyx5qPA"  title="YouTube video" allowfullscreen></iframe>
+</div>
 							
 								<span style="font-size:30px;">갤러리</span>
 								<hr>
+								<div class="col-10 mx-auto">
 								<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/09ff5cfd5709b.jpg?w=1536" class="img-fluid" /><br />
 								<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/4fa0e7d70350a.jpg?w=1536" class="img-fluid" /><br />
 								<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/35ecdbbf67d4a.jpg?w=1536" class="img-fluid" /><br />
@@ -128,16 +130,18 @@
 								<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/7eaa11637baa1.jpg?w=1536" class="img-fluid" /><br />
 								<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/08823c1fcc3de.png?w=1536" class="img-fluid" /><br />
 								<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/18e6c1ccd9ea1.jpg?w=1536" class="img-fluid" /><br />
-							</div>
+							
+								</div>
+								</div>
 						</div>
 					</div>
-				</div>
+				
 				<!-- 리뷰 -->
 				
 				                                   
 			</div>
 		</div>
-	</main>
+		</div>
 
 <script type="text/javascript" src="//code.jquery.com/jquery-1.12.0.min.js"></script>
 <script type="text/javascript">
