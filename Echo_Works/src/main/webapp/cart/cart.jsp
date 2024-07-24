@@ -182,10 +182,11 @@
         document.getElementById('delete-selected').addEventListener('click', function() {
             var checkboxes = document.querySelectorAll('.check-item:checked');
             if (checkboxes.length > 0) {
-                var form = document.createElement("form");
-                form.method = "post";
-                form.action = "<%=request.getContextPath()%>/index?workgroup=cart&work=cart_action.jsp"; // 여기도 경로를 확인
 
+            	var form = document.createElement("form");
+                form.method = "post";
+                form.action = "<%=request.getContextPath()%>/index.jsp?workgroup=cart&work=cart"; // 여기도 경로를 확인
+                                                        																	
                 var actionInput = document.createElement("input");
                 actionInput.type = "hidden";
                 actionInput.name = "action";
@@ -213,14 +214,10 @@
                 var unitPrice = parseInt(cartRow.querySelector('.total-price').dataset.unitPrice);
                 var newTotalPrice = newQuantity * unitPrice;
                 cartRow.querySelector('.total-price').textContent = formatPrice(newTotalPrice) + '원';
-
+				
+				
                 updateSummary();
-
-                // 수량 변경 후 서버로 요청 보내기
-                var form = document.createElement("form");
-                form.method = "post";
-                form.action = "<%=request.getContextPath()%>/index?workgroup=cart&work=cart_action.jsp"; // 여기도 경로를 확인
-
+                											 
                 var actionInput = document.createElement("input");
                 actionInput.type = "hidden";
                 actionInput.name = "action";

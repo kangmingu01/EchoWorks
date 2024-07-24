@@ -20,8 +20,10 @@
     CartDAO dao = CartDAO.getDao();
 
     if (action != null) {
-        try {
-            if (action.equals("add")) {
+    
+    	try {
+        	
+            if  (action.equals("add")) {
                 int psno = Integer.parseInt(request.getParameter("psno"));
                 int num = Integer.parseInt(request.getParameter("num"));
                 int member = loginMember.getMemberNum(); // 세션에서 가져옴
@@ -52,12 +54,17 @@
                     }
                 }
 
-                response.sendRedirect("cart.jsp");
+                pageContext.forward("cart.jsp");
 
+
+				
+             
+               
             } else if (action.equals("clear")) {
                 int memberId = loginMember.getMemberNum(); // 세션에서 가져옴
 
                 dao.clearCart(memberId);
+              
                 response.sendRedirect("cart.jsp");
             } else if (action.equals("checkout")) {
                 // 선택된 상품 주문 처리 로직 추가
