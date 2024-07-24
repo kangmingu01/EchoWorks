@@ -229,7 +229,7 @@ public class QnaDAO extends JdbcDAO {
 		return qnaList;
 	}
 
-	public List<QnaDTO> selectQnAList(int productNo, int secretCheck, String replyStatus) {
+	public List<QnaDTO> selectQnAList(int productNo, int secretCheck, String replyStatus, int memberNum) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -248,9 +248,13 @@ public class QnaDAO extends JdbcDAO {
 			} else if ("answer_completed".equals(replyStatus)) {
 				sql += " AND QNA_ANSWER IS NOT NULL";
 			}
+			if (memberNum != 0) {
+				sql += " AND QNA_MEMBER_NUM = ?";
+			}
 
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, productNo);
+			pstmt.setInt(2, memberNum);
 
 			rs = pstmt.executeQuery();
 

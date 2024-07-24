@@ -9,23 +9,25 @@
     pageEncoding="UTF-8"%>
 <%	
 	// 세션에 있는 로그인 사용자의 객체를 받아옴
-	MemberDTO loginMember=(MemberDTO)session.getAttribute("loginMember");
+	MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 
 	// request.getRequestURI(): 요청 URL 주소에서 JSP 문서의 경로를 반환하는 메소드
-	String requestURI=request.getRequestURI();
-	// // requestURI = /Echo_Works/index.jsp
+	String requestURI = request.getRequestURI();
+
+	// requestURI = /Echo_Works/index.jsp
 	System.out.println("requestURI = " + requestURI); 
 	
 	
 	//request.getQueryString(): 요청 URL 주소에서 질의문자열(QueryString)을 반환하는 메소드
-	String queryString=request.getQueryString();		
+	String queryString = request.getQueryString();
+	
 	// queryString = workgroup=qna&work=detail_qna_list
 	System.out.println("queryString = " + queryString);
 	
 	//현재 실행중인 JSP 문서의 URL 주소를 생성하여 저장
-	String url=requestURI;
-	if(queryString != null) {
-		url+="?"+queryString;
+	String url = requestURI;
+	if (queryString != null) {
+		url += "?" + queryString;
 	}
 	
 	//URL 주소를 부호화 처리하여 저장
@@ -36,15 +38,19 @@
 	String contextPath = request.getContextPath();
 	// request.getContextPath() = /Echo_Works
 	System.out.println("request.getContextPath() = "+ request.getContextPath());
-	
+
+	// 상품 번호 들고오기
 	String productNoStr = request.getParameter("productNo");
 	int productNo = productNoStr != null ? Integer.parseInt(productNoStr) : 0;
+
 
 	int secretCheck = request.getParameter("secretCheck") != null ? Integer.parseInt(request.getParameter("secretCheck")) : 1;
 	String replyStatus = request.getParameter("replyStatus") != null ? request.getParameter("replyStatus") : "reply_status";
 
-	List<QnaDTO> qnaList = QnaDAO.getDAO().selectQnAList(productNo, secretCheck, replyStatus);
-	
+	// 회원번호 받아오기
+	int memberNum = loginMember != null ? loginMember.getMemberNum() : 0;
+
+	List<QnaDTO> qnaList = QnaDAO.getDAO().selectQnAList(productNo, secretCheck, replyStatus, memberNum);
 %>
 <%--
 - QNA 테이블에 저장된 행을 상품 번호에 따라 행을 검색하여 검색된 행을 HTML 태그에 포함하는 문서
@@ -128,9 +134,7 @@
             border: 1px solid white;
             border-radius: 5px;
           }
-          /* .qnaRows:hover {
-            background-color: rgb(230, 230, 230);
-          } */
+
     </style>
        <!-- 리뷰 -->
         <section>
@@ -199,7 +203,7 @@
                 <input type="checkbox" name="" id="secretCheck" />
                 <label for="secretCheck" class="">비밀글 제외</label>
                 |
-                <label  for="my_qna" onclick="toggleChecked()"
+                <label for="my_qna" onclick="toggleCheck()"
                   >내 Q&A 보기</label
                 >
                 <input
@@ -213,11 +217,12 @@
                 />
 
                 <select
+                  id="replyStatusSelect"
                   class="form-select form-select-sm d-sm-none d-md-block"
                   aria-label="Default select example form-select-sm"
-                  name="reply";
+                  name="reply"
                 >
-                  <option value="reply_status" >답글상태</option>
+                  <option value="reply_status">답글상태</option>
                   <option value="unanswered_answer">미답변</option>
                   <option value="answer_completed">답변완료</option>
                 </select>
@@ -341,18 +346,21 @@
                   </div>
                 </li> -->
               </ul>
+              <div id="console-event"></div>
             </div>
           </div>
         </section>
 <script type="text/javascript">
 function checkLogin() {
-    loginConfirm = confirm("로그인이 필요한 서비스입니다. 로그인 하시겠습니까?");
-    
-    if(loginConfirm) {
-		window.location.href = "<%=contextPath%>" + "/index.jsp?workgroup=member&work=member_login&url=" + "<%=url%>";
-		console.log("<%=contextPath%>" + "/index.jsp?workgroup=member&work=member_login&url=" + "<%=url%>");
-    }
+	let loginConfirm = confirm("로그인이 필요한 서비스입니다. 로그인 하시겠습니까?");
+	if (loginConfirm) {
+		window.location.href = "<%=contextPath%>/index.jsp?workgroup=member&work=member_login&url=<%=url%>";
+	}
 }
+
+
+// QnA 테이블 전체 조회
+// displayQna();
 
 // Ajax 엔진으로 [detail_qna_list.jsp] 문서를 요청하여 실행결과(댓글목록)을 JSON으로 제공받아
 // HTMl 태그로 변환하여 댓글목록태그의 태그내용을 변경하는 함수
@@ -360,21 +368,100 @@ function displayQna() {
 	$.ajax({
 		type: "post",
 		url: "<%=request.getContextPath()%>/qna/detail_qna_list.jsp",
-		dateType: "json",
+		data: {
+			"productNo": <%=productNo%>,
+			"secretCheck": secretCheck,
+			"replyStatus": replyStatus,
+			"memberNum": <%=memberNum%>
+		},
+		dataType: "json",
 		success: function(result) {
-			$("#qna_list").children().remove();
+			//$("#qna_list").children().remove();
+			$("#qna_list").empty();
 			
 			if(result.code == "success") {
 				// Array 객체를 일괄처리하기 위해 map() 함수 호출
-				var qnaHTML = $(result.data).map(function() {
-					var html ="<li id='qna_"+this.no + "class='list-unstyled border-top qnaRows'>"
-				})
+				var qnaHTML = $.map(result.data, function(item) {
+					var html = "<li id='qna_" + item.qnaNo + "' class='list-unstyled border-top qnaRows'>";
+					html += '<div class="d-flex pt-2 pb-2 border-bottom">';
+					html += '<div style="width: 15%" class="text-center">';
+					html += '<span>' + (item.qnaAnswer != null ? "답변완료" : "미답변") + '</span>';
+					html += '</div>';
+					html += '<div style="width: 65%">';
+					html += '<span><a href="" class="text-decoration-none text-black">' + item.qnaTitle + '</a></span>';
+					html += '</div>';
+					html += '<div style="width: 10%" class="text-center"><span>' + item.qnaMemberNo + '</span></div>';
+					html += '<div style="width: 10%" class="text-center"><span>' + item.qnaDate + '</span></div>';
+					html += '</div>';
+					html += '</li>'; // 닫힘 태그 추가
+
+					return html;
+				}).join(''); // map() 함수가 반환하는 결과를 배열로 변환 후 문자열로 결합
+				
+				// qna_list에 qnaHTML을 추가
+				$("#qna_list").append(qnaHTML);
+			} else {
+				alert("QnA 목록을 불러오는 데 실패했습니다.");
 			}
-			
+		},
+		error: function(xhr) {
+			alert("에러코드 = " + xhr.status);
 		}
 	});
 }
 
+
+function toggleCheck() {
+	$('#my_qna').bootstrapToggle('toggle');
+}
+
+// 내 Q&A 보기 토글 눌렀을 때 해당 값체크
+// 체크 되었을 때 displayQna() 함수 발생
+$('#my_qna').change(function() {
+	statusCheck()
+<%--     var isChecked = $(this).prop('checked');
+
+    if(isChecked) {
+        $('#console-event').html('Toggle: ' + isChecked + ' || ' + <%=memberNum%>);
+    } else {
+    	$('#console-event').html('Toggle: ' + isChecked);
+    } --%>
+});
+
+statusCheck();
+
+// 비밀글 제외 눌렀을 때
+$('#secretCheck').change(function() {
+	statusCheck()
+	// $('#console-event').html('CheckBox: ' + $(this).prop('checked'))
+})
+
+// 답글상태 눌렀을 때
+$('#replyStatusSelect').change(function() {
+	statusCheck()
+	<%-- var selectedValue = $(this).val();
+	$('#console-event').html(
+			"  ||  비밀글 제외: " + $("#secretCheck").prop('checked')+
+			"  ||  Q&A 토글: " + $("#my_qna").prop('checked') +
+			"  ||  답변상태: ' + selectedValue +			
+			"  ||  상품번호: " + <%=productNo%> + 
+			"  ||  회원번호: " + <%=memberNum%> 
+	) --%>
+})
+
+function statusCheck() {
+	$('#console-event').html(
+			"  ||  비밀글 제외: " + $("#secretCheck").prop('checked')+
+			"  ||  Q&A 토글: " + $("#my_qna").prop('checked') +
+			"  ||  답변상태: " + $("#replyStatusSelect").val() +			
+			"  ||  상품번호: " + <%=productNo%> + 
+			"  ||  회원번호: " + <%=memberNum%> 
+	)
+}
+
+
+
+$("#")
 
 // detail 페이지 완성되면 경로 수정해야됨 => 문제는 상태가 변하면서 새로고침되는데 이게 header로 올라감
 <%-- $("#secretCheck").change(function() {
