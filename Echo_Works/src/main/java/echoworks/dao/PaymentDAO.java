@@ -35,16 +35,15 @@ public class PaymentDAO extends JdbcDAO {
                          + "PAYMENT_ADDRESS1, PAYMENT_ADDRESS2, PAYMENT_OMESG) "
                          + "VALUES (PAYMENT_SEQ.NEXTVAL, ?, ?, ?, 1, sysdate, ?, ?, ?, ?, ?, ?, ?)";
             pstmt = con.prepareStatement(sql);
-            pstmt.setInt(1, payment.getPaymentPsno());
-            pstmt.setInt(2, payment.getPaymentHno());
-            pstmt.setInt(3, payment.getPaymentNum());
-            pstmt.setString(4, payment.getPaymentTotal());
-            pstmt.setString(5, payment.getPaymentJname());
-            pstmt.setString(6, payment.getPaymentPhone());
-            pstmt.setString(7, payment.getPaymentZipcode());
-            pstmt.setString(8, payment.getPaymentAddress1());
-            pstmt.setString(9, payment.getPaymentAddress2());
-            pstmt.setString(10, payment.getPaymentOmesg());
+            pstmt.setInt(1, payment.getPaymentHno());
+            pstmt.setInt(2, payment.getPaymentNum());
+            pstmt.setString(3, payment.getPaymentTotal());
+            pstmt.setString(4, payment.getPaymentJname());
+            pstmt.setString(5, payment.getPaymentPhone());
+            pstmt.setString(6, payment.getPaymentZipcode());
+            pstmt.setString(7, payment.getPaymentAddress1());
+            pstmt.setString(8, payment.getPaymentAddress2());
+            pstmt.setString(9, payment.getPaymentOmesg());
 
             rows = pstmt.executeUpdate();
         } catch (SQLException e) {
