@@ -28,7 +28,7 @@ public class QnaDAO extends JdbcDAO {
 		try {
 			con = getConnection();
 			String sql = "insert into qna (qna_no, qna_member_no, qna_product_no, qna_title, qna_content, qna_date) "
-					+ "values (qna_seq.nextval, ?, ?, ?, ?, sysdate,1)";
+					+ "values (qna_seq.nextval, ?, ?, ?, ?, sysdate,null,null,1)";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, qna.getQnaMemberNo());
 			pstmt.setInt(2, qna.getQnaProductNo());

@@ -14,8 +14,11 @@ public class PaymentDTO {
     private String paymentAddress1;  // PAYMENT_ADDRESS1
     private String paymentAddress2;  // PAYMENT_ADDRESS2
     private String paymentOmesg;     // PAYMENT_OMESG
-
-    // Getters and Setters
+    
+    public PaymentDTO() {
+		// TODO Auto-generated constructor stub
+	}
+  
     public int getPaymentNo() {
         return paymentNo;
     }
