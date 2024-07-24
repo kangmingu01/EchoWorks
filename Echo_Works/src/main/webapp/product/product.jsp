@@ -121,7 +121,7 @@ DecimalFormat money = new DecimalFormat("###,###");
 
 		<!--  상황표 ? 그 숫자 =============================================================================-->
 	 	<div class="" id="inpo">
-			<form class="d-flex" method="post" action="<%=request.getContextPath() %>/index.jsp?workgroup=pd&work=product_action">
+			<form class="d-flex" method="post" action="<%=request.getContextPath() %>/index.jsp?workgroup=product&work=product_action">
 				<input class="form-control me-2" type="text" placeholder="Search" aria-label="Search" name="insearch" id="insearch">
 				<button class="btn btn-outline-success" type="submit">Search</button>
 			</form>
@@ -168,7 +168,7 @@ DecimalFormat money = new DecimalFormat("###,###");
 		}
 	%>
 	<%
-		String myUrl=request.getContextPath()+"/index.jsp?workgroup=pd&work=product"
+		String myUrl=request.getContextPath()+"/index.jsp?workgroup=product&work=product"
 			+"&pageSize="+pageSize+"&keyword="+keyword+"&cateOne="+cateOne+"&cateTwo="+cateTwo;
 	%>
 	
@@ -216,7 +216,7 @@ DecimalFormat money = new DecimalFormat("###,###");
 		}		
 		$.ajax({
 			type:"post",
-			url:"<%=request.getContextPath()%>/pd/product_sch.jsp",
+			url:"<%=request.getContextPath()%>/product/product_sch.jsp",
 			data: {"insearch":insearch},
 			dataType: "xml",
 			success: function(xmlDoc) {
@@ -226,7 +226,7 @@ DecimalFormat money = new DecimalFormat("###,###");
 					var searchList=JSON.parse(data);					
 					var html="";
 					$(searchList).each(function() {
-						html+="<a href='<%=request.getContextPath()%>/index.jsp?workgroup=pd&work=product&insearch="+encodeURIComponent(this.pname)+"'>"+this.pname+"</a><br>";						
+						html+="<a href='<%=request.getContextPath()%>/index.jsp?workgroup=product&work=product&insearch="+encodeURIComponent(this.pname)+"'>"+this.pname+"</a><br>";						
 					});					
 					$("#searchList").html(html);					
 					$("#searchDiv").show();
@@ -256,16 +256,16 @@ DecimalFormat money = new DecimalFormat("###,###");
 	<%}%>
 	
 	//내부버튼------------------
-	$("#key_inStock").click(function() {location.href="<%=request.getContextPath()%>/index.jsp?workgroup=pd&work=product&cateOne=keyboards&cateTwo=key_inStock"});
-	$("#key_group").click(function() {location.href="<%=request.getContextPath()%>/index.jsp?workgroup=pd&work=product&cateOne=keyboards&cateTwo=key_group"});
-	$("#linear").click(function() {location.href="<%=request.getContextPath()%>/index.jsp?workgroup=pd&work=product&cateOne=switches&cateTwo=linear"});
-	$("#tactile").click(function() {location.href="<%=request.getContextPath()%>/index.jsp?workgroup=pd&work=product&cateOne=switches&cateTwo=tactile"});
-	$("#low").click(function() {location.href="<%=request.getContextPath()%>/index.jsp?workgroup=pd&work=product&cateOne=switches&cateTwo=low"});
-	$("#magnet").click(function() {location.href="<%=request.getContextPath()%>/index.jsp?workgroup=pd&work=product&cateOne=switches&cateTwo=magnet"});
-	$("#sw").click(function() {location.href="<%=request.getContextPath()%>/index.jsp?workgroup=pd&work=product&cateOne=keycaps&cateTwo=sw"});
-	$("#fbb").click(function() {location.href="<%=request.getContextPath()%>/index.jsp?workgroup=pd&work=product&cateOne=keycaps&cateTwo=fbb"});
-	$("#gmk").click(function() {location.href="<%=request.getContextPath()%>/index.jsp?workgroup=pd&work=product&cateOne=keycaps&cateTwo=gmk"});
-	$("#hammerworks").click(function() {location.href="<%=request.getContextPath()%>/index.jsp?workgroup=pd&work=product&cateOne=keycaps&cateTwo=hammerworks"});
+	$("#key_inStock").click(function() {location.href="<%=request.getContextPath()%>/index.jsp?workgroup=product&work=product&cateOne=keyboards&cateTwo=key_inStock"});
+	$("#key_group").click(function() {location.href="<%=request.getContextPath()%>/index.jsp?workgroup=product&work=product&cateOne=keyboards&cateTwo=key_group"});
+	$("#linear").click(function() {location.href="<%=request.getContextPath()%>/index.jsp?workgroup=product&work=product&cateOne=switches&cateTwo=linear"});
+	$("#tactile").click(function() {location.href="<%=request.getContextPath()%>/index.jsp?workgroup=product&work=product&cateOne=switches&cateTwo=tactile"});
+	$("#low").click(function() {location.href="<%=request.getContextPath()%>/index.jsp?workgroup=product&work=product&cateOne=switches&cateTwo=low"});
+	$("#magnet").click(function() {location.href="<%=request.getContextPath()%>/index.jsp?workgroup=product&work=product&cateOne=switches&cateTwo=magnet"});
+	$("#sw").click(function() {location.href="<%=request.getContextPath()%>/index.jsp?workgroup=product&work=product&cateOne=keycaps&cateTwo=sw"});
+	$("#fbb").click(function() {location.href="<%=request.getContextPath()%>/index.jsp?workgroup=product&work=product&cateOne=keycaps&cateTwo=fbb"});
+	$("#gmk").click(function() {location.href="<%=request.getContextPath()%>/index.jsp?workgroup=product&work=product&cateOne=keycaps&cateTwo=gmk"});
+	$("#hammerworks").click(function() {location.href="<%=request.getContextPath()%>/index.jsp?workgroup=product&work=product&cateOne=keycaps&cateTwo=hammerworks"});
 	//=----------------------버튼  header버튼
 	<%if (request.getParameter("cateOne") != null) {%>		
 		<%-- $("#<%=request.getParameter("cateOne")%>Div").slideDown(250); --%>

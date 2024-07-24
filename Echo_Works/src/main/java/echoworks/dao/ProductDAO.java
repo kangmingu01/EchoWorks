@@ -32,7 +32,7 @@ public class ProductDAO extends JdbcDAO{
 		List<ProductDTO> productList=new ArrayList<ProductDTO>();
 		try {
 			con=getConnection();
-			String sql="select PRODUCT_NO, PRODUCT_NAME,PRODUCT_IMG,PRODUCT_IMG_DETAIL,PRODUCT_PRICE,PRODUCT_CATEGORY_MAIN,PRODUCT_CATEGORY_SUB from product order by PRODUCT_NO";
+			String sql="select PRODUCT_NO, PRODUCT_NAME,PRODUCT_IMG,PRODUCT_IMG_DETAIL,PRODUCT_PRICE,PRODUCT_CATEGORY_MAIN,PRODUCT_CATEGORY_SUB,PRODUCT_VIDEO_URL from product order by PRODUCT_NO";
 			pstmt=con.prepareStatement(sql);
 			rs=pstmt.executeQuery();
 			
@@ -45,6 +45,7 @@ public class ProductDAO extends JdbcDAO{
 				product.setPRODUCT_PRICE(rs.getInt("PRODUCT_PRICE"));
 				product.setPRODUCT_CATEGORY_MAIN(rs.getString("PRODUCT_CATEGORY_MAIN"));
 				product.setPRODUCT_CATEGORY_SUB(rs.getString("PRODUCT_CATEGORY_SUB"));
+				product.setPRODUCT_VIDEO_URL(rs.getString("PRODUCT_VIDEO_URL"));
 				
 				
 				productList.add(product);				
@@ -65,7 +66,7 @@ public class ProductDAO extends JdbcDAO{
 		ProductDTO product=null;
 		try {
 			con=getConnection();
-			String sql="select PRODUCT_NO, PRODUCT_NAME,PRODUCT_IMG,PRODUCT_IMG_DETAIL,PRODUCT_PRICE,PRODUCT_CATEGORY_MAIN,PRODUCT_CATEGORY_SUB from product where PRODUCT_NO=?";
+			String sql="select PRODUCT_NO, PRODUCT_NAME,PRODUCT_IMG,PRODUCT_IMG_DETAIL,PRODUCT_PRICE,PRODUCT_CATEGORY_MAIN,PRODUCT_CATEGORY_SUB,PRODUCT_VIDEO_URL from product where PRODUCT_NO=?";
 			pstmt=con.prepareStatement(sql);
 			pstmt.setInt(1, no);
 			
@@ -78,7 +79,8 @@ public class ProductDAO extends JdbcDAO{
 				product.setPRODUCT_IMG_DETAIL(rs.getString("PRODUCT_IMG_DETAIL"));
 				product.setPRODUCT_PRICE(rs.getInt("PRODUCT_PRICE"));
 				product.setPRODUCT_CATEGORY_MAIN(rs.getString("PRODUCT_CATEGORY_MAIN"));
-				product.setPRODUCT_CATEGORY_SUB(rs.getString("PRODUCT_CATEGORY_SUB"));														
+				product.setPRODUCT_CATEGORY_SUB(rs.getString("PRODUCT_CATEGORY_SUB"));	
+				product.setPRODUCT_VIDEO_URL(rs.getString("PRODUCT_VIDEO_URL"));
 			}																				
 		}catch (SQLException e) {
 			System.out.println("[에러]selectProductByNo() 메소드의 SQL 오류 = "+e.getMessage());
@@ -96,7 +98,7 @@ public class ProductDAO extends JdbcDAO{
 			try {
 				con=getConnection();
 				
-				String sql="select rownum, temp.* from (select PRODUCT_NO, PRODUCT_NAME,PRODUCT_IMG,PRODUCT_IMG_DETAIL,PRODUCT_PRICE,PRODUCT_CATEGORY_MAIN,PRODUCT_CATEGORY_SUB from product where upper(PRODUCT_NAME) like '%'||upper(?)||'%' order by PRODUCT_NAME) temp where rownum<=10";
+				String sql="select rownum, temp.* from (select PRODUCT_NO, PRODUCT_NAME,PRODUCT_IMG,PRODUCT_IMG_DETAIL,PRODUCT_PRICE,PRODUCT_CATEGORY_MAIN,PRODUCT_CATEGORY_SUB,PRODUCT_VIDEO_URL from product where upper(PRODUCT_NAME) like '%'||upper(?)||'%' order by PRODUCT_NAME) temp where rownum<=10";
 				pstmt=con.prepareStatement(sql);
 				pstmt.setString(1, keyword);
 				
@@ -112,6 +114,7 @@ public class ProductDAO extends JdbcDAO{
 					product.setPRODUCT_PRICE(rs.getInt("PRODUCT_PRICE"));
 					product.setPRODUCT_CATEGORY_MAIN(rs.getString("PRODUCT_CATEGORY_MAIN"));
 					product.setPRODUCT_CATEGORY_SUB(rs.getString("PRODUCT_CATEGORY_SUB"));			
+					product.setPRODUCT_VIDEO_URL(rs.getString("PRODUCT_VIDEO_URL"));
 					
 					searchList.add(product);
 				}
@@ -182,12 +185,12 @@ public class ProductDAO extends JdbcDAO{
 				con=getConnection();
 				
 				if(keyword.equals("")) {
-					String sql="select * from (select rownum rn, temp.* from (select PRODUCT_NO, PRODUCT_NAME,PRODUCT_IMG,PRODUCT_IMG_DETAIL,PRODUCT_PRICE,PRODUCT_CATEGORY_MAIN,PRODUCT_CATEGORY_SUB from product order by PRODUCT_NAME ) temp) where rn between ? and ?";
+					String sql="select * from (select rownum rn, temp.* from (select PRODUCT_NO, PRODUCT_NAME,PRODUCT_IMG,PRODUCT_IMG_DETAIL,PRODUCT_PRICE,PRODUCT_CATEGORY_MAIN,PRODUCT_CATEGORY_SUB,PRODUCT_VIDEO_URL from product order by PRODUCT_NAME ) temp) where rn between ? and ?";
 					pstmt=con.prepareStatement(sql);
 					pstmt.setInt(1, startRow);
 					pstmt.setInt(2, endRow);
 				} else {
-					String sql="select * from (select rownum rn, temp.* from (select PRODUCT_NO, PRODUCT_NAME,PRODUCT_IMG,PRODUCT_IMG_DETAIL,PRODUCT_PRICE,PRODUCT_CATEGORY_MAIN,PRODUCT_CATEGORY_SUB from product where PRODUCT_NAME like '%'||?||'%' order by PRODUCT_NAME ) temp) where rn between ? and ?";				
+					String sql="select * from (select rownum rn, temp.* from (select PRODUCT_NO, PRODUCT_NAME,PRODUCT_IMG,PRODUCT_IMG_DETAIL,PRODUCT_PRICE,PRODUCT_CATEGORY_MAIN,PRODUCT_CATEGORY_SUB,PRODUCT_VIDEO_URL from product where PRODUCT_NAME like '%'||?||'%' order by PRODUCT_NAME ) temp) where rn between ? and ?";				
 					pstmt=con.prepareStatement(sql);
 					pstmt.setString(1, keyword);
 					pstmt.setInt(2, startRow);
@@ -205,6 +208,7 @@ public class ProductDAO extends JdbcDAO{
 					product.setPRODUCT_PRICE(rs.getInt("PRODUCT_PRICE"));
 					product.setPRODUCT_CATEGORY_MAIN(rs.getString("PRODUCT_CATEGORY_MAIN"));
 					product.setPRODUCT_CATEGORY_SUB(rs.getString("PRODUCT_CATEGORY_SUB"));
+					product.setPRODUCT_VIDEO_URL(rs.getString("PRODUCT_VIDEO_URL"));
 					
 					productList.add(product);
 				}
@@ -226,38 +230,38 @@ public class ProductDAO extends JdbcDAO{
 						con=getConnection();
 						
 						if(keyword.equals("")&&cateOne.equals("")&&cateTwo.equals("")) {
-							String sql="select * from (select rownum rn, temp.* from (select PRODUCT_NO, PRODUCT_NAME,PRODUCT_IMG,PRODUCT_IMG_DETAIL,PRODUCT_PRICE,PRODUCT_CATEGORY_MAIN,PRODUCT_CATEGORY_SUB from product order by PRODUCT_NAME ) temp) where rn between ? and ?";
+							String sql="select * from (select rownum rn, temp.* from (select PRODUCT_NO, PRODUCT_NAME,PRODUCT_IMG,PRODUCT_IMG_DETAIL,PRODUCT_PRICE,PRODUCT_CATEGORY_MAIN,PRODUCT_CATEGORY_SUB,PRODUCT_VIDEO_URL from product order by PRODUCT_NAME ) temp) where rn between ? and ?";
 							pstmt=con.prepareStatement(sql);
 							pstmt.setInt(1, startRow);
 							pstmt.setInt(2, endRow);
 						} else if(keyword.equals("")&&!cateOne.equals("")&&cateTwo.equals("")){
-							String sql="select * from (select rownum rn, temp.* from (select PRODUCT_NO, PRODUCT_NAME,PRODUCT_IMG,PRODUCT_IMG_DETAIL,PRODUCT_PRICE,PRODUCT_CATEGORY_MAIN,PRODUCT_CATEGORY_SUB from product where PRODUCT_CATEGORY_MAIN=? order by PRODUCT_NAME ) temp) where rn between ? and ?";				
+							String sql="select * from (select rownum rn, temp.* from (select PRODUCT_NO, PRODUCT_NAME,PRODUCT_IMG,PRODUCT_IMG_DETAIL,PRODUCT_PRICE,PRODUCT_CATEGORY_MAIN,PRODUCT_CATEGORY_SUB,PRODUCT_VIDEO_URL from product where PRODUCT_CATEGORY_MAIN=? order by PRODUCT_NAME ) temp) where rn between ? and ?";				
 							pstmt=con.prepareStatement(sql);
 							pstmt.setString(1, cateOne);
 							pstmt.setInt(2, startRow);
 							pstmt.setInt(3, endRow);
 						} else if(keyword.equals("")&&!cateOne.equals("")&&!cateTwo.equals("")){
-							String sql="select * from (select rownum rn, temp.* from (select PRODUCT_NO, PRODUCT_NAME,PRODUCT_IMG,PRODUCT_IMG_DETAIL,PRODUCT_PRICE,PRODUCT_CATEGORY_MAIN,PRODUCT_CATEGORY_SUB from product where PRODUCT_CATEGORY_MAIN=? and  PRODUCT_CATEGORY_SUB=? order by PRODUCT_NAME ) temp) where rn between ? and ?";				
+							String sql="select * from (select rownum rn, temp.* from (select PRODUCT_NO, PRODUCT_NAME,PRODUCT_IMG,PRODUCT_IMG_DETAIL,PRODUCT_PRICE,PRODUCT_CATEGORY_MAIN,PRODUCT_CATEGORY_SUB,PRODUCT_VIDEO_URL from product where PRODUCT_CATEGORY_MAIN=? and  PRODUCT_CATEGORY_SUB=? order by PRODUCT_NAME ) temp) where rn between ? and ?";				
 							pstmt=con.prepareStatement(sql);
 							pstmt.setString(1, cateOne);
 							pstmt.setString(2, cateTwo);
 							pstmt.setInt(3, startRow);
 							pstmt.setInt(4, endRow);
 						} else if(!keyword.equals("")&&cateOne.equals("")&&cateTwo.equals("")){
-							String sql="select * from (select rownum rn, temp.* from (select PRODUCT_NO, PRODUCT_NAME,PRODUCT_IMG,PRODUCT_IMG_DETAIL,PRODUCT_PRICE,PRODUCT_CATEGORY_MAIN,PRODUCT_CATEGORY_SUB from product where PRODUCT_NAME like '%'||?||'%' order by PRODUCT_NAME ) temp) where rn between ? and ?";				
+							String sql="select * from (select rownum rn, temp.* from (select PRODUCT_NO, PRODUCT_NAME,PRODUCT_IMG,PRODUCT_IMG_DETAIL,PRODUCT_PRICE,PRODUCT_CATEGORY_MAIN,PRODUCT_CATEGORY_SUB,PRODUCT_VIDEO_URL from product where PRODUCT_NAME like '%'||?||'%' order by PRODUCT_NAME ) temp) where rn between ? and ?";				
 							pstmt=con.prepareStatement(sql);
 							pstmt.setString(1, keyword);
 							pstmt.setInt(2, startRow);
 							pstmt.setInt(3, endRow);
 						}else if(!keyword.equals("")&&!cateOne.equals("")&&cateTwo.equals("")){
-							String sql="select * from (select rownum rn, temp.* from (select PRODUCT_NO, PRODUCT_NAME,PRODUCT_IMG,PRODUCT_IMG_DETAIL,PRODUCT_PRICE,PRODUCT_CATEGORY_MAIN,PRODUCT_CATEGORY_SUB from product where PRODUCT_CATEGORY_MAIN=? order and PRODUCT_NAME like '%'||?||'%' by PRODUCT_NAME ) temp) where rn between ? and ?";				
+							String sql="select * from (select rownum rn, temp.* from (select PRODUCT_NO, PRODUCT_NAME,PRODUCT_IMG,PRODUCT_IMG_DETAIL,PRODUCT_PRICE,PRODUCT_CATEGORY_MAIN,PRODUCT_CATEGORY_SUB,PRODUCT_VIDEO_URL from product where PRODUCT_CATEGORY_MAIN=? order and PRODUCT_NAME like '%'||?||'%' by PRODUCT_NAME ) temp) where rn between ? and ?";				
 							pstmt=con.prepareStatement(sql);
 							pstmt.setString(1, cateOne);
 							pstmt.setString(2, keyword);
 							pstmt.setInt(3, startRow);
 							pstmt.setInt(4, endRow);
 						} else if(!keyword.equals("")&&!cateOne.equals("")&&!cateTwo.equals("")){
-							String sql="select * from (select rownum rn, temp.* from (select PRODUCT_NO, PRODUCT_NAME,PRODUCT_IMG,PRODUCT_IMG_DETAIL,PRODUCT_PRICE,PRODUCT_CATEGORY_MAIN,PRODUCT_CATEGORY_SUB from product where PRODUCT_CATEGORY_MAIN=? and  PRODUCT_CATEGORY_SUB=? and PRODUCT_NAME like '%'||?||'%' order by PRODUCT_NAME ) temp) where rn between ? and ?";				
+							String sql="select * from (select rownum rn, temp.* from (select PRODUCT_NO, PRODUCT_NAME,PRODUCT_IMG,PRODUCT_IMG_DETAIL,PRODUCT_PRICE,PRODUCT_CATEGORY_MAIN,PRODUCT_CATEGORY_SUB,PRODUCT_VIDEO_URL from product where PRODUCT_CATEGORY_MAIN=? and  PRODUCT_CATEGORY_SUB=? and PRODUCT_NAME like '%'||?||'%' order by PRODUCT_NAME ) temp) where rn between ? and ?";				
 							pstmt=con.prepareStatement(sql);
 							pstmt.setString(1, cateOne);
 							pstmt.setString(2, cateTwo);
@@ -277,6 +281,7 @@ public class ProductDAO extends JdbcDAO{
 							product.setPRODUCT_PRICE(rs.getInt("PRODUCT_PRICE"));
 							product.setPRODUCT_CATEGORY_MAIN(rs.getString("PRODUCT_CATEGORY_MAIN"));
 							product.setPRODUCT_CATEGORY_SUB(rs.getString("PRODUCT_CATEGORY_SUB"));
+							product.setPRODUCT_VIDEO_URL(rs.getString("PRODUCT_VIDEO_URL"));
 							
 							productList.add(product);
 						}
