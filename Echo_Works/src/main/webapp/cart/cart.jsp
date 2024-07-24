@@ -1,7 +1,32 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
 <%@ page import="echoworks.dao.CartDAO" %>
+<%@ page import="echoworks.dao.ProductStockDAO" %>
 <%@ page import="echoworks.dto.CartDTO" %>
+<%@ page import="echoworks.dto.ProductStockDTO" %>
+<%@ page import="javax.servlet.http.HttpSession" %>
+<%@ page import="echoworks.dto.MemberDTO" %>
+
+<%
+    // 로그인된 사용자 정보 가져오기
+    HttpSession currentSession = request.getSession();
+    MemberDTO loginMember = (MemberDTO) currentSession.getAttribute("loginMember");
+
+    if (loginMember == null) {
+        out.println("<script>alert('로그인이 필요합니다.');location.href='index.jsp?workgroup=member&work=member_login';</script>");
+        return;
+    }
+
+    int memberId = loginMember.getMemberNum(); // 회원 번호 가져오기
+
+    CartDAO cartDAO = new CartDAO();
+    List<CartDTO> cartList = cartDAO.getCartList(memberId);
+
+    ProductStockDAO productStockDAO = new ProductStockDAO();
+    int totalProductPrice = 0;
+    int shippingCost = 2500; // 고정 배송비
+%>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -10,11 +35,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
-    
-    	table th, table td {
-    		text-align: center;
-		}
-		
+        table th, table td {
+            text-align: center;
+        }
         body.sijunBody {
             background-color: #fff;
             font-size: 13pt;
@@ -23,10 +46,6 @@
         .price {
             font-size: 20pt;
             font-weight: bold;
-        }
-        .lifont {
-            font-size: 10pt;
-            color: gray;
         }
         .btn-custom {
             border: none;
@@ -44,36 +63,14 @@
         .btn-default:hover {
             background: #ddd;
         }
-        
-        .btnFloat { float: left;
-         }
-       
-        .btnFloat2 { float: right;
-         }
-         
-        .clearboth { clear: both; 
+        .cart-image {
+            width: 80px;
         }
-        
-        
-        #allProduct {
-         
-            background-color: #000;
-            color: #fff;
-            font-weight: bold;
-            font-size: 12pt;
-        }
-        #productClear {
-            background-color: gray;
-            color: #fff;
-            font-weight: bold;
-            font-size: 12pt;
-        } 
-        .aa:hover { cursor: pointer; }
     </style>
 </head>
 <body class="sijunBody">
     <div class="container">
-        <form id="cartForm" name="cartForm" method="post" action="<%=request.getContextPath()%>/index.jsp?workgroup=cart&work=cart_action">
+        <form id="cartForm" name="cartForm" method="post" action="cart_action.jsp">
             <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-4">
                 <span style="font-size: 16pt; font-weight: bold;">장바구니</span>
                 <span class="home">홈 > 장바구니</span>
@@ -84,9 +81,6 @@
                     <table class="table table-bordered table-striped">
                         <thead>
                             <tr>
-                                <th colspan="8" class="text-left pl-2">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp전체선택</th>
-                            </tr>
-                            <tr>
                                 <th><input type="checkbox" id="check-all" /></th>
                                 <th>상품정보</th>
                                 <th>수량</th>
@@ -95,31 +89,29 @@
                         </thead>
                         <tbody>
                             <%
-                                int memberId = 1; // 로그인된 회원의 ID를 여기에 설정 (예: 1)
-                                CartDAO dao = new CartDAO();
-                                List<CartDTO> cartList = dao.getCartList(memberId);
-                                int totalProductPrice = 0;
-                                int shippingCost = 2500; // 고정 배송비
-
                                 for (CartDTO cart : cartList) {
-                                    int unitPrice = 1000; // 예시 가격 설정 (DB에서 상품 가격을 가져와야 함)
-                                    int totalPrice = unitPrice * cart.getCart_num();
-                                    totalProductPrice += totalPrice;
+                                    ProductStockDTO stock = productStockDAO.getProductStockById(cart.getCart_psno());
+                                    if (stock != null) {
+                                        int unitPrice = stock.getProductStockPrice(); // product_stock 테이블에서 가격 가져오기
+                                        int totalPrice = unitPrice * cart.getCart_num();
+                                        totalProductPrice += totalPrice;
                             %>
-                            <tr style="height: 90px;">
-                                <td><input type="checkbox" class="check-item" /></td>
-                                <td><img style="width: 80%;" src=""/></td>
-                                <td style="font-weight: bold;">상품 이름 입력하기</td>
-                                <td class="unit-price"><%= unitPrice %>원</td> <!-- 예시 가격 1000원 설정 -->
+                            <tr data-cart-no="<%= cart.getCart_no() %>" style="height: 90px;">
+                                <td><input type="checkbox" class="check-item" value="<%= cart.getCart_no() %>" /></td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <img class="cart-image" src="images/<%= stock.getProductStockOption() %>.jpg"/>
+                                        <span style="margin-left: 10px; font-weight: bold;"><%= stock.getProductStockOption() %></span>
+                                    </div>
+                                </td>
                                 <td>
                                     <input type="number" class="form-control quantity-input" style="text-align: right; width: 60px; display: inline;" min="1" max="99" step="1" value="<%= cart.getCart_num() %>"/>
                                     <button type="button" class="btn btn-default btn-sm update-btn">변경</button>
                                 </td>
-                                <td>기본배송</td>
-                                <td>2,500원<br/>고정</td>
-                                <td class="total-price"><%= totalPrice %>원</td> 
+                                <td class="total-price" data-unit-price="<%= unitPrice %>"><%= totalPrice %>원</td> 
                             </tr>
                             <%
+                                    }
                                 }
                             %>
                         </tbody>
@@ -149,7 +141,6 @@
                 <div class="text-center">
                     <button class="btn btn-default" id="allProduct">선택상품주문</button>
                     <button class="btn btn-default" id="productClear">쇼핑계속하기</button>
-                 
                 </div>
                 <br/><br/>
                 <div class="border p-3 mb-3">
@@ -177,9 +168,7 @@
             </div>
         </form>
     </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script>
         document.getElementById('check-all').addEventListener('click', function() {
             var checkboxes = document.querySelectorAll('.check-item');
@@ -188,15 +177,40 @@
             }
         });
 
+        document.getElementById('delete-selected').addEventListener('click', function() {
+            var checkboxes = document.querySelectorAll('.check-item:checked');
+            if (checkboxes.length > 0) {
+                var form = document.createElement("form");
+                form.method = "post";
+                form.action = "cart_action.jsp";
+
+                var actionInput = document.createElement("input");
+                actionInput.type = "hidden";
+                actionInput.name = "action";
+                actionInput.value = "delete";
+                form.appendChild(actionInput);
+
+                checkboxes.forEach(function(checkbox) {
+                    var cartNoInput = document.createElement("input");
+                    cartNoInput.type = "hidden";
+                    cartNoInput.name = "cart_no";
+                    cartNoInput.value = checkbox.value;
+                    form.appendChild(cartNoInput);
+                });
+
+                document.body.appendChild(form);
+                form.submit();
+            }
+        });
+
         document.querySelectorAll('.update-btn').forEach(function(button) {
             button.addEventListener('click', function() {
                 var quantityInput = this.previousElementSibling;
                 var newQuantity = quantityInput.value;
-                var priceCell = this.closest('tr').querySelector('.total-price');
-                var unitPrice = parseInt(this.closest('tr').querySelector('.unit-price').textContent.replace('원', ''));
+                var cartRow = this.closest('tr');
+                var unitPrice = parseInt(cartRow.querySelector('.total-price').dataset.unitPrice);
                 var newTotalPrice = newQuantity * unitPrice;
-                
-                priceCell.textContent = newTotalPrice + '원';
+                cartRow.querySelector('.total-price').textContent = newTotalPrice + '원';
 
                 // 수량 변경 후 서버로 요청 보내기
                 var form = document.createElement("form");
@@ -212,7 +226,7 @@
                 var cartNoInput = document.createElement("input");
                 cartNoInput.type = "hidden";
                 cartNoInput.name = "cart_no";
-                cartNoInput.value = this.closest('tr').getAttribute("data-cart-no");
+                cartNoInput.value = cartRow.dataset.cartNo;
                 form.appendChild(cartNoInput);
 
                 var quantityInputField = document.createElement("input");
@@ -235,36 +249,10 @@
             var shippingCost = 2500; // 배송비
             var finalPrice = totalProductPrice + shippingCost;
 
-            document.getElementById('total-product-price').textContent = totalProductPrice;
-            document.getElementById('final-price').textContent = finalPrice;
             document.getElementById('summary-product-price').textContent = totalProductPrice;
             document.getElementById('summary-shipping-price').textContent = shippingCost;
             document.getElementById('summary-final-price').textContent = finalPrice;
         }
-
-        document.getElementById('delete-selected').addEventListener('click', function() {
-            var checkboxes = document.querySelectorAll('.check-item:checked');
-            checkboxes.forEach(function(checkbox) {
-                var form = document.createElement("form");
-                form.method = "post";
-                form.action = "cart_action.jsp";
-
-                var actionInput = document.createElement("input");
-                actionInput.type = "hidden";
-                actionInput.name = "action";
-                actionInput.value = "delete";
-                form.appendChild(actionInput);
-
-                var cartNoInput = document.createElement("input");
-                cartNoInput.type = "hidden";
-                cartNoInput.name = "cart_no";
-                cartNoInput.value = checkbox.closest('tr').getAttribute("data-cart-no");
-                form.appendChild(cartNoInput);
-
-                document.body.appendChild(form);
-                form.submit();
-            });
-        });
     </script>
 </body>
 </html>
