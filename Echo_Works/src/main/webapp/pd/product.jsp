@@ -84,7 +84,6 @@ DecimalFormat money = new DecimalFormat("###,###");
 	align-content:center;
 }
 #searchDiv{
-	
 	background: rgba(255, 255, 254, 1);
 	z-index: 999;
 	display: none;
