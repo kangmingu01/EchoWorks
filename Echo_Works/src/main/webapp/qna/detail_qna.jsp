@@ -36,6 +36,15 @@
 	String contextPath = request.getContextPath();
 	// request.getContextPath() = /Echo_Works
 	System.out.println("request.getContextPath() = "+ request.getContextPath());
+	
+	String productNoStr = request.getParameter("productNo");
+	int productNo = productNoStr != null ? Integer.parseInt(productNoStr) : 0;
+
+	int secretCheck = request.getParameter("secretCheck") != null ? Integer.parseInt(request.getParameter("secretCheck")) : 1;
+	String replyStatus = request.getParameter("replyStatus") != null ? request.getParameter("replyStatus") : "reply_status";
+
+	List<QnaDTO> qnaList = QnaDAO.getDAO().selectQnAList(productNo, secretCheck, replyStatus);
+	
 %>
 <%--
 - QNA 테이블에 저장된 행을 상품 번호에 따라 행을 검색하여 검색된 행을 HTML 태그에 포함하는 문서
@@ -122,24 +131,13 @@
           /* .qnaRows:hover {
             background-color: rgb(230, 230, 230);
           } */
-        </style>
+    </style>
        <!-- 리뷰 -->
         <section>
           <div class="container col-md-10 mt-3">
             <span class="fw-normal fs-5">
               상품문의<span class="text-danger fs-6 ms-1">(66)</span>
             </span>
-            <!-- <button
-                type="button"
-                class="btn btn-outline-dark"
-                style="
-                  --bs-btn-padding-y: 0.25rem;
-                  --bs-btn-padding-x: 0.5rem;
-                  --bs-btn-font-size: 0.75rem;
-                "
-              >
-                글쓰기
-              </button> -->
             <hr />
             <ul>
               <li>
@@ -219,18 +217,12 @@
                   aria-label="Default select example form-select-sm"
                   name="reply";
                 >
-                  <option value="reply_status">답글상태</option>
+                  <option value="reply_status" >답글상태</option>
                   <option value="unanswered_answer">미답변</option>
                   <option value="answer_completed">답변완료</option>
                 </select>
               </div>
             </div>
-            <!-- 
-            글쓰기 버튼 눌렀을 때 로그인된 사용자면 보여지고, 로그인된 사용자가 아닐경우
-            로그인 confirm으로 보내기
-            class="collapse bg-body-secondary pt-4 pe-4 ps-4 pb-3 mt-3 border border-opacity-25 border-black"
-            -->
-			
             <div id="writeToggle" class="collapse mt-3">
               <!-- action에 경로 추가 아마도 ajax로 작업할 듯 -->
               <form action="" method="post" class="card card-body">
@@ -279,7 +271,7 @@
                 </div>
               </form>
             </div>
-            <!-- 테이블 -->
+
             <div class="mt-4 mb-5">
               <div
                 class="d-flex fw-bold text-center border border-2 border-start-0 border-end-0 border-black pt-1 pb-1"
@@ -299,7 +291,8 @@
               </div>
               <!-- 상품 QnA -->
               <ul id="qna_list" class="ps-0">
-                <li class="list-unstyled border-top qnaRows">
+              
+                <!-- <li class="list-unstyled border-top qnaRows">
                   <div class="d-flex pt-2 pb-2 border-bottom">
                     <div style="width: 15%" class="text-center">
                       <span>미답변</span>
@@ -319,7 +312,7 @@
                     </div>
                   </div>
                   <div class="d-flex pt-2 pb-2 border-bottom">
-                    <!-- Q&A 제목 누르면 바로 밑에 뜰 수 있게  -->
+                    Q&A 제목 누르면 바로 밑에 뜰 수 있게 
                     <div style="width: 15%" class="text-center"></div>
                     <div style="width: 85%">
                       <span
@@ -346,69 +339,9 @@
                       </div>
                     </div>
                   </div>
-                </li>
+                </li> -->
               </ul>
             </div>
-            <!-- <div>
-              <table class="table table-hover table-sm">
-                <thead class="border border-top-1">
-                  <tr>
-                    <th
-                      scope="col"
-                      style="width: 15%"
-                      class="text-center flex-wrap text-nowrap"
-                    >
-                      답변상태
-                    </th>
-                    <th scope="col" style="width: 65%" class="text-center">
-                      제목
-                    </th>
-                    <th scope="col" style="width: 10%" class="text-center">
-                      작성자
-                    </th>
-                    <th scope="col" style="width: 10%" class="text-center">
-                      작성일
-                    </th>
-                  </tr>
-                </thead>
-                <tbody class="table-group-divider">
-                  <tr>
-                    <th scope="row" class="text-center">미답변</th>
-                    <td>
-                      <a href="" class="text-decoration-none text-black"
-                        >상품에 하자가 있어요</a
-                      >
-                    </td>
-                    <td>Otto</td>
-                    <td class="text-center">2024.07.22</td>
-                  </tr>
-                  <tr>
-                    <th scope="row" class="text-center">답변완료</th>
-                    <td>
-                      <a href="" class="text-decoration-none text-black"
-                        >이거 워블이 마음에 안들어요</a
-                      >
-                    </td>
-                    <td>Thornton</td>
-                    <td class="text-center">2024.07.21</td>
-                  </tr>
-                  <tr>
-                    <th scope="row" class="text-center">답변완료</th>
-                    <td>
-                      <a href="" class="text-decoration-none text-black"
-                        >비밀글입니다.
-                        <i
-                          class="fa-solid fa-lock fa-shake fa-flip-horizontal"
-                          style="color: #000000"
-                        ></i
-                      ></a>
-                    </td>
-                    <td>Thornton</td>
-                    <td class="text-center">2024.07.21</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div> -->
           </div>
         </section>
 <script type="text/javascript">
@@ -420,6 +353,29 @@ function checkLogin() {
 		console.log("<%=contextPath%>" + "/index.jsp?workgroup=member&work=member_login&url=" + "<%=url%>");
     }
 }
+
+// Ajax 엔진으로 [detail_qna_list.jsp] 문서를 요청하여 실행결과(댓글목록)을 JSON으로 제공받아
+// HTMl 태그로 변환하여 댓글목록태그의 태그내용을 변경하는 함수
+function displayQna() {
+	$.ajax({
+		type: "post",
+		url: "<%=request.getContextPath()%>/qna/detail_qna_list.jsp",
+		dateType: "json",
+		success: function(result) {
+			$("#qna_list").children().remove();
+			
+			if(result.code == "success") {
+				// Array 객체를 일괄처리하기 위해 map() 함수 호출
+				var qnaHTML = $(result.data).map(function() {
+					var html ="<li id='qna_"+this.no + "class='list-unstyled border-top qnaRows'>"
+				})
+			}
+			
+		}
+	});
+}
+
+
 // detail 페이지 완성되면 경로 수정해야됨 => 문제는 상태가 변하면서 새로고침되는데 이게 header로 올라감
 <%-- $("#secretCheck").change(function() {
 	console.log("<%=secretCheck%>");
