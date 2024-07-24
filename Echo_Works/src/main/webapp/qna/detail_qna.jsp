@@ -419,17 +419,11 @@ function checkLogin() {
 		window.location.href = "<%=contextPath%>" + "/index.jsp?workgroup=member&work=member_login&url=" + "<%=url%>";
 		console.log("<%=contextPath%>" + "/index.jsp?workgroup=member&work=member_login&url=" + "<%=url%>");
     }
-	
+}
 // detail 페이지 완성되면 경로 수정해야됨 => 문제는 상태가 변하면서 새로고침되는데 이게 header로 올라감
 <%-- $("#secretCheck").change(function() {
 	console.log("<%=secretCheck%>");
 	location.href="<%=request.getContextPath()%>/index.jsp?workgroup=qna&work=detail_qna_list"
 		+"&pageNum=<%=pageNum%>&pageSize="+$("#pageSize").val()+"&search=<%=search%>&keyword=<%=keyword%>";
 }) --%>
-
-
-
-function toggleChecked() {
-	
-}
 </script>
