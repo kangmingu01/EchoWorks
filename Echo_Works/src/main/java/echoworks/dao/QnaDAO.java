@@ -28,7 +28,7 @@ public class QnaDAO extends JdbcDAO {
 		try {
 			con = getConnection();
 			String sql = "insert into qna (qna_no, qna_member_no, qna_product_no, qna_title, qna_content, qna_date) "
-					+ "values (qna_seq.nextval, ?, ?, ?, ?, sysdate)";
+					+ "values (qna_seq.nextval, ?, ?, ?, ?, sysdate,1)";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, qna.getQnaMemberNo());
 			pstmt.setInt(2, qna.getQnaProductNo());
@@ -70,6 +70,7 @@ public class QnaDAO extends JdbcDAO {
 				qna.setQnaDate(rs.getDate("qna_date"));
 				qna.setQnaAnswer(rs.getString("qna_answer"));
 				qna.setQnaAnsDate(rs.getDate("qna_ansdate"));
+				
 			}
 		} catch (SQLException e) {
 			System.out.println("[에러] selectQnaByNo() 메서드의 SQL 오류 = " + e.getMessage());
