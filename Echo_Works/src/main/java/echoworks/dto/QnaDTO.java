@@ -16,7 +16,7 @@ public class QnaDTO {
     public QnaDTO() {
 		// TODO Auto-generated constructor stub
 	}
-    
+     
     
     public int getQnaNo() {
         return qnaNo;
