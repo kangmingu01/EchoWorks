@@ -63,7 +63,7 @@ public class ProductStockDAO extends JdbcDAO{
 		ProductStockDTO productStock=null;
 		try {
 			con=getConnection();
-			String sql="select product_stock_no, product_stock_pno, product_stock_option ,product_stock_stock ,product_stock_price from product_stock where product_stock_pno=? order by product_stock_no";
+			String sql="select product_stock_no, product_stock_pno, product_stock_option ,product_stock_stock ,product_stock_price from product_stock where product_stock_no=? order by product_stock_no";
 			pstmt=con.prepareStatement(sql);
 			pstmt.setInt(1, psNo);
 			

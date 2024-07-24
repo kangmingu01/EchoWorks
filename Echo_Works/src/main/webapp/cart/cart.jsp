@@ -19,10 +19,9 @@
     }
 
     int memberId = loginMember.getMemberNum(); // 회원 번호 가져오기
-
-    CartDAO cartDAO = new CartDAO();
-    List<CartDTO> cartList = cartDAO.getCartList(memberId);
-
+	System.out.println(memberId);
+    List<CartDTO> cartList = CartDAO.geDao().getCartList(memberId);
+    System.out.println(cartList.size());
     int totalProductPrice = 0;
     int shippingCost = 2500; // 고정 배송비
 %>
@@ -88,9 +87,11 @@
                             </tr>
                         </thead>
                         <tbody>
+                      
                             <%
                                 for (CartDTO cart : cartList) {
                                 	ProductStockDTO stock = ProductStockDAO.getDAO().selectProductStock(cart.getCart_psno());
+                                	
                                     if (stock != null) {
                                         int unitPrice = stock.getpS_price(); // product_stock 테이블에서 가격 가져오기
                                         int totalPrice = unitPrice * cart.getCart_num();
@@ -100,7 +101,8 @@
                                 <td><input type="checkbox" class="check-item" value="<%= cart.getCart_no() %>" /></td>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <img class="cart-image" src="images/<%= ProductDAO.getDAO().selectProductByNo(stock.getpS_pNo()).getPRODUCT_IMG() %>.jpg"/>
+                                    <% System.out.println(ProductDAO.getDAO().selectProductByNo(stock.getpS_pNo()).getPRODUCT_IMG()); %>
+                                        <img class="cart-image" src="../assets/img/<%= ProductDAO.getDAO().selectProductByNo(stock.getpS_pNo()).getPRODUCT_IMG() %>.jpg"/>
                                         <span style="margin-left: 10px; font-weight: bold;"><%= stock.getpS_Option() %></span>
                                     </div>
                                 </td>
