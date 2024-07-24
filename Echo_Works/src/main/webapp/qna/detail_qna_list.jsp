@@ -1,5 +1,113 @@
+<%@page import="echoworks.dto.QnaDTO"%>
+<%@page import="java.util.Date"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.List"%>
+<%@page import="echoworks.dao.QnaDAO"%>
+<%@page import="java.net.URLEncoder"%>
+<%@page import="echoworks.dto.MemberDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%	
+	// 세션에 있는 로그인 사용자의 객체를 받아옴
+	MemberDTO loginMember=(MemberDTO)session.getAttribute("loginMember");
+
+	// request.getRequestURI(): 요청 URL 주소에서 JSP 문서의 경로를 반환하는 메소드
+	String requestURI=request.getRequestURI();
+	// // requestURI = /Echo_Works/index.jsp
+	System.out.println("requestURI = " + requestURI); 
+	
+	
+	//request.getQueryString(): 요청 URL 주소에서 질의문자열(QueryString)을 반환하는 메소드
+	String queryString=request.getQueryString();		
+	// queryString = workgroup=qna&work=detail_qna_list
+	System.out.println("queryString = " + queryString);
+	
+	//현재 실행중인 JSP 문서의 URL 주소를 생성하여 저장
+	String url=requestURI;
+	if(queryString != null) {
+		url+="?"+queryString;
+	}
+	
+	//URL 주소를 부호화 처리하여 저장
+	url=URLEncoder.encode(url, "utf-8");
+	// url = %2FEcho_Works%2Findex.jsp%3Fworkgroup%3Dqna%26work%3Ddetail_qna_list
+	System.out.println("url = "+url);
+	
+	String contextPath = request.getContextPath();
+	// request.getContextPath() = /Echo_Works
+	System.out.println("request.getContextPath() = "+ request.getContextPath());
+%>
+<%--
+- QNA 테이블에 저장된 행을 상품 번호에 따라 행을 검색하여 검색된 행을 HTML 태그에 포함하는 문서
+- QNA 테이블에 저장된 행을 페이지 단위로 구분하여 검색해 응답 처리 - 페이징 처리
+- [페이지번호] 태그를 클릭한 경우 [/qna/detail_qna_list.jsp] 문서를 요청하여 페이지 이동
+- 페이지번호, 게시글 갯수, 조회대상(답글상태, 미답변, 답변완료), 조회상태(비밀글인지 아닌지) 필요
+
+- [상품 Q&A 작성하기] -> [문의하기] 버튼을 클릭한 경우 [/qna/detail_qna_write.jsp]문서를 요청하여 페이지 이동
+- => [상품 Q&A 작성하기] 버튼을 누르면 form 입력할 수 있는 부분이 나오는데 이 부분은 로그인 사용자만 가능
+- => 로그인 하지 않은 사용자는 로그인 페이지로 이동했다가 로그인하면 로그인 요청했던 이전 페이지로 다시 이동 => RollBackPage
+
+- 게시글의 조회상태[답글상태, 미답변, 답변완료]에 따라 [/qna/detail_qna_list.jsp] 문서를 요청하여 페이지 이동
+ --%>
+ 
+ <%--
+ 	// 게시글의 조회기능에 필요한 전달값(조회대상[답글상태, 미답변, 답변완료], 조회상태[일반글, 비밀글])을 반환받아 저장
+ 	String reply = request.getParameter("reply");
+ 	if(reply == null) {
+ 		// 전달값이 없으면
+ 		reply = "";
+ 	}
+ 
+ 	// 체크되지 않으면 일반글, 체크되면 비밀글 => 체크되면 1, 체크 풀리면 0으로 할지
+ 	int secretCheck = 1; // 전달값이 없으면
+ 	if(request.getParameter("secretCheck") != null) {
+ 		scretCheck = Integer.parseInt(request.getParameter("secretCheck"));
+ 	}
+ 	
+ 	// 페이징 처리에 필요한 전달값(페이지번호와 게시글갯수)을 반환받아 저장
+ 	int pageNum = 1; // 페이지번호 => 전달값이 없는 경우 사용할 기본값 저장
+	if(request.getParameter("pageNum") != null) { // 전달값이 있는 경우
+		pageNum = Integer.parseInt(request.getParameter("pageNum"));
+	}
+	
+ 	int pageSize = 10;  // 게시글 갯수 => 기본값 
+ 			
+ 	// 조회정보(조회대상, 조회상태)를 전달받아 Q&A 테이블에 저장된 행에서 조회정보가 포함된
+ 	// 행의 갯수를 검색하여 반환하는 QnADAO 클래스의 메소드 호출
+ 	int totalQnA = QnaDAO.getDAO().selectTotalQnA(reply, secretCheck); // Q&A 게시글 총갯수
+ 	
+ 	// 페이지의 총갯수를 계산하여 저장
+ 	// Math.ceil => 소숫점 강제 올림
+ 	int totalPage = (int)Math.ceil((double)totalQnA/pageSize);
+ 	
+ 	// 전달받은 페이지번호가 비정상적인 경우 첫번째 페이지를 요청할 수 있는 기본값 저장
+ 	if(pageNum <= 0 || pageNum > totalPage) {
+ 		pageNum = 1;
+ 	}
+ 	
+ 	// 페이지번호에 대한 게시글의 시작 행번호를 계산하여 저장
+ 	int startRow = (pageNum - 1) * pageSize + 1;
+ 	
+ 	// 페이지번호에 대한 게시글의 종료 행번호를 계산하여 저장
+ 	int endRow = pageNum * pageSize;
+ 	
+ 	// 마지막 페이지의 게시글의 종료 행번호가 게시글의 총갯수보다 많은 경우 종료 행번호 변경
+ 	if(endRow > totalQnA) {
+ 		endRow = totalQnA;
+ 	}
+ 	
+ 	// 페이징 관련 정보(시작행번호, 종료행번호)와 게시글 조회기능 관련 정보(조회대상과 조회단어)를
+ 	// 전달받아 Q&A 테이블에 저장된 행에서 조회정보가 포함된 행을 페이징 처리로 검색하여
+ 	// List 객체를 반환하는 QnADAO 클래스의 메소드를 호출
+ 	List<QnaDTO> qnaList = QnaDAO.getDAO().selectQnAList(startRow, endRow, reply, secretCheck);
+
+
+	// 게시글의 작성날짜
+	String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+ 	
+	// 게시글의 출력될 일련번호 시작값을 계산하여 저장
+	int displayNum = totalQnA - (pageNum - 1) * pageSize;
+ --%>
     <style>
           .toggle.android {
             border-radius: 30px;
@@ -32,7 +140,6 @@
               >
                 글쓰기
               </button> -->
-
             <hr />
             <ul>
               <li>
@@ -59,27 +166,42 @@
 
             <div class="d-flex justify-content-between mt-3 align-items-center">
               <div>
-                <button
-                  type="button"
-                  class="btn btn-dark"
-                  style="
-                    --bs-btn-padding-y: 0.25rem;
-                    --bs-btn-padding-x: 0.5rem;
-                    --bs-btn-font-size: 0.75rem;
-                  "
-                  data-bs-toggle="collapse"
-                  data-bs-target="#writeToggle"
-                >
-                  상품 Q&A 작성하기
-                </button>
+
+				<% if(loginMember != null) { %>
+			    <button
+			        id="writeQnA"
+			        type="button"
+			        class="btn btn-dark"
+			        style="
+			            --bs-btn-padding-y: 0.25rem;
+			            --bs-btn-padding-x: 0.5rem;
+			            --bs-btn-font-size: 0.75rem;
+			        "
+			        data-bs-toggle="collapse" 
+			        data-bs-target="#writeToggle"
+			    >
+			        상품 Q&A 작성하기
+			    </button>
+				<% } else { %>
+				    <button
+				        id="writeQnA"
+				        type="button"
+				        class="btn btn-dark"
+				        style="--bs-btn-padding-y: 0.25rem; --bs-btn-padding-x: 0.5rem; --bs-btn-font-size: 0.75rem;"
+				        onclick="checkLogin()"
+				    >
+				        상품 Q&A 작성하기
+				    </button>
+				<% } %>
               </div>
               <div
                 class="d-flex flex-nowrap align-items-center text-nowrap gap-2 fs-6"
               >
-                <input type="checkbox" name="" id="secretWrite" />
-                <label for="secretWrite" class="">비밀글 제외</label>
+              	<!-- scretWrite -->
+                <input type="checkbox" name="" id="secretCheck" />
+                <label for="secretCheck" class="">비밀글 제외</label>
                 |
-                <label for="my_qna" onclick="toggleChecked()"
+                <label  for="my_qna" onclick="toggleChecked()"
                   >내 Q&A 보기</label
                 >
                 <input
@@ -95,10 +217,11 @@
                 <select
                   class="form-select form-select-sm d-sm-none d-md-block"
                   aria-label="Default select example form-select-sm"
+                  name="reply";
                 >
-                  <option value="1" selected>답글상태</option>
-                  <option value="2">미답변</option>
-                  <option value="3">답변완료</option>
+                  <option value="reply_status">답글상태</option>
+                  <option value="unanswered_answer">미답변</option>
+                  <option value="answer_completed">답변완료</option>
                 </select>
               </div>
             </div>
@@ -107,7 +230,7 @@
             로그인 confirm으로 보내기
             class="collapse bg-body-secondary pt-4 pe-4 ps-4 pb-3 mt-3 border border-opacity-25 border-black"
             -->
-
+			
             <div id="writeToggle" class="collapse mt-3">
               <!-- action에 경로 추가 아마도 ajax로 작업할 듯 -->
               <form action="" method="post" class="card card-body">
@@ -175,7 +298,7 @@
                 </div>
               </div>
               <!-- 상품 QnA -->
-              <ul class="ps-0">
+              <ul id="qna_list" class="ps-0">
                 <li class="list-unstyled border-top qnaRows">
                   <div class="d-flex pt-2 pb-2 border-bottom">
                     <div style="width: 15%" class="text-center">
@@ -288,3 +411,25 @@
             </div> -->
           </div>
         </section>
+<script type="text/javascript">
+function checkLogin() {
+    loginConfirm = confirm("로그인이 필요한 서비스입니다. 로그인 하시겠습니까?");
+    
+    if(loginConfirm) {
+		window.location.href = "<%=contextPath%>" + "/index.jsp?workgroup=member&work=member_login&url=" + "<%=url%>";
+		console.log("<%=contextPath%>" + "/index.jsp?workgroup=member&work=member_login&url=" + "<%=url%>");
+    }
+	
+// detail 페이지 완성되면 경로 수정해야됨 => 문제는 상태가 변하면서 새로고침되는데 이게 header로 올라감
+<%-- $("#secretCheck").change(function() {
+	console.log("<%=secretCheck%>");
+	location.href="<%=request.getContextPath()%>/index.jsp?workgroup=qna&work=detail_qna_list"
+		+"&pageNum=<%=pageNum%>&pageSize="+$("#pageSize").val()+"&search=<%=search%>&keyword=<%=keyword%>";
+}) --%>
+
+
+
+function toggleChecked() {
+	
+}
+</script>
