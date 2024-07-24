@@ -1,5 +1,44 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.List" %>
+<%@ page import="echoworks.dao.CartDAO" %>
+<%@ page import="echoworks.dao.ProductStockDAO" %>
+<%@ page import="echoworks.dto.CartDTO" %>
+<%@ page import="echoworks.dto.ProductStockDTO" %>
+<%@ page import="javax.servlet.http.HttpSession" %>
+<%@ page import="echoworks.dto.MemberDTO" %>
+<%@ page import="echoworks.dao.ProductDAO" %>
+
+<%
+    // 로그인된 사용자 정보 가져오기
+    HttpSession currentSession = request.getSession();
+    MemberDTO loginMember = (MemberDTO) currentSession.getAttribute("loginMember");
+
+    if (loginMember == null) {
+        out.println("<script>alert('로그인이 필요합니다.');location.href='index.jsp?workgroup=member&work=member_login';</script>");
+        return;
+    }
+
+    // 장바구니에서 선택한 상품 번호 목록을 가져옴
+    String[] selectedCartNos = request.getParameterValues("cart_no");
+
+    if (selectedCartNos == null || selectedCartNos.length == 0) {
+        out.println("<script>alert('선택한 상품이 없습니다.');location.href='cart.jsp';</script>");
+        return;
+    }
+
+    List<CartDTO> selectedCartList = new ArrayList<>();
+    for (String cartNo : selectedCartNos) {
+        int cartNoInt = Integer.parseInt(cartNo);
+        CartDTO cart = CartDAO.geDao().getCartByNo(cartNoInt);
+        selectedCartList.add(cart);
+    }
+
+    int totalProductPrice = 0;
+    int shippingCost = 2500; // 고정 배송비
+%>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -8,7 +47,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f5f5f5;
+            background-color: white;
             overflow-y: scroll; /* Always show vertical scrollbar */
         }
         .container {
@@ -51,59 +90,10 @@
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg bg-transparent w-100">
-      <div class="container mt-2 align-items-center">
-        <!-- Logo -->
-        <a class="navbar-brand fs-4 m-0 p-0 d-flex align-items-center text-white" href="#">
-          <img src="../assets/img/logo_dark.svg" style="width: auto; height: 55px" alt="Logo"/>
-        </a>
-        <!-- Toggle -->
-        <button class="navbar-toggler shadow-none border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcavasNavbar">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <!-- SideBar -->
-        <div class="sidebar offcanvas offcanvas-end bg-white" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-          <!-- SideBar Header -->
-          <div class="offcanvas-header border-dark border-bottom border-2">
-            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">EchoWorks</h5>
-            <button type="button" class="btn-close shadow-none" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-          </div>
-
-          <!-- SideBar Body -->
-          <div class="offcanvas-body">
-            <ul class="navbar-nav justify-content-center fs-5 flex-grow-1 ps-lg-5 ms-lg-5">
-              <li class="nav-item mx-2">
-                <a href="#Keyboards" class="nav-link text-dark">Keyboards</a>
-              </li>
-              <li class="nav-item dropdown mx-2">
-                <a href="#" class="nav-link dropdown-toggle text-dark" role="" data-bs-toggle="dropdown" aria-expanded="false">Switches</a>
-                <ul class="dropdown-menu">
-                  <li><a href="#" class="dropdown-item">리니어</a></li>
-                  <li><a href="#" class="dropdown-item">택타일</a></li>
-                  <li><a href="#" class="dropdown-item">저소음</a></li>
-                  <li><a href="#" class="dropdown-item">마그네틱</a></li>
-                </ul>
-              </li>
-              <li class="nav-item mx-2">
-                <a href="#Keycaps" class="nav-link text-dark">Keycaps</a>
-              </li>
-              <li class="nav-item mx-2">
-                <a href="#Deskpads" class="nav-link text-dark">Deskpads</a>
-              </li>
-            </ul>
-
-            <!-- Login/ Sign up -->
-            <div class="d-flex justify-content-center align-items-center gap-3 flex-nowrap">
-              <a href="#login" class="text-decoration-none fs-5 text-dark">Login</a>
-              <a href="#signup" class="text-decoration-none px-3 py-1 fs-5 text-dark">Sign up</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </nav>
 <div class="container">
     <h2 class="section-title text-center">결제하기</h2>
+    <form id="paymentForm" name="paymentForm" method="post" action="<%=request.getContextPath() %>/index.jsp?workgroup=payment&work=payment_complete" >
+   
     <div class="row">
         <div class="col-md-7">
             <div class="card">
@@ -111,14 +101,29 @@
                     주문 상품 정보
                 </div>
                 <div class="card-body">
+                    <%
+                        for (CartDTO cart : selectedCartList) {
+                            ProductStockDTO stock = ProductStockDAO.getDAO().selectProductStock(cart.getCart_psno());
+                            
+                            if (stock != null) {
+                                int unitPrice = stock.getpS_price(); // product_stock 테이블에서 가격 가져오기
+                                int totalPrice = unitPrice * cart.getCart_num();
+                                totalProductPrice += totalPrice;
+                    %>
                     <div class="d-flex align-items-center">
-                        <img src="상품 이미지 경로" alt="상품 이미지" style="width: 100px; height: 100px; margin-right: 20px;">
+                        <img src="../assets/img/<%= ProductDAO.getDAO().selectProductByNo(stock.getpS_pNo()).getPRODUCT_IMG() %>.jpg" alt="상품 이미지" style="width: 100px; height: 100px; margin-right: 20px;">
                         <div>
-                            <p>스웨그키 SW La Vie en Rose R2 이중사출 키캡 세트, 1개</p>
-                            <p>77,000원</p>
-                            <p>배송비 2,500원</p>
+                            <p><%= stock.getpS_Option() %></p>
+                            <p><%= unitPrice %>원</p>
+                            <p>수량: <%= cart.getCart_num() %></p>
+                            <p>총 가격: <%= totalPrice %>원</p>
                         </div>
                     </div>
+                    <hr>
+                    <%
+                            }
+                        }
+                    %>
                 </div>
             </div>
 
@@ -128,13 +133,13 @@
                 </div>
                 <div class="card-body">
                     <div class="mb-3">
-                        <input type="text" class="form-control" id="ordererName" value="김혜련" disabled>
+                        <input type="text" class="form-control" id="ordererName" value="<%= loginMember.getMemberName() %>" disabled>
                     </div>
                     <div class="mb-3">
-                        <input type="text" class="form-control" id="ordererContact" value="01040773346" disabled>
+                        <input type="text" class="form-control" id="ordererContact" value="<%= loginMember.getMemberMobile() %>" disabled>
                     </div>
                     <div class="mb-3">
-                        <input type="email" class="form-control" id="ordererEmail" value="tosmreo@naver.com" disabled>
+                        <input type="email" class="form-control" id="ordererEmail" value="<%= loginMember.getMemberEmail() %>" disabled>
                     </div>
                     <button class="btn btn-outline-secondary" id="editOrdererInfo">수정</button>
                 </div>
@@ -155,7 +160,7 @@
                     </ul>
                     <div class="tab-content" id="deliveryTabContent">
                         <div class="tab-pane fade show active" id="existing-address" role="tabpanel" aria-labelledby="existing-address-tab">
-                            <p><input type="radio" name="address" checked> 김혜련, 경기 성남시 중원구 금빛로42번길 7 (금광동, 드림하이즈맨션) 501호, 13183</p>
+                            <p><input type="radio" name="address" checked> <%= loginMember.getMemberName() %>, <%= loginMember.getMemberAddress1() %>, <%= loginMember.getMemberAddress2() %>, <%= loginMember.getMemberZipcode() %></p>
                         </div>
                         <div class="tab-pane fade" id="new-address" role="tabpanel" aria-labelledby="new-address-tab">
                             <div class="form-check">
@@ -218,9 +223,9 @@
                     주문 요약
                 </div>
                 <div class="card-body">
-                    <p>상품가격: 77,000원</p>
-                    <p>배송비: 2,500원</p>
-                    <p>총 주문금액: 79,500원</p>
+                    <p>상품가격: <%= totalProductPrice %>원</p>
+                    <p>배송비: <%= shippingCost %>원</p>
+                    <p>총 주문금액: <%= totalProductPrice + shippingCost %>원</p>
                 </div>
             </div>
 
@@ -232,11 +237,15 @@
                             구매조건 확인 및 결제진행에 동의
                         </label>
                     </div>
-                    <button class="btn btn-primary mt-3">결제하기</button>
+                    <button type="submit" class="btn btn-primary mt-3" id="payButton">결제하기</button>
                 </div>
+          
             </div>
+           
         </div>
+        
     </div>
+    </form>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-WdcW8+3k9d0WCFQz2O+p44+gd+YoDZlD5oBLfQn3NE6vcegM2KUkc4gF3uH19ajp" crossorigin="anonymous"></script>
@@ -287,8 +296,15 @@
         document.getElementById('existing-address').classList.add('show', 'active');
         document.getElementById('new-address').classList.remove('show', 'active');
     });
+
+    document.getElementById('payButton').addEventListener('click', function() {
+        if (!document.getElementById('agreeTerms').checked) {
+            alert('구매조건 확인 및 결제진행에 동의해야 합니다.');
+            return;
+        }
+        // 결제 완료 페이지로 이동
+        document.getElementById('paymentForm').submit();
+    });
 </script>
 </body>
 </html>
-
-

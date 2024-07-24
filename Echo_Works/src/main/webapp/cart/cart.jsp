@@ -19,9 +19,7 @@
     }
 
     int memberId = loginMember.getMemberNum(); // 회원 번호 가져오기
-	System.out.println(memberId);
     List<CartDTO> cartList = CartDAO.geDao().getCartList(memberId);
-    System.out.println(cartList.size());
     int totalProductPrice = 0;
     int shippingCost = 2500; // 고정 배송비
 %>
@@ -31,13 +29,11 @@
 <head>
     <meta charset="UTF-8">
     <title>장바구니</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
+       <style>
         table th, table td {
             text-align: center;
         }
-        body.sijunBody {
+        .sijunBody {
             background-color: #fff;
             font-size: 13pt;
             padding: 50px 0;
@@ -69,7 +65,7 @@
 </head>
 <body class="sijunBody">
     <div class="container">
-        <form id="cartForm" name="cartForm" method="post" action="cart_action.jsp">
+        <form id="cartForm" name="cartForm" method="post" action="<%=request.getContextPath()%>/index.jsp?workgroup=payment&work=payment">
             <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-4">
                 <span style="font-size: 16pt; font-weight: bold;">장바구니</span>
                 <span class="home">홈 > 장바구니</span>
@@ -77,7 +73,7 @@
             <div>
                 <!-- 상품정보 테이블 -->
                 <div class="table-responsive">
-                    <table class="table table-bordered table-striped">
+                    <table class="table table-bordered">
                         <thead>
                             <tr>
                                 <th><input type="checkbox" id="check-all" /></th>
@@ -87,21 +83,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                      
                             <%
                                 for (CartDTO cart : cartList) {
-                                	ProductStockDTO stock = ProductStockDAO.getDAO().selectProductStock(cart.getCart_psno());
-                                	
+                                    ProductStockDTO stock = ProductStockDAO.getDAO().selectProductStock(cart.getCart_psno());
+                                    
                                     if (stock != null) {
                                         int unitPrice = stock.getpS_price(); // product_stock 테이블에서 가격 가져오기
                                         int totalPrice = unitPrice * cart.getCart_num();
                                         totalProductPrice += totalPrice;
                             %>
                             <tr data-cart-no="<%= cart.getCart_no() %>" style="height: 90px;">
-                                <td><input type="checkbox" class="check-item" value="<%= cart.getCart_no() %>" /></td>
+                                <td><input type="checkbox" class="check-item" name="cart_no" value="<%= cart.getCart_no() %>" /></td>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                    <% System.out.println(ProductDAO.getDAO().selectProductByNo(stock.getpS_pNo()).getPRODUCT_IMG()); %>
                                         <img class="cart-image" src="../assets/img/<%= ProductDAO.getDAO().selectProductByNo(stock.getpS_pNo()).getPRODUCT_IMG() %>.jpg"/>
                                         <span style="margin-left: 10px; font-weight: bold;"><%= stock.getpS_Option() %></span>
                                     </div>
@@ -141,7 +135,7 @@
                     </table>
                 </div>
                 <div class="text-center">
-                    <button class="btn btn-default" id="allProduct">선택상품주문</button>
+                    <button type="submit" class="btn btn-default">선택상품주문</button>
                     <button class="btn btn-default" id="productClear">쇼핑계속하기</button>
                 </div>
                 <br/><br/>
