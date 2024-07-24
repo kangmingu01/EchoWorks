@@ -7,8 +7,6 @@
     <title>아이디 찾기</title>
    
     <style>
-        
-
         body {
             background: white;
             margin: 0;
@@ -102,7 +100,7 @@
     </form>
 </div>
 
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     document.getElementById('findIdForm').addEventListener('submit', function(event) {
         event.preventDefault();
@@ -130,9 +128,9 @@
 
         if (valid) {
             $.ajax({
-            	url: "<%=request.getContextPath()%>/member/idfind_action.jsp",
+                url: "<%=request.getContextPath()%>/member/idfind_action.jsp",
                 type: 'POST',
-                 data: { name: name, email: email },
+                data: { name: name, email: email },
                 success: function(response) {
                     $('#resultMessage').html(response).show();
                 },
@@ -140,6 +138,47 @@
                     alert('아이디 찾기에 실패했습니다. 다시 시도해주세요.');
                 }
             });
+        }
+    });
+
+    document.getElementById('findIdForm').addEventListener('keypress', function(event) {
+        if (event.keyCode === 13) { // Enter key의 keyCode는 13입니다.
+            event.preventDefault();
+            var name = document.getElementById('nameInput').value.trim();
+            var email = document.getElementById('emailInput').value.trim();
+            var valid = true;
+
+            if (name === "") {
+                valid = false;
+                document.getElementById('nameError').textContent = "이름을 입력해 주세요.";
+                document.getElementById('nameInput').classList.add('is-invalid');
+            } else {
+                document.getElementById('nameError').textContent = "";
+                document.getElementById('nameInput').classList.remove('is-invalid');
+            }
+
+            if (email === "") {
+                valid = false;
+                document.getElementById('emailError').textContent = "이메일을 입력해 주세요.";
+                document.getElementById('emailInput').classList.add('is-invalid');
+            } else {
+                document.getElementById('emailError').textContent = "";
+                document.getElementById('emailInput').classList.remove('is-invalid');
+            }
+
+            if (valid) {
+                $.ajax({
+                    url: "<%=request.getContextPath()%>/member/idfind_action.jsp",
+                    type: 'POST',
+                    data: { name: name, email: email },
+                    success: function(response) {
+                        $('#resultMessage').html(response).show();
+                    },
+                    error: function() {
+                        alert('아이디 찾기에 실패했습니다. 다시 시도해주세요.');
+                    }
+                });
+            }
         }
     });
 </script>
