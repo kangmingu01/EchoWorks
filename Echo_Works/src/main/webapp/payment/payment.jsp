@@ -31,7 +31,7 @@
     List<CartDTO> selectedCartList = new ArrayList<>();
     for (String cartNo : selectedCartNos) {
         int cartNoInt = Integer.parseInt(cartNo);
-        CartDTO cart = CartDAO.geDao().getCartByNo(cartNoInt);
+        CartDTO cart = CartDAO.getDao().getCartByNo(cartNoInt);
         selectedCartList.add(cart);
     }
 

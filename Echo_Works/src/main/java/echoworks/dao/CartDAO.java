@@ -20,7 +20,7 @@ public class CartDAO extends JdbcDAO {
 		_dao=new CartDAO();
 	}
 	
-	public static CartDAO geDao() {
+	public static CartDAO getDao() {
 		return _dao;
 	}
 	

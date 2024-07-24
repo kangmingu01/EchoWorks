@@ -17,7 +17,7 @@
 
     // 파라미터 처리
     String action = request.getParameter("action");
-    CartDAO dao = new CartDAO();
+    CartDAO dao = CartDAO.getDao();
 
     if (action != null) {
         try {
@@ -59,6 +59,15 @@
 
                 dao.clearCart(memberId);
                 response.sendRedirect("cart.jsp");
+            } else if (action.equals("checkout")) {
+                // 선택된 상품 주문 처리 로직 추가
+                String[] selectedCartNos = request.getParameterValues("cart_no");
+                if (selectedCartNos != null) {
+                    // 주문 처리 로직을 여기에 추가합니다.
+                    response.sendRedirect("payment.jsp");
+                } else {
+                    out.println("<script>alert('선택된 상품이 없습니다.');history.back();</script>");
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
