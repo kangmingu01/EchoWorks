@@ -239,7 +239,8 @@
                             구매조건 확인 및 결제진행에 동의
                         </label>
                     </div>
-                    <button type="submit" class="btn btn-primary mt-3" id="payButton">결제하기</button>
+                    <button type="submit" class="btn btn-primary mt-3" id="payButton" formaction="<%=request.getContextPath() %>/payment/payment_complete.jsp">결제하기</button>
+
                 </div>
           
             </div>
