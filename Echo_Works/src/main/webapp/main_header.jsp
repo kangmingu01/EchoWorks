@@ -261,7 +261,7 @@ MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 						if (loginMember.getMemberAuth() == 9) {
 						%>
 						<!-- 관리자 -->
-						<a href="#DB" class="text-decoration-none text-white fs-5">DB</a>
+						<a href="<%=request.getContextPath()%>/index.jsp?workgroup=member&work=admin_adminpage" class="text-decoration-none text-white fs-5">ADMIN</a>
 						<%
 						} else {
 						%>

@@ -29,19 +29,99 @@
 %>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>마이페이지</title>
     <style>
+        body, html {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: #f9f9f9;
+        }
         #container12 { display: flex; }
-        .sidebar { width: 200px; }
-        .main-content { flex-grow: 1; padding: 20px; }
+        .sidebar { 
+            width: 200px; 
+            background-color: #2c3e50;
+            padding-top: 20px;
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            margin: 10px 0;
+        }
+        .sidebar ul li a {
+            text-decoration: none;
+            color: white;
+            display: block;
+            padding: 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .sidebar ul li a:hover {
+            background-color: #34495e;
+        }
+        .main-content { 
+            flex-grow: 1; 
+            padding: 20px; 
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: 20px;
+            border-radius: 8px;
+           
+        }
         .content-section { display: none; }
         .content-section.active { display: block; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { border: 1px solid #000; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
+        h2 {
+            color: #333;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .info-item {
+            margin-bottom: 10px;
+        }
+        .info-item label {
+            display: inline-block;
+            width: 150px;
+            font-weight: bold;
+        }
+        .info-item span {
+            color: #555;
+        }
+        .button-group a {
+            display: inline-block;
+            margin: 10px 5px 0 0;
+            padding: 10px 20px;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            background-color: #3498db;
+            transition: background-color 0.3s;
+        }
+        .button-group a:hover {
+            background-color: #2980b9;
+        }
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-top: 20px;
+        }
+        th, td { 
+            border: 1px solid #ddd; 
+            padding: 8px; 
+            text-align: left; 
+        }
+        th { 
+            background-color: #f2f2f2; 
+        }
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
     </style>
     <script>
         function showSection(sectionId) {
@@ -67,16 +147,34 @@
         <div class="main-content">
             <div id="account-info" class="content-section active">
                 <h2>내 정보</h2>
-                <p>이름: <%= loginMember.getMemberName() %></p>
-                <p>이메일: <%= loginMember.getMemberEmail() %></p>
-                <p>전화번호: <%= loginMember.getMemberMobile() %></p>
-                <p>주소: [<%= loginMember.getMemberZipcode() %>] <%= loginMember.getMemberAddress1() %> <%= loginMember.getMemberAddress2() %></p>
-                <p>회원가입날짜: <%= loginMember.getMemberRegisterDate() %></p>
-                <p>마지막 로그인 날짜: <%= loginMember.getMemberLastLogin() %></p>	
+                <div class="info-item">
+                    <label>이름:</label>
+                    <span><%= loginMember.getMemberName() %></span>
+                </div>
+                <div class="info-item">
+                    <label>이메일:</label>
+                    <span><%= loginMember.getMemberEmail() %></span>
+                </div>
+                <div class="info-item">
+                    <label>전화번호:</label>
+                    <span><%= loginMember.getMemberMobile() %></span>
+                </div>
+                <div class="info-item">
+                    <label>주소:</label>
+                    <span>[<%= loginMember.getMemberZipcode() %>] <%= loginMember.getMemberAddress1() %> <%= loginMember.getMemberAddress2() %></span>
+                </div>
+                <div class="info-item">
+                    <label>회원가입날짜:</label>
+                    <span><%= loginMember.getMemberRegisterDate() %></span>
+                </div>
+                <div class="info-item">
+                    <label>마지막 로그인 날짜:</label>
+                    <span><%= loginMember.getMemberLastLogin() %></span>
+                </div>
                 
-                <div>
-                <a href="<%=request.getContextPath()%>/index.jsp?workgroup=member&work=password_confirm&action=modify">[회원정보변경]</a>&nbsp;&nbsp;
-                <a href="<%=request.getContextPath()%>/index.jsp?workgroup=member&work=password_confirm&action=remove">[회원탈퇴]</a>
+                <div class="button-group">
+                    <a href="<%=request.getContextPath()%>/index.jsp?workgroup=member&work=password_confirm&action=modify">회원정보변경</a>
+                    <a href="<%=request.getContextPath()%>/index.jsp?workgroup=member&work=password_confirm&action=remove">회원탈퇴</a>
                 </div>
             </div>
             <div id="payment-history" class="content-section">
