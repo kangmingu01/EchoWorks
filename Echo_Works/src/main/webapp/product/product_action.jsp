@@ -5,5 +5,5 @@
 request.setCharacterEncoding("utf-8");
 String encoder=request.getParameter("insearch");
 String keyword=URLEncoder.encode(encoder, "utf-8");
-request.setAttribute("returnUrl", request.getContextPath()+"/index.jsp?workgroup=pd&work=product&insearch="+keyword);
+request.setAttribute("returnUrl", request.getContextPath()+"/index.jsp?workgroup=product&work=product&insearch="+keyword);
 %>
