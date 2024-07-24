@@ -1,3 +1,4 @@
+<%@page import="echoworks.dao.ProductDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>
 <%@ page import="echoworks.dao.CartDAO" %>
@@ -22,7 +23,6 @@
     CartDAO cartDAO = new CartDAO();
     List<CartDTO> cartList = cartDAO.getCartList(memberId);
 
-    ProductStockDAO productStockDAO = new ProductStockDAO();
     int totalProductPrice = 0;
     int shippingCost = 2500; // 고정 배송비
 %>
@@ -90,9 +90,9 @@
                         <tbody>
                             <%
                                 for (CartDTO cart : cartList) {
-                                    ProductStockDTO stock = productStockDAO.getProductStockById(cart.getCart_psno());
+                                	ProductStockDTO stock = ProductStockDAO.getDAO().selectProductStock(cart.getCart_psno());
                                     if (stock != null) {
-                                        int unitPrice = stock.getProductStockPrice(); // product_stock 테이블에서 가격 가져오기
+                                        int unitPrice = stock.getpS_price(); // product_stock 테이블에서 가격 가져오기
                                         int totalPrice = unitPrice * cart.getCart_num();
                                         totalProductPrice += totalPrice;
                             %>
@@ -100,8 +100,8 @@
                                 <td><input type="checkbox" class="check-item" value="<%= cart.getCart_no() %>" /></td>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <img class="cart-image" src="images/<%= stock.getProductStockOption() %>.jpg"/>
-                                        <span style="margin-left: 10px; font-weight: bold;"><%= stock.getProductStockOption() %></span>
+                                        <img class="cart-image" src="images/<%= ProductDAO.getDAO().selectProductByNo(stock.getpS_pNo()).getPRODUCT_IMG() %>.jpg"/>
+                                        <span style="margin-left: 10px; font-weight: bold;"><%= stock.getpS_Option() %></span>
                                     </div>
                                 </td>
                                 <td>

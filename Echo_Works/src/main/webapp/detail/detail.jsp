@@ -1,3 +1,6 @@
+<%@page import="java.util.List"%>
+<%@page import="echoworks.dao.ProductStockDAO"%>
+<%@page import="echoworks.dto.ProductStockDTO"%>
 <%@page import="echoworks.dao.ProductDAO"%>
 <%@page import="echoworks.dto.ProductDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -6,11 +9,15 @@
 //String product=request.getParameter("product_no");	//상품 번호 가져오기
 //ProductDTO product=ProductDAO.getDAO().selectProductByNo(Integer.parseInt(request.getParameter("product_no")));
 
-String pNo="7";
+String pNo="1";
 
 // 상품 객체 생성
 ProductDTO product=ProductDAO.getDAO().selectProductByNo(Integer.parseInt(pNo));
-System.out.println(product.getPRODUCT_IMG());
+
+// 재고 객체 생성
+List<ProductStockDTO> productStock= ProductStockDAO.getDAO().selectProductStockList(product.getPRODUCT_NO());
+
+System.out.println(productStock.get(0));
 %>
 
     
@@ -67,15 +74,17 @@ input[type="number"]::-webkit-inner-spin-button {
 					<div>
 						<div>
 							<h3><%=product.getPRODUCT_NAME() %></h3>
-							<h5 class="pt-3 pb-3 border-top" style="display:inline-block; font-size:32px; color: #333; font-weight: bold; font-family:'Tahoma', sans-serif; vertical-align: middle; padding-right:8px;"><%=product.getPRODUCT_PRICE() %>원</h5>
+							<h5 class="pt-3 pb-3 border-top" style="display:inline-block; font-size:32px; color: #333; font-weight: bold; font-family:'Tahoma', sans-serif; vertical-align: middle; padding-right:8px;"><%=String.format("%,d", product.getPRODUCT_PRICE()) %>원</h5>
 							
 							<div>
 								<select id="select_option" class="form-select form-select-lg mb-3" onchange="selected_item('1441177158', '1441177158', '1441177158','pc')">
 									<option value="basic" selected disabled hidden>상품옵션선택</option>
-									<option value="Black-Black-Brass||66100||56068" >Black-Black-Brass   (66,100원)</option>
-									<option value="Black-Black-Copper||182600||56069" >Black-Black-Copper   (182,600원)</option>
-									<option value="Lilac-Lilac-White||109850||56070" >Lilac-Lilac-White   (109,850원)</option>
-									<option value="Pink-Pink-White||214500||56071" >Pink-Pink-White   (214,500원)</option>
+									<% for(int i=0;i<productStock.size();i++) { 
+										String op=productStock.get(i).getpS_Option();
+										int price=productStock.get(i).getpS_price();
+									%>
+									<option value="<%=op %>||<%=price %>||<%=56068+i %>" ><%=op %>   (<%=String.format("%,d", price) %>원)</option>
+									<% } %>
 								</select>
 							</div>
 							
