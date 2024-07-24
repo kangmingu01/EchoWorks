@@ -185,7 +185,7 @@
 
             	var form = document.createElement("form");
                 form.method = "post";
-                form.action = "<%=request.getContextPath()%>/index.jsp?workgroup=cart&work=cart"; // 여기도 경로를 확인
+                form.action = "<%=request.getContextPath()%>/index.jsp?workgroup=cart&work=cart_action"; // 여기도 경로를 확인
                                                         																	
                 var actionInput = document.createElement("input");
                 actionInput.type = "hidden";
