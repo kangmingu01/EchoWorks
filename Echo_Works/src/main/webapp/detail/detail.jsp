@@ -1,43 +1,90 @@
-\<%@ page language="java" contentType="text/html; charset=UTF-8"
+<%@page import="java.util.List"%>
+<%@page import="echoworks.dao.ProductStockDAO"%>
+<%@page import="echoworks.dto.ProductStockDTO"%>
+<%@page import="echoworks.dao.ProductDAO"%>
+<%@page import="echoworks.dto.ProductDTO"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-	crossorigin="anonymous">
-	
-	<link rel="stylesheet" href="../css/style.css" />
-	<link rel="stylesheet" href="../css/detail.css" />
-</head>
-<body>
-		<div> <jsp:include page="../header.jsp"/> </div>
+<%
+//String product=request.getParameter("product_no");	//상품 번호 가져오기
+//ProductDTO product=ProductDAO.getDAO().selectProductByNo(Integer.parseInt(request.getParameter("product_no")));
+
+String pNo="1";
+
+// 상품 객체 생성
+ProductDTO product=ProductDAO.getDAO().selectProductByNo(Integer.parseInt(pNo));
+
+// 재고 객체 생성
+List<ProductStockDTO> productStock= ProductStockDAO.getDAO().selectProductStockList(product.getPRODUCT_NO());
+
+System.out.println(productStock.get(0));
+%>
+
+    
+    
+<style>
+.itemInfo_td .itemInfo_td_div_area .itemOption_btn{width:100%; position:relative; padding:30px 0 0;}
+.itemInfo_td.fixed .itemInfo_td_div_area .itemOption_btn{width:auto; position:absolute; top:0; right:0; padding:40px 0 0;}
+.itemInfo_td .itemInfo_td_div_area .itemOption_btn .itemOption_cart_btn_area{display:inline-block; padding:0 3px 0 0;}
+.itemInfo_td .itemInfo_td_div_area .itemOption_btn .itemOption_cart_btn_area .itemOption_cart_btn{width:200px; height:54px; font-size:18px; font-weight:500; background:#fff; border:1px solid #666; color:#666; cursor:pointer;}
+.itemInfo_td .itemInfo_td_div_area .itemOption_btn .itemOption_order_btn_area .itemOption_order_btn{width:200px; height:54px; font-size:18px; font-weight:500; background:#666; color:#fff; border:0;  cursor:pointer;}
+.itemInfo_td .itemInfo_td_div_area .itemOption_btn table{width:100%; border-collapse:collapse;}
+.itemInfo_td .itemInfo_td_div_area .itemOption_btn .itemOptionJjim{display:inline-block; padding-left:4px; position:relative;}
+
+
+.itemMenu_tap_area:after{content:''; display:block; clear:both;}
+.itemMenu_tap_area{margin:0px 0 40px 0;}
+.itemMenu_tap_area li{float:left; width:100%; list-style-type: none; }
+.itemMenu_tap_area li a{display:block; width:100%; height:54px; background:#fff; line-height:54px; font-size:15px; color:#666; border:1px solid #ccc; border-right:0; text-align:center;  text-decoration:none; }
+.itemMenu_tap_area li a.i_m_selected{color:#fff; background:#555; border:1px solid #555; border-right:0;}
+.itemMenu_tap_area li:last-child a{border-right:1px solid #ccc;}
+.itemMenu_tap_area li a #order_reviews, .itemMenu_tap_area li a #order_inquiry{color:#666; font-size:18px; font-family:'Tahoma', sans-serif; margin-left:2px; vertical-align:bottom;}
+.itemMenu_tap_area li a.i_m_selected #order_reviews, .itemMenu_tap_area li a.i_m_selected #order_inquiry{color:#FAE078;}
+#itemContent_wrap #item_info{max-height:auto; overflow:hidden;}
+#itemContent_wrap #item_info.tabcnt_detail0.expand{max-height:inherit;}
+
+
+/* op box(옵션) */
+.shop_item_select_box {max-height:240px; overflow-y:auto;}
+.shop_item_select_box .shop_item_select:first-child{margin:0;}
+.shop_item_select_box .shop_item_select{background:#F8F8F8; padding:20px 24px; border-radius:5px; margin:10px 0 0; position:relative;}
+.shop_item_select_box .shop_item_select .item_select_text{font-size:15px; margin:0 0 10px; line-height:22px; max-height:45px; overflow:hidden; box-sizing:content-box;}
+.shop_item_select_box .shop_item_select .item_select_num .item_num input{width:40px; height:30px; font-size:14px; color:#222; font-family:'Tahoma', sans-serif; border:0; border-top:1px solid #ccc; border-bottom:1px solid #ccc; text-align:center; top:1px; position:relative; }
+.shop_item_select_box .shop_item_select .item_select_price{font-size:18px; font-weight:500; font-family:'Tahoma', sans-serif; line-height:30px; position:absolute; bottom:20px; right:24px;}
+.shop_item_select_box .shop_item_select .item_select_price span{font-size:16px; font-weight:500;}
+.shop_item_select_box .shop_item_select .item_select_price img{padding:0 0 0 12px; vertical-align:baseline; cursor:pointer;}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+</style>
+
 		<div class="container">
 		<div>
 			<div class="row">
 				<div class="col-md-5">
 					<div>
-						<img src="https://cdn.imweb.me/thumbnail/20240424/eb47e73cc9357.jpg" class="d-block w-100" alt="...">
+						<img src="assets/img/<%=product.getPRODUCT_IMG()%>.jpg" class="d-block w-100" alt="...">
 					</div>
 				</div>
 
 				<div class="col-md-7">
 					<div>
 						<div>
-							<h3>SC Studio Bridge 75 기계식 키보드 s브릿지 75</h3>
-							<h5 class="pt-3 pb-3 border-top" style="display:inline-block; font-size:32px; color: #333; font-weight: bold; font-family:'Tahoma', sans-serif; vertical-align: middle; padding-right:8px;">119,000원</h5>
+							<h3><%=product.getPRODUCT_NAME() %></h3>
+							<h5 class="pt-3 pb-3 border-top" style="display:inline-block; font-size:32px; color: #333; font-weight: bold; font-family:'Tahoma', sans-serif; vertical-align: middle; padding-right:8px;"><%=String.format("%,d", product.getPRODUCT_PRICE()) %>원</h5>
 							
 							<div>
 								<select id="select_option" class="form-select form-select-lg mb-3" onchange="selected_item('1441177158', '1441177158', '1441177158','pc')">
 									<option value="basic" selected disabled hidden>상품옵션선택</option>
-									<option value="Black-Black-Brass||166100||56068" >Black-Black-Brass   (66,100원)</option>
-									<option value="Black-Black-Copper||182600||56069" >Black-Black-Copper   (182,600원)</option>
-									<option value="Lilac-Lilac-White||109850||56070" >Lilac-Lilac-White   (109,850원)</option>
-									<option value="Pink-Pink-White||214500||56071" >Pink-Pink-White   (214,500원)</option>
+									<% for(int i=0;i<productStock.size();i++) { 
+										String op=productStock.get(i).getpS_Option();
+										int price=productStock.get(i).getpS_price();
+									%>
+									<option value="<%=op %>||<%=price %>||<%=56068+i %>" ><%=op %>   (<%=String.format("%,d", price) %>원)</option>
+									<% } %>
 								</select>
 							</div>
 							
@@ -168,13 +215,13 @@ function selected_item(io_type, io_id, io_value,ver){
   opt += '<input type="hidden" name="io_stock" value="1">';
   opt += '<div id="item_select_name" class="item_select_text">'+str[0]+'</div>';
   opt += '<div class="item_select_num">';
-  opt += '<span><a href="javascript:"><img src="../assets/img/item_min.png" alt="빼기" width="30px" onclick="item_minus('+str[2]+','+str[1]+')"></a></span>';
+  opt += '<span><a href="javascript:"><img src="assets/img/detail/ui/item_min.png" alt="빼기" width="30px" onclick="item_minus('+str[2]+','+str[1]+')"></a></span>';
   opt += '<span class="item_num">';
-  opt += '<input type="number"  id="ct_qty'+str[2]+'" name="ct_qty[1710310953][]" value="1">';
+  opt += '<input type="number" class="count" id="ct_qty'+str[2]+'" name="ct_qty[1710310953][]" value="1">';
   opt += '</span>';
-  opt += '<span><a href="javascript:"><img src="../assets/img/item_plus.png" alt="더하기" width="30px" onclick="item_plus('+str[2]+','+str[1]+')"></a></span>';
+  opt += '<span><a href="javascript:"><img src="assets/img/detail/ui/item_plus.png" alt="더하기" width="30px" onclick="item_plus('+str[2]+','+str[1]+')"></a></span>';
   opt += '</div>';
-  opt += '<div class="item_select_price button price_font">'+numberWithCommas(str[1])+'<span>원</span>'+'<img src="../assets/img/layer_close.png" alt="옵션 삭제('+str[2]+')" onclick="option_delete('+str[2]+','+str[1]+')" ></div>';
+  opt += '<div class="item_select_price button price_font">'+numberWithCommas(str[1])+'<span>원</span>'+'<img src="assets/img/detail/ui/layer_close.png" alt="옵션 삭제('+str[2]+')" onclick="option_delete('+str[2]+','+str[1]+')" ></div>';
   opt += '</div>';
 
   
@@ -345,35 +392,4 @@ $(document).ready(function(){
     });
 });
 
-</script>  
-
-<%-- Footer 영역 --%>
-	<div id="footer"> <jsp:include page="../footer.jsp" /> </div>
-
-	<!-- jQuery -->
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-	<!-- 부트스트랩 offcanvas -->
-	<script
-		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-		integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-		crossorigin="anonymous"
-	></script>
-
-	<!-- 부트스트랩 JS -->
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
-		integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
-		crossorigin="anonymous"
-	></script>
-	
-
-<!-- jQuery -->
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-		crossorigin="anonymous"></script>
-</body>
-</html>
+</script>
