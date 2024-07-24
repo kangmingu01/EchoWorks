@@ -66,8 +66,7 @@
 </head>
 <body class="sijunBody">
     <div class="container">
-        <form id="cartForm" name="cartForm" method="post" action="<%=request.getContextPath()%>/index?workgroup=cart&work=cart_action.jsp";>
-        
+        <form id="cartForm" name="cartForm" method="post" action="<%=request.getContextPath()%>/cart/cart_action.jsp">
             <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-4">
                 <span style="font-size: 16pt; font-weight: bold;">장바구니</span>
                 <span class="home">홈 > 장바구니</span>
@@ -98,7 +97,7 @@
                                 <td><input type="checkbox" class="check-item" name="cart_no" value="<%= cart.getCart_no() %>" /></td>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <img class="cart-image" src="<%=request.getContextPath()%>/assets/img/<%= ProductDAO.getDAO().selectProductByNo(stock.getpS_pNo()).getPRODUCT_IMG() %>.jpg"/>
+                                        <img class="cart-image" src="assets/img/<%= ProductDAO.getDAO().selectProductByNo(stock.getpS_pNo()).getPRODUCT_IMG() %>.jpg"/>
                                         <span style="margin-left: 10px; font-weight: bold;"><%= stock.getpS_Option() %></span>
                                     </div>
                                 </td>
@@ -182,11 +181,15 @@
         document.getElementById('delete-selected').addEventListener('click', function() {
             var checkboxes = document.querySelectorAll('.check-item:checked');
             if (checkboxes.length > 0) {
-
-            	var form = document.createElement("form");
+                var form = document.createElement("form");
                 form.method = "post";
-                form.action = "<%=request.getContextPath()%>/index.jsp?workgroup=cart&work=cart_action"; // 여기도 경로를 확인
-                                                        																	
+                form.action = "<%=request.getContextPath()%>/cart/cart_action.jsp";
+                var returnUrlInput = document.createElement("input");
+                returnUrlInput.type = "hidden";
+                returnUrlInput.name = "returnUrl";
+                returnUrlInput.value = "<%=request.getContextPath()%>/index.jsp?workgroup=cart&work=cart";
+                form.appendChild(returnUrlInput);
+
                 var actionInput = document.createElement("input");
                 actionInput.type = "hidden";
                 actionInput.name = "action";
@@ -215,8 +218,14 @@
                 var newTotalPrice = newQuantity * unitPrice;
                 cartRow.querySelector('.total-price').textContent = formatPrice(newTotalPrice) + '원';
 				
-				
-                updateSummary();
+                var form = document.createElement("form");
+                form.method = "post";
+                form.action = "<%=request.getContextPath()%>/cart/cart_action.jsp";
+                var returnUrlInput = document.createElement("input");
+                returnUrlInput.type = "hidden";
+                returnUrlInput.name = "returnUrl";
+                returnUrlInput.value = "<%=request.getContextPath()%>/index.jsp?workgroup=cart&work=cart";
+                form.appendChild(returnUrlInput);
                 											 
                 var actionInput = document.createElement("input");
                 actionInput.type = "hidden";
@@ -238,6 +247,8 @@
 
                 document.body.appendChild(form);
                 form.submit();
+				
+                updateSummary();
             });
         });
 

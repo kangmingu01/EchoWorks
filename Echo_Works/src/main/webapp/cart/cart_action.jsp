@@ -11,19 +11,18 @@
     MemberDTO loginMember = (MemberDTO) currentSession.getAttribute("loginMember");
 
     if (loginMember == null) {
-        out.println("<script>alert('로그인이 필요합니다.');location.href='index.jsp?workgroup=member&work=member_login';</script>");
+        out.println("<script>alert('로그인이 필요합니다.');location.href='" + request.getContextPath() + "/index.jsp?workgroup=member&work=member_login';</script>");
         return;
     }
 
     // 파라미터 처리
     String action = request.getParameter("action");
     CartDAO dao = CartDAO.getDao();
+    String returnUrl = request.getParameter("returnUrl");
 
     if (action != null) {
-    
-    	try {
-        	
-            if  (action.equals("add")) {
+        try {
+            if (action.equals("add")) {
                 int psno = Integer.parseInt(request.getParameter("psno"));
                 int num = Integer.parseInt(request.getParameter("num"));
                 int member = loginMember.getMemberNum(); // 세션에서 가져옴
@@ -34,14 +33,14 @@
                 cart.setCart_num(num);
 
                 dao.addCart(cart);
-                response.sendRedirect("cart.jsp"); // 장바구니 페이지로 리디렉션
+                response.sendRedirect(returnUrl);
 
             } else if (action.equals("update")) {
                 int cartNo = Integer.parseInt(request.getParameter("cart_no"));
                 int quantity = Integer.parseInt(request.getParameter("quantity"));
 
                 dao.updateCart(cartNo, quantity);
-                response.sendRedirect("cart.jsp");
+                response.sendRedirect(returnUrl);
 
             } else if (action.equals("delete")) {
                 // 여러 개의 cart_no 값을 배열로 받아옴
@@ -54,24 +53,20 @@
                     }
                 }
 
-                pageContext.forward("cart.jsp");
+                response.sendRedirect(returnUrl);
 
-
-				
-             
-               
             } else if (action.equals("clear")) {
                 int memberId = loginMember.getMemberNum(); // 세션에서 가져옴
 
                 dao.clearCart(memberId);
-              
-                response.sendRedirect("cart.jsp");
+                response.sendRedirect(returnUrl);
+
             } else if (action.equals("checkout")) {
                 // 선택된 상품 주문 처리 로직 추가
                 String[] selectedCartNos = request.getParameterValues("cart_no");
                 if (selectedCartNos != null) {
                     // 주문 처리 로직을 여기에 추가합니다.
-                    response.sendRedirect("payment.jsp");
+                    response.sendRedirect(request.getContextPath() + "/payment/payment.jsp");
                 } else {
                     out.println("<script>alert('선택된 상품이 없습니다.');history.back();</script>");
                 }
