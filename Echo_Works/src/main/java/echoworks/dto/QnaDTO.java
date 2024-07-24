@@ -11,11 +11,12 @@ public class QnaDTO {
     private Date qnaDate;     // 문의작성일
     private String qnaAnswer; // 답변내용
     private Date qnaAnsDate;  // 답변날짜
+    private int qnaStatus;    // 글 상태
     
     public QnaDTO() {
 		// TODO Auto-generated constructor stub
 	}
-    
+     
     
     public int getQnaNo() {
         return qnaNo;
@@ -80,4 +81,14 @@ public class QnaDTO {
     public void setQnaAnsDate(Date qnaAnsDate) {
         this.qnaAnsDate = qnaAnsDate;
     }
+
+
+	public int getQnaStatus() {
+		return qnaStatus;
+	}
+
+	public void setQnaStatus(int qnaStatus) {
+		this.qnaStatus = qnaStatus;
+	}
+    
 }

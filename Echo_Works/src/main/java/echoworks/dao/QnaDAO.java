@@ -28,7 +28,7 @@ public class QnaDAO extends JdbcDAO {
 		try {
 			con = getConnection();
 			String sql = "insert into qna (qna_no, qna_member_no, qna_product_no, qna_title, qna_content, qna_date) "
-					+ "values (qna_seq.nextval, ?, ?, ?, ?, sysdate)";
+					+ "values (qna_seq.nextval, ?, ?, ?, ?, sysdate,1)";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, qna.getQnaMemberNo());
 			pstmt.setInt(2, qna.getQnaProductNo());
@@ -70,6 +70,7 @@ public class QnaDAO extends JdbcDAO {
 				qna.setQnaDate(rs.getDate("qna_date"));
 				qna.setQnaAnswer(rs.getString("qna_answer"));
 				qna.setQnaAnsDate(rs.getDate("qna_ansdate"));
+				
 			}
 		} catch (SQLException e) {
 			System.out.println("[에러] selectQnaByNo() 메서드의 SQL 오류 = " + e.getMessage());
@@ -79,7 +80,7 @@ public class QnaDAO extends JdbcDAO {
 		return qna;
 	}
 
-	// 특정 회원의 모든 질문을 조회
+	// 특정 회원의 모든 질문을 조회(마이페이지 qna내역)
 	public List<QnaDTO> selectQnaByMemberNo(int memberNo) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -105,7 +106,7 @@ public class QnaDAO extends JdbcDAO {
 				qna.setQnaAnswer(rs.getString("qna_answer"));
 				qna.setQnaAnsDate(rs.getDate("qna_ansdate"));
 
-				qnaList.add(qna);
+				qnaList.add(qna); 
 
 			}
 		} catch (SQLException e) {
@@ -125,7 +126,7 @@ public class QnaDAO extends JdbcDAO {
 		try {
 			con = getConnection();
 			String sql = "select qna_no, qna_member_num,qna_product_no, qna_title,qna_content,"
-					+ "qna_date, qna_answer, qna_ansdate from qna order by qna_no desc";
+					+ "qna_date, qna_answer, qna_ansdate, qna_status from qna order by qna_no desc";
 			pstmt = con.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 
@@ -139,6 +140,7 @@ public class QnaDAO extends JdbcDAO {
 				qna.setQnaDate(rs.getDate("qna_date"));
 				qna.setQnaAnswer(rs.getString("qna_answer"));
 				qna.setQnaAnsDate(rs.getDate("qna_ansdate"));
+				qna.setQnaStatus(rs.getInt("qna_status"));
 
 				qnaList.add(qna);
 
