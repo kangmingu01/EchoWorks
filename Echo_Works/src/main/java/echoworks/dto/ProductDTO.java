@@ -11,7 +11,7 @@ PRODUCT_IMG_DETAIL             VARCHAR2(200)
 PRODUCT_PRICE                  NUMBER        
 PRODUCT_CATEGORY_MAIN          VARCHAR2(50)  
 PRODUCT_CATEGORY_SUB           VARCHAR2(50)   
-  
+PRODUCT_VIDEO_URL              VARCHAR2(100) 
   
  */
 public class ProductDTO {
@@ -22,13 +22,14 @@ public class ProductDTO {
 	private int PRODUCT_PRICE;
 	private String PRODUCT_CATEGORY_MAIN;
 	private String PRODUCT_CATEGORY_SUB;
+	private String PRODUCT_VIDEO_URL;
 	
 	public ProductDTO() {
 		// TODO Auto-generated constructor stub
 	}
 
 	public ProductDTO(int pRODUCT_NO, String pRODUCT_NAME, String pRODUCT_IMG, String pRODUCT_IMG_DETAIL,
-			int pRODUCT_PRICE, String pRODUCT_CATEGORY_MAIN, String pRODUCT_CATEGORY_SUB) {
+			int pRODUCT_PRICE, String pRODUCT_CATEGORY_MAIN, String pRODUCT_CATEGORY_SUB, String pRODUCT_VIDEO_URL) {
 		super();
 		PRODUCT_NO = pRODUCT_NO;
 		PRODUCT_NAME = pRODUCT_NAME;
@@ -37,6 +38,7 @@ public class ProductDTO {
 		PRODUCT_PRICE = pRODUCT_PRICE;
 		PRODUCT_CATEGORY_MAIN = pRODUCT_CATEGORY_MAIN;
 		PRODUCT_CATEGORY_SUB = pRODUCT_CATEGORY_SUB;
+		PRODUCT_VIDEO_URL = pRODUCT_VIDEO_URL;
 	}
 
 	public int getPRODUCT_NO() {
@@ -94,7 +96,14 @@ public class ProductDTO {
 	public void setPRODUCT_CATEGORY_SUB(String pRODUCT_CATEGORY_SUB) {
 		PRODUCT_CATEGORY_SUB = pRODUCT_CATEGORY_SUB;
 	}
-	
+
+	public String getPRODUCT_VIDEO_URL() {
+		return PRODUCT_VIDEO_URL;
+	}
+
+	public void setPRODUCT_VIDEO_URL(String pRODUCT_VIDEO_URL) {
+		PRODUCT_VIDEO_URL = pRODUCT_VIDEO_URL;
+	}
 	
 	
 }

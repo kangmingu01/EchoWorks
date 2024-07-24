@@ -131,7 +131,7 @@ MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 						%>
 						<a href="#마이페이지" class="text-decoration-none text-black fs-5">
 							<i class="fa-regular fa-circle-user"></i>
-						</a> <a href="#장바구니" class="text-decoration-none text-black fs-5">
+						</a> <a href="<%=request.getContextPath()%>/index.jsp?workgroup=cart&work=cart" class="text-decoration-none text-black fs-5">
 							<i class="fa-solid fa-cart-shopping"></i>
 						</a>
 						<%
@@ -165,10 +165,10 @@ MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 					> Keyboards </a>
 						<ul class="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
 							<li><a class="dropdown-item text-white key_inStock"
-								name="key_inStock" href="<%=request.getContextPath()%>/index.jsp?workgroup=pd&work=product&cateOne=keyboards&cateTwo=key_inStock"
+								name="key_inStock" href="<%=request.getContextPath()%>/index.jsp?workgroup=product&work=product&cateOne=keyboards&cateTwo=key_inStock"
 							>KeyBoard In-Stock</a></li>
 							<li><a class="dropdown-item text-white key_group"
-								name="key_group" href="<%=request.getContextPath()%>/index.jsp?workgroup=pd&work=product&cateOne=keyboards&cateTwo=key_group"
+								name="key_group" href="<%=request.getContextPath()%>/index.jsp?workgroup=product&work=product&cateOne=keyboards&cateTwo=key_group"
 							>KeyBoard Group-buy</a></li>
 						</ul></li>
 					<li class="nav-item dropdown mx-2">
@@ -179,16 +179,16 @@ MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 						onclick="handleClick(event, 'switches')"
 					> Switches </a>
 						<ul class="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
-							<li><a class="dropdown-item text-white linear" href="<%=request.getContextPath()%>/index.jsp?workgroup=pd&work=product&cateOne=switches&cateTwo=linear"
+							<li><a class="dropdown-item text-white linear" href="<%=request.getContextPath()%>/index.jsp?workgroup=product&work=product&cateOne=switches&cateTwo=linear"
 								name="linear"
 							>리니어</a></li>
-							<li><a class="dropdown-item text-white tactile" href="<%=request.getContextPath()%>/index.jsp?workgroup=pd&work=product&cateOne=switches&cateTwo=tactile"
+							<li><a class="dropdown-item text-white tactile" href="<%=request.getContextPath()%>/index.jsp?workgroup=product&work=product&cateOne=switches&cateTwo=tactile"
 								name="tactile"
 							>택타일</a></li>
-							<li><a class="dropdown-item text-white low" href="<%=request.getContextPath()%>/index.jsp?workgroup=pd&work=product&cateOne=switches&cateTwo=low"
+							<li><a class="dropdown-item text-white low" href="<%=request.getContextPath()%>/index.jsp?workgroup=product&work=product&cateOne=switches&cateTwo=low"
 								name="low "
 							>저소음</a></li>
-							<li><a class="dropdown-item text-white magnet" href="<%=request.getContextPath()%>/index.jsp?workgroup=pd&work=product&cateOne=switches&cateTwo=magnet"
+							<li><a class="dropdown-item text-white magnet" href="<%=request.getContextPath()%>/index.jsp?workgroup=product&work=product&cateOne=switches&cateTwo=magnet"
 								name="magnet"
 							>마그네틱</a></li>
 						</ul>
@@ -201,21 +201,21 @@ MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 						onclick="handleClick(event, 'keycaps')"
 					> Keycaps </a>
 						<ul class="dropdown-menu bg-dark" aria-labelledby="navbarDropdown">
-							<li><a class="dropdown-item text-white sw" href="<%=request.getContextPath()%>/index.jsp?workgroup=pd&work=product&cateOne=keycaps&cateTwo=sw"
+							<li><a class="dropdown-item text-white sw" href="<%=request.getContextPath()%>/index.jsp?workgroup=product&work=product&cateOne=keycaps&cateTwo=sw"
 								name="sw"
 							>SW</a></li>
-							<li><a class="dropdown-item text-white fbb" href="<%=request.getContextPath()%>/index.jsp?workgroup=pd&work=product&cateOne=keycaps&cateTwo=fbb"
+							<li><a class="dropdown-item text-white fbb" href="<%=request.getContextPath()%>/index.jsp?workgroup=product&work=product&cateOne=keycaps&cateTwo=fbb"
 								name="fbb"
 							>FBB</a></li>
-							<li><a class="dropdown-item text-white gmk" href="<%=request.getContextPath()%>/index.jsp?workgroup=pd&work=product&cateOne=keycaps&cateTwo=gmk"
+							<li><a class="dropdown-item text-white gmk" href="<%=request.getContextPath()%>/index.jsp?workgroup=product&work=product&cateOne=keycaps&cateTwo=gmk"
 								name="gmk"
 							>GMK</a></li>
-							<li><a class="dropdown-item text-white hammerworks" href="<%=request.getContextPath()%>/index.jsp?workgroup=pd&work=product&cateOne=keycaps&cateTwo=hammerworks"
+							<li><a class="dropdown-item text-white hammerworks" href="<%=request.getContextPath()%>/index.jsp?workgroup=product&work=product&cateOne=keycaps&cateTwo=hammerworks"
 								name="hammerworks"
 							>Hammerworks</a></li>
 						</ul>
 					</li>
-					<li class="nav-item mx-2"><a href="<%=request.getContextPath()%>/index.jsp?workgroup=pd&work=product&cateOne=deskpads" class="nav-link deskpads"
+					<li class="nav-item mx-2"><a href="<%=request.getContextPath()%>/index.jsp?workgroup=product&work=product&cateOne=deskpads" class="nav-link deskpads"
 						class="nav-link deskpads" name="deskpads" onclick="">Deskpads</a></li>
 					<!-- onclick="window.location.href='product.html#deskpads'" -->
 				</ul>
@@ -247,7 +247,7 @@ MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 						<a href="#마이페이지" class="text-decoration-none text-black fs-5">
 							<!-- <i class="fa-regular fa-circle-user" style="color: #ffffff"></i> -->
 							My
-						</a> <a href="#장바구니" class="text-decoration-none text-black fs-5">
+						</a> <a href="<%=request.getContextPath()%>/index.jsp?workgroup=cart&work=cart" class="text-decoration-none text-black fs-5">
 							<!-- <i class="fa-solid fa-cart-shopping" style="color: #ffffff"></i> -->
 							Cart
 						</a>
@@ -274,7 +274,7 @@ MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 			// lg 사이즈 이상
 			event.preventDefault();
 			//window.location.href = `product.html#${category}`;
-			location.href="<%=request.getContextPath()%>/index.jsp?workgroup=pd&work=product&cateOne="+category;
+			location.href="<%=request.getContextPath()%>/index.jsp?workgroup=product&work=product&cateOne="+category;
 
 		}
 	}

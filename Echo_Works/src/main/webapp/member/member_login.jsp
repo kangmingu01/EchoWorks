@@ -31,7 +31,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Login Form</title>
     <style>
-
         .form-container {
             width: 100%;
             max-width: 450px;
@@ -137,11 +136,12 @@
         <div id="message" class="result-message" style="<%= message.isEmpty() ? "display:none;" : "" %>"><%=message %></div>
     </form>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {
         $("#exampleInputId").focus();
 
-        $("#login_btn").click(function() {
+        function validateForm() {
             var isValid = true;
 
             if($("#exampleInputId").val().trim() == "") {
@@ -162,8 +162,21 @@
                 $("#passwordError").text("");
             }
 
-            if(isValid) {
+            return isValid;
+        }
+
+        $("#login_btn").click(function() {
+            if(validateForm()) {
                 $("#loginForm").submit();
+            }
+        });
+
+        // Enter key 이벤트 추가
+        $("#loginForm").keypress(function(event) {
+            if (event.keyCode === 13) { // Enter key의 keyCode는 13입니다.
+                if(validateForm()) {
+                    $("#loginForm").submit();
+                }
             }
         });
     });

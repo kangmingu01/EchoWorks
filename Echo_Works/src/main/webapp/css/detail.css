@@ -26,7 +26,7 @@
 .shop_item_select_box .shop_item_select:first-child{margin:0;}
 .shop_item_select_box .shop_item_select{background:#F8F8F8; padding:20px 24px; border-radius:5px; margin:10px 0 0; position:relative;}
 .shop_item_select_box .shop_item_select .item_select_text{font-size:15px; margin:0 0 10px; line-height:22px; max-height:45px; overflow:hidden; box-sizing:content-box;}
-.shop_item_select_box .shop_item_select .item_select_num .item_num input{width:40px; height:30px; font-size:14px; color:#222; font-family:'Tahoma', sans-serif; border:0; border-top:1px solid #ccc; border-bottom:1px solid #ccc; text-align:center; top:1px; position:relative; }
+.shop_item_select_box .shop_item_select .item_select_num .item_num > input{font-size:14px; color:#222; border:0; border-top:1px solid #ccc; border-bottom:1px solid #ccc; text-align:center; position:relative; }
 .shop_item_select_box .shop_item_select .item_select_price{font-size:18px; font-weight:500; font-family:'Tahoma', sans-serif; line-height:30px; position:absolute; bottom:20px; right:24px;}
 .shop_item_select_box .shop_item_select .item_select_price span{font-size:16px; font-weight:500;}
 .shop_item_select_box .shop_item_select .item_select_price img{padding:0 0 0 12px; vertical-align:baseline; cursor:pointer;}

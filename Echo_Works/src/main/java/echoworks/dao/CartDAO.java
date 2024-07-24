@@ -10,6 +10,20 @@ import java.util.List;
 import echoworks.dto.CartDTO;
 
 public class CartDAO extends JdbcDAO {
+	private static CartDAO _dao;
+	
+	public CartDAO() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	static {
+		_dao=new CartDAO();
+	}
+	
+	public static CartDAO geDao() {
+		return _dao;
+	}
+	
     // 카트에 상품 추가
     public void addCart(CartDTO cart) throws SQLException {
         String sql = "INSERT INTO CART (CART_NO, CART_PSNO, CART_MEMBER, CART_NUM) VALUES (CART_SEQ.NEXTVAL, ?, ?, ?)";
