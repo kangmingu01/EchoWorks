@@ -245,7 +245,7 @@ MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 					<a href="index.jsp?workgroup=member&work=member_login"
 						class="text-decoration-none text-white fs-5"
 					> Login </a>
-					<a href="<%=request.getContextPath()%>/index.jsp?workgroup=qna&work=detail_qna_list"
+					<a href="<%=request.getContextPath()%>/index.jsp?workgroup=qna&work=detail_qna"
 						class="text-decoration-none text-white fs-5"
 				> QnA</a>
 					<a href="<%=request.getContextPath()%>/index.jsp?workgroup=detail&work=detail"
