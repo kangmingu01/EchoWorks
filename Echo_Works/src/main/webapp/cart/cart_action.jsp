@@ -42,9 +42,16 @@
                 response.sendRedirect("cart.jsp");
 
             } else if (action.equals("delete")) {
-                int cartNo = Integer.parseInt(request.getParameter("cart_no"));
+                // 여러 개의 cart_no 값을 배열로 받아옴
+                String[] cartNos = request.getParameterValues("cart_no");
 
-                dao.deleteCart(cartNo);
+                if (cartNos != null) {
+                    for (String cartNo : cartNos) {
+                        int cartNoInt = Integer.parseInt(cartNo);
+                        dao.deleteCart(cartNoInt);
+                    }
+                }
+
                 response.sendRedirect("cart.jsp");
 
             } else if (action.equals("clear")) {
