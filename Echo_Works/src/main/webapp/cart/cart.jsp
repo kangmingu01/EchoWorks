@@ -137,7 +137,7 @@
                 </div>
                 <div class="text-center">
                     <button type="submit" class="btn btn-default" name="action" value="checkout">선택상품주문</button>
-                    <button class="btn btn-default" id="productClear">쇼핑계속하기</button>
+                    <button type="button" class="btn btn-default" id="productClear">쇼핑계속하기</button>
                 </div>
                 <br/><br/>
                 <div class="border p-3 mb-3">
@@ -268,6 +268,10 @@
 
         // 페이지 로드 시 요약 업데이트
         document.addEventListener('DOMContentLoaded', updateSummary);
+
+        document.getElementById('productClear').addEventListener('click', function() {
+            window.location.href = "<%=request.getContextPath()%>/index.jsp";
+        });
     </script>
 </body>
 </html>
