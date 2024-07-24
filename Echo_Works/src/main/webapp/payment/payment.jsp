@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
 <%@ page import="echoworks.dao.CartDAO" %>
@@ -11,20 +10,20 @@
 <%@ page import="echoworks.dao.ProductDAO" %>
 
 <%
-    // ·Î±×ÀÎµÈ »ç¿ëÀÚ Á¤º¸ °¡Á®¿À±â
+    // ë¡œê·¸ì¸ëœ ì‚¬ìš©ì ì •ë³´ ê°€ì ¸ì˜¤ê¸°
     HttpSession currentSession = request.getSession();
     MemberDTO loginMember = (MemberDTO) currentSession.getAttribute("loginMember");
 
     if (loginMember == null) {
-        out.println("<script>alert('·Î±×ÀÎÀÌ ÇÊ¿äÇÕ´Ï´Ù.');location.href='index.jsp?workgroup=member&work=member_login';</script>");
+        out.println("<script>alert('ë¡œê·¸ì¸ì´ í•„ìš”í•©ë‹ˆë‹¤.');location.href='index.jsp?workgroup=member&work=member_login';</script>");
         return;
     }
 
-    // Àå¹Ù±¸´Ï¿¡¼­ ¼±ÅÃÇÑ »óÇ° ¹øÈ£ ¸ñ·ÏÀ» °¡Á®¿È
+    // ì¥ë°”êµ¬ë‹ˆì—ì„œ ì„ íƒí•œ ìƒí’ˆ ë²ˆí˜¸ ëª©ë¡ì„ ê°€ì ¸ì˜´
     String[] selectedCartNos = request.getParameterValues("cart_no");
 
     if (selectedCartNos == null || selectedCartNos.length == 0) {
-        out.println("<script>alert('¼±ÅÃÇÑ »óÇ°ÀÌ ¾ø½À´Ï´Ù.');location.href='cart.jsp';</script>");
+        out.println("<script>alert('ì„ íƒí•œ ìƒí’ˆì´ ì—†ìŠµë‹ˆë‹¤.');location.href='cart.jsp';</script>");
         return;
     }
 
@@ -36,14 +35,14 @@
     }
 
     int totalProductPrice = 0;
-    int shippingCost = 2500; // °íÁ¤ ¹è¼Ûºñ
+    int shippingCost = 2500; // ê³ ì • ë°°ì†¡ë¹„
 %>
 
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>°áÁ¦ÇÏ±â</title>
+    <title>ê²°ì œí•˜ê¸°</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -91,14 +90,14 @@
 </head>
 <body>
 <div class="container">
-    <h2 class="section-title text-center">°áÁ¦ÇÏ±â</h2>
-    <form id="paymentForm" name="paymentForm" method="post" action="<%=request.getContextPath() %>/index.jsp?workgroup=payment&work=payment_complete" >
+    <h2 class="section-title text-center">ê²°ì œí•˜ê¸°</h2>
+    <form id="paymentForm" name="paymentForm" method="post" action="<%=request.getContextPath() %>/payment/payment_action.jsp?action=pay" >
    
     <div class="row">
         <div class="col-md-7">
             <div class="card">
                 <div class="card-header">
-                    ÁÖ¹® »óÇ° Á¤º¸
+                    ì£¼ë¬¸ ìƒí’ˆ ì •ë³´
                 </div>
                 <div class="card-body">
                     <%
@@ -106,17 +105,19 @@
                             ProductStockDTO stock = ProductStockDAO.getDAO().selectProductStock(cart.getCart_psno());
                             
                             if (stock != null) {
-                                int unitPrice = stock.getpS_price(); // product_stock Å×ÀÌºí¿¡¼­ °¡°İ °¡Á®¿À±â
+                                int unitPrice = stock.getpS_price(); // product_stock í…Œì´ë¸”ì—ì„œ ê°€ê²© ê°€ì ¸ì˜¤ê¸°
                                 int totalPrice = unitPrice * cart.getCart_num();
                                 totalProductPrice += totalPrice;
                     %>
                     <div class="d-flex align-items-center">
-                        <img src="../assets/img/<%= ProductDAO.getDAO().selectProductByNo(stock.getpS_pNo()).getPRODUCT_IMG() %>.jpg" alt="»óÇ° ÀÌ¹ÌÁö" style="width: 100px; height: 100px; margin-right: 20px;">
+                        <img src="../assets/img/<%= ProductDAO.getDAO().selectProductByNo(stock.getpS_pNo()).getPRODUCT_IMG() %>.jpg" alt="ìƒí’ˆ ì´ë¯¸ì§€" style="width: 100px; height: 100px; margin-right: 20px;">
                         <div>
                             <p><%= stock.getpS_Option() %></p>
-                            <p><%= unitPrice %>¿ø</p>
-                            <p>¼ö·®: <%= cart.getCart_num() %></p>
-                            <p>ÃÑ °¡°İ: <%= totalPrice %>¿ø</p>
+                            <p><%= unitPrice %>ì›</p>
+                            <p>ìˆ˜ëŸ‰: <%= cart.getCart_num() %></p>
+                            <p>ì´ ê°€ê²©: <%= totalPrice %>ì›</p>
+                            <input type="hidden" name="psno" value="<%= cart.getCart_psno() %>">
+                            <input type="hidden" name="num" value="<%= cart.getCart_num() %>">
                         </div>
                     </div>
                     <hr>
@@ -129,7 +130,7 @@
 
             <div class="card">
                 <div class="card-header">
-                    ÁÖ¹®ÀÚ Á¤º¸
+                    ì£¼ë¬¸ì ì •ë³´
                 </div>
                 <div class="card-body">
                     <div class="mb-3">
@@ -141,21 +142,21 @@
                     <div class="mb-3">
                         <input type="email" class="form-control" id="ordererEmail" value="<%= loginMember.getMemberEmail() %>" disabled>
                     </div>
-                    <button class="btn btn-outline-secondary" id="editOrdererInfo">¼öÁ¤</button>
+                    <button class="btn btn-outline-secondary" id="editOrdererInfo">ìˆ˜ì •</button>
                 </div>
             </div>
 
             <div class="card">
                 <div class="card-header">
-                    ¹è¼Û Á¤º¸
+                    ë°°ì†¡ ì •ë³´
                 </div>
                 <div class="card-body">
                     <ul class="nav nav-tabs" id="deliveryTab" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" id="existing-address-tab" data-bs-toggle="tab" href="#existing-address" role="tab" aria-controls="existing-address" aria-selected="true">¹è¼ÛÁö ¼±ÅÃ</a>
+                            <a class="nav-link active" id="existing-address-tab" data-bs-toggle="tab" href="#existing-address" role="tab" aria-controls="existing-address" aria-selected="true">ë°°ì†¡ì§€ ì„ íƒ</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="new-address-tab" data-bs-toggle="tab" href="#new-address" role="tab" aria-controls="new-address" aria-selected="false">½Å±Ô ÀÔ·Â</a>
+                            <a class="nav-link" id="new-address-tab" data-bs-toggle="tab" href="#new-address" role="tab" aria-controls="new-address" aria-selected="false">ì‹ ê·œ ì…ë ¥</a>
                         </li>
                     </ul>
                     <div class="tab-content" id="deliveryTabContent">
@@ -166,49 +167,49 @@
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="sameAsOrderer">
                                 <label class="form-check-label" for="sameAsOrderer">
-                                    ÁÖ¹®ÀÚ Á¤º¸¿Í µ¿ÀÏ
+                                    ì£¼ë¬¸ì ì •ë³´ì™€ ë™ì¼
                                 </label>
                             </div>
                             <div class="mt-3">
                                 <div class="mb-3">
-                                    <label for="recipient" class="form-label">¼ö·ÉÀÎ</label>
-                                    <input type="text" class="form-control" id="recipient" placeholder="2±ÛÀÚ ÀÌ»ó ÀÔ·ÂÇØÁÖ¼¼¿ä">
+                                    <label for="recipient" class="form-label">ìˆ˜ë ¹ì¸</label>
+                                    <input type="text" class="form-control" id="recipient" placeholder="2ê¸€ì ì´ìƒ ì…ë ¥í•´ì£¼ì„¸ìš”">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="contact" class="form-label">¿¬¶ôÃ³</label>
-                                    <input type="text" class="form-control" id="contact" placeholder="ÀüÈ­¹øÈ£¸¦ ÀÔ·ÂÇÏ¼¼¿ä">
+                                    <label for="contact" class="form-label">ì—°ë½ì²˜</label>
+                                    <input type="text" class="form-control" id="contact" placeholder="ì „í™”ë²ˆí˜¸ë¥¼ ì…ë ¥í•˜ì„¸ìš”">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="postcode" class="form-label">¿ìÆí¹øÈ£</label>
+                                    <label for="postcode" class="form-label">ìš°í¸ë²ˆí˜¸</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" id="postcode" placeholder="¿ìÆí¹øÈ£">
-                                        <button class="btn btn-outline-secondary" type="button" id="findPostcode">ÁÖ¼ÒÃ£±â</button>
+                                        <input type="text" class="form-control" id="postcode" placeholder="ìš°í¸ë²ˆí˜¸">
+                                        <button class="btn btn-outline-secondary" type="button" id="findPostcode">ì£¼ì†Œì°¾ê¸°</button>
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="address" class="form-label">ÁÖ¼Ò</label>
-                                    <input type="text" class="form-control" id="address" placeholder="ÁÖ¼Ò">
+                                    <label for="address" class="form-label">ì£¼ì†Œ</label>
+                                    <input type="text" class="form-control" id="address" placeholder="ì£¼ì†Œ">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="detailedAddress" class="form-label">»ó¼¼ÁÖ¼Ò</label>
-                                    <input type="text" class="form-control" id="detailedAddress" placeholder="»ó¼¼ÁÖ¼Ò">
+                                    <label for="detailedAddress" class="form-label">ìƒì„¸ì£¼ì†Œ</label>
+                                    <input type="text" class="form-control" id="detailedAddress" placeholder="ìƒì„¸ì£¼ì†Œ">
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="addToAddressBook">
                                     <label class="form-check-label" for="addToAddressBook">
-                                        ¹è¼ÛÁö ¸ñ·Ï¿¡ Ãß°¡
+                                        ë°°ì†¡ì§€ ëª©ë¡ì— ì¶”ê°€
                                     </label>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="deliveryMemo" class="form-label">¹è¼Û¸Ş¸ğ</label>
+                                    <label for="deliveryMemo" class="form-label">ë°°ì†¡ë©”ëª¨</label>
                                     <select class="form-select" id="deliveryMemo">
-                                        <option value="">¹è¼Û¸Ş¸ğ¸¦ ¼±ÅÃÇØ ÁÖ¼¼¿ä.</option>
-                                        <option value="¹® ¾Õ¿¡ ³öÁÖ¼¼¿ä">¹® ¾Õ¿¡ ³öÁÖ¼¼¿ä</option>
-                                        <option value="°æºñ½Ç¿¡ ¸Ã°ÜÁÖ¼¼¿ä">°æºñ½Ç¿¡ ¸Ã°ÜÁÖ¼¼¿ä</option>
-                                        <option value="Á÷Á¢ ¹Ş¾Æ¾ß ÇÕ´Ï´Ù">Á÷Á¢ ¹Ş¾Æ¾ß ÇÕ´Ï´Ù</option>
-                                        <option value="Á÷Á¢ÀÔ·Â">Á÷Á¢ÀÔ·Â</option>
+                                        <option value="">ë°°ì†¡ë©”ëª¨ë¥¼ ì„ íƒí•´ ì£¼ì„¸ìš”.</option>
+                                        <option value="ë¬¸ ì•ì— ë†”ì£¼ì„¸ìš”">ë¬¸ ì•ì— ë†”ì£¼ì„¸ìš”</option>
+                                        <option value="ê²½ë¹„ì‹¤ì— ë§¡ê²¨ì£¼ì„¸ìš”">ê²½ë¹„ì‹¤ì— ë§¡ê²¨ì£¼ì„¸ìš”</option>
+                                        <option value="ì§ì ‘ ë°›ì•„ì•¼ í•©ë‹ˆë‹¤">ì§ì ‘ ë°›ì•„ì•¼ í•©ë‹ˆë‹¤</option>
+                                        <option value="ì§ì ‘ì…ë ¥">ì§ì ‘ì…ë ¥</option>
                                     </select>
-                                    <input type="text" class="form-control mt-2 hidden" id="deliveryMemoInput" placeholder="¹è¼Û¸Ş¸ğ¸¦ ÀÔ·ÂÇØ ÁÖ¼¼¿ä">
+                                    <input type="text" class="form-control mt-2 hidden" id="deliveryMemoInput" placeholder="ë°°ì†¡ë©”ëª¨ë¥¼ ì…ë ¥í•´ ì£¼ì„¸ìš”">
                                 </div>
                             </div>
                         </div>
@@ -220,12 +221,13 @@
         <div class="col-md-5">
             <div class="card">
                 <div class="card-header">
-                    ÁÖ¹® ¿ä¾à
+                    ì£¼ë¬¸ ìš”ì•½
                 </div>
                 <div class="card-body">
-                    <p>»óÇ°°¡°İ: <%= totalProductPrice %>¿ø</p>
-                    <p>¹è¼Ûºñ: <%= shippingCost %>¿ø</p>
-                    <p>ÃÑ ÁÖ¹®±İ¾×: <%= totalProductPrice + shippingCost %>¿ø</p>
+                    <p>ìƒí’ˆê°€ê²©: <%= totalProductPrice %>ì›</p>
+                    <p>ë°°ì†¡ë¹„: <%= shippingCost %>ì›</p>
+                    <p>ì´ ì£¼ë¬¸ê¸ˆì•¡: <%= totalProductPrice + shippingCost %>ì›</p>
+                    <input type="hidden" name="total" value="<%= totalProductPrice + shippingCost %>">
                 </div>
             </div>
 
@@ -234,10 +236,10 @@
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="agreeTerms">
                         <label class="form-check-label" for="agreeTerms">
-                            ±¸¸ÅÁ¶°Ç È®ÀÎ ¹× °áÁ¦ÁøÇà¿¡ µ¿ÀÇ
+                            êµ¬ë§¤ì¡°ê±´ í™•ì¸ ë° ê²°ì œì§„í–‰ì— ë™ì˜
                         </label>
                     </div>
-                    <button type="submit" class="btn btn-primary mt-3" id="payButton">°áÁ¦ÇÏ±â</button>
+                    <button type="submit" class="btn btn-primary mt-3" id="payButton">ê²°ì œí•˜ê¸°</button>
                 </div>
           
             </div>
@@ -271,7 +273,7 @@
 
     document.getElementById('deliveryMemo').addEventListener('change', function() {
         var deliveryMemoInput = document.getElementById('deliveryMemoInput');
-        if (this.value === 'Á÷Á¢ÀÔ·Â') {
+        if (this.value === 'ì§ì ‘ì…ë ¥') {
             deliveryMemoInput.classList.remove('hidden');
         } else {
             deliveryMemoInput.classList.add('hidden');
@@ -299,10 +301,10 @@
 
     document.getElementById('payButton').addEventListener('click', function() {
         if (!document.getElementById('agreeTerms').checked) {
-            alert('±¸¸ÅÁ¶°Ç È®ÀÎ ¹× °áÁ¦ÁøÇà¿¡ µ¿ÀÇÇØ¾ß ÇÕ´Ï´Ù.');
+            alert('êµ¬ë§¤ì¡°ê±´ í™•ì¸ ë° ê²°ì œì§„í–‰ì— ë™ì˜í•´ì•¼ í•©ë‹ˆë‹¤.');
             return;
         }
-        // °áÁ¦ ¿Ï·á ÆäÀÌÁö·Î ÀÌµ¿
+        // ê²°ì œ ì™„ë£Œ í˜ì´ì§€ë¡œ ì´ë™
         document.getElementById('paymentForm').submit();
     });
 </script>

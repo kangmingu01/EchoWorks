@@ -65,8 +65,11 @@
                 // 선택된 상품 주문 처리 로직 추가
                 String[] selectedCartNos = request.getParameterValues("cart_no");
                 if (selectedCartNos != null) {
-                    // 주문 처리 로직을 여기에 추가합니다.
-                    response.sendRedirect(request.getContextPath() + "/payment/payment.jsp");
+                    String query = "?";
+                    for (String cartNo : selectedCartNos) {
+                        query += "cart_no=" + cartNo + "&";
+                    }
+                    response.sendRedirect(request.getContextPath() + "/payment/payment.jsp" + query);
                 } else {
                     out.println("<script>alert('선택된 상품이 없습니다.');history.back();</script>");
                 }
