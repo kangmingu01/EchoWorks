@@ -93,7 +93,7 @@
                                         int totalPrice = unitPrice * cart.getCart_num();
                                         totalProductPrice += totalPrice;
                             %>
-                            <tr data-cart-no="<%=cart.getCart_no() %>" style="height: 90px;">
+                            <tr data-cart-no="<%=cart.getCart_no() %>" data-max-quantity="<%= stock.getpS_Stock() %>" style="height: 90px;">
                                 <td><input type="checkbox" class="check-item" name="cart_no" value="<%= cart.getCart_no() %>" /></td>
                                 <td>
                                     <div class="d-flex align-items-center">
@@ -102,8 +102,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <input type="number" class="form-control quantity-input" style="text-align: right; width: 60px; display: inline;" min="1" max="99" step="1" value="<%= cart.getCart_num() %>"/>
-                                    <button type="button" class="btn btn-default btn-sm update-btn">변경</button>
+                                    <input type="number" class="form-control quantity-input" style="text-align: right; width: 60px; display: inline;" min="1" step="1" value="<%= cart.getCart_num() %>"/>
                                 </td>
                                 <td class="total-price" data-unit-price="<%= unitPrice %>"><%= String.format("%,d", totalPrice) %>원</td> 
                             </tr>
@@ -171,11 +170,64 @@
             return price.toLocaleString();
         }
 
+        function updateSummary() {
+            var totalProductPrice = 0;
+            document.querySelectorAll('.check-item:checked').forEach(function(checkbox) {
+                var row = checkbox.closest('tr');
+                var price = parseInt(row.querySelector('.total-price').textContent.replace(/[^0-9]/g, ''));
+                totalProductPrice += price;
+            });
+
+            var shippingCost = 2500; // 배송비
+            var finalPrice = totalProductPrice + shippingCost;
+
+            document.getElementById('summary-product-price').textContent = formatPrice(totalProductPrice);
+            document.getElementById('summary-shipping-price').textContent = formatPrice(shippingCost);
+            document.getElementById('summary-final-price').textContent = formatPrice(finalPrice);
+        }
+
         document.getElementById('check-all').addEventListener('click', function() {
             var checkboxes = document.querySelectorAll('.check-item');
             for (var i = 0; i < checkboxes.length; i++) {
                 checkboxes[i].checked = this.checked;
             }
+            updateSummary();
+        });
+
+        document.querySelectorAll('.check-item').forEach(function(checkbox) {
+            checkbox.addEventListener('change', updateSummary);
+        });
+
+        document.querySelectorAll('.quantity-input').forEach(function(input) {
+            input.addEventListener('input', function() {
+                var cartRow = this.closest('tr');
+                var unitPrice = parseInt(cartRow.querySelector('.total-price').dataset.unitPrice);
+                var maxQuantity = parseInt(cartRow.dataset.maxQuantity);
+                var newQuantity = parseInt(this.value);
+
+                if (newQuantity > maxQuantity) {
+                    alert("남은 재고수량 : "+ maxQuantity + "개" + "\n"+maxQuantity +  "개 이하로 구매해주세요.");
+                    
+                    this.value = maxQuantity;
+                    newQuantity = maxQuantity;
+                }
+
+                var newTotalPrice = newQuantity * unitPrice;
+                cartRow.querySelector('.total-price').textContent = formatPrice(newTotalPrice) + '원';
+                updateSummary();
+
+                var cartNo = cartRow.dataset.cartNo;
+                $.ajax({
+                    url: '<%=request.getContextPath()%>/cart/cart_action.jsp',
+                    method: 'POST',
+                    data: {
+                        action: 'update',
+                        cart_no: cartNo,
+                        quantity: newQuantity,
+                        returnUrl: '<%=request.getContextPath()%>/index.jsp?workgroup=cart&work=cart'
+                    }
+                });
+            });
         });
 
         document.getElementById('delete-selected').addEventListener('click', function() {
@@ -209,69 +261,12 @@
             }
         });
 
-        document.querySelectorAll('.update-btn').forEach(function(button) {
-            button.addEventListener('click', function() {
-                var quantityInput = this.previousElementSibling;
-                var newQuantity = quantityInput.value;
-                var cartRow = this.closest('tr');
-                var unitPrice = parseInt(cartRow.querySelector('.total-price').dataset.unitPrice);
-                var newTotalPrice = newQuantity * unitPrice;
-                cartRow.querySelector('.total-price').textContent = formatPrice(newTotalPrice) + '원';
-				
-                var form = document.createElement("form");
-                form.method = "post";
-                form.action = "<%=request.getContextPath()%>/cart/cart_action.jsp";
-                var returnUrlInput = document.createElement("input");
-                returnUrlInput.type = "hidden";
-                returnUrlInput.name = "returnUrl";
-                returnUrlInput.value = "<%=request.getContextPath()%>/index.jsp?workgroup=cart&work=cart";
-                form.appendChild(returnUrlInput);
-                											 
-                var actionInput = document.createElement("input");
-                actionInput.type = "hidden";
-                actionInput.name = "action";
-                actionInput.value = "update";
-                form.appendChild(actionInput);
-
-                var cartNoInput = document.createElement("input");
-                cartNoInput.type = "hidden";
-                cartNoInput.name = "cart_no";
-                cartNoInput.value = cartRow.dataset.cartNo;
-                form.appendChild(cartNoInput);
-
-                var quantityInputField = document.createElement("input");
-                quantityInputField.type = "hidden";
-                quantityInputField.name = "quantity";
-                quantityInputField.value = newQuantity;
-                form.appendChild(quantityInputField);
-
-                document.body.appendChild(form);
-                form.submit();
-				
-                updateSummary();
-            });
-        });
-
-        function updateSummary() {
-            var totalProductPrice = 0;
-            document.querySelectorAll('.total-price').forEach(function(cell) {
-                totalProductPrice += parseInt(cell.textContent.replace(/[^0-9]/g, ''));
-            });
-
-            var shippingCost = 2500; // 배송비
-            var finalPrice = totalProductPrice + shippingCost;
-
-            document.getElementById('summary-product-price').textContent = formatPrice(totalProductPrice);
-            document.getElementById('summary-shipping-price').textContent = formatPrice(shippingCost);
-            document.getElementById('summary-final-price').textContent = formatPrice(finalPrice);
-        }
-
-        // 페이지 로드 시 요약 업데이트
-        document.addEventListener('DOMContentLoaded', updateSummary);
-
         document.getElementById('productClear').addEventListener('click', function() {
             window.location.href = "<%=request.getContextPath()%>/index.jsp";
         });
+
+        // 페이지 로드 시 요약 업데이트
+        document.addEventListener('DOMContentLoaded', updateSummary);
     </script>
 </body>
 </html>
