@@ -2,8 +2,19 @@
 <%@ page import="java.sql.SQLException" %>
 <%@ page import="echoworks.dao.CartDAO" %>
 <%@ page import="echoworks.dto.CartDTO" %>
+<%@ page import="javax.servlet.http.HttpSession" %>
+<%@ page import="echoworks.dto.MemberDTO" %>
 
 <%
+    // 로그인된 사용자 정보 가져오기
+    HttpSession currentSession = request.getSession(); // 변수명을 currentSession으로 변경
+    MemberDTO loginMember = (MemberDTO) currentSession.getAttribute("loginMember");
+
+    if (loginMember == null) {
+        out.println("<script>alert('로그인이 필요합니다.');location.href='index.jsp?workgroup=member&work=member_login';</script>");
+        return;
+    }
+
     // 파라미터 처리
     String action = request.getParameter("action");
     CartDAO dao = new CartDAO();
@@ -12,16 +23,16 @@
         try {
             if (action.equals("add")) {
                 int psno = Integer.parseInt(request.getParameter("psno"));
-                int member = Integer.parseInt(request.getParameter("member"));
                 int num = Integer.parseInt(request.getParameter("num"));
-                
+                int member = loginMember.getMemberNum(); // 세션에서 가져옴
+
                 CartDTO cart = new CartDTO();
                 cart.setCart_psno(psno);
                 cart.setCart_member(member);
                 cart.setCart_num(num);
 
                 dao.addCart(cart);
-                response.sendRedirect("cart.jsp");
+                response.sendRedirect("cart.jsp"); // 장바구니 페이지로 리디렉션
 
             } else if (action.equals("update")) {
                 int cartNo = Integer.parseInt(request.getParameter("cart_no"));
@@ -31,13 +42,20 @@
                 response.sendRedirect("cart.jsp");
 
             } else if (action.equals("delete")) {
-                int cartNo = Integer.parseInt(request.getParameter("cart_no"));
+                // 여러 개의 cart_no 값을 배열로 받아옴
+                String[] cartNos = request.getParameterValues("cart_no");
 
-                dao.deleteCart(cartNo);
+                if (cartNos != null) {
+                    for (String cartNo : cartNos) {
+                        int cartNoInt = Integer.parseInt(cartNo);
+                        dao.deleteCart(cartNoInt);
+                    }
+                }
+
                 response.sendRedirect("cart.jsp");
 
             } else if (action.equals("clear")) {
-                int memberId = Integer.parseInt(request.getParameter("member"));
+                int memberId = loginMember.getMemberNum(); // 세션에서 가져옴
 
                 dao.clearCart(memberId);
                 response.sendRedirect("cart.jsp");
