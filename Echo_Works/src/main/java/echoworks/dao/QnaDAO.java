@@ -28,7 +28,7 @@ public class QnaDAO extends JdbcDAO {
 		try {
 			con = getConnection();
 			String sql = "insert into qna (qna_no, qna_member_no, qna_product_no, qna_title, qna_content, qna_date) "
-					+ "values (qna_seq.nextval, ?, ?, ?, ?, sysdate,1)";
+					+ "values (qna_seq.nextval, ?, ?, ?, ?, sysdate,null,null,1)";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, qna.getQnaMemberNo());
 			pstmt.setInt(2, qna.getQnaProductNo());
@@ -53,7 +53,7 @@ public class QnaDAO extends JdbcDAO {
 		try {
 			con = getConnection();
 			String sql = "select q.qna_no, q.qna_member_no, q.qna_product_no, q.qna_title, q.qna_content, "
-					+ "q.qna_date, q.qna_answer, q.qna_ansdate, m.member_name, p.product_name " + "from qna q "
+					+ "q.qna_date, q.qna_answer, q.qna_ansdate, m.member_name, p.product_name, q.qna_status " + "from qna q "
 					+ "join member m on q.qna_member_no = m.member_no "
 					+ "join product p on q.qna_product_no = p.product_no " + "where q.qna_no = ?";
 			pstmt = con.prepareStatement(sql);
@@ -70,7 +70,7 @@ public class QnaDAO extends JdbcDAO {
 				qna.setQnaDate(rs.getDate("qna_date"));
 				qna.setQnaAnswer(rs.getString("qna_answer"));
 				qna.setQnaAnsDate(rs.getDate("qna_ansdate"));
-				
+				qna.setQnaStatus(rs.getInt("qna_status"));
 			}
 		} catch (SQLException e) {
 			System.out.println("[에러] selectQnaByNo() 메서드의 SQL 오류 = " + e.getMessage());
@@ -89,12 +89,12 @@ public class QnaDAO extends JdbcDAO {
 		try {
 			con = getConnection();
 			String sql = "select q.qna_no, q.qna_member_no, q.qna_product_no, q.qna_title, q.qna_content, "
-					+ "q.qna_date, q.qna_answer, q.qna_ansdate, p.product_name " + "from qna q "
+					+ "q.qna_date, q.qna_answer, q.qna_ansdate, p.product_name, q.qna_status " + "from qna q "
 					+ "join product p on q.qna_product_no = p.product_no " + "where q.qna_member_no = ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, memberNo);
 			rs = pstmt.executeQuery();
-
+			
 			while (rs.next()) {
 				QnaDTO qna = new QnaDTO();
 				qna.setQnaNo(rs.getInt("qna_no"));
@@ -105,6 +105,8 @@ public class QnaDAO extends JdbcDAO {
 				qna.setQnaDate(rs.getDate("qna_date"));
 				qna.setQnaAnswer(rs.getString("qna_answer"));
 				qna.setQnaAnsDate(rs.getDate("qna_ansdate"));
+				qna.setQnaStatus(rs.getInt("qna_status"));
+
 
 				qnaList.add(qna); 
 
@@ -117,8 +119,8 @@ public class QnaDAO extends JdbcDAO {
 		return qnaList;
 	}
 
-	// QnA 테이블에 저장된 모든 행을 검색하여 List객체로 반환하는 메소드
-	public List<QnaDTO> selectAjaxQnAList() {
+	// QnA 테이블에 저장된 모든 행을 검색(관리자페이지에서 모든 회원들의  qna 내역)
+	public List<QnaDTO> selectAllQnAList() {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;

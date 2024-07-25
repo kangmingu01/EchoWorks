@@ -1,3 +1,8 @@
+<%@page import="java.nio.file.Files"%>
+<%@page import="javax.swing.ImageIcon"%>
+<%@page import="java.nio.file.Path"%>
+<%@page import="java.nio.file.Paths"%>
+<%@page import="java.io.File"%>
 <%@page import="java.util.List"%>
 <%@page import="echoworks.dao.ProductStockDAO"%>
 <%@page import="echoworks.dto.ProductStockDTO"%>
@@ -6,18 +11,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-//String product=request.getParameter("product_no");	//상품 번호 가져오기
-//ProductDTO product=ProductDAO.getDAO().selectProductByNo(Integer.parseInt(request.getParameter("product_no")));
 
-String pNo="1";
+ProductDTO product=ProductDAO.getDAO().selectProductByNo(Integer.parseInt(request.getParameter("product_no")));
+
+//String pNo="1";
 
 // 상품 객체 생성
-ProductDTO product=ProductDAO.getDAO().selectProductByNo(Integer.parseInt(pNo));
+//ProductDTO product=ProductDAO.getDAO().selectProductByNo(Integer.parseInt(pNo));
 
 // 재고 객체 생성
-List<ProductStockDTO> productStock= ProductStockDAO.getDAO().selectProductStockList(product.getPRODUCT_NO());
+List<ProductStockDTO> productStockList= ProductStockDAO.getDAO().selectProductStockList(product.getPRODUCT_NO());
 
-System.out.println(productStock.get(0));
 %>
 
     
@@ -77,14 +81,20 @@ input[type="number"]::-webkit-inner-spin-button {
 							<h5 class="pt-3 pb-3 border-top" style="display:inline-block; font-size:32px; color: #333; font-weight: bold; font-family:'Tahoma', sans-serif; vertical-align: middle; padding-right:8px;"><%=String.format("%,d", product.getPRODUCT_PRICE()) %>원</h5>
 							
 							<div>
+								
 								<select id="select_option" class="form-select form-select-lg mb-3" onchange="selected_item('1441177158', '1441177158', '1441177158','pc')">
+								<%if(productStockList.size() == 0) { %>
+									<option value="basic" selected disabled>상품옵션선택</option>
+								<% } else { %>
 									<option value="basic" selected disabled hidden>상품옵션선택</option>
-									<% for(int i=0;i<productStock.size();i++) { 
-										String op=productStock.get(i).getpS_Option();
-										int price=productStock.get(i).getpS_price();
+									<% for(int i=0;i<productStockList.size();i++) { 
+										String op=productStockList.get(i).getpS_Option();
+										int price=productStockList.get(i).getpS_price();
+										int stock=productStockList.get(i).getpS_Stock();
 									%>
-									<option value="<%=op %>||<%=price %>||<%=56068+i %>" ><%=op %>   (<%=String.format("%,d", price) %>원)</option>
+									<option value="<%=op %>||<%=price %>||<%=stock %>||<%=56068+i %>" ><%=op %>   (<%=String.format("%,d", price) %>원)</option>
 									<% } %>
+								<% } %>
 								</select>
 							</div>
 							
@@ -113,16 +123,6 @@ input[type="number"]::-webkit-inner-spin-button {
 									<button type="button" class="btn btn-lg" style="font-size:18px; font-weight:500; background:#666; color:#fff; border:0;  cursor:pointer;">주문하기</button>
 								</div>
 							</div>
-							<!-- 
-							<div class="itemOption_btn" style="width:100%; position:relative; padding:30px 0 0; text-align: right;">
-								<span class="itemOption_cart_btn_area" style="display:inline-block; padding:0 3px 0 0;">
-									<input type="submit" onclick="document.pressed=this.value;" value="장바구니" class="itemOption_cart_btn" style="width:200px; height:54px; font-size:18px; font-weight:500; background:#fff; border:1px solid #666; color:#666; cursor:pointer;">
-								</span>
-								<span class="itemOption_order_btn_area" style="display:inline-block; padding:0 3px 0 0;">
-									<input type="submit" onclick="document.pressed=this.value;" value="바로구매" class="itemOption_order_btn" style="width:200px; height:54px; font-size:18px; font-weight:500; background:#666; color:#fff; border:0;  cursor:pointer;">
-								</span>
-							</div>
-							 -->
 						</div>
 					</div>
 				</div>
@@ -157,23 +157,31 @@ input[type="number"]::-webkit-inner-spin-button {
 						<div id="itemContent_wrap" class="container p-0">
 							<div id="item_info">
 								<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/2047495408858.png?w=1536" class="img-fluid" /><br />
+								
+								
+								<% if(product.getPRODUCT_VIDEO_URL() != null) { //상품 영상 %>
 								<div class="ratio ratio-16x9 w-75 mx-auto mt-5 mb-3">
-  <iframe src="https://www.youtube.com/embed/yiP6aLpHYfg?si=CF3zWx0-2Xyx5qPA"  title="YouTube video" allowfullscreen></iframe>
-</div>
+  									<iframe src="https://www.youtube.com/embed/yiP6aLpHYfg?si=CF3zWx0-2Xyx5qPA"  title="YouTube video" allowfullscreen></iframe>
+								</div>
+								<% } %>
 							
 								<span style="font-size:30px;">갤러리</span>
 								<hr>
 								<div class="col-10 mx-auto">
-								<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/09ff5cfd5709b.jpg?w=1536" class="img-fluid" /><br />
-								<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/4fa0e7d70350a.jpg?w=1536" class="img-fluid" /><br />
-								<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/35ecdbbf67d4a.jpg?w=1536" class="img-fluid" /><br />
-								<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/be4ee49fb80bf.jpg?w=1536" class="img-fluid" /><br />
-								<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/8a78c675434ba.jpg?w=1536" class="img-fluid" /><br />
-								<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/8daaa931b9ebd.jpg?w=1536" class="img-fluid" /><br />
-								<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/1a53495882d90.jpg?w=1536" class="img-fluid" /><br />
-								<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/b990510e2068c.jpg?w=1536" class="img-fluid" /><br />
-								<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/7d2a5551bca1a.jpg?w=1536" class="img-fluid" /><br />
-								<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/7eaa11637baa1.jpg?w=1536" class="img-fluid" /><br />
+								
+								<!-- 상세 이미지 -->
+								<%
+									int count =1;
+									Path path = null;
+									do {
+								%>
+									<img alt="상세" src="<%=product.getPRODUCT_IMG_DETAIL()%>/<%=count%>.jpg" class="img-fluid mb-3" /><br />
+								<% 
+									count++;
+									path = Paths.get(request.getRealPath("")+product.getPRODUCT_IMG_DETAIL()+"/"+count+".jpg");
+									} while(Files.exists(path));
+								%>
+								
 								<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/08823c1fcc3de.png?w=1536" class="img-fluid" /><br />
 								<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/18e6c1ccd9ea1.jpg?w=1536" class="img-fluid" /><br />
 							
@@ -207,7 +215,7 @@ function selected_item(io_type, io_id, io_value,ver){
       var str = select_option.split("||");
   }
 
-  opt = '<div class="shop_item_select" id="io_append'+str[2]+'" name="io_append['+str[2]+'][]" command='+str[2]+' >';
+  opt = '<div class="shop_item_select" id="io_append'+str[3]+'" name="io_append['+str[3]+'][]" command='+str[3]+' >';
   opt += '<input type="hidden" name="io_type['+io_type+'][]" value="0">';
   opt += '<input type="hidden" name="io_id['+io_id+'][]" value="'+str[0]+'">';
   opt += '<input type="hidden" name="io_value['+io_value+'][]" value="'+str[0]+'">';
@@ -215,21 +223,23 @@ function selected_item(io_type, io_id, io_value,ver){
   opt += '<input type="hidden" name="io_stock" value="1">';
   opt += '<div id="item_select_name" class="item_select_text">'+str[0]+'</div>';
   opt += '<div class="item_select_num">';
-  opt += '<span><a href="javascript:"><img src="assets/img/detail/ui/item_min.png" alt="빼기" width="30px" onclick="item_minus('+str[2]+','+str[1]+')"></a></span>';
+  opt += '<span><a href="javascript:"><img src="assets/img/detail/ui/item_min.png" alt="빼기" width="30px" onclick="item_minus('+str[3]+','+str[1]+')"></a></span>';
   opt += '<span class="item_num">';
-  opt += '<input type="number" class="count" id="ct_qty'+str[2]+'" name="ct_qty[1710310953][]" value="1">';
+  opt += '<input type="number" class="count" id="ct_qty'+str[3]+'" name="ct_qty[1710310953][]" value="1" onkeypress="show_num(event, '+str[2]+', '+str[3]+')">';
   opt += '</span>';
-  opt += '<span><a href="javascript:"><img src="assets/img/detail/ui/item_plus.png" alt="더하기" width="30px" onclick="item_plus('+str[2]+','+str[1]+')"></a></span>';
+  opt += '<span><a href="javascript:"><img src="assets/img/detail/ui/item_plus.png" alt="더하기" width="30px" onclick="item_plus('+str[3]+','+str[1]+','+str[2]+')"></a></span>';
   opt += '</div>';
-  opt += '<div class="item_select_price button price_font">'+numberWithCommas(str[1])+'<span>원</span>'+'<img src="assets/img/detail/ui/layer_close.png" alt="옵션 삭제('+str[2]+')" onclick="option_delete('+str[2]+','+str[1]+')" ></div>';
+  opt += '<div class="item_select_price button price_font">'+numberWithCommas(str[1])+'<span>원</span>'+'<img src="assets/img/detail/ui/layer_close.png" alt="옵션 삭제('+str[3]+')" onclick="option_delete('+str[3]+','+str[1]+')" ></div>';
   opt += '</div>';
 
   
 
   //옵션 중복검사
-  if(document.getElementById('io_append'+str[2])){
+  if(document.getElementById('io_append'+str[3])){
       alert('이미 선택된 옵션입니다');
-  }else{
+  } else if(str[2] == 0) {
+	  alert('재고가 없습니다');  
+  } else{
 
       // 옵션리스트에 추가 시키기                                        
       $(".shop_item_select_box").css({"margin":"16px 0 0"}).append(opt); //pc 옵션 추가
@@ -255,19 +265,24 @@ function selected_item(io_type, io_id, io_value,ver){
 }
 
 //수량 추가
-function item_plus(sss,price){
+function item_plus(sss,price,stock){
     var ttt = $("#ct_qty"+sss).val();
-    ttt++;
     
-    $("#ct_qty"+sss).val(ttt);
-
-    var total_price = $("#total_price").val();
-    var total_price_tmp = Number(total_price) + Number(price);
-    //var shop_point = total_price_tmp *'0.02';  //pc 포인트 
-
-    $("#total_price").val(total_price_tmp); 
-    $("#cartprice1").html(numberWithCommas(total_price_tmp)+'<span class="price_unit">원</span>');
-    //$("#shop_point").text(numberWithCommas(shop_point));//pc 포인트 
+    if(ttt < stock) {
+	    ttt++;
+	    
+	    $("#ct_qty"+sss).val(ttt);
+	
+	    var total_price = $("#total_price").val();
+	    var total_price_tmp = Number(total_price) + Number(price);
+	    //var shop_point = total_price_tmp *'0.02';  //pc 포인트 
+	
+	    $("#total_price").val(total_price_tmp); 
+	    $("#cartprice1").html(numberWithCommas(total_price_tmp)+'<span class="price_unit">원</span>');
+	    //$("#shop_point").text(numberWithCommas(shop_point));//pc 포인트
+    } else {
+    	alert(stock + "이하의 수량만 가능합니다.");
+    }
 }
 
 //수량 감소
@@ -392,4 +407,16 @@ $(document).ready(function(){
     });
 });
 
+function show_num(e, stock, sss) {
+	if(e.keyCode == 13) {
+		var ttt = $("#ct_qty"+sss).val();
+		if(ttt <= 1 || ttt=="") {
+			$("#ct_qty"+sss).val(1);
+		} else if(ttt > stock) {
+			alert(stock + "이하의 수량만 가능합니다.");
+			$("#ct_qty"+sss).val(stock);
+		}
+	}
+		
+}
 </script>
