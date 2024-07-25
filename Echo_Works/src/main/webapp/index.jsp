@@ -55,7 +55,8 @@ if (workgroup.equals("main")) {
         />
         <!-- Link to Bootstrap Toggle JS -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-        
+<!-- 주소 찾기(다음 API) -->
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
 <body class="d-flex flex-column min-vh-100" >
 	<%-- Header 영역 --%>
