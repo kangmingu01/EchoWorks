@@ -261,11 +261,11 @@ MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 						if (loginMember.getMemberAuth() == 9) {
 						%>
 						<!-- 관리자 -->
-						<a href="#DB" class="text-decoration-none text-white fs-5">DB</a>
+						<a href="<%=request.getContextPath()%>/index.jsp?workgroup=member&work=admin_adminpage" class="text-decoration-none text-white fs-5">ADMIN</a>
 						<%
 						} else {
 						%>
-						<a href="#마이페이지" class="text-decoration-none text-white fs-5">
+						<a href="<%=request.getContextPath()%>/index.jsp?workgroup=member&work=member_mypage"" class="text-decoration-none text-white fs-5">
 							<!-- <i class="fa-regular fa-circle-user" style="color: #ffffff"></i> -->
 							My
 						</a> <a href="<%=request.getContextPath()%>/index.jsp?workgroup=cart&work=cart" class="text-decoration-none text-white fs-5">

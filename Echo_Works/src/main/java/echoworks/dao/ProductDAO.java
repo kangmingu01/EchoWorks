@@ -292,7 +292,76 @@ public class ProductDAO extends JdbcDAO{
 					}
 					return productList;
 				}
+			
 	
-	
-	
+				// 관리자 페이지에서 상품 추가
+				public int insertProduct(ProductDTO product){
+					Connection con=null;
+					PreparedStatement pstmt=null;
+					int rows=0;
+					try {
+						con=getConnection();
+						String sql="insert into product values(PRODUCT_SEQ.NEXTVAL,?,?,?,?,?,?,?)";
+						pstmt=con.prepareStatement(sql);
+						pstmt.setString(1, product.getPRODUCT_NAME());
+						pstmt.setString(2, product.getPRODUCT_IMG());
+						pstmt.setString(3, product.getPRODUCT_IMG_DETAIL());
+						pstmt.setInt(4, product.getPRODUCT_PRICE());
+						pstmt.setString(5, product.getPRODUCT_CATEGORY_MAIN());
+						pstmt.setString(6, product.getPRODUCT_CATEGORY_SUB());
+						pstmt.setString(7, product.getPRODUCT_VIDEO_URL());
+						
+						rows=pstmt.executeUpdate();
+								
+					}catch (SQLException e) {
+						System.out.println("[에러]selectProductByNo() 메소드의 SQL 오류 = "+e.getMessage());
+					} finally {
+						close(con, pstmt);
+					}
+					return rows;		
+}
+				// 관리자 페이지에서 상품 삭제
+				public int deleteProduct(int productNo){
+					Connection con=null;
+					PreparedStatement pstmt=null;
+					int rows=0;
+					try {
+						con=getConnection();
+						String sql="delete from product where product_no=?";
+						 pstmt = con.prepareStatement(sql);
+				            pstmt.setInt(1, productNo);
+				            pstmt.executeUpdate();
+						
+								
+					}catch (SQLException e) {
+						System.out.println("[에러]selectProductByNo() 메소드의 SQL 오류 = "+e.getMessage());
+					} finally {
+						close(con, pstmt);
+					}
+					return rows;		
+				
+}
+		
+				// 관리자 페이지에서 상품 가격 수정
+				public int updateProduct(int productNo){
+					Connection con=null;
+					PreparedStatement pstmt=null;
+					int rows=0;
+					try {
+						con=getConnection();
+						String sql="update product set()where product_no=?";
+						 pstmt = con.prepareStatement(sql);
+				            pstmt.setInt(1, productNo);
+				            pstmt.executeUpdate();
+						
+								
+					}catch (SQLException e) {
+						System.out.println("[에러]selectProductByNo() 메소드의 SQL 오류 = "+e.getMessage());
+					} finally {
+						close(con, pstmt);
+					}
+					return rows;		
+				
+}
+				
 }

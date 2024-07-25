@@ -1,0 +1,79 @@
+<%@page import="java.io.Console"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="echoworks.dao.PaymentDAO" %>
+<%@ page import="echoworks.dto.PaymentDTO" %>
+<%@ page import="javax.servlet.http.HttpSession" %>
+<%@ page import="echoworks.dto.MemberDTO" %>
+<%@ page import="java.util.Date" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+
+<%
+    // 로그인된 사용자 정보 가져오기
+    HttpSession currentSession = request.getSession();
+    MemberDTO loginMember = (MemberDTO) currentSession.getAttribute("loginMember");
+
+    if (loginMember == null) {
+        out.println("<script>alert('로그인이 필요합니다.');location.href='index.jsp?workgroup=member&work=member_login';</script>");
+        return;
+    }
+
+    // 파라미터 처리
+    String action = request.getParameter("action");
+    PaymentDAO paymentDAO = new PaymentDAO();
+ 
+    if (action != null && action.equals("pay")) {
+        try {
+            // 여러 psno와 num 값을 받기 위한 배열
+            String[] psnoArray = request.getParameterValues("psno");
+            String[] numArray = request.getParameterValues("num");
+
+            String total = request.getParameter("total");
+            System.out.println(123);
+            String jname = request.getParameter("jname");
+            String phone = request.getParameter("phone");
+            String zipcode = request.getParameter("zipcode");
+            String address1 = request.getParameter("address1");
+            String address2 = request.getParameter("address2");
+            String omesg = request.getParameter("omesg");
+            String omesgInput = request.getParameter("omesgInput");
+
+            if (omesg != null && omesg.equals("직접입력")) {
+                omesg = omesgInput;  // 직접 입력한 배송메모로 설정
+            }
+
+            for (int i = 0; i < psnoArray.length; i++) {
+                int psno = Integer.parseInt(psnoArray[i]);
+                int num = Integer.parseInt(numArray[i]);
+
+                PaymentDTO payment = new PaymentDTO();
+                payment.setPaymentPsno(psno);
+                payment.setPaymentHno(loginMember.getMemberNum());
+                payment.setPaymentNum(num);
+                payment.setPaymentTotal(total);
+                payment.setPaymentStatus(1); // 결제 완료 상태
+                payment.setPaymentJname(jname);
+                payment.setPaymentPhone(phone);
+                payment.setPaymentZipcode(zipcode);
+                payment.setPaymentAddress1(address1);
+                payment.setPaymentAddress2(address2);
+                payment.setPaymentOmesg(omesg);
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                payment.setPaymentDate(sdf.format(new Date()));
+
+
+                int result = paymentDAO.insertPayment(payment);
+
+                if (result <= 0) {
+                    out.println("<script>alert('결제 처리 중 오류가 발생했습니다. 다시 시도해 주세요.');history.back();</script>");
+                    return;
+                }
+            }
+
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            out.println("<script>alert('잘못된 입력입니다.');history.back();</script>");
+        }
+    } else {
+        out.println("<script>alert('잘못된 액션입니다.');history.back();</script>");
+    }
+%>
