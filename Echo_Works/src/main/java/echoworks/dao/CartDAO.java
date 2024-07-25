@@ -20,7 +20,7 @@ public class CartDAO extends JdbcDAO {
 		_dao=new CartDAO();
 	}
 	
-	public static CartDAO geDao() {
+	public static CartDAO getDao() {
 		return _dao;
 	}
 	
@@ -117,5 +117,30 @@ public class CartDAO extends JdbcDAO {
         } finally {
             close(con, pstmt);
         }
+    }
+    public CartDTO getCartByNo(int cartNo) throws SQLException {
+        String sql = "SELECT * FROM CART WHERE CART_NO = ?";
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        CartDTO cart = null;
+
+        try {
+            con = getConnection();
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, cartNo);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                cart = new CartDTO();
+                cart.setCart_no(rs.getInt("CART_NO"));
+                cart.setCart_psno(rs.getInt("CART_PSNO"));
+                cart.setCart_member(rs.getInt("CART_MEMBER"));
+                cart.setCart_num(rs.getInt("CART_NUM"));
+            }
+        } finally {
+            close(con, pstmt, rs);
+        }
+        return cart;
     }
 }

@@ -1,14 +1,52 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.List" %>
+<%@ page import="echoworks.dao.CartDAO" %>
+<%@ page import="echoworks.dao.ProductStockDAO" %>
+<%@ page import="echoworks.dto.CartDTO" %>
+<%@ page import="echoworks.dto.ProductStockDTO" %>
+<%@ page import="javax.servlet.http.HttpSession" %>
+<%@ page import="echoworks.dto.MemberDTO" %>
+<%@ page import="echoworks.dao.ProductDAO" %>
+
+<%
+    // Î°úÍ∑∏Ïù∏Îêú ÏÇ¨Ïö©Ïûê Ï†ïÎ≥¥ Í∞ÄÏ†∏Ïò§Í∏∞
+    HttpSession currentSession = request.getSession();
+    MemberDTO loginMember = (MemberDTO) currentSession.getAttribute("loginMember");
+
+    if (loginMember == null) {
+        out.println("<script>alert('Î°úÍ∑∏Ïù∏Ïù¥ ÌïÑÏöîÌï©ÎãàÎã§.');location.href='index.jsp?workgroup=member&work=member_login';</script>");
+        return;
+    }
+
+    // Ïû•Î∞îÍµ¨ÎãàÏóêÏÑú ÏÑ†ÌÉùÌïú ÏÉÅÌíà Î≤àÌò∏ Î™©Î°ùÏùÑ Í∞ÄÏ†∏Ïò¥
+    String[] selectedCartNos = request.getParameterValues("cart_no");
+
+    if (selectedCartNos == null || selectedCartNos.length == 0) {
+        out.println("<script>alert('ÏÑ†ÌÉùÌïú ÏÉÅÌíàÏù¥ ÏóÜÏäµÎãàÎã§.');location.href='cart.jsp';</script>");
+        return;
+    }
+
+    List<CartDTO> selectedCartList = new ArrayList<>();
+    for (String cartNo : selectedCartNos) {
+        int cartNoInt = Integer.parseInt(cartNo);
+        CartDTO cart = CartDAO.getDao().getCartByNo(cartNoInt);
+        selectedCartList.add(cart);
+    }
+
+    int totalProductPrice = 0;
+    int shippingCost = 2500; // Í≥†Ï†ï Î∞∞ÏÜ°ÎπÑ
+%>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>∞·¡¶«œ±‚</title>
+    <title>Í≤∞Ï†úÌïòÍ∏∞</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f5f5f5;
+            background-color: white;
             overflow-y: scroll; /* Always show vertical scrollbar */
         }
         .container {
@@ -51,192 +89,160 @@
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg bg-transparent w-100">
-      <div class="container mt-2 align-items-center">
-        <!-- Logo -->
-        <a class="navbar-brand fs-4 m-0 p-0 d-flex align-items-center text-white" href="#">
-          <img src="../assets/img/logo_dark.svg" style="width: auto; height: 55px" alt="Logo"/>
-        </a>
-        <!-- Toggle -->
-        <button class="navbar-toggler shadow-none border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcavasNavbar">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <!-- SideBar -->
-        <div class="sidebar offcanvas offcanvas-end bg-white" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-          <!-- SideBar Header -->
-          <div class="offcanvas-header border-dark border-bottom border-2">
-            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">EchoWorks</h5>
-            <button type="button" class="btn-close shadow-none" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-          </div>
-
-          <!-- SideBar Body -->
-          <div class="offcanvas-body">
-            <ul class="navbar-nav justify-content-center fs-5 flex-grow-1 ps-lg-5 ms-lg-5">
-              <li class="nav-item mx-2">
-                <a href="#Keyboards" class="nav-link text-dark">Keyboards</a>
-              </li>
-              <li class="nav-item dropdown mx-2">
-                <a href="#" class="nav-link dropdown-toggle text-dark" role="" data-bs-toggle="dropdown" aria-expanded="false">Switches</a>
-                <ul class="dropdown-menu">
-                  <li><a href="#" class="dropdown-item">∏Æ¥œæÓ</a></li>
-                  <li><a href="#" class="dropdown-item">≈√≈∏¿œ</a></li>
-                  <li><a href="#" class="dropdown-item">¿˙º“¿Ω</a></li>
-                  <li><a href="#" class="dropdown-item">∏∂±◊≥◊∆Ω</a></li>
-                </ul>
-              </li>
-              <li class="nav-item mx-2">
-                <a href="#Keycaps" class="nav-link text-dark">Keycaps</a>
-              </li>
-              <li class="nav-item mx-2">
-                <a href="#Deskpads" class="nav-link text-dark">Deskpads</a>
-              </li>
-            </ul>
-
-            <!-- Login/ Sign up -->
-            <div class="d-flex justify-content-center align-items-center gap-3 flex-nowrap">
-              <a href="#login" class="text-decoration-none fs-5 text-dark">Login</a>
-              <a href="#signup" class="text-decoration-none px-3 py-1 fs-5 text-dark">Sign up</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </nav>
 <div class="container">
-    <h2 class="section-title text-center">∞·¡¶«œ±‚</h2>
-    <div class="row">
-        <div class="col-md-7">
-            <div class="card">
-                <div class="card-header">
-                    ¡÷πÆ ªÛ«∞ ¡§∫∏
-                </div>
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <img src="ªÛ«∞ ¿ÃπÃ¡ˆ ∞Ê∑Œ" alt="ªÛ«∞ ¿ÃπÃ¡ˆ" style="width: 100px; height: 100px; margin-right: 20px;">
-                        <div>
-                            <p>Ω∫ø˛±◊≈∞ SW La Vie en Rose R2 ¿Ã¡ﬂªÁ√‚ ≈∞ƒ∏ ºº∆Æ, 1∞≥</p>
-                            <p>77,000ø¯</p>
-                            <p>πËº€∫Ò 2,500ø¯</p>
-                        </div>
+    <h2 class="section-title text-center">Í≤∞Ï†úÌïòÍ∏∞</h2>
+    <form id="paymentForm" name="paymentForm" method="post" action="<%=request.getContextPath() %>/payment/payment_action.jsp?action=pay" >
+        <div class="row">
+            <div class="col-md-7">
+                <div class="card">
+                    <div class="card-header">
+                        Ï£ºÎ¨∏ ÏÉÅÌíà Ï†ïÎ≥¥
                     </div>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    ¡÷πÆ¿⁄ ¡§∫∏
-                </div>
-                <div class="card-body">
-                    <div class="mb-3">
-                        <input type="text" class="form-control" id="ordererName" value="±Ë«˝∑√" disabled>
-                    </div>
-                    <div class="mb-3">
-                        <input type="text" class="form-control" id="ordererContact" value="01040773346" disabled>
-                    </div>
-                    <div class="mb-3">
-                        <input type="email" class="form-control" id="ordererEmail" value="tosmreo@naver.com" disabled>
-                    </div>
-                    <button class="btn btn-outline-secondary" id="editOrdererInfo">ºˆ¡§</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    πËº€ ¡§∫∏
-                </div>
-                <div class="card-body">
-                    <ul class="nav nav-tabs" id="deliveryTab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="existing-address-tab" data-bs-toggle="tab" href="#existing-address" role="tab" aria-controls="existing-address" aria-selected="true">πËº€¡ˆ º±≈√</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="new-address-tab" data-bs-toggle="tab" href="#new-address" role="tab" aria-controls="new-address" aria-selected="false">Ω≈±‘ ¿‘∑¬</a>
-                        </li>
-                    </ul>
-                    <div class="tab-content" id="deliveryTabContent">
-                        <div class="tab-pane fade show active" id="existing-address" role="tabpanel" aria-labelledby="existing-address-tab">
-                            <p><input type="radio" name="address" checked> ±Ë«˝∑√, ∞Ê±‚ º∫≥≤Ω√ ¡ﬂø¯±∏ ±›∫˚∑Œ42π¯±Ê 7 (±›±§µø, µÂ∏≤«œ¿Ã¡Ó∏«º«) 501»£, 13183</p>
-                        </div>
-                        <div class="tab-pane fade" id="new-address" role="tabpanel" aria-labelledby="new-address-tab">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="sameAsOrderer">
-                                <label class="form-check-label" for="sameAsOrderer">
-                                    ¡÷πÆ¿⁄ ¡§∫∏øÕ µø¿œ
-                                </label>
+                    <div class="card-body">
+                        <%
+                            for (CartDTO cart : selectedCartList) {
+                                ProductStockDTO stock = ProductStockDAO.getDAO().selectProductStock(cart.getCart_psno());
+                                
+                                if (stock != null) {
+                                    int unitPrice = stock.getpS_price(); // product_stock ÌÖåÏù¥Î∏îÏóêÏÑú Í∞ÄÍ≤© Í∞ÄÏ†∏Ïò§Í∏∞
+                                    int totalPrice = unitPrice * cart.getCart_num();
+                                    totalProductPrice += totalPrice;
+                        %>
+                        <div class="d-flex align-items-center">
+                            <img src="../assets/img/<%= ProductDAO.getDAO().selectProductByNo(stock.getpS_pNo()).getPRODUCT_IMG() %>.jpg" alt="ÏÉÅÌíà Ïù¥ÎØ∏ÏßÄ" style="width: 100px; height: 100px; margin-right: 20px;">
+                            <div>
+                                <p><%= stock.getpS_Option() %></p>
+                                <p><%= unitPrice %>Ïõê</p>
+                                <p>ÏàòÎüâ: <%= cart.getCart_num() %></p>
+                                <p>Ï¥ù Í∞ÄÍ≤©: <%= totalPrice %>Ïõê</p>
+                                <input type="hidden" name="psno" value="<%= cart.getCart_psno() %>">
+                                <input type="hidden" name="num" value="<%= cart.getCart_num() %>">
                             </div>
-                            <div class="mt-3">
-                                <div class="mb-3">
-                                    <label for="recipient" class="form-label">ºˆ∑…¿Œ</label>
-                                    <input type="text" class="form-control" id="recipient" placeholder="2±€¿⁄ ¿ÃªÛ ¿‘∑¬«ÿ¡÷ººø‰">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="contact" class="form-label">ø¨∂Ù√≥</label>
-                                    <input type="text" class="form-control" id="contact" placeholder="¿¸»≠π¯»£∏¶ ¿‘∑¬«œººø‰">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="postcode" class="form-label">øÏ∆Ìπ¯»£</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="postcode" placeholder="øÏ∆Ìπ¯»£">
-                                        <button class="btn btn-outline-secondary" type="button" id="findPostcode">¡÷º“√£±‚</button>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="address" class="form-label">¡÷º“</label>
-                                    <input type="text" class="form-control" id="address" placeholder="¡÷º“">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="detailedAddress" class="form-label">ªÛºº¡÷º“</label>
-                                    <input type="text" class="form-control" id="detailedAddress" placeholder="ªÛºº¡÷º“">
-                                </div>
+                        </div>
+                        <hr>
+                        <%
+                                }
+                            }
+                        %>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        Ï£ºÎ¨∏Ïûê Ï†ïÎ≥¥
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="ordererName" value="<%= loginMember.getMemberName() %>" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="ordererContact" value="<%= loginMember.getMemberMobile() %>" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <input type="email" class="form-control" id="ordererEmail" value="<%= loginMember.getMemberEmail() %>" disabled>
+                        </div>
+                        <button class="btn btn-outline-secondary" id="editOrdererInfo">ÏàòÏ†ï</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        Î∞∞ÏÜ° Ï†ïÎ≥¥
+                    </div>
+                    <div class="card-body">
+                        <ul class="nav nav-tabs" id="deliveryTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="existing-address-tab" data-bs-toggle="tab" href="#existing-address" role="tab" aria-controls="existing-address" aria-selected="true">Î∞∞ÏÜ°ÏßÄ ÏÑ†ÌÉù</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="new-address-tab" data-bs-toggle="tab" href="#new-address" role="tab" aria-controls="new-address" aria-selected="false">Ïã†Í∑ú ÏûÖÎ†•</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="deliveryTabContent">
+                            <div class="tab-pane fade show active" id="existing-address" role="tabpanel" aria-labelledby="existing-address-tab">
+                                <p><input type="radio" name="address" checked> <%= loginMember.getMemberName() %>, <%= loginMember.getMemberAddress1() %>, <%= loginMember.getMemberAddress2() %>, <%= loginMember.getMemberZipcode() %></p>
+                            </div>
+                            <div class="tab-pane fade" id="new-address" role="tabpanel" aria-labelledby="new-address-tab">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="addToAddressBook">
-                                    <label class="form-check-label" for="addToAddressBook">
-                                        πËº€¡ˆ ∏Ò∑œø° √ﬂ∞°
+                                    <input class="form-check-input" type="checkbox" id="sameAsOrderer">
+                                    <label class="form-check-label" for="sameAsOrderer">
+                                        Ï£ºÎ¨∏Ïûê Ï†ïÎ≥¥ÏôÄ ÎèôÏùº
                                     </label>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="deliveryMemo" class="form-label">πËº€∏ﬁ∏</label>
-                                    <select class="form-select" id="deliveryMemo">
-                                        <option value="">πËº€∏ﬁ∏∏¶ º±≈√«ÿ ¡÷ººø‰.</option>
-                                        <option value="πÆ æ’ø° ≥ˆ¡÷ººø‰">πÆ æ’ø° ≥ˆ¡÷ººø‰</option>
-                                        <option value="∞Ê∫ÒΩ«ø° ∏√∞‹¡÷ººø‰">∞Ê∫ÒΩ«ø° ∏√∞‹¡÷ººø‰</option>
-                                        <option value="¡˜¡¢ πﬁæ∆æﬂ «’¥œ¥Ÿ">¡˜¡¢ πﬁæ∆æﬂ «’¥œ¥Ÿ</option>
-                                        <option value="¡˜¡¢¿‘∑¬">¡˜¡¢¿‘∑¬</option>
-                                    </select>
-                                    <input type="text" class="form-control mt-2 hidden" id="deliveryMemoInput" placeholder="πËº€∏ﬁ∏∏¶ ¿‘∑¬«ÿ ¡÷ººø‰">
+                                <div class="mt-3">
+                                    <div class="mb-3">
+                                        <label for="recipient" class="form-label">ÏàòÎ†πÏù∏</label>
+                                        <input type="text" class="form-control" id="recipient" placeholder="2Í∏ÄÏûê Ïù¥ÏÉÅ ÏûÖÎ†•Ìï¥Ï£ºÏÑ∏Ïöî">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="contact" class="form-label">Ïó∞ÎùΩÏ≤ò</label>
+                                        <input type="text" class="form-control" id="contact" placeholder="Ï†ÑÌôîÎ≤àÌò∏Î•º ÏûÖÎ†•ÌïòÏÑ∏Ïöî">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="postcode" class="form-label">Ïö∞Ìé∏Î≤àÌò∏</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="postcode" placeholder="Ïö∞Ìé∏Î≤àÌò∏">
+                                            <button class="btn btn-outline-secondary" type="button" id="findPostcode">Ï£ºÏÜåÏ∞æÍ∏∞</button>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="address" class="form-label">Ï£ºÏÜå</label>
+                                        <input type="text" class="form-control" id="address" placeholder="Ï£ºÏÜå">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="detailedAddress" class="form-label">ÏÉÅÏÑ∏Ï£ºÏÜå</label>
+                                        <input type="text" class="form-control" id="detailedAddress" placeholder="ÏÉÅÏÑ∏Ï£ºÏÜå">
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="addToAddressBook">
+                                        <label class="form-check-label" for="addToAddressBook">
+                                            Î∞∞ÏÜ°ÏßÄ Î™©Î°ùÏóê Ï∂îÍ∞Ä
+                                        </label>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="deliveryMemo" class="form-label">Î∞∞ÏÜ°Î©îÎ™®</label>
+                                        <select class="form-select" id="deliveryMemo">
+                                            <option value="">Î∞∞ÏÜ°Î©îÎ™®Î•º ÏÑ†ÌÉùÌï¥ Ï£ºÏÑ∏Ïöî.</option>
+                                            <option value="Î¨∏ ÏïûÏóê ÎÜîÏ£ºÏÑ∏Ïöî">Î¨∏ ÏïûÏóê ÎÜîÏ£ºÏÑ∏Ïöî</option>
+                                            <option value="Í≤ΩÎπÑÏã§Ïóê Îß°Í≤®Ï£ºÏÑ∏Ïöî">Í≤ΩÎπÑÏã§Ïóê Îß°Í≤®Ï£ºÏÑ∏Ïöî</option>
+                                            <option value="ÏßÅÏ†ë Î∞õÏïÑÏïº Ìï©ÎãàÎã§">ÏßÅÏ†ë Î∞õÏïÑÏïº Ìï©ÎãàÎã§</option>
+                                            <option value="ÏßÅÏ†ëÏûÖÎ†•">ÏßÅÏ†ëÏûÖÎ†•</option>
+                                        </select>
+                                        <input type="text" class="form-control mt-2 hidden" id="deliveryMemoInput" placeholder="Î∞∞ÏÜ°Î©îÎ™®Î•º ÏûÖÎ†•Ìï¥ Ï£ºÏÑ∏Ïöî">
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="col-md-5">
-            <div class="card">
-                <div class="card-header">
-                    ¡÷πÆ ø‰æ‡
-                </div>
-                <div class="card-body">
-                    <p>ªÛ«∞∞°∞›: 77,000ø¯</p>
-                    <p>πËº€∫Ò: 2,500ø¯</p>
-                    <p>√— ¡÷πÆ±›æ◊: 79,500ø¯</p>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-body">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="agreeTerms">
-                        <label class="form-check-label" for="agreeTerms">
-                            ±∏∏≈¡∂∞« »Æ¿Œ π◊ ∞·¡¶¡¯«‡ø° µø¿«
-                        </label>
+            <div class="col-md-5">
+                <div class="card">
+                    <div class="card-header">
+                        Ï£ºÎ¨∏ ÏöîÏïΩ
                     </div>
-                    <button class="btn btn-primary mt-3">∞·¡¶«œ±‚</button>
+                    <div class="card-body">
+                        <p>ÏÉÅÌíàÍ∞ÄÍ≤©: <%= totalProductPrice %>Ïõê</p>
+                        <p>Î∞∞ÏÜ°ÎπÑ: <%= shippingCost %>Ïõê</p>
+                        <p>Ï¥ù Ï£ºÎ¨∏Í∏àÏï°: <%= totalProductPrice + shippingCost %>Ïõê</p>
+                        <input type="hidden" name="total" value="<%= totalProductPrice + shippingCost %>">
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="agreeTerms">
+                            <label class="form-check-label" for="agreeTerms">
+                                Íµ¨Îß§Ï°∞Í±¥ ÌôïÏù∏ Î∞è Í≤∞Ï†úÏßÑÌñâÏóê ÎèôÏùò
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-3" id="payButton" formaction="<%=request.getContextPath() %>/payment/payment_complete.jsp">Í≤∞Ï†úÌïòÍ∏∞</button>
+
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </form>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-WdcW8+3k9d0WCFQz2O+p44+gd+YoDZlD5oBLfQn3NE6vcegM2KUkc4gF3uH19ajp" crossorigin="anonymous"></script>
@@ -262,7 +268,7 @@
 
     document.getElementById('deliveryMemo').addEventListener('change', function() {
         var deliveryMemoInput = document.getElementById('deliveryMemoInput');
-        if (this.value === '¡˜¡¢¿‘∑¬') {
+        if (this.value === 'ÏßÅÏ†ëÏûÖÎ†•') {
             deliveryMemoInput.classList.remove('hidden');
         } else {
             deliveryMemoInput.classList.add('hidden');
@@ -287,8 +293,15 @@
         document.getElementById('existing-address').classList.add('show', 'active');
         document.getElementById('new-address').classList.remove('show', 'active');
     });
+
+    document.getElementById('payButton').addEventListener('click', function(event) {
+        if (!document.getElementById('agreeTerms').checked) {
+            alert('Íµ¨Îß§Ï°∞Í±¥ ÌôïÏù∏ Î∞è Í≤∞Ï†úÏßÑÌñâÏóê ÎèôÏùòÌï¥Ïïº Ìï©ÎãàÎã§.');
+            event.preventDefault(); // ÌéòÏù¥ÏßÄ Ïù¥Îèô ÎßâÍ∏∞
+        } else {
+            document.getElementById('paymentForm').submit();
+        }
+    });
 </script>
 </body>
 </html>
-
-
