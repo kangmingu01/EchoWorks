@@ -101,7 +101,7 @@
                                     totalProductPrice += totalPrice;
                         %>
                         <div class="d-flex align-items-center">
-                            <img src="../assets/img/<%= ProductDAO.getDAO().selectProductByNo(stock.getpS_pNo()).getPRODUCT_IMG() %>.jpg" alt="상품 이미지" style="width: 100px; height: 100px; margin-right: 20px;">
+                            <img src="assets/img/<%= ProductDAO.getDAO().selectProductByNo(stock.getpS_pNo()).getPRODUCT_IMG() %>.jpg" alt="상품 이미지" style="width: 100px; height: 100px; margin-right: 20px;">
                             <div>
                                 <p><%= stock.getpS_Option() %></p>
                                 <p><%= unitPrice %>원</p>
@@ -133,7 +133,7 @@
                         <div class="mb-3">
                             <input type="email" class="form-control" id="ordererEmail" value="<%= loginMember.getMemberEmail() %>" disabled>
                         </div>
-                        <button class="btn btn-outline-secondary" id="editOrdererInfo">수정</button>
+                        <button type="button" class="btn btn-outline-secondary" id="editOrdererInfo">수정</button>
                     </div>
                 </div>
 
@@ -237,7 +237,8 @@
     </form>
 </div>
 <script>
-    document.getElementById('editOrdererInfo').addEventListener('click', function() {
+    document.getElementById('editOrdererInfo').addEventListener('click', function(event) {
+        event.preventDefault(); // 기본 동작(폼 제출) 방지
         var inputs = document.querySelectorAll('#ordererName, #ordererContact, #ordererEmail');
         inputs.forEach(function(input) {
             input.disabled = false;
