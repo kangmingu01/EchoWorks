@@ -80,7 +80,7 @@
                                 <th style="width: 5%"><input type="checkbox" id="check-all" /></th>
                                 <th style="width: 55%">상품정보</th>
                                 <th style="width: 15%">수량</th>
-                                <th style="width: 15%">가격</th>
+                                <th style="width: 15%" class="text-nowrap">가격</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -102,9 +102,14 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <input type="number" min="1" max="10000" class="form-control quantity-input w-25" style="text-align: right; width: 60px; display: inline;" min="1" step="1" value="<%= cart.getCart_num() %>"/>
+                                	<div class="input-group mb-3">
+									    <button class="btn btn-outline-secondary quantity-decrease" type="button"><i class="fa-solid fa-minus" style="color: #000000;"></i></button>
+									    <input type="text" class="quantity form-control form-control quantity-input text-center" min="1" max="10000" value="<%= cart.getCart_num() %>" readonly>
+									    <button class="btn btn-outline-secondary quantity-increase" type="button"><i class="fa-solid fa-plus" style="color: #000000;"></i></button>
+									</div>
+                                   
                                 </td>
-                                <td class="total-price" data-unit-price="<%= unitPrice %>"><%= String.format("%,d", totalPrice) %>원</td> 
+                                <td class="total-price text-nowrap" data-unit-price="<%= unitPrice %>"><%= String.format("%,d", totalPrice) %>원</td> 
                             </tr>
                             <%
                                     }
@@ -169,7 +174,33 @@
         function formatPrice(price) {
             return price.toLocaleString();
         }
+        document.querySelectorAll('.quantity-increase').forEach(function(button) {
+            button.addEventListener('click', function() {
+                var quantityInput = this.previousElementSibling;
+                var newQuantity = parseInt(quantityInput.value) + 1;
+                quantityInput.value = newQuantity;
+                updatePrice(this, newQuantity);
+            });
+        });
 
+        document.querySelectorAll('.quantity-decrease').forEach(function(button) {
+            button.addEventListener('click', function() {
+                var quantityInput = this.nextElementSibling;
+                var newQuantity = parseInt(quantityInput.value) - 1;
+                if (newQuantity >= 1) {
+                    quantityInput.value = newQuantity;
+                    updatePrice(this, newQuantity);
+                }
+            });
+        });
+
+        function updatePrice(button, newQuantity) {
+            var cartRow = button.closest('tr');
+            var unitPrice = parseInt(cartRow.querySelector('.total-price').dataset.unitPrice);
+            var newTotalPrice = newQuantity * unitPrice;
+            cartRow.querySelector('.total-price').textContent = formatPrice(newTotalPrice) + '원';
+            updateSummary();
+        }
         function updateSummary() {
             var totalProductPrice = 0;
             document.querySelectorAll('.check-item:checked').forEach(function(checkbox) {
@@ -177,8 +208,9 @@
                 var price = parseInt(row.querySelector('.total-price').textContent.replace(/[^0-9]/g, ''));
                 
                 totalProductPrice += price;
+                
             });
-
+	
             var shippingCost = 2500; // 배송비
             var finalPrice = totalProductPrice + shippingCost;
 
@@ -190,7 +222,7 @@
         document.getElementById('check-all').addEventListener('click', function() {
             var checkboxes = document.querySelectorAll('.check-item');
             for (var i = 0; i < checkboxes.length; i++) {
-                checkboxes[i].checked = this.checked;
+                checkboxes[i].checked = this.checked; 
             }
             updateSummary();
         });
