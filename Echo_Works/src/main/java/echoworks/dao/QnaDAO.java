@@ -124,7 +124,7 @@ public class QnaDAO extends JdbcDAO {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		List<QnaDTO> qnaList = new ArrayList<>();
+		List<QnaDTO> qnaList = new ArrayList<QnaDTO>();
 		try {
 			con = getConnection();
 			String sql = "select qna_no, qna_member_no,qna_product_no, qna_title,qna_content,"
@@ -155,5 +155,184 @@ public class QnaDAO extends JdbcDAO {
 		return qnaList;
 	}
 
-	//
+	//240724오후7시50분 새로 시작
+	//로그인 했는디 답변
+	public List<QnaDTO> selectQnaByMemberNoN(int memberNo) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<QnaDTO> qnaList = new ArrayList<>();
+		try {
+			con = getConnection();
+			String sql = "select q.qna_no, q.qna_member_no, q.qna_product_no, q.qna_title, q.qna_content, "
+					+ "q.qna_date, q.qna_answer, q.qna_ansdate,q.qna_status, p.product_name from qna q "
+					+ "join product p on q.qna_product_no = p.product_no " + "where q.qna_member_no = ? and q.qna_status=2";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, memberNo);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				QnaDTO qna = new QnaDTO();
+				qna.setQnaNo(rs.getInt("qna_no"));
+				qna.setQnaMemberNo(rs.getInt("qna_member_no"));
+				qna.setQnaProductNo(rs.getInt("qna_product_no"));
+				qna.setQnaTitle(rs.getString("qna_title"));
+				qna.setQnaContent(rs.getString("qna_content"));
+				qna.setQnaDate(rs.getDate("qna_date"));
+				qna.setQnaAnswer(rs.getString("qna_answer"));
+				qna.setQnaAnsDate(rs.getDate("qna_ansdate"));
+				qna.setQnaStatus(rs.getInt("qna_status"));
+				
+				qnaList.add(qna); 
+
+			}
+		} catch (SQLException e) {
+			System.out.println("[에러] selectQnaByMemberNo() 메서드의 SQL 오류 = " + e.getMessage());
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return qnaList;
+	}
+	//=============================  전체 미답변
+	public List<QnaDTO> selectQnaNOList() {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<QnaDTO> qnaList = new ArrayList<QnaDTO>();
+		try {
+			con = getConnection();
+			String sql = "select qna_no, qna_member_no,qna_product_no, qna_title,qna_content,"
+					+ "qna_date, qna_answer, qna_ansdate, qna_status from where qna_status=2 qna order by qna_no desc";
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				QnaDTO qna = new QnaDTO();
+				qna.setQnaNo(rs.getInt("qna_no"));
+				qna.setQnaMemberNo(rs.getInt("qna_member_no"));
+				qna.setQnaProductNo(rs.getInt("qna_product_no"));
+				qna.setQnaTitle(rs.getString("qna_title"));
+				qna.setQnaContent(rs.getString("qna_content"));
+				qna.setQnaDate(rs.getDate("qna_date"));
+				qna.setQnaAnswer(rs.getString("qna_answer"));
+				qna.setQnaAnsDate(rs.getDate("qna_ansdate"));
+				qna.setQnaStatus(rs.getInt("qna_status"));
+
+				qnaList.add(qna);
+
+			}
+		} catch (SQLException e) {
+			System.out.println("[에러] selectAjaxQnAList() 메서드의 SQL 오류 = " + e.getMessage());
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return qnaList;
+	}
+	
+	public List<QnaDTO> selectQnAAList(int productNo, int secretCheck, String replyStatus, int memberNo) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<QnaDTO> qnaList = new ArrayList<>();
+
+		try {
+			con = getConnection();
+
+			String sql = "SELECT qna_no, qna_member_num, qna_product_no, qna_title, qna_content, "
+					+ "qna_date, qna_answer, qna_ansdate, qna_status " + "FROM QNA WHERE QNA_PRODUCT_NO = ?";
+			if (secretCheck == 1) {
+				sql += " AND QNA_STATUS = 2";
+			}
+			if ("".equals(replyStatus)) {
+				sql += " AND QNA_ANSWER IS NULL";
+			} else if ("answer_completed".equals(replyStatus)) {
+				sql += " AND QNA_ANSWER IS NOT NULL";
+			}if(!"0".equals(memberNo)) {
+				sql += " AND qna_member_num=? ";
+			}
+
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, productNo);
+			pstmt.setInt(2, memberNo);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				QnaDTO qna = new QnaDTO();
+				qna.setQnaNo(rs.getInt("QNA_NO"));
+				qna.setQnaMemberNo(rs.getInt("QNA_MEMBER_NO"));
+				qna.setQnaProductNo(rs.getInt("QNA_PRODUCT_NO"));
+				qna.setQnaTitle(rs.getString("QNA_TITLE"));
+				qna.setQnaContent(rs.getString("QNA_CONTENT"));
+				qna.setQnaDate(rs.getDate("QNA_DATE"));
+				qna.setQnaAnswer(rs.getString("QNA_ANSWER"));
+				qna.setQnaAnsDate(rs.getDate("QNA_ANSDATE"));
+				qna.setQnaStatus(rs.getInt("QNA_STATUS"));
+
+				qnaList.add(qna);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return qnaList;
+		
+	}
+	
+	//====================================================주신거===========================
+	public List<QnaDTO> selectQnAList(int productNo, int secretCheck, String replyStatus, int memberNum) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<QnaDTO> qnaList = new ArrayList<>();
+
+		try {
+			con = getConnection();
+
+			String sql = "SELECT qna_no, qna_member_no, qna_product_no, qna_title, qna_content, "
+					+ "qna_date, qna_answer, qna_ansdate, qna_status " + "FROM QNA WHERE QNA_PRODUCT_NO = ?";
+			if (secretCheck == 1) {
+				sql += " ";
+			}else {
+				sql += " AND QNA_STATUS = 2";
+			}
+			if ("unanswered_answer".equals(replyStatus)) {
+				sql += " AND QNA_ANSWER IS NULL";
+			} else if ("answer_completed".equals(replyStatus)) {
+				sql += " AND QNA_ANSWER IS NOT NULL";
+			}
+			if (memberNum != 0) {
+				sql += " AND QNA_MEMBER_NO = ?";
+			}
+
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, productNo);
+			if(memberNum != 0) {
+			pstmt.setInt(2, memberNum);
+			}
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				QnaDTO qna = new QnaDTO();
+				qna.setQnaNo(rs.getInt("QNA_NO"));
+				qna.setQnaMemberNo(rs.getInt("QNA_MEMBER_NO"));
+				qna.setQnaProductNo(rs.getInt("QNA_PRODUCT_NO"));
+				qna.setQnaTitle(rs.getString("QNA_TITLE"));
+				qna.setQnaContent(rs.getString("QNA_CONTENT"));
+				qna.setQnaDate(rs.getDate("QNA_DATE"));
+				qna.setQnaAnswer(rs.getString("QNA_ANSWER"));
+				qna.setQnaAnsDate(rs.getDate("QNA_ANSDATE"));
+				qna.setQnaStatus(rs.getInt("QNA_STATUS"));
+
+				qnaList.add(qna);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return qnaList;
+	}
+	
 }
