@@ -1,3 +1,4 @@
+<%@page import="echoworks.dto.MemberDTO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.nio.file.Files"%>
 <%@page import="javax.swing.ImageIcon"%>
@@ -12,13 +13,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
+/*
+MemberDTO loginMember=(MemberDTO)session.getAttribute("loginMember");
 
+if (loginMember == null) {
+    out.println("<script>alert('로그인이 필요합니다.');location.href='index.jsp?workgroup=member&work=member_login';</script>");
+    return;
+}
+*/
+
+// 현재 선택한 상품 정보 가져오기
 ProductDTO product=ProductDAO.getDAO().selectProductByNo(Integer.parseInt(request.getParameter("product_no")));
-
-//String pNo="1";
-
-// 상품 객체 생성
-//ProductDTO product=ProductDAO.getDAO().selectProductByNo(Integer.parseInt(pNo));
 
 // 재고 객체 생성
 List<ProductStockDTO> productStockList= ProductStockDAO.getDAO().selectProductStockList(product.getPRODUCT_NO());
@@ -136,10 +141,10 @@ input[type="number"]::-webkit-inner-spin-button {
 							</div>
 							<div class="d-flex justify-content-between align-items-center">
 								<div class="col-6 d-grid p-1">
-									<button type="button" class="btn btn-lg" style="font-size:18px; font-weight:500; background:#fff; border:1px solid #666; color:#666; cursor:pointer;">장바구니담기</button>
+									<button type="button" class="btn_cart btn btn-lg" style="font-size:18px; font-weight:500; background:#fff; border:1px solid #666; color:#666; cursor:pointer;">장바구니담기</button>
 								</div>
 								<div class="col-6 d-grid p-1">
-									<button type="button" class="btn btn-lg" style="font-size:18px; font-weight:500; background:#666; color:#fff; border:0;  cursor:pointer;">주문하기</button>
+									<button type="button" class="btn_payment btn btn-lg" style="font-size:18px; font-weight:500; background:#666; color:#fff; border:0;  cursor:pointer;">주문하기</button>
 								</div>
 							</div>
 						</div>
@@ -180,7 +185,7 @@ input[type="number"]::-webkit-inner-spin-button {
 								
 								<% if(product.getPRODUCT_VIDEO_URL() != null) { //상품 영상 %>
 								<div class="ratio ratio-16x9 w-75 mx-auto mt-5 mb-3">
-  									<iframe src="https://www.youtube.com/embed/yiP6aLpHYfg?si=CF3zWx0-2Xyx5qPA"  title="YouTube video" allowfullscreen></iframe>
+  									<iframe src="https://www.youtube.com/embed/yiP6aLpHYfg?si=CF3zWx0-2Xyx5qPA" title="YouTube video" allowfullscreen></iframe>
 								</div>
 								<% } %>
 							
@@ -270,10 +275,8 @@ function selected_item(io_type, io_id, io_value,ver){
   opt += '</span>';
   opt += '<span><a href="javascript:"><img src="assets/img/detail/ui/item_plus.png" alt="더하기" width="30px" onclick="item_plus('+sid+','+price+','+stock+')"></a></span>';
   opt += '</div>';
-  opt += '<div class="item_select_price button price_font">'+price+'<span>원</span>'+'<img src="assets/img/detail/ui/layer_close.png" alt="옵션 삭제('+sid+')" onclick="option_delete('+sid+','+price+')" ></div>';
+  opt += '<div class="item_select_price button price_font">'+price.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")+'<span>원</span>'+'<img src="assets/img/detail/ui/layer_close.png" alt="옵션 삭제('+sid+')" onclick="option_delete('+sid+','+price+')" ></div>';
   opt += '</div>';
-
-  
 
   //옵션 중복검사
   if(document.getElementById('io_append'+sid)){
@@ -408,14 +411,6 @@ $(document).ready(function(){
 });
 
 
-/* 페이징 addClass */
-$(document).ready(function(){
-    $(".item_paging_box ul li a").click(function(){
-        $(".item_paging_box ul li a").removeClass("mypage_paging_select");
-        $(this).addClass("mypage_paging_select");
-    });
-});
-
 function show_num(e, sid, price, stock) {
 	if(e.keyCode == 13) {
 		var curNum = $("#ct_qty"+sid).val();
@@ -428,4 +423,14 @@ function show_num(e, sid, price, stock) {
 		numberWithCommas();
 	}
 }
+
+
+$(".btn_cart").click(function(){
+	alert("장바구니");
+});
+
+$(".btn_payment").click(function() {
+	alert("주문하기");
+});
+
 </script>
