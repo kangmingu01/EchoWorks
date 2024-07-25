@@ -82,7 +82,7 @@
 </head>
 <body>
 <div class="container">
-    <h2 class="section-title text-center mt-3">결제하기</h2>
+     <h2 class="section-title text-center mt-3">결제하기</h2>
     <form id="paymentForm" name="paymentForm" method="post" action="<%=request.getContextPath() %>/payment/payment_action.jsp?action=pay" >
         <div class="row">
             <div class="col-md-7">
