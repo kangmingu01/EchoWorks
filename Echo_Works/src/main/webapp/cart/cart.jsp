@@ -80,7 +80,7 @@
                                 <th style="width: 5%"><input type="checkbox" id="check-all" /></th>
                                 <th style="width: 55%">상품정보</th>
                                 <th style="width: 15%">수량</th>
-                                <th style="width: 15%">가격</th>
+                                <th style="width: 15%" class="text-nowrap">가격</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -102,9 +102,13 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <input type="number" min="1" max="10000" class="form-control quantity-input w-25" style="text-align: right; width: 60px; display: inline;" min="1" step="1" value="<%= cart.getCart_num() %>"/>
+                                    <div class="input-group mb-3">
+                                        <button class="btn btn-outline-secondary quantity-decrease" type="button"><i class="fa-solid fa-minus" style="color: #000000;"></i></button>
+                                        <input type="text" class="quantity form-control quantity-input text-center" min="1" max="10000" value="<%= cart.getCart_num() %>" readonly>
+                                        <button class="btn btn-outline-secondary quantity-increase" type="button"><i class="fa-solid fa-plus" style="color: #000000;"></i></button>
+                                    </div>
                                 </td>
-                                <td class="total-price" data-unit-price="<%= unitPrice %>"><%= String.format("%,d", totalPrice) %>원</td> 
+                                <td class="total-price text-nowrap" data-unit-price="<%= unitPrice %>"><%= String.format("%,d", totalPrice) %>원</td> 
                             </tr>
                             <%
                                     }
@@ -135,7 +139,7 @@
                     </table>
                 </div>
                 <div class="text-center">
-                    <button type="submit" class="btn btn-default" name="action" value="checkout">선택상품주문</button>
+                    <button type="submit" class="btn btn-default" name="action" value="checkout" id="checkout-button">선택상품주문</button>
                     <button type="button" class="btn btn-default" id="productClear">쇼핑계속하기</button>
                 </div>
                 <br/><br/>
@@ -170,15 +174,62 @@
             return price.toLocaleString();
         }
 
+        function updatePrice(button, newQuantity) {
+            var cartRow = button.closest('tr');
+            var unitPrice = parseInt(cartRow.querySelector('.total-price').dataset.unitPrice);
+            var newTotalPrice = newQuantity * unitPrice;
+            cartRow.querySelector('.total-price').textContent = formatPrice(newTotalPrice) + '원';
+            updateSummary();
+
+            // 서버에 AJAX 요청으로 업데이트된 수량을 반영
+            var cartNo = cartRow.dataset.cartNo;
+            $.ajax({
+                url: '<%=request.getContextPath()%>/cart/cart_action.jsp',
+                method: 'POST',
+                data: {
+                    action: 'update',
+                    cart_no: cartNo,
+                    quantity: newQuantity,
+                    returnUrl: '<%=request.getContextPath()%>/index.jsp?workgroup=cart&work=cart'
+                },
+                success: function(response) {
+                    // 필요시 응답 처리
+                }
+            });
+        }
+
+        document.querySelectorAll('.quantity-increase').forEach(function(button) {
+            button.addEventListener('click', function() {
+                var quantityInput = this.previousElementSibling;
+                var newQuantity = parseInt(quantityInput.value) + 1;
+                var maxQuantity = parseInt(this.closest('tr').dataset.maxQuantity);
+                if (newQuantity <= maxQuantity) {
+                    quantityInput.value = newQuantity;
+                    updatePrice(this, newQuantity);
+                } else {
+                    alert("남은 재고수량: " + maxQuantity + "개");
+                }
+            });
+        });
+
+        document.querySelectorAll('.quantity-decrease').forEach(function(button) {
+            button.addEventListener('click', function() {
+                var quantityInput = this.nextElementSibling;
+                var newQuantity = parseInt(quantityInput.value) - 1;
+                if (newQuantity >= 1) {
+                    quantityInput.value = newQuantity;
+                    updatePrice(this, newQuantity);
+                }
+            });
+        });
+
         function updateSummary() {
             var totalProductPrice = 0;
             document.querySelectorAll('.check-item:checked').forEach(function(checkbox) {
                 var row = checkbox.closest('tr');
                 var price = parseInt(row.querySelector('.total-price').textContent.replace(/[^0-9]/g, ''));
-                
                 totalProductPrice += price;
             });
-
             var shippingCost = 2500; // 배송비
             var finalPrice = totalProductPrice + shippingCost;
 
@@ -190,52 +241,13 @@
         document.getElementById('check-all').addEventListener('click', function() {
             var checkboxes = document.querySelectorAll('.check-item');
             for (var i = 0; i < checkboxes.length; i++) {
-                checkboxes[i].checked = this.checked;
+                checkboxes[i].checked = this.checked; 
             }
             updateSummary();
         });
 
         document.querySelectorAll('.check-item').forEach(function(checkbox) {
             checkbox.addEventListener('change', updateSummary);
-        });
-
-        document.querySelectorAll('.quantity-input').forEach(function(input) {
-            input.addEventListener('input', function() {
-                var cartRow = this.closest('tr');
-                var unitPrice = parseInt(cartRow.querySelector('.total-price').dataset.unitPrice);
-                var maxQuantity = parseInt(cartRow.dataset.maxQuantity);
-                var newQuantity = parseInt(this.value);
-
-                if (newQuantity > maxQuantity) {
-                    alert("남은 재고수량 : "+ maxQuantity + "개" + "\n"+maxQuantity +  "개 이하로 구매해주세요.");
-                    
-                    this.value = maxQuantity;
-                    newQuantity = maxQuantity;
-                }
-
-                var newTotalPrice = newQuantity * unitPrice
-				
-                if (isNaN(newTotalPrice)) { // 값이 없어서 NaN값이 나올 경우
-
-                	newTotalPrice = 0;
-
-                }
-                
-                cartRow.querySelector('.total-price').textContent = formatPrice(newTotalPrice) + '원';
-                updateSummary();
-
-                var cartNo = cartRow.dataset.cartNo;
-                $.ajax({
-                    url: '<%=request.getContextPath()%>/cart/cart_action.jsp',
-                    method: 'POST',
-                    data: {
-                        action: 'update',
-                        cart_no: cartNo,
-                        quantity: newQuantity,
-                        returnUrl: '<%=request.getContextPath()%>/index.jsp?workgroup=cart&work=cart'
-                    }
-                });
-            });
         });
 
         document.getElementById('delete-selected').addEventListener('click', function() {

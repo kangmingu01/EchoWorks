@@ -43,15 +43,7 @@
 <head>
     <meta charset="UTF-8">
     <title>결제하기</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            background-color: white;
-            overflow-y: scroll; /* Always show vertical scrollbar */
-        }
-        .container {
-            margin-top: 30px;
-        }
         .card {
             margin-bottom: 20px;
         }
@@ -90,7 +82,7 @@
 </head>
 <body>
 <div class="container">
-    <h2 class="section-title text-center">결제하기</h2>
+    <h2 class="section-title text-center mt-3">결제하기</h2>
     <form id="paymentForm" name="paymentForm" method="post" action="<%=request.getContextPath() %>/payment/payment_action.jsp?action=pay" >
         <div class="row">
             <div class="col-md-7">
@@ -109,7 +101,7 @@
                                     totalProductPrice += totalPrice;
                         %>
                         <div class="d-flex align-items-center">
-                            <img src="../assets/img/<%= ProductDAO.getDAO().selectProductByNo(stock.getpS_pNo()).getPRODUCT_IMG() %>.jpg" alt="상품 이미지" style="width: 100px; height: 100px; margin-right: 20px;">
+                            <img src="assets/img/<%= ProductDAO.getDAO().selectProductByNo(stock.getpS_pNo()).getPRODUCT_IMG() %>.jpg" alt="상품 이미지" style="width: 100px; height: 100px; margin-right: 20px;">
                             <div>
                                 <p><%= stock.getpS_Option() %></p>
                                 <p><%= unitPrice %>원</p>
@@ -133,15 +125,15 @@
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
-                            <input type="text" class="form-control" id="ordererName" value="<%= loginMember.getMemberName() %>" disabled>
+                            <input type="text" class="form-control" id="ordererName" name="jname" value="<%= loginMember.getMemberName() %>" disabled>
                         </div>
                         <div class="mb-3">
-                            <input type="text" class="form-control" id="ordererContact" value="<%= loginMember.getMemberMobile() %>" disabled>
+                            <input type="text" class="form-control" id="ordererContact" name="phone" value="<%= loginMember.getMemberMobile() %>" disabled>
                         </div>
                         <div class="mb-3">
-                            <input type="email" class="form-control" id="ordererEmail" value="<%= loginMember.getMemberEmail() %>" disabled>
+                            <input type="email" class="form-control" id="ordererEmail" name="email" value="<%= loginMember.getMemberEmail() %>" disabled>
                         </div>
-                        <button class="btn btn-outline-secondary" id="editOrdererInfo">수정</button>
+                        <button type="button" class="btn btn-outline-secondary" id="editOrdererInfo">수정</button>
                     </div>
                 </div>
 
@@ -161,6 +153,9 @@
                         <div class="tab-content" id="deliveryTabContent">
                             <div class="tab-pane fade show active" id="existing-address" role="tabpanel" aria-labelledby="existing-address-tab">
                                 <p><input type="radio" name="address" checked> <%= loginMember.getMemberName() %>, <%= loginMember.getMemberAddress1() %>, <%= loginMember.getMemberAddress2() %>, <%= loginMember.getMemberZipcode() %></p>
+                                <input type="hidden" name="zipcode" value="<%= loginMember.getMemberZipcode() %>">
+                                <input type="hidden" name="address1" value="<%= loginMember.getMemberAddress1() %>">
+                                <input type="hidden" name="address2" value="<%= loginMember.getMemberAddress2() %>">
                             </div>
                             <div class="tab-pane fade" id="new-address" role="tabpanel" aria-labelledby="new-address-tab">
                                 <div class="form-check">
@@ -172,26 +167,26 @@
                                 <div class="mt-3">
                                     <div class="mb-3">
                                         <label for="recipient" class="form-label">수령인</label>
-                                        <input type="text" class="form-control" id="recipient" placeholder="2글자 이상 입력해주세요">
+                                        <input type="text" class="form-control" id="recipient" placeholder="2글자 이상 입력해주세요" name="jname">
                                     </div>
                                     <div class="mb-3">
                                         <label for="contact" class="form-label">연락처</label>
-                                        <input type="text" class="form-control" id="contact" placeholder="전화번호를 입력하세요">
+                                        <input type="text" class="form-control" id="contact" placeholder="전화번호를 입력하세요" name="phone">
                                     </div>
                                     <div class="mb-3">
                                         <label for="postcode" class="form-label">우편번호</label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control" id="postcode" placeholder="우편번호">
+                                            <input type="text" class="form-control" id="postcode" placeholder="우편번호" name="zipcode">
                                             <button class="btn btn-outline-secondary" type="button" id="findPostcode">주소찾기</button>
                                         </div>
                                     </div>
                                     <div class="mb-3">
                                         <label for="address" class="form-label">주소</label>
-                                        <input type="text" class="form-control" id="address" placeholder="주소">
+                                        <input type="text" class="form-control" id="address" placeholder="주소" name="address1">
                                     </div>
                                     <div class="mb-3">
                                         <label for="detailedAddress" class="form-label">상세주소</label>
-                                        <input type="text" class="form-control" id="detailedAddress" placeholder="상세주소">
+                                        <input type="text" class="form-control" id="detailedAddress" placeholder="상세주소" name="address2">
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="addToAddressBook">
@@ -201,14 +196,14 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="deliveryMemo" class="form-label">배송메모</label>
-                                        <select class="form-select" id="deliveryMemo">
+                                        <select class="form-select" id="deliveryMemo" name="omesg">
                                             <option value="">배송메모를 선택해 주세요.</option>
                                             <option value="문 앞에 놔주세요">문 앞에 놔주세요</option>
                                             <option value="경비실에 맡겨주세요">경비실에 맡겨주세요</option>
                                             <option value="직접 받아야 합니다">직접 받아야 합니다</option>
                                             <option value="직접입력">직접입력</option>
                                         </select>
-                                        <input type="text" class="form-control mt-2 hidden" id="deliveryMemoInput" placeholder="배송메모를 입력해 주세요">
+                                        <input type="text" class="form-control mt-2 hidden" id="deliveryMemoInput" placeholder="배송메모를 입력해 주세요" name="omesgInput">
                                     </div>
                                 </div>
                             </div>
@@ -231,25 +226,21 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="agreeTerms">
+                            <input class="form-check-input" type="checkbox" id="agreeTerms" name="agreeTerms">
                             <label class="form-check-label" for="agreeTerms">
                                 구매조건 확인 및 결제진행에 동의
                             </label>
                         </div>
-                        <button type="submit" class="btn btn-primary mt-3" id="payButton" formaction="<%=request.getContextPath() %>/payment/payment_complete.jsp">결제하기</button>
-
+                        <button type="submit" class="btn btn-primary mt-3" id="payButton">결제하기</button>
                     </div>
                 </div>
             </div>
         </div>
     </form>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-WdcW8+3k9d0WCFQz2O+p44+gd+YoDZlD5oBLfQn3NE6vcegM2KUkc4gF3uH19ajp" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-5IBV6dU1g8kDcHj/YnuP4WTDq0fFhZcLwE4E2LP+ulUGjUxr4/dRSu9moAhxJfDm" crossorigin="anonymous"></script>
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
-    document.getElementById('editOrdererInfo').addEventListener('click', function() {
+    document.getElementById('editOrdererInfo').addEventListener('click', function(event) {
+        event.preventDefault(); // 기본 동작(폼 제출) 방지
         var inputs = document.querySelectorAll('#ordererName, #ordererContact, #ordererEmail');
         inputs.forEach(function(input) {
             input.disabled = false;
@@ -298,8 +289,6 @@
         if (!document.getElementById('agreeTerms').checked) {
             alert('구매조건 확인 및 결제진행에 동의해야 합니다.');
             event.preventDefault(); // 페이지 이동 막기
-        } else {
-            document.getElementById('paymentForm').submit();
         }
     });
 </script>

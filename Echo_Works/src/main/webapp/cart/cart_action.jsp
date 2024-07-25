@@ -65,11 +65,11 @@
                 // 선택된 상품 주문 처리 로직 추가
                 String[] selectedCartNos = request.getParameterValues("cart_no");
                 if (selectedCartNos != null) {
-                    String query = "?";
+                    String query = "&";
                     for (String cartNo : selectedCartNos) {
-                        query += "cart_no=" + cartNo + "&";
+                        query += "cart_no=" + cartNo+"&" ;
                     }
-                    response.sendRedirect(request.getContextPath() + "/payment/payment.jsp" + query);
+                    response.sendRedirect(request.getContextPath() + "/index.jsp?workgroup=payment&work=payment" + query);
                 } else {
                     out.println("<script>alert('선택된 상품이 없습니다.');history.back();</script>");
                 }

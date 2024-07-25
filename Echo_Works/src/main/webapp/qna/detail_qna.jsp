@@ -1,3 +1,4 @@
+<%@page import="echoworks.dao.MemberDAO"%>
 <%@page import="echoworks.dto.QnaDTO"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
@@ -9,18 +10,18 @@
     pageEncoding="UTF-8"%>
 <%	
 	// 세션에 있는 로그인 사용자의 객체를 받아옴
+	
 	MemberDTO loginMember=(MemberDTO)session.getAttribute("loginMember");
-
 	// request.getRequestURI(): 요청 URL 주소에서 JSP 문서의 경로를 반환하는 메소드
 	String requestURI=request.getRequestURI();
 	// // requestURI = /Echo_Works/index.jsp
-	System.out.println("requestURI = " + requestURI); 
+	//System.out.println("requestURI = " + requestURI); 
 	
 	
 	//request.getQueryString(): 요청 URL 주소에서 질의문자열(QueryString)을 반환하는 메소드
 	String queryString=request.getQueryString();		
 	// queryString = workgroup=qna&work=detail_qna_list
-	System.out.println("queryString = " + queryString);
+	//System.out.println("queryString = " + queryString);
 	
 	//현재 실행중인 JSP 문서의 URL 주소를 생성하여 저장
 	String url=requestURI;
@@ -31,11 +32,11 @@
 	//URL 주소를 부호화 처리하여 저장
 	url=URLEncoder.encode(url, "utf-8");
 	// url = %2FEcho_Works%2Findex.jsp%3Fworkgroup%3Dqna%26work%3Ddetail_qna_list
-	System.out.println("url = "+url);
+	//System.out.println("url = "+url);
 	
 	String contextPath = request.getContextPath();
 	// request.getContextPath() = /Echo_Works
-	System.out.println("request.getContextPath() = "+ request.getContextPath());
+	//System.out.println("request.getContextPath() = "+ request.getContextPath());
 %>
 <%--
 - QNA 테이블에 저장된 행을 상품 번호에 따라 행을 검색하여 검색된 행을 HTML 태그에 포함하는 문서
@@ -213,12 +214,10 @@
                   data-offstyle="danger"
                   data-size="small"
                 />
-
                 <select
                   class="form-select form-select-sm d-sm-none d-md-block"
                   aria-label="Default select example form-select-sm"
-                  name="reply";
-                >
+                  name="reply"; id="replyStatusStr">
                   <option value="reply_status">답글상태</option>
                   <option value="unanswered_answer">미답변</option>
                   <option value="answer_completed">답변완료</option>
@@ -233,7 +232,7 @@
 			
             <div id="writeToggle" class="collapse mt-3">
               <!-- action에 경로 추가 아마도 ajax로 작업할 듯 -->
-              <form action="" method="post" class="card card-body">
+               <form action="<%=request.getContextPath()%>/qna/detail_qna.jsp" method="post" class="card card-body">
                 <div>
                   <div class="d-flex justify-content-between">
                     <label for="qnaTitle" class="form-label">문의사항</label>
@@ -249,7 +248,6 @@
                       >
                     </div>
                   </div>
-
                   <input
                     type="text"
                     class="form-control"
@@ -258,7 +256,7 @@
                   />
                 </div>
                 <div class="form-floating mt-3">
-                  <label for=""></label>
+                  <label for="floatingTextarea2"></label>
                   <textarea
                     class="form-control"
                     placeholder="Leave a comment here"
@@ -268,6 +266,7 @@
                   <label for="floatingTextarea2"
                     >문의 내용을 작성해주세요</label
                   >
+              </form> 
                 </div>
                 <div class="d-flex justify-content-center mt-3 gap-4">
                   <button type="button" class="btn btn-outline-primary">
@@ -277,7 +276,6 @@
                     다시작성
                   </button>
                 </div>
-              </form>
             </div>
             <!-- 테이블 -->
             <div class="mt-4 mb-5">
@@ -299,17 +297,15 @@
               </div>
               <!-- 상품 QnA -->
               <ul id="qna_list" class="ps-0">
-                <li class="list-unstyled border-top qnaRows">
+              <%-- Qna list 시~ 작 --%>
+                <li class="list-unstyled border-top qnaRows" id="">
+                  <%-- 질문자 질문 칸 --%>
                   <div class="d-flex pt-2 pb-2 border-bottom">
                     <div style="width: 15%" class="text-center">
                       <span>미답변</span>
                     </div>
                     <div style="width: 65%">
-                      <span
-                        ><a href="" class="text-decoration-none text-black"
-                          >상품에 하자가 있어요</a
-                        ></span
-                      >
+                      <span><a href="" class="text-decoration-none text-black">상품에 하자가 있어요</a></span>
                     </div>
                     <div style="width: 10%" class="text-center">
                       <span>작성자</span>
@@ -318,6 +314,7 @@
                       <span>작성일</span>
                     </div>
                   </div>
+                  <%-- 답변칸 --%>
                   <div class="d-flex pt-2 pb-2 border-bottom">
                     <!-- Q&A 제목 누르면 바로 밑에 뜰 수 있게  -->
                     <div style="width: 15%" class="text-center"></div>
@@ -412,14 +409,150 @@
           </div>
         </section>
 <script type="text/javascript">
-function checkLogin() {
-    loginConfirm = confirm("로그인이 필요한 서비스입니다. 로그인 하시겠습니까?");
-    
+<%-- Qna 리스트 불러오기 --%>
+
+
+
+<%-- 로그인 검증 --%>
+function checkLogin() {	
+    loginConfirm = confirm("로그인이 필요한 서비스입니다. 로그인 하시겠습니까?");    
     if(loginConfirm) {
 		window.location.href = "<%=contextPath%>" + "/index.jsp?workgroup=member&work=member_login&url=" + "<%=url%>";
 		console.log("<%=contextPath%>" + "/index.jsp?workgroup=member&work=member_login&url=" + "<%=url%>");
     }
 }
+
+
+//==========================================================Q&N 보기함수 ==================================================================================
+<%-- var productNo=<%=Integer.parseInt(request.getParameter("product_no"))%> --%>
+var productNo=1;
+var secretCheck=1;
+//status 일반 1 비밀 2 답변완료 3 관리자 9 삭제 0	
+var replyStatus="reply_status";
+//displayQnaList();
+var memberNum=0;
+	  		
+    
+   
+ if("<%=loginMember%>"=="null"){	
+	 $("#replyStatusStr").change(function() {	
+		 replyStatus=$(this).val();	
+		 if($("#secretCheck").is(":checked")){		
+			secretCheck=2;	
+		}else{	
+			secretCheck=1;
+		}		 
+			displayQnaList();
+	});
+	 $("#secretCheck").change(function() {	
+			reply_status=$("#replyStatusStr").val();	
+			 if($("#secretCheck").is(":checked")){
+				 secretCheck=2;	
+			
+			 }else{
+				 secretCheck=1;	
+			 }	 			 			 
+			displayQnaList();
+		});
+} else{
+	$("#my_qna").change(function() {
+		reply_status=$("#replyStatusStr").val();
+		if($("#secretCheck").is(":checked")){
+			 secretCheck=2;	
+		}else{
+			 secretCheck=1;	
+		}	 	
+		if($("#my_qna").is(":checked")){
+			<%if(loginMember!=null){%>
+			memberNum=<%=loginMember.getMemberNum()%>
+			<%}%>
+		}else{	
+			memberNum=0;
+		}	
+		displayQnaList();	
+	$("#replyStatusStr").change(function() {	
+		 replyStatus=$(this).val();	
+		 if($("#secretCheck").is(":checked")){		
+			secretCheck=2;	
+		}else{	
+			secretCheck=1;
+		}		 
+		 if($("#my_qna").is(":checked")){
+			<%if(loginMember!=null){%>
+			memberNum=<%=loginMember.getMemberNum()%>
+				<%}%>
+			}else{	
+			memberNum=0;
+			}	
+			displayQnaList();	
+			});
+		$("#secretCheck").change(function() {	
+			reply_status=$("#replyStatusStr").val();	
+			 if($("#secretCheck").is(":checked")){
+			 secretCheck=2;	
+			
+			 }else{
+				 secretCheck=1;	
+			 }
+			 if($("#my_qna").is(":checked")){
+					<%if(loginMember!=null){%>
+					memberNum=<%=loginMember.getMemberNum()%>
+						<%}%>
+			}else{	
+				memberNum=0;
+			}
+			displayQnaList();
+		});
+	});
+ 
+}  
+
+ function displayQnaList() {	
+	$.ajax({
+		type: "get",
+		url: "<%=request.getContextPath()%>/qna/detail_qna_test.jsp",
+		data:{productNo:productNo, secretCheck: secretCheck, replyStatus: replyStatus,memberNum:memberNum},
+		dataType:"json",
+		success: function(result) {			
+			//댓글목록태그의 자식태그(댓글)를 삭제 처리 - 기존 댓글 삭제
+			$("#qna_list").children().remove();	
+			if(result.code == "success") {
+				$(result.data).each(function() {					
+					//질문자 질문 칸 
+				var html="<div class='d-flex pt-2 pb-2 border-bottom '><div style='width: 15%' class='text-center'>";
+	                html+="<span>미답변</span>";//답변 미답변 표시
+	                html+="</div><div style='width: 65%''>";
+	                html+="<span><a href='' class='text-decoration-none text-black'>"+this.QNA_CONTENT.replace(/\n/g,"<br>")+"</a></span>";
+	                html+="</div>";
+	                html+="<div style='width: 10%' class='text-center'><span>"+this.QNA_MEMBER_NO+"</span></div>";
+	                html+="<div style='width: 10%' class='text-center'><span>"+this.QNA_DATE+"</span>";
+	                html+="</div>";
+	                html+="</div>";
+	                 //답변칸 
+	                html+="<div class='d-flex pt-2 pb-2 border-bottom'>";
+	                    <!-- Q&A 제목 누르면 바로 밑에 뜰 수 있게  -->
+	                html+="<div style='width: 15%' class='text-center'></div>";
+	                html+="<div style='width: 85%'>";
+	                html+="<span><a href='' class='text-decoration-none text-black'>"+this.QNA_ANSWER.replace(/\n/g,"<br>")+"</a></span>";
+	                html+="<div>";
+	                html+="<a href='' class='text-decoration-none fs-6 text-black-50'>수정</a>";
+	                html+="<a href='' class='text-decoration-none fs-6 text-black-50 ps-2'>삭제</a>";
+	                html+="<a href='' class='text-decoration-none fs-6 text-black-50 ps-2'>답변(관리자)</a>";
+	                html+="</div></div></div>";
+					
+					$("#qna_list").append(html);
+				});
+			} else {//검색된 댓글정보가 없는 경우		
+				$("#qnaRows").html("<div>"+result.message+"</div>");
+			}
+		}, 
+		error: function(xhr) {
+			alert("에러코드 = "+xhr.status);
+		}
+	});	
+}
+	
+
 // detail 페이지 완성되면 경로 수정해야됨 => 문제는 상태가 변하면서 새로고침되는데 이게 header로 올라감
 <%-- $("#secretCheck").change(function() {
 	console.log("<%=secretCheck%>");
