@@ -8,13 +8,19 @@
 	int productNo=Integer.parseInt(request.getParameter("productNo"));
 	int secretCheck=Integer.parseInt(request.getParameter("secretCheck"));
 	String replyStatus=request.getParameter("replyStatus");
-	MemberDTO member=(MemberDTO)session.getAttribute("loginMember");
-	int memberNo=member.getMemberNum();
-	List<QnaDTO> QnaList=QnaDAO.getDAO().selectQnAList(productNo, secretCheck, replyStatus);
-			
+    int memberNum=Integer.parseInt(request.getParameter("memberNum"));
+      
+	//MemberDTO member=(MemberDTO)session.getAttribute("loginMember");
+	
+	//if(member!=null){
+ 		//   System.out.println("member="+member);
+		//	memberNum=member.getMemberNum();		
+	//}
+	//   System.out.println("memberNum="+memberNum);
+	List<QnaDTO> QnaList=QnaDAO.getDAO().selectQnAList(productNo, secretCheck, replyStatus, memberNum);
 %>
 <% if(QnaList.isEmpty()){%>
-{"code":"empty","message":"질문이 없습니다".}
+{"code":"empty","message":"질문이 없습니다."}
 <%} else { %>
 {"code":"success",
 	"data":[
@@ -31,5 +37,5 @@
 			,"QNA_STATUS":"<%=QnaList.get(i).getQnaStatus() %>"}
 		<% } %>	
 			]
-			}
-<% } %>	
+		}
+<% } %>

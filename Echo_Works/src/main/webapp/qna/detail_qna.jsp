@@ -1,3 +1,4 @@
+<%@page import="echoworks.dao.MemberDAO"%>
 <%@page import="echoworks.dto.QnaDTO"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
@@ -9,8 +10,8 @@
     pageEncoding="UTF-8"%>
 <%	
 	// 세션에 있는 로그인 사용자의 객체를 받아옴
+	
 	MemberDTO loginMember=(MemberDTO)session.getAttribute("loginMember");
-
 	// request.getRequestURI(): 요청 URL 주소에서 JSP 문서의 경로를 반환하는 메소드
 	String requestURI=request.getRequestURI();
 	// // requestURI = /Echo_Works/index.jsp
@@ -213,12 +214,10 @@
                   data-offstyle="danger"
                   data-size="small"
                 />
-
                 <select
                   class="form-select form-select-sm d-sm-none d-md-block"
                   aria-label="Default select example form-select-sm"
-                  name="reply";
-                >
+                  name="reply"; id="replyStatusStr">
                   <option value="reply_status">답글상태</option>
                   <option value="unanswered_answer">미답변</option>
                   <option value="answer_completed">답변완료</option>
@@ -249,7 +248,6 @@
                       >
                     </div>
                   </div>
-
                   <input
                     type="text"
                     class="form-control"
@@ -412,7 +410,6 @@
         </section>
 <script type="text/javascript">
 <%-- Qna 리스트 불러오기 --%>
-displayQnaList();
 
 
 
@@ -427,20 +424,101 @@ function checkLogin() {
 
 
 //==========================================================Q&N 보기함수 ==================================================================================
-function displayQnaList() {
+<%-- var productNo=<%=Integer.parseInt(request.getParameter("product_no"))%> --%>
+var productNo=1;
+var secretCheck=1;
+//status 일반 1 비밀 2 답변완료 3 관리자 9 삭제 0	
+var replyStatus="reply_status";
+//displayQnaList();
+var memberNum=0;
+	  		
+    
+   
+ if("<%=loginMember%>"=="null"){	
+	 $("#replyStatusStr").change(function() {	
+		 replyStatus=$(this).val();	
+		 if($("#secretCheck").is(":checked")){		
+			secretCheck=2;	
+		}else{	
+			secretCheck=1;
+		}		 
+			displayQnaList();
+	});
+	 $("#secretCheck").change(function() {	
+			reply_status=$("#replyStatusStr").val();	
+			 if($("#secretCheck").is(":checked")){
+				 secretCheck=2;	
+			
+			 }else{
+				 secretCheck=1;	
+			 }	 			 			 
+			displayQnaList();
+		});
+} else{
+	$("#my_qna").change(function() {
+		reply_status=$("#replyStatusStr").val();
+		if($("#secretCheck").is(":checked")){
+			 secretCheck=2;	
+		}else{
+			 secretCheck=1;	
+		}	 	
+		if($("#my_qna").is(":checked")){
+			<%if(loginMember!=null){%>
+			memberNum=<%=loginMember.getMemberNum()%>
+			<%}%>
+		}else{	
+			memberNum=0;
+		}	
+		displayQnaList();	
+	$("#replyStatusStr").change(function() {	
+		 replyStatus=$(this).val();	
+		 if($("#secretCheck").is(":checked")){		
+			secretCheck=2;	
+		}else{	
+			secretCheck=1;
+		}		 
+		 if($("#my_qna").is(":checked")){
+			<%if(loginMember!=null){%>
+			memberNum=<%=loginMember.getMemberNum()%>
+				<%}%>
+			}else{	
+			memberNum=0;
+			}	
+			displayQnaList();	
+			});
+		$("#secretCheck").change(function() {	
+			reply_status=$("#replyStatusStr").val();	
+			 if($("#secretCheck").is(":checked")){
+			 secretCheck=2;	
+			
+			 }else{
+				 secretCheck=1;	
+			 }
+			 if($("#my_qna").is(":checked")){
+					<%if(loginMember!=null){%>
+					memberNum=<%=loginMember.getMemberNum()%>
+						<%}%>
+			}else{	
+				memberNum=0;
+			}
+			displayQnaList();
+		});
+	});
+ 
+}  
+
+ function displayQnaList() {	
 	$.ajax({
 		type: "get",
 		url: "<%=request.getContextPath()%>/qna/detail_qna_test.jsp",
-		data:{"productNo=":productNo,"secretCheck="+secretCheck,"replyStatus="+replyStatus}
-		dataType: "json",
-		success: function(result) {
-				
+		data:{productNo:productNo, secretCheck: secretCheck, replyStatus: replyStatus,memberNum:memberNum},
+		dataType:"json",
+		success: function(result) {			
 			//댓글목록태그의 자식태그(댓글)를 삭제 처리 - 기존 댓글 삭제
-			$("#qnaRows").children().remove();
-			
+			$("#qna_list").children().remove();	
 			if(result.code == "success") {
 				$(result.data).each(function() {					
-					 질문자 질문 칸
+					//질문자 질문 칸 
 				var html="<div class='d-flex pt-2 pb-2 border-bottom '><div style='width: 15%' class='text-center'>";
 	                html+="<span>미답변</span>";//답변 미답변 표시
 	                html+="</div><div style='width: 65%''>";
@@ -450,7 +528,7 @@ function displayQnaList() {
 	                html+="<div style='width: 10%' class='text-center'><span>"+this.QNA_DATE+"</span>";
 	                html+="</div>";
 	                html+="</div>";
-	                  답변칸
+	                 //답변칸 
 	                html+="<div class='d-flex pt-2 pb-2 border-bottom'>";
 	                    <!-- Q&A 제목 누르면 바로 밑에 뜰 수 있게  -->
 	                html+="<div style='width: 15%' class='text-center'></div>";
@@ -462,11 +540,9 @@ function displayQnaList() {
 	                html+="<a href='' class='text-decoration-none fs-6 text-black-50 ps-2'>답변(관리자)</a>";
 	                html+="</div></div></div>";
 					
-					
-					//댓글목록태그에 댓글태그를 마지막 자식태그로 추가하여 출력 처리 
 					$("#qna_list").append(html);
 				});
-			} else {//검색된 댓글정보가 없는 경우			
+			} else {//검색된 댓글정보가 없는 경우		
 				$("#qnaRows").html("<div>"+result.message+"</div>");
 			}
 		}, 
@@ -476,284 +552,6 @@ function displayQnaList() {
 	});	
 }
 	
-	
-	
-<%-- //====================================================전제 답변 보기 1===================================================================
-function displayQnaList() {
-	$.ajax({
-		type: "get",
-		url: "<%=request.getContextPath()%>/qna/detail_qna_listGet.jsp",
-		dataType: "json",
-		success: function(result) {
-				
-			//댓글목록태그의 자식태그(댓글)를 삭제 처리 - 기존 댓글 삭제
-			$("#qnaRows").children().remove();
-			
-			if(result.code == "success") {
-				$(result.data).each(function() {					
-					 질문자 질문 칸
-				var html="<div class='d-flex pt-2 pb-2 border-bottom '><div style='width: 15%' class='text-center'>";
-	                html+="<span>미답변</span>";//답변 미답변 표시
-	                html+="</div><div style='width: 65%''>";
-	                html+="<span><a href='' class='text-decoration-none text-black'>"+this.QNA_CONTENT.replace(/\n/g,"<br>")+"</a></span>";
-	                html+="</div>";
-	                html+="<div style='width: 10%' class='text-center'><span>"+this.QNA_MEMBER_NO+"</span></div>";
-	                html+="<div style='width: 10%' class='text-center'><span>"+this.QNA_DATE+"</span>";
-	                html+="</div>";
-	                html+="</div>";
-	                  답변칸
-	                html+="<div class='d-flex pt-2 pb-2 border-bottom'>";
-	                    <!-- Q&A 제목 누르면 바로 밑에 뜰 수 있게  -->
-	                html+="<div style='width: 15%' class='text-center'></div>";
-	                html+="<div style='width: 85%'>";
-	                html+="<span><a href='' class='text-decoration-none text-black'>"+this.QNA_ANSWER.replace(/\n/g,"<br>")+"</a></span>";
-	                html+="<div>";
-	                html+="<a href='' class='text-decoration-none fs-6 text-black-50'>수정</a>";
-	                html+="<a href='' class='text-decoration-none fs-6 text-black-50 ps-2'>삭제</a>";
-	                html+="<a href='' class='text-decoration-none fs-6 text-black-50 ps-2'>답변(관리자)</a>";
-	                html+="</div></div></div>";
-					
-					
-					//댓글목록태그에 댓글태그를 마지막 자식태그로 추가하여 출력 처리 
-					$("#qna_list").append(html);
-				});
-			} else {//검색된 댓글정보가 없는 경우			
-				$("#qnaRows").html("<div>"+result.message+"</div>");
-			}
-		}, 
-		error: function(xhr) {
-			alert("에러코드 = "+xhr.status);
-		}
-	});	
-}
-//===============================================================로그인 시 내 Q&A 전체2 ===
-function myLoginQnaList() {
-	$.ajax({
-		type: "get",
-		url: "<%=request.getContextPath()%>/qna/detail_qna_memberlistGet.jsp",
-		dataType: "json",
-		success: function(result) {
-				
-			//댓글목록태그의 자식태그(댓글)를 삭제 처리 - 기존 댓글 삭제
-			$("#qnaRows").children().remove();			
-			if(result.code == "success") {
-				$(result.data).each(function() {					
-					 질문자 질문 칸
-				var html="<div class='d-flex pt-2 pb-2 border-bottom '><div style='width: 15%' class='text-center'>";
-	                html+="<span>미답변</span>";//답변 미답변 표시
-	                html+="</div><div style='width: 65%''>";
-	                html+="<span><a href='' class='text-decoration-none text-black'>"+this.QNA_CONTENT.replace(/\n/g,"<br>")+"</a></span>";
-	                html+="</div>";
-	                html+="<div style='width: 10%' class='text-center'><span>"+this.QNA_MEMBER_NO+"</span></div>";
-	                html+="<div style='width: 10%' class='text-center'><span>"+this.QNA_DATE+"</span>";
-	                html+="</div>";
-	                html+="</div>";
-	                  답변칸
-	                html+="<div class='d-flex pt-2 pb-2 border-bottom'>";
-	                    <!-- Q&A 제목 누르면 바로 밑에 뜰 수 있게  -->
-	                html+="<div style='width: 15%' class='text-center'></div>";
-	                html+="<div style='width: 85%'>";
-	                html+="<span><a href='' class='text-decoration-none text-black'>"+this.QNA_ANSWER.replace(/\n/g,"<br>")+"</a></span>";
-	                html+="<div>";
-	                html+="<a href='' class='text-decoration-none fs-6 text-black-50'>수정</a>";
-	                html+="<a href='' class='text-decoration-none fs-6 text-black-50 ps-2'>삭제</a>";
-	                html+="<a href='' class='text-decoration-none fs-6 text-black-50 ps-2'>답변(관리자)</a>";
-	                html+="</div></div></div>";
-					
-					
-					//댓글목록태그에 댓글태그를 마지막 자식태그로 추가하여 출력 처리 
-					$("#qna_list").append(html);
-				});
-			} else {//검색된 댓글정보가 없는 경우			
-				$("#qnaRows").html("<div>"+result.message+"</div>");
-			}
-		}, 
-		error: function(xhr) {
-			alert("에러코드 = "+xhr.status);
-		}
-	});	
-}
-//================================================내 로그인 로그인 미답변 3============================================================================
-function myLoginQnaNOList() {
-	$.ajax({
-		type: "get",
-		url: "<%=request.getContextPath()%>/qna/detail_qna_Loginno.jsp",
-		dataType: "json",
-		success: function(result) {
-				
-			//댓글목록태그의 자식태그(댓글)를 삭제 처리 - 기존 댓글 삭제
-			$("#qnaRows").children().remove();			
-			if(result.code == "success") {
-				$(result.data).each(function() {					
-					 질문자 질문 칸
-				var html="<div class='d-flex pt-2 pb-2 border-bottom '><div style='width: 15%' class='text-center'>";
-	                html+="<span>미답변</span>";//답변 미답변 표시
-	                html+="</div><div style='width: 65%''>";
-	                html+="<span><a href='' class='text-decoration-none text-black'>"+this.QNA_CONTENT.replace(/\n/g,"<br>")+"</a></span>";
-	                html+="</div>";
-	                html+="<div style='width: 10%' class='text-center'><span>"+this.QNA_MEMBER_NO+"</span></div>";
-	                html+="<div style='width: 10%' class='text-center'><span>"+this.QNA_DATE+"</span>";
-	                html+="</div>";
-	                html+="</div>";
-	                  답변칸
-	                html+="<div class='d-flex pt-2 pb-2 border-bottom'>";
-	                    <!-- Q&A 제목 누르면 바로 밑에 뜰 수 있게  -->
-	                html+="<div style='width: 15%' class='text-center'></div>";
-	                html+="<div style='width: 85%'>";
-	                html+="<span><a href='' class='text-decoration-none text-black'>"+this.QNA_ANSWER.replace(/\n/g,"<br>")+"</a></span>";
-	                html+="<div>";
-	                html+="<a href='' class='text-decoration-none fs-6 text-black-50'>수정</a>";
-	                html+="<a href='' class='text-decoration-none fs-6 text-black-50 ps-2'>삭제</a>";
-	                html+="<a href='' class='text-decoration-none fs-6 text-black-50 ps-2'>답변(관리자)</a>";
-	                html+="</div></div></div>";
-					
-					
-					//댓글목록태그에 댓글태그를 마지막 자식태그로 추가하여 출력 처리 
-					$("#qna_list").append(html);
-				});
-			} else {//검색된 댓글정보가 없는 경우			
-				$("#qnaRows").html("<div>"+result.message+"</div>");
-			}
-		}, 
-		error: function(xhr) {
-			alert("에러코드 = "+xhr.status);
-		}
-	});	
-}
-//======================================================================전체 미 답변====================================================
-function AllQnaNOList() {
-	$.ajax({
-		type: "get",
-		url: "<%=request.getContextPath()%>/qna/detail_qna_Allno.jsp",
-		dataType: "json",
-		success: function(result) {
-				
-			//댓글목록태그의 자식태그(댓글)를 삭제 처리 - 기존 댓글 삭제
-			$("#qnaRows").children().remove();			
-			if(result.code == "success") {
-				$(result.data).each(function() {					
-					 질문자 질문 칸
-				var html="<div class='d-flex pt-2 pb-2 border-bottom '><div style='width: 15%' class='text-center'>";
-	                html+="<span>미답변</span>";//답변 미답변 표시
-	                html+="</div><div style='width: 65%''>";
-	                html+="<span><a href='' class='text-decoration-none text-black'>"+this.QNA_CONTENT.replace(/\n/g,"<br>")+"</a></span>";
-	                html+="</div>";
-	                html+="<div style='width: 10%' class='text-center'><span>"+this.QNA_MEMBER_NO+"</span></div>";
-	                html+="<div style='width: 10%' class='text-center'><span>"+this.QNA_DATE+"</span>";
-	                html+="</div>";
-	                html+="</div>";
-	                  답변칸
-	                html+="<div class='d-flex pt-2 pb-2 border-bottom'>";
-	                    <!-- Q&A 제목 누르면 바로 밑에 뜰 수 있게  -->
-	                html+="<div style='width: 15%' class='text-center'></div>";
-	                html+="<div style='width: 85%'>";
-	                html+="<span><a href='' class='text-decoration-none text-black'>"+this.QNA_ANSWER.replace(/\n/g,"<br>")+"</a></span>";
-	                html+="<div>";
-	                html+="<a href='' class='text-decoration-none fs-6 text-black-50'>수정</a>";
-	                html+="<a href='' class='text-decoration-none fs-6 text-black-50 ps-2'>삭제</a>";
-	                html+="<a href='' class='text-decoration-none fs-6 text-black-50 ps-2'>답변(관리자)</a>";
-	                html+="</div></div></div>";
-					
-					
-					//댓글목록태그에 댓글태그를 마지막 자식태그로 추가하여 출력 처리 
-					$("#qna_list").append(html);
-				});
-			} else {//검색된 댓글정보가 없는 경우			
-				$("#qnaRows").html("<div>"+result.message+"</div>");
-			}
-		}, 
-		error: function(xhr) {
-			alert("에러코드 = "+xhr.status);
-		}
-	});	
-}
-
-
-
-//로그인 스위치 실험 ======================================================
-$("#my_qna").change(function() {
-	if($(this).is(":checked")) {				
-	$.ajax({
-		type: "get",
-		url: "<%=request.getContextPath()%>/qna/detail_qna_memberlistGet.jsp",
-		dataType: "json",
-		success: function(result) {
-				
-			//댓글목록태그의 자식태그(댓글)를 삭제 처리 - 기존 댓글 삭제
-			$("#qnaRows").children().remove();			
-			if(result.code == "success") {
-				$(result.data).each(function() {					
-					 질문자 질문 칸
-				var html="<div class='d-flex pt-2 pb-2 border-bottom '><div style='width: 15%' class='text-center'>";
-	                html+="<span>미답변</span>";//답변 미답변 표시
-	                html+="</div><div style='width: 65%''>";
-	                html+="<span><a href='' class='text-decoration-none text-black'>"+this.QNA_CONTENT.replace(/\n/g,"<br>")+"</a></span>";
-	                html+="</div>";
-	                html+="<div style='width: 10%' class='text-center'><span>"+this.QNA_MEMBER_NO+"</span></div>";
-	                html+="<div style='width: 10%' class='text-center'><span>"+this.QNA_DATE+"</span>";
-	                html+="</div>";
-	                html+="</div>";
-	                  답변칸
-	                html+="<div class='d-flex pt-2 pb-2 border-bottom'>";
-	                    <!-- Q&A 제목 누르면 바로 밑에 뜰 수 있게  -->
-	                html+="<div style='width: 15%' class='text-center'></div>";
-	                html+="<div style='width: 85%'>";
-	                html+="<span><a href='' class='text-decoration-none text-black'>"+this.QNA_ANSWER.replace(/\n/g,"<br>")+"</a></span>";
-	                html+="<div>";
-	                html+="<a href='' class='text-decoration-none fs-6 text-black-50'>수정</a>";
-	                html+="<a href='' class='text-decoration-none fs-6 text-black-50 ps-2'>삭제</a>";
-	                html+="<a href='' class='text-decoration-none fs-6 text-black-50 ps-2'>답변(관리자)</a>";
-	                html+="</div></div></div>";
-					
-					
-					//댓글목록태그에 댓글태그를 마지막 자식태그로 추가하여 출력 처리 
-					$("#qna_list").append(html);
-				});
-			} else {//검색된 댓글정보가 없는 경우			
-				$("#qnaRows").html("<div>"+result.message+"</div>");
-			}
-		}, 
-		error: function(xhr) {
-			alert("에러코드 = "+xhr.status);
-		}
-	});	
-	} else {
-	displayQnaList();
-	}
-});
-
-if(loginMember==null){//비로그인 
-	$("#secretCheck").change(function() {
-		if($(this).is(":checked")) {//전체 미답	
-			AllQnaNOList();
-		}else{//전체 답
-			displayQnaList();
-		
-		}
-	}
-}else{ ///로그인
-	if($(this).is(":checked")) {//로그인 보기
-		myLoginQnaList();
-		
-		if($(this).is(":checked")) {//로그인 미답
-			AllQnaNOList();
-		}else{//로그인보기
-			myLoginQnaList();			
-		}	
-	}else{
-		if($(this).is(":checked")) {//전체 미답	
-			AllQnaNOList();
-		}else{//전체 답
-			displayQnaList();
-			
-		}		
-		
-	}	
-	
-	
-}
- --%>
-
 
 // detail 페이지 완성되면 경로 수정해야됨 => 문제는 상태가 변하면서 새로고침되는데 이게 header로 올라감
 <%-- $("#secretCheck").change(function() {

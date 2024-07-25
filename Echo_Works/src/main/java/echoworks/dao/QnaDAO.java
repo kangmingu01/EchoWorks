@@ -229,7 +229,7 @@ public class QnaDAO extends JdbcDAO {
 		return qnaList;
 	}
 	
-	public List<QnaDTO> selectQnAList(int productNo, int secretCheck, String replyStatus) {
+	public List<QnaDTO> selectQnAAList(int productNo, int secretCheck, String replyStatus, int memberNo) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -243,14 +243,17 @@ public class QnaDAO extends JdbcDAO {
 			if (secretCheck == 1) {
 				sql += " AND QNA_STATUS = 2";
 			}
-			if ("unanswered_answer".equals(replyStatus)) {
+			if ("".equals(replyStatus)) {
 				sql += " AND QNA_ANSWER IS NULL";
 			} else if ("answer_completed".equals(replyStatus)) {
 				sql += " AND QNA_ANSWER IS NOT NULL";
+			}if(!"0".equals(memberNo)) {
+				sql += " AND qna_member_num=? ";
 			}
 
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, productNo);
+			pstmt.setInt(2, memberNo);
 
 			rs = pstmt.executeQuery();
 
@@ -275,6 +278,61 @@ public class QnaDAO extends JdbcDAO {
 		}
 		return qnaList;
 		
+	}
+	
+	//====================================================주신거===========================
+	public List<QnaDTO> selectQnAList(int productNo, int secretCheck, String replyStatus, int memberNum) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<QnaDTO> qnaList = new ArrayList<>();
+
+		try {
+			con = getConnection();
+
+			String sql = "SELECT qna_no, qna_member_no, qna_product_no, qna_title, qna_content, "
+					+ "qna_date, qna_answer, qna_ansdate, qna_status " + "FROM QNA WHERE QNA_PRODUCT_NO = ?";
+			if (secretCheck == 1) {
+				sql += " ";
+			}else {
+				sql += " AND QNA_STATUS = 2";
+			}
+			if ("unanswered_answer".equals(replyStatus)) {
+				sql += " AND QNA_ANSWER IS NULL";
+			} else if ("answer_completed".equals(replyStatus)) {
+				sql += " AND QNA_ANSWER IS NOT NULL";
+			}
+			if (memberNum != 0) {
+				sql += " AND QNA_MEMBER_NO = ?";
+			}
+
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, productNo);
+			if(memberNum != 0) {
+			pstmt.setInt(2, memberNum);
+			}
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				QnaDTO qna = new QnaDTO();
+				qna.setQnaNo(rs.getInt("QNA_NO"));
+				qna.setQnaMemberNo(rs.getInt("QNA_MEMBER_NO"));
+				qna.setQnaProductNo(rs.getInt("QNA_PRODUCT_NO"));
+				qna.setQnaTitle(rs.getString("QNA_TITLE"));
+				qna.setQnaContent(rs.getString("QNA_CONTENT"));
+				qna.setQnaDate(rs.getDate("QNA_DATE"));
+				qna.setQnaAnswer(rs.getString("QNA_ANSWER"));
+				qna.setQnaAnsDate(rs.getDate("QNA_ANSDATE"));
+				qna.setQnaStatus(rs.getInt("QNA_STATUS"));
+
+				qnaList.add(qna);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return qnaList;
 	}
 	
 }
