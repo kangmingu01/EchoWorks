@@ -19,9 +19,7 @@
     }
 
     int memberId = loginMember.getMemberNum(); // 회원 번호 가져오기
-	System.out.println(memberId);
-    List<CartDTO> cartList = CartDAO.geDao().getCartList(memberId);
-    System.out.println(cartList.size());
+    List<CartDTO> cartList = CartDAO.getDao().getCartList(memberId);
     int totalProductPrice = 0;
     int shippingCost = 2500; // 고정 배송비
 %>
@@ -31,13 +29,12 @@
 <head>
     <meta charset="UTF-8">
     <title>장바구니</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         table th, table td {
             text-align: center;
+            vertical-align: middle; /* 행의 수직 정렬 추가 */
         }
-        body.sijunBody {
+        .sijunBody {
             background-color: #fff;
             font-size: 13pt;
             padding: 50px 0;
@@ -69,7 +66,7 @@
 </head>
 <body class="sijunBody">
     <div class="container">
-        <form id="cartForm" name="cartForm" method="post" action="cart_action.jsp">
+        <form id="cartForm" name="cartForm" method="post" action="<%=request.getContextPath()%>/cart/cart_action.jsp">
             <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-4">
                 <span style="font-size: 16pt; font-weight: bold;">장바구니</span>
                 <span class="home">홈 > 장바구니</span>
@@ -77,40 +74,37 @@
             <div>
                 <!-- 상품정보 테이블 -->
                 <div class="table-responsive">
-                    <table class="table table-bordered table-striped">
+                    <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th><input type="checkbox" id="check-all" /></th>
-                                <th>상품정보</th>
-                                <th>수량</th>
-                                <th>가격</th>
+                                <th style="width: 5%"><input type="checkbox" id="check-all" /></th>
+                                <th style="width: 55%">상품정보</th>
+                                <th style="width: 15%">수량</th>
+                                <th style="width: 15%">가격</th>
                             </tr>
                         </thead>
                         <tbody>
-                      
                             <%
                                 for (CartDTO cart : cartList) {
-                                	ProductStockDTO stock = ProductStockDAO.getDAO().selectProductStock(cart.getCart_psno());
-                                	
+                                    ProductStockDTO stock = ProductStockDAO.getDAO().selectProductStock(cart.getCart_psno());
+                                    
                                     if (stock != null) {
                                         int unitPrice = stock.getpS_price(); // product_stock 테이블에서 가격 가져오기
                                         int totalPrice = unitPrice * cart.getCart_num();
                                         totalProductPrice += totalPrice;
                             %>
-                            <tr data-cart-no="<%= cart.getCart_no() %>" style="height: 90px;">
-                                <td><input type="checkbox" class="check-item" value="<%= cart.getCart_no() %>" /></td>
+                            <tr data-cart-no="<%=cart.getCart_no() %>" data-max-quantity="<%= stock.getpS_Stock() %>" style="height: 90px;">
+                                <td><input type="checkbox" class="check-item" name="cart_no" value="<%= cart.getCart_no() %>" /></td>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                    <% System.out.println(ProductDAO.getDAO().selectProductByNo(stock.getpS_pNo()).getPRODUCT_IMG()); %>
-                                        <img class="cart-image" src="../assets/img/<%= ProductDAO.getDAO().selectProductByNo(stock.getpS_pNo()).getPRODUCT_IMG() %>.jpg"/>
+                                        <img class="cart-image" src="assets/img/<%= ProductDAO.getDAO().selectProductByNo(stock.getpS_pNo()).getPRODUCT_IMG() %>.jpg"/>
                                         <span style="margin-left: 10px; font-weight: bold;"><%= stock.getpS_Option() %></span>
                                     </div>
                                 </td>
                                 <td>
-                                    <input type="number" class="form-control quantity-input" style="text-align: right; width: 60px; display: inline;" min="1" max="99" step="1" value="<%= cart.getCart_num() %>"/>
-                                    <button type="button" class="btn btn-default btn-sm update-btn">변경</button>
+                                    <input type="number" min="1" max="10000" class="form-control quantity-input w-25" style="text-align: right; width: 60px; display: inline;" min="1" step="1" value="<%= cart.getCart_num() %>"/>
                                 </td>
-                                <td class="total-price" data-unit-price="<%= unitPrice %>"><%= totalPrice %>원</td> 
+                                <td class="total-price" data-unit-price="<%= unitPrice %>"><%= String.format("%,d", totalPrice) %>원</td> 
                             </tr>
                             <%
                                     }
@@ -129,20 +123,20 @@
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped">
                         <tr>
-                            <th>총 상품금액</th>
-                            <th>총 배송비</th>
-                            <th><span>결제예정금액</span></th>
+                            <th style="width: 40%">총 상품금액</th>
+                            <th style="width: 20%">총 배송비</th>
+                            <th style="width: 40%"><span>결제예정금액</span></th>
                         </tr>
                         <tr>
-                            <td><span id="summary-product-price" class="price"><%= totalProductPrice %></span>원</td>
-                            <td><span id="summary-shipping-price" class="price"><%= shippingCost %></span>원</td>
-                            <td><span id="summary-final-price" class="price"><%= totalProductPrice + shippingCost %></span>원</td>
+                            <td><span id="summary-product-price" class="price"><%= String.format("%,d", totalProductPrice) %></span>원</td>
+                            <td><span id="summary-shipping-price" class="price"><%= String.format("%,d", shippingCost) %></span>원</td>
+                            <td><span id="summary-final-price" class="price"><%= String.format("%,d", totalProductPrice + shippingCost) %></span>원</td>
                         </tr>
                     </table>
                 </div>
                 <div class="text-center">
-                    <button class="btn btn-default" id="allProduct">선택상품주문</button>
-                    <button class="btn btn-default" id="productClear">쇼핑계속하기</button>
+                    <button type="submit" class="btn btn-default" name="action" value="checkout">선택상품주문</button>
+                    <button type="button" class="btn btn-default" id="productClear">쇼핑계속하기</button>
                 </div>
                 <br/><br/>
                 <div class="border p-3 mb-3">
@@ -172,11 +166,76 @@
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script>
+        function formatPrice(price) {
+            return price.toLocaleString();
+        }
+
+        function updateSummary() {
+            var totalProductPrice = 0;
+            document.querySelectorAll('.check-item:checked').forEach(function(checkbox) {
+                var row = checkbox.closest('tr');
+                var price = parseInt(row.querySelector('.total-price').textContent.replace(/[^0-9]/g, ''));
+                
+                totalProductPrice += price;
+            });
+
+            var shippingCost = 2500; // 배송비
+            var finalPrice = totalProductPrice + shippingCost;
+
+            document.getElementById('summary-product-price').textContent = formatPrice(totalProductPrice);
+            document.getElementById('summary-shipping-price').textContent = formatPrice(shippingCost);
+            document.getElementById('summary-final-price').textContent = formatPrice(finalPrice);
+        }
+
         document.getElementById('check-all').addEventListener('click', function() {
             var checkboxes = document.querySelectorAll('.check-item');
             for (var i = 0; i < checkboxes.length; i++) {
                 checkboxes[i].checked = this.checked;
             }
+            updateSummary();
+        });
+
+        document.querySelectorAll('.check-item').forEach(function(checkbox) {
+            checkbox.addEventListener('change', updateSummary);
+        });
+
+        document.querySelectorAll('.quantity-input').forEach(function(input) {
+            input.addEventListener('input', function() {
+                var cartRow = this.closest('tr');
+                var unitPrice = parseInt(cartRow.querySelector('.total-price').dataset.unitPrice);
+                var maxQuantity = parseInt(cartRow.dataset.maxQuantity);
+                var newQuantity = parseInt(this.value);
+
+                if (newQuantity > maxQuantity) {
+                    alert("남은 재고수량 : "+ maxQuantity + "개" + "\n"+maxQuantity +  "개 이하로 구매해주세요.");
+                    
+                    this.value = maxQuantity;
+                    newQuantity = maxQuantity;
+                }
+
+                var newTotalPrice = newQuantity * unitPrice
+				
+                if (isNaN(newTotalPrice)) { // 값이 없어서 NaN값이 나올 경우
+
+                	newTotalPrice = 0;
+
+                }
+                
+                cartRow.querySelector('.total-price').textContent = formatPrice(newTotalPrice) + '원';
+                updateSummary();
+
+                var cartNo = cartRow.dataset.cartNo;
+                $.ajax({
+                    url: '<%=request.getContextPath()%>/cart/cart_action.jsp',
+                    method: 'POST',
+                    data: {
+                        action: 'update',
+                        cart_no: cartNo,
+                        quantity: newQuantity,
+                        returnUrl: '<%=request.getContextPath()%>/index.jsp?workgroup=cart&work=cart'
+                    }
+                });
+            });
         });
 
         document.getElementById('delete-selected').addEventListener('click', function() {
@@ -184,7 +243,12 @@
             if (checkboxes.length > 0) {
                 var form = document.createElement("form");
                 form.method = "post";
-                form.action = "cart_action.jsp";
+                form.action = "<%=request.getContextPath()%>/cart/cart_action.jsp";
+                var returnUrlInput = document.createElement("input");
+                returnUrlInput.type = "hidden";
+                returnUrlInput.name = "returnUrl";
+                returnUrlInput.value = "<%=request.getContextPath()%>/index.jsp?workgroup=cart&work=cart";
+                form.appendChild(returnUrlInput);
 
                 var actionInput = document.createElement("input");
                 actionInput.type = "hidden";
@@ -205,56 +269,12 @@
             }
         });
 
-        document.querySelectorAll('.update-btn').forEach(function(button) {
-            button.addEventListener('click', function() {
-                var quantityInput = this.previousElementSibling;
-                var newQuantity = quantityInput.value;
-                var cartRow = this.closest('tr');
-                var unitPrice = parseInt(cartRow.querySelector('.total-price').dataset.unitPrice);
-                var newTotalPrice = newQuantity * unitPrice;
-                cartRow.querySelector('.total-price').textContent = newTotalPrice + '원';
-
-                // 수량 변경 후 서버로 요청 보내기
-                var form = document.createElement("form");
-                form.method = "post";
-                form.action = "cart_action.jsp";
-
-                var actionInput = document.createElement("input");
-                actionInput.type = "hidden";
-                actionInput.name = "action";
-                actionInput.value = "update";
-                form.appendChild(actionInput);
-
-                var cartNoInput = document.createElement("input");
-                cartNoInput.type = "hidden";
-                cartNoInput.name = "cart_no";
-                cartNoInput.value = cartRow.dataset.cartNo;
-                form.appendChild(cartNoInput);
-
-                var quantityInputField = document.createElement("input");
-                quantityInputField.type = "hidden";
-                quantityInputField.name = "quantity";
-                quantityInputField.value = newQuantity;
-                form.appendChild(quantityInputField);
-
-                document.body.appendChild(form);
-                form.submit();
-            });
+        document.getElementById('productClear').addEventListener('click', function() {
+            window.location.href = "<%=request.getContextPath()%>/index.jsp";
         });
 
-        function updateSummary() {
-            var totalProductPrice = 0;
-            document.querySelectorAll('.total-price').forEach(function(cell) {
-                totalProductPrice += parseInt(cell.textContent.replace('원', ''));
-            });
-
-            var shippingCost = 2500; // 배송비
-            var finalPrice = totalProductPrice + shippingCost;
-
-            document.getElementById('summary-product-price').textContent = totalProductPrice;
-            document.getElementById('summary-shipping-price').textContent = shippingCost;
-            document.getElementById('summary-final-price').textContent = finalPrice;
-        }
+        // 페이지 로드 시 요약 업데이트
+        document.addEventListener('DOMContentLoaded', updateSummary);
     </script>
 </body>
 </html>
