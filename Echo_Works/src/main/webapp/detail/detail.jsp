@@ -28,6 +28,7 @@ ProductDTO product=ProductDAO.getDAO().selectProductByNo(Integer.parseInt(reques
 // 재고 객체 생성
 List<ProductStockDTO> productStockList= ProductStockDAO.getDAO().selectProductStockList(product.getPRODUCT_NO());
 
+// 선택된 옵션
 class Option {
 	int id;
 	int price;
@@ -85,8 +86,7 @@ input[type="number"]::-webkit-inner-spin-button {
     margin: 0;
 }
 </style>
-
-		<div class="container">
+	<div class="container">
 		<div>
 			<div class="row">
 				<div class="col-md-5">
@@ -326,7 +326,7 @@ function item_minus(sid,price){
 
 //선택한 옵션 삭제 
 function option_delete(io_ano,price){
-/*
+
     $("#ct_qty"+io_ano).val(0);
     numberWithCommas(price);
     
@@ -336,7 +336,9 @@ function option_delete(io_ano,price){
 
     if( $(".shop_item_select_box").height() <= 30 ){
         $(".shop_item_select_box").css({"margin":"0"});
-    }*/
+    }
+    
+    numberWithCommas();
 }
 
 $(document).ready(function(){
