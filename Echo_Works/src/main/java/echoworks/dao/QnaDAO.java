@@ -290,10 +290,9 @@ public class QnaDAO extends JdbcDAO {
 
 			String sql = "SELECT qna_no, qna_member_no, qna_product_no, qna_title, qna_content, "
 					+ "qna_date, qna_answer, qna_ansdate, qna_status " + "FROM QNA WHERE QNA_PRODUCT_NO = ?";
+
 			if (secretCheck == 1) {
-				sql += " ";
-			} else {
-				sql += " AND QNA_STATUS = 2";
+				sql += " AND QNA_STATUS = 1";
 			}
 			if ("unanswered_answer".equals(replyStatus)) {
 				sql += " AND QNA_ANSWER IS NULL";
@@ -304,11 +303,23 @@ public class QnaDAO extends JdbcDAO {
 				sql += " AND QNA_MEMBER_NO = ?";
 			}
 
+			/*
+			 * pstmt = con.prepareStatement(sql); pstmt.setInt(1, productNo); if (memberNum
+			 * != 0) { pstmt.setInt(2, memberNum); }
+			 */
+
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, productNo);
 			if (memberNum != 0) {
 				pstmt.setInt(2, memberNum);
 			}
+
+			System.out.println(productNo);
+			System.out.println(secretCheck);
+			System.out.println(replyStatus);
+			System.out.println(memberNum);
+			System.out.println(sql);
+
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
