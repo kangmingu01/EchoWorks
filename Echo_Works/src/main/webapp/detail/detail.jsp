@@ -13,14 +13,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-/*
-MemberDTO loginMember=(MemberDTO)session.getAttribute("loginMember");
 
-if (loginMember == null) {
-    out.println("<script>alert('로그인이 필요합니다.');location.href='index.jsp?workgroup=member&work=member_login';</script>");
-    return;
-}
-*/
+MemberDTO loginMember=(MemberDTO)session.getAttribute("loginMember");
 
 // 현재 선택한 상품 정보 가져오기
 ProductDTO product=ProductDAO.getDAO().selectProductByNo(Integer.parseInt(request.getParameter("product_no")));
@@ -426,10 +420,6 @@ function show_num(e, sid, price, stock) {
 	}
 }
 
-
-$(".btn_cart").click(function(){
-	alert("장바구니");
-});
 
 $(".btn_payment").click(function() {
 	alert("주문하기");
