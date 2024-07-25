@@ -43,15 +43,7 @@
 <head>
     <meta charset="UTF-8">
     <title>결제하기</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            background-color: white;
-            overflow-y: scroll; /* Always show vertical scrollbar */
-        }
-        .container {
-            margin-top: 30px;
-        }
         .card {
             margin-bottom: 20px;
         }
@@ -90,7 +82,7 @@
 </head>
 <body>
 <div class="container">
-    <h2 class="section-title text-center">결제하기</h2>
+    <h2 class="section-title text-center mt-3">결제하기</h2>
     <form id="paymentForm" name="paymentForm" method="post" action="<%=request.getContextPath() %>/payment/payment_action.jsp?action=pay" >
         <div class="row">
             <div class="col-md-7">
@@ -231,12 +223,12 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="agreeTerms">
+                            <input class="form-check-input" type="checkbox" id="agreeTerms" name="agreeTerms">
                             <label class="form-check-label" for="agreeTerms">
                                 구매조건 확인 및 결제진행에 동의
                             </label>
                         </div>
-                        <button type="submit" class="btn btn-primary mt-3" id="payButton" formaction="<%=request.getContextPath() %>/payment/payment_complete.jsp">결제하기</button>
+                        <button type="submit" class="btn btn-primary mt-3" id="payButton" formaction="<%=request.getContextPath() %>/index.jsp?workgroup=payment&work=payment_complete">결제하기</button>
 
                     </div>
                 </div>
@@ -244,10 +236,6 @@
         </div>
     </form>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-WdcW8+3k9d0WCFQz2O+p44+gd+YoDZlD5oBLfQn3NE6vcegM2KUkc4gF3uH19ajp" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-5IBV6dU1g8kDcHj/YnuP4WTDq0fFhZcLwE4E2LP+ulUGjUxr4/dRSu9moAhxJfDm" crossorigin="anonymous"></script>
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
     document.getElementById('editOrdererInfo').addEventListener('click', function() {
         var inputs = document.querySelectorAll('#ordererName, #ordererContact, #ordererEmail');
