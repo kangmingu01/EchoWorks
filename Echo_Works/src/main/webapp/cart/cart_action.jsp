@@ -67,7 +67,7 @@
                 if (selectedCartNos != null) {
                     String query = "&";
                     for (String cartNo : selectedCartNos) {
-                        query += "cart_no=" + cartNo;
+                        query += "cart_no=" + cartNo+"&" ;
                     }
                     response.sendRedirect(request.getContextPath() + "/index.jsp?workgroup=payment&work=payment" + query);
                 } else {

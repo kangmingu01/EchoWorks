@@ -101,7 +101,7 @@
                                     totalProductPrice += totalPrice;
                         %>
                         <div class="d-flex align-items-center">
-                            <img src="../assets/img/<%= ProductDAO.getDAO().selectProductByNo(stock.getpS_pNo()).getPRODUCT_IMG() %>.jpg" alt="상품 이미지" style="width: 100px; height: 100px; margin-right: 20px;">
+                            <img src="assets/img/<%= ProductDAO.getDAO().selectProductByNo(stock.getpS_pNo()).getPRODUCT_IMG() %>.jpg" alt="상품 이미지" style="width: 100px; height: 100px; margin-right: 20px;">
                             <div>
                                 <p><%= stock.getpS_Option() %></p>
                                 <p><%= unitPrice %>원</p>
