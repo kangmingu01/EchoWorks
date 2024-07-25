@@ -12,7 +12,7 @@ public class QnaDTO {
     private String qnaAnswer; // 답변내용
     private Date qnaAnsDate;  // 답변날짜
     private int qnaStatus;    // 글 상태
-    
+    private String Member_Name;
     public QnaDTO() {
 		// TODO Auto-generated constructor stub
 	}
@@ -89,6 +89,16 @@ public class QnaDTO {
 
 	public void setQnaStatus(int qnaStatus) {
 		this.qnaStatus = qnaStatus;
+	}
+
+
+	public String getMember_Name() {
+		return Member_Name;
+	}
+
+
+	public void setMember_Name(String member_Name) {
+		Member_Name = member_Name;
 	}
     
 }

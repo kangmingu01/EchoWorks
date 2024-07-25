@@ -1,10 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+    pageEncoding="utf-8"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>°áÁ¦ ¿Ï·á</title>
+    <title>ê²°ì œ ì™„ë£Œ</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 	<style type="text/css">
 		.show {
@@ -21,10 +21,10 @@
 	<div class="d-flex justify-content-center flex-column align-items-center">
             <i class="fa-solid fa-check-to-slot fa-bounce complete" style="color: #515b7b;"></i>
             <div>
-            	<h1>°áÁ¦ ¿Ï·á!</h1>
+            	<h1>ê²°ì œ ì™„ë£Œ!</h1>
             	<div>
-                <a href="<%=request.getContextPath() %>/index.jsp?" class="btn btn-dark btn-custom">È¨À¸·Î</a>
-                <a href="order_history.jsp" class="btn btn-outline-dark btn-custom">ÁÖ¹®³»¿ª</a>
+                <a href="<%=request.getContextPath() %>/index.jsp?" class="btn btn-dark btn-custom">í™ˆìœ¼ë¡œ</a>
+                <a href="order_history.jsp" class="btn btn-outline-dark btn-custom">ì£¼ë¬¸ë‚´ì—­</a>
             	</div>
          </div>
         </div>
