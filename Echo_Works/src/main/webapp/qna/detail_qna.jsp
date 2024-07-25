@@ -135,7 +135,7 @@
         <section>
           <div class="container col-md-10 mt-3">
             <span class="fw-normal fs-5">
-              상품문의<span class="text-danger fs-6 ms-1">(66)</span>
+              상품문의<span class="text-danger fs-6 ms-1 arrLength"></span>
             </span>
             <!-- <button
                 type="button"
@@ -602,14 +602,15 @@ displayQnaList();
 			//댓글목록태그의 자식태그(댓글)를 삭제 처리 - 기존 댓글 삭제
 			$("#qna_list").children().remove();
 			
-			console.log(result);
+			console.log(result.data.length);
 			
 			if(result.code == "success") {
+				var arrLength = result.data.length; // 전체 질문 갯수
 				$(result.data).each(function() {					
 					//질문자 질문 칸
 					
 				// 민구씨 코드
-				
+				var arrLength = "";
 				var html = "<li id='qna_" + this.qnaNo + "' class='list-unstyled border-top qnaRows'>";
                     html += '<div class="d-flex pt-2 pb-2 border-bottom">';
                     html += '<div style="width: 15%" class="text-center">';
@@ -649,6 +650,8 @@ displayQnaList();
 				  */
 					$("#qna_list").append(html);
 				});
+				// 상품 문의 갯수를 출력
+                $(".arrLength").text("( " + arrLength + " )");
 			} else {//검색된 댓글정보가 없는 경우		
 				$("#qnaRows").html("<div>"+result.message+"</div>");
 			}
