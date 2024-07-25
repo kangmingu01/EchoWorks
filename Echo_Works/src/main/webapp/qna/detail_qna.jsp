@@ -590,7 +590,7 @@ displayQnaList();
 	
 	$.ajax({
 		type: "post",
-		url: "<%=request.getContextPath()%>/qna/detail_qna_test.jsp",
+		url: "<%=request.getContextPath()%>/qna/detail_qna_list.jsp",
 		data:{
 			"productNo": productNo, 
 			"secretCheck": secretCheck,
@@ -609,11 +609,11 @@ displayQnaList();
 					//질문자 질문 칸
 					
 				// 민구씨 코드
-				/* 
+				
 				var html = "<li id='qna_" + this.qnaNo + "' class='list-unstyled border-top qnaRows'>";
                     html += '<div class="d-flex pt-2 pb-2 border-bottom">';
                     html += '<div style="width: 15%" class="text-center">';
-                    html += '<span>' + (this.qnaAnswer != null ? "답변완료" : "미답변") + '</span>';
+                    html += '<span>' + (this.qnaAnswer != "null" ? "답변완료" : "미답변") + '</span>';
                     html += '</div>';
                     html += '<div style="width: 65%">';
                     html += '<span><a href="" class="text-decoration-none text-black">' + this.qnaTitle + '</a></span>';
@@ -622,9 +622,10 @@ displayQnaList();
                     html += '<div style="width: 10%" class="text-center"><span>' + this.qnaDate + '</span></div>';
                     html += '</div>';
                     html += '</li>'; // 닫힘 태그 추가
-				 */	
+				 
 					
 				// 성환씨 코드 피드백 => ul > li로 줬기 때문에 li는 하나의 질문을 의미함 
+				/* 
 				var html="<div class='d-flex pt-2 pb-2 border-bottom '><div style='width: 15%' class='text-center'>";
 	                html+="<span>미답변</span>";//답변 미답변 표시
 	                html+="</div><div style='width: 65%''>";
@@ -645,7 +646,7 @@ displayQnaList();
 	                html+="<a href='' class='text-decoration-none fs-6 text-black-50 ps-2'>삭제</a>";
 	                html+="<a href='' class='text-decoration-none fs-6 text-black-50 ps-2'>답변(관리자)</a>";
 	                html+="</div></div></div>";
-				 
+				  */
 					$("#qna_list").append(html);
 				});
 			} else {//검색된 댓글정보가 없는 경우		

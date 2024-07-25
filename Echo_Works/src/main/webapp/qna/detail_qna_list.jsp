@@ -6,6 +6,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
+
+	if(request.getMethod().equals("GET")) {
+		response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+		return;
+	}
+
 	int productNo = Integer.parseInt(request.getParameter("productNo"));
 	int secretCheck = Integer.parseInt(request.getParameter("secretCheck"));
 	String replyStatus = request.getParameter("replyStatus");
