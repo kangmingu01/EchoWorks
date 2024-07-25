@@ -77,10 +77,10 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th><input type="checkbox" id="check-all" /></th>
-                                <th>상품정보</th>
-                                <th>수량</th>
-                                <th>가격</th>
+                                <th style="width: 5%"><input type="checkbox" id="check-all" /></th>
+                                <th style="width: 55%">상품정보</th>
+                                <th style="width: 15%">수량</th>
+                                <th style="width: 15%">가격</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -102,7 +102,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <input type="number" class="form-control quantity-input" style="text-align: right; width: 60px; display: inline;" min="1" step="1" value="<%= cart.getCart_num() %>"/>
+                                    <input type="number" min="1" max="10000" class="form-control quantity-input w-25" style="text-align: right; width: 60px; display: inline;" min="1" step="1" value="<%= cart.getCart_num() %>"/>
                                 </td>
                                 <td class="total-price" data-unit-price="<%= unitPrice %>"><%= String.format("%,d", totalPrice) %>원</td> 
                             </tr>
@@ -123,9 +123,9 @@
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped">
                         <tr>
-                            <th>총 상품금액</th>
-                            <th>총 배송비</th>
-                            <th><span>결제예정금액</span></th>
+                            <th style="width: 40%">총 상품금액</th>
+                            <th style="width: 20%">총 배송비</th>
+                            <th style="width: 40%"><span>결제예정금액</span></th>
                         </tr>
                         <tr>
                             <td><span id="summary-product-price" class="price"><%= String.format("%,d", totalProductPrice) %></span>원</td>
@@ -175,6 +175,7 @@
             document.querySelectorAll('.check-item:checked').forEach(function(checkbox) {
                 var row = checkbox.closest('tr');
                 var price = parseInt(row.querySelector('.total-price').textContent.replace(/[^0-9]/g, ''));
+                
                 totalProductPrice += price;
             });
 
@@ -212,7 +213,14 @@
                     newQuantity = maxQuantity;
                 }
 
-                var newTotalPrice = newQuantity * unitPrice;
+                var newTotalPrice = newQuantity * unitPrice
+				
+                if (isNaN(newTotalPrice)) { // 값이 없어서 NaN값이 나올 경우
+
+                	newTotalPrice = 0;
+
+                }
+                
                 cartRow.querySelector('.total-price').textContent = formatPrice(newTotalPrice) + '원';
                 updateSummary();
 
