@@ -1,3 +1,4 @@
+<%@page import="java.util.ArrayList"%>
 <%@page import="java.nio.file.Files"%>
 <%@page import="javax.swing.ImageIcon"%>
 <%@page import="java.nio.file.Path"%>
@@ -21,7 +22,7 @@ ProductDTO product=ProductDAO.getDAO().selectProductByNo(Integer.parseInt(reques
 
 // 재고 객체 생성
 List<ProductStockDTO> productStockList= ProductStockDAO.getDAO().selectProductStockList(product.getPRODUCT_NO());
-
+List<Integer> optionList=new ArrayList<Integer>();
 %>
 
     
@@ -91,6 +92,7 @@ input[type="number"]::-webkit-inner-spin-button {
 										String op=productStockList.get(i).getpS_Option();
 										int price=productStockList.get(i).getpS_price();
 										int stock=productStockList.get(i).getpS_Stock();
+										optionList.add(56068+i);
 									%>
 									<option value="<%=op %>||<%=price %>||<%=stock %>||<%=56068+i %>" ><%=op %>   (<%=String.format("%,d", price) %>원)</option>
 									<% } %>
@@ -165,44 +167,83 @@ input[type="number"]::-webkit-inner-spin-button {
 								</div>
 								<% } %>
 							
+								<%
+								int count =1;
+								Path path = Paths.get(request.getRealPath("")+product.getPRODUCT_IMG_DETAIL()+"/"+count+".jpg");
+								if(Files.exists(path)) {
+								%>
 								<span style="font-size:30px;">갤러리</span>
 								<hr>
+								<% } %>
+								
 								<div class="col-10 mx-auto">
 								
 								<!-- 상세 이미지 -->
 								<%
-									int count =1;
-									Path path = null;
-									do {
+									
+									while (Files.exists(path)){
 								%>
-									<img alt="상세" src="<%=product.getPRODUCT_IMG_DETAIL()%>/<%=count%>.jpg" class="img-fluid mb-3" /><br />
+									<img alt="상세" src="<%=product.getPRODUCT_IMG_DETAIL()%>/<%=count%>.jpg" class="img-fluid mt-3" /><br />
 								<% 
 									count++;
 									path = Paths.get(request.getRealPath("")+product.getPRODUCT_IMG_DETAIL()+"/"+count+".jpg");
-									} while(Files.exists(path));
+									}
 								%>
-								
-								<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/08823c1fcc3de.png?w=1536" class="img-fluid" /><br />
-								<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/18e6c1ccd9ea1.jpg?w=1536" class="img-fluid" /><br />
-							
+									<div class="mt-3"?>
+										<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/08823c1fcc3de.png?w=1536" class="img-fluid" /><br />
+										<img alt="상세" src="https://cdn-optimized.imweb.me/upload/S20220103536cb52c56eda/18e6c1ccd9ea1.jpg?w=1536" class="img-fluid" /><br />
+									</div>
 								</div>
-								</div>
+							</div>
 						</div>
 					</div>
-				
 				<!-- 리뷰 -->
 				
-				                                   
 			</div>
 		</div>
-		</div>
+	</div>
 
 <script type="text/javascript" src="//code.jquery.com/jquery-1.12.0.min.js"></script>
 <script type="text/javascript">
 
 //금액 합산
-function numberWithCommas(n) {
-    var parts = n.toString().split(".");
+function numberWithCommas(price) {
+	var total=0;
+	
+	<% for(int i=0;i<optionList.size();i++){%>
+	var num = <%=optionList.get(i)%>;
+	var curNum=$("#ct_qty"+num).val();
+	console.log("1 + " +curNum);
+	if(isNaN(curNum) == false) {
+		console.log("2 + " +curNum);
+		total+= Number(curNum);
+	}
+	console.log("3 + " +total);
+	<%}%>
+	
+	if(total != null) {
+		var total_price = Number(total) * Number(price);
+		/*
+		console.log("curNum"+Number(curNum));
+		console.log("price"+Number(price));
+		console.log("합은"+total_price);
+		*/
+		var parts = total_price.toString().split(".");
+		var totalText =  parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		$("#cartprice1").html(totalText+'<span class="price_unit">원</span>');
+		/*
+		$("#ct_qty"+sss).val(ttt);
+		
+	    var total_price = $("#total_price").val();
+	    var total_price_tmp = Number(total_price) + Number(price);
+	    //var shop_point = total_price_tmp *'0.02';  //pc 포인트 
+	
+	    $("#total_price").val(total_price_tmp); 
+	    $("#cartprice1").html(numberWithCommas(total_price_tmp)+'<span class="price_unit">원</span>');
+	    */
+	    
+	}
+	var parts = price.toString().split(".");
     return parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
@@ -210,34 +251,39 @@ function numberWithCommas(n) {
 //var ea_count = 0;
 function selected_item(io_type, io_id, io_value,ver){
   var select_option=$("#select_option").val();
-  
   if(ver=='pc'){
       var str = select_option.split("||");
+      var op=str[0];
+      var price=str[1];
+      var stock=str[2];
+      var sid=str[3];
+      
+      
   }
 
-  opt = '<div class="shop_item_select" id="io_append'+str[3]+'" name="io_append['+str[3]+'][]" command='+str[3]+' >';
+  opt = '<div class="shop_item_select" id="io_append'+sid+'" name="io_append['+sid+'][]" command='+sid+' >';
   opt += '<input type="hidden" name="io_type['+io_type+'][]" value="0">';
-  opt += '<input type="hidden" name="io_id['+io_id+'][]" value="'+str[0]+'">';
-  opt += '<input type="hidden" name="io_value['+io_value+'][]" value="'+str[0]+'">';
-  opt += '<input type="hidden" name="io_price['+io_value+'][]" value="'+str[1]+'">';
+  opt += '<input type="hidden" name="io_id['+io_id+'][]" value="'+op+'">';
+  opt += '<input type="hidden" name="io_value['+io_value+'][]" value="'+op+'">';
+  opt += '<input type="hidden" name="io_price['+io_value+'][]" value="'+price+'">';
   opt += '<input type="hidden" name="io_stock" value="1">';
-  opt += '<div id="item_select_name" class="item_select_text">'+str[0]+'</div>';
+  opt += '<div id="item_select_name" class="item_select_text">'+op+'</div>';
   opt += '<div class="item_select_num">';
-  opt += '<span><a href="javascript:"><img src="assets/img/detail/ui/item_min.png" alt="빼기" width="30px" onclick="item_minus('+str[3]+','+str[1]+')"></a></span>';
+  opt += '<span><a href="javascript:"><img src="assets/img/detail/ui/item_min.png" alt="빼기" width="30px" onclick="item_minus('+sid+','+price+')"></a></span>';
   opt += '<span class="item_num">';
-  opt += '<input type="number" class="count" id="ct_qty'+str[3]+'" name="ct_qty[1710310953][]" value="1" onkeypress="show_num(event, '+str[2]+', '+str[3]+')">';
+  opt += '<input type="number" class="count" id="ct_qty'+sid+'" name="ct_qty[1710310953][]" value="1" onkeypress="show_num(event, '+sid+','+price+','+stock+')">';
   opt += '</span>';
-  opt += '<span><a href="javascript:"><img src="assets/img/detail/ui/item_plus.png" alt="더하기" width="30px" onclick="item_plus('+str[3]+','+str[1]+','+str[2]+')"></a></span>';
+  opt += '<span><a href="javascript:"><img src="assets/img/detail/ui/item_plus.png" alt="더하기" width="30px" onclick="item_plus('+sid+','+price+','+stock+')"></a></span>';
   opt += '</div>';
-  opt += '<div class="item_select_price button price_font">'+numberWithCommas(str[1])+'<span>원</span>'+'<img src="assets/img/detail/ui/layer_close.png" alt="옵션 삭제('+str[3]+')" onclick="option_delete('+str[3]+','+str[1]+')" ></div>';
+  opt += '<div class="item_select_price button price_font">'+numberWithCommas(price)+'<span>원</span>'+'<img src="assets/img/detail/ui/layer_close.png" alt="옵션 삭제('+sid+')" onclick="option_delete('+sid+','+price+')" ></div>';
   opt += '</div>';
 
   
 
   //옵션 중복검사
-  if(document.getElementById('io_append'+str[3])){
+  if(document.getElementById('io_append'+sid)){
       alert('이미 선택된 옵션입니다');
-  } else if(str[2] == 0) {
+  } else if(stock == 0) {
 	  alert('재고가 없습니다');  
   } else{
 
@@ -245,17 +291,20 @@ function selected_item(io_type, io_id, io_value,ver){
       $(".shop_item_select_box").css({"margin":"16px 0 0"}).append(opt); //pc 옵션 추가
 
       
+      numberWithCommas(price);
+
+    		  /*
       var total_price = $("#total_price").val();
-      var total_price_tmp = Number(total_price) + Number(str[1]);
+      var total_price_tmp = Number(total_price) + Number(price);
 
       //var shop_point = total_price_tmp *'0.02';  //pc 포인트
 
       $("#total_price").val(total_price_tmp);
       
-      $("#cartprice1").html(numberWithCommas(total_price_tmp)+'<span class="price_unit">원</span>');
+      $("#cartprice1").html(numberWithCommas(price)+'<span class="price_unit">원</span>');
 
       //$("#shop_point").text(numberWithCommas(shop_point));//pc 포인트 
- 
+ */
   }
   
   $(".shop_item_select_box div:eq(0)").css({
@@ -273,6 +322,8 @@ function item_plus(sss,price,stock){
 	    
 	    $("#ct_qty"+sss).val(ttt);
 	
+	    numberWithCommas(price);
+	    /*
 	    var total_price = $("#total_price").val();
 	    var total_price_tmp = Number(total_price) + Number(price);
 	    //var shop_point = total_price_tmp *'0.02';  //pc 포인트 
@@ -280,6 +331,7 @@ function item_plus(sss,price,stock){
 	    $("#total_price").val(total_price_tmp); 
 	    $("#cartprice1").html(numberWithCommas(total_price_tmp)+'<span class="price_unit">원</span>');
 	    //$("#shop_point").text(numberWithCommas(shop_point));//pc 포인트
+	    */
     } else {
     	alert(stock + "이하의 수량만 가능합니다.");
     }
@@ -295,13 +347,16 @@ function item_minus(sss,price){
     }else{
         $("#ct_qty"+sss).val(ttt);
 
+        numberWithCommas(price);
+        /*
         var total_price = $("#total_price").val();
         var total_price_tmp = Number(total_price) - Number(price);
         //var shop_point = total_price_tmp *'0.02';  //pc 포인트 
 
         $("#total_price").val(total_price_tmp); 
         $("#cartprice1").html(numberWithCommas(total_price_tmp)+'<span class="price_unit">원</span>');
-        //$("#shop_point").text(numberWithCommas(shop_point));//pc 포인트  
+        //$("#shop_point").text(numberWithCommas(shop_point));//pc 포인트
+        */
     }
 }
 
@@ -310,14 +365,15 @@ function option_delete(io_ano,price){
     var plus_qty = $("#ct_qty"+io_ano).val();
     var total_price = $("#total_price").val();
     var total_price_tmp = Number(total_price) - Number(price*plus_qty);
-
+    numberWithCommas(price);
+    /*
     $("#total_price").val(total_price_tmp); 
 
     //var shop_point = total_price_tmp *'0.02';  //pc 포인트 
 
     $("#cartprice1").text(numberWithCommas(total_price_tmp));
     //$("#shop_point").text(numberWithCommas(shop_point));//pc 포인트  
-
+	*/
     $("#io_append"+io_ano).remove();
 
     $("#select_option").val('basic');//레이어 삭제하면  
@@ -406,17 +462,17 @@ $(document).ready(function(){
         $(this).addClass("mypage_paging_select");
     });
 });
-
-function show_num(e, stock, sss) {
+'+sid+','+price+','+stock+'
+function show_num(e, sid, price, stock) {
 	if(e.keyCode == 13) {
-		var ttt = $("#ct_qty"+sss).val();
-		if(ttt <= 1 || ttt=="") {
-			$("#ct_qty"+sss).val(1);
-		} else if(ttt > stock) {
+		var curNum = $("#ct_qty"+sid).val();
+		if(curNum <= 1 || curNum=="") {//0이하거나 빈칸일 경우 1
+			$("#ct_qty"+sid).val(1);
+		} else if(curNum > stock) {//최대 재고 수량을 넘을경우 최대 재고 수량으로 변경
 			alert(stock + "이하의 수량만 가능합니다.");
-			$("#ct_qty"+sss).val(stock);
+			$("#ct_qty"+sid).val(stock);	
 		}
+		numberWithCommas(price);
 	}
-		
 }
 </script>
