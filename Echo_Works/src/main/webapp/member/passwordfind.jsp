@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>비밀번호 찾기</title>
     <style>
-
         body {
             background: white;
             margin: 0;
@@ -95,8 +94,11 @@
     <div id="result" class="mt-3"></div>
 </div>
 
-
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('nameInput').focus();
+    });
+
     document.getElementById('findPasswordForm').addEventListener('submit', function(event) {
         event.preventDefault();
         var name = document.getElementById('nameInput').value.trim();
