@@ -16,7 +16,7 @@
         out.println("<script>alert('로그인이 필요합니다.');location.href='index.jsp?workgroup=member&work=member_login';</script>");
         return;
     }
-
+    request.setCharacterEncoding("utf-8");
     // 파라미터 처리
     String action = request.getParameter("action");
     PaymentDAO paymentDAO = new PaymentDAO();
@@ -28,7 +28,6 @@
             String[] numArray = request.getParameterValues("num");
 
             String total = request.getParameter("total");
-            System.out.println(123);
             String jname = request.getParameter("jname");
             String phone = request.getParameter("phone");
             String zipcode = request.getParameter("zipcode");
@@ -68,7 +67,8 @@
                     return;
                 }
             }
-
+            
+        	
         } catch (NumberFormatException e) {
             e.printStackTrace();
             out.println("<script>alert('잘못된 입력입니다.');history.back();</script>");
@@ -76,4 +76,6 @@
     } else {
         out.println("<script>alert('잘못된 액션입니다.');history.back();</script>");
     }
+
+	response.sendRedirect(request.getContextPath() + "/index.jsp?workgroup=payment&work=payment_complete");
 %>
