@@ -104,7 +104,7 @@
                                 <td>
                                     <div class="input-group mb-3">
                                         <button class="btn btn-outline-secondary quantity-decrease" type="button"><i class="fa-solid fa-minus" style="color: #000000;"></i></button>
-                                        <input type="text" class="quantity form-control quantity-input text-center" min="1" max="10000" value="<%= cart.getCart_num() %>" readonly>
+                                        <input type="text" class="quantity form-control quantity-input text-center" min="1" max="10000" value="<%= cart.getCart_num() %>">
                                         <button class="btn btn-outline-secondary quantity-increase" type="button"><i class="fa-solid fa-plus" style="color: #000000;"></i></button>
                                     </div>
                                 </td>
@@ -219,6 +219,30 @@
                 if (newQuantity >= 1) {
                     quantityInput.value = newQuantity;
                     updatePrice(this, newQuantity);
+                }
+            });
+        });
+
+        document.querySelectorAll('.quantity-input').forEach(function(input) {
+            input.addEventListener('input', function() {
+                var newQuantity = this.value === "" ? 1 : parseInt(this.value);  // 빈 값일 경우 1로 설정
+                var maxQuantity = parseInt(this.closest('tr').dataset.maxQuantity);
+                if (newQuantity >= 1 && newQuantity <= maxQuantity) {
+                    updatePrice(this, newQuantity);
+                } else if (newQuantity > maxQuantity) {
+                    this.value = maxQuantity;
+                    updatePrice(this, maxQuantity);
+                    alert("남은 재고수량: " + maxQuantity + "개");
+                } else {
+                    this.value = 1;
+                    updatePrice(this, 1);
+                }
+            });
+
+            input.addEventListener('blur', function() {
+                if (this.value === "") {
+                    this.value = 1;  // 빈 값일 경우 1로 설정
+                    updatePrice(this, 1);
                 }
             });
         });

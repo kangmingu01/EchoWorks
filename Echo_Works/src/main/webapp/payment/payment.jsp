@@ -194,7 +194,7 @@
                                     <div class="mb-3">
                                         <label for="deliveryMemoExisting" class="form-label">배송메모</label>
                                         <select class="form-select" id="deliveryMemoExisting" name="omesg">
-                                            <option value="">배송메모를 선택해 주세요.</option>
+                                            <option value=&nbsp;>배송메모를 선택해 주세요.</option>
                                             <option value="문 앞에 놔주세요">문 앞에 놔주세요</option>
                                             <option value="경비실에 맡겨주세요">경비실에 맡겨주세요</option>
                                             <option value="직접 받아야 합니다">직접 받아야 합니다</option>
