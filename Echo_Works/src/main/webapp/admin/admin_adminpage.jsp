@@ -1,3 +1,4 @@
+<%@page import="echoworks.dto.ProductDTO"%>
 <%@page import="echoworks.dao.MemberDAO"%>
 <%@page import="echoworks.dao.QnaDAO"%>
 <%@page import="echoworks.dto.QnaDTO"%>
@@ -16,6 +17,8 @@
 
     // 모든 QnA내역 불러오기
     List<QnaDTO> qnaList = QnaDAO.getDAO().selectAllQnAList();
+    
+  	// 모든 상품정보 불러오기
 %>
 
 <!DOCTYPE html>
@@ -106,10 +109,16 @@
             }
             document.getElementById(sectionId).classList.add('active');
         }
+        
+        function confirmCancel(memberId) {
+            return confirm(memberId+"의 주문을 취소하시겠습니까?");
+        }
+    
+
     </script>
 </head>
 <body>
-    <div class="container" id="container12">
+    <div class="" id="container12">
         <div class="sidebar">
             <nav>
                 <ul>
@@ -161,7 +170,7 @@
 									<%   } else if (member.getMemberAuth() == 9) { %>
 									    <td>관리자</td>
 									    <% }%>
-
+											
                                     <td><a href="<%=request.getContextPath() %>/index.jsp?workgroup=admin&work=admin_remove_member_action&action=remove&memberNum=<%= member.getMemberNum() %>">탈퇴</a></td>
                                 </tr>
                             <% } %>
@@ -174,15 +183,17 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>결제 번호</th>
-                            <th>결제 날짜</th>
-                            <th>결제 상태</th>
-                            <th>결제 총액</th>
-                            <th>결제 수량</th>
-                            <th>배송지 이름</th>
-                            <th>주문자 전화번호</th>
-                            <th>배송지 주소</th>
+                            <th>결제번호</th>
+                            <th>결제날짜</th>
+                            <th>주문자아이디</th>
+                            <th>결제상태</th>
+                            <th>결제총액</th>
+                            <th>결제수량</th>
+                            <th>배송지이름</th>
+                            <th>주문자전화번호</th>
+                            <th>배송지주소</th>
                             <th>배송 메시지</th>
+                            <th>관리</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -195,13 +206,32 @@
                                 <tr>
                                     <td><%= payment.getPaymentNo() %></td>
                                     <td><%= payment.getPaymentDate() %></td>
-                                    <td><%= payment.getPaymentStatus() %></td>
+                                     <% int num=payment.getPaymentHno();
+										MemberDTO member=MemberDAO.getDAO().selectMemberByNum(num);%>  
+									<td><%=member.getMemberId() %></td>
+                                    <% if(payment.getPaymentStatus() == 0) { %>
+                                    <td>결제취소</td>
+                                    <% } else if(payment.getPaymentStatus() == 1) { %>
+                                    <td>결제완료</td>
+                                   <% } else if(payment.getPaymentStatus() == 2) { %>
+                                    <td>배송중</td>
+                                    <% } else if(payment.getPaymentStatus() == 3) { %>
+                                    <td>배송완료</td>
+                                    <%} %>
                                     <td><%= payment.getPaymentTotal() %></td>
                                     <td><%= payment.getPaymentNum() %></td>
                                     <td><%= payment.getPaymentJname() %></td>
                                     <td><%= payment.getPaymentPhone() %></td>
                                     <td><%= payment.getPaymentAddress1() %> <%= payment.getPaymentAddress2() %></td>
                                     <td><%= payment.getPaymentOmesg() %></td>
+                                    <!-- 결제내역 테이블의 일부 -->
+									<td>
+									    <form action="<%=request.getContextPath() %>/admin/admin_adminpage_payment_cancel_action.jsp" method="post" onsubmit="return confirmCancel('<%= member.getMemberId() %>');">
+									        <input type="hidden" name="paymentNo" value="<%=payment.getPaymentNo() %>" />
+									        <button type="submit">결제취소</button>
+									    </form>
+									</td>
+                                    
                                 </tr>
                             <% } %>
                         <% } %>
@@ -213,8 +243,10 @@
                 <table>
                     <thead>
                         <tr>
+                        	<th>글번호</th>
                             <th>제목</th>
                             <th>내용</th>
+                            <th>작성자아이디</th>
                             <th>작성자</th>
                             <th>날짜</th>
                             <th>답변유무</th>
@@ -228,20 +260,24 @@
                         <% } else { %>
                             <% for (QnaDTO qna : qnaList) { %>
                                 <tr>
+                                	<td><%= qna.getQnaNo() %></td>
                                     <td><%= qna.getQnaTitle() %></td>
                                     <td><%= qna.getQnaContent() %></td>
-                                    <% int num=qna.getQnaMemberNo();
+                                     <% int num=qna.getQnaMemberNo();
 										MemberDTO member=MemberDAO.getDAO().selectMemberByNum(num);%>                                
+                                    <td><%= member.getMemberId() %> </td>
                                     <td><%= member.getMemberName() %> </td>
                                    <td><%= qna.getQnaDate() %></td>
 									<%  if (qna.getQnaStatus() == 0) { %>
 									    <td>삭제된 글</td>
-									<%   } else if (qna.getQnaStatus() == 1) { %> 
-										<td>답변 대기 중</td>
-									<%   } else if (qna.getQnaStatus() == 2) { %>
-									    <td>비밀글</td>
-									<%  } else if (qna.getQnaStatus() == 3) { %>
-									    <td>답변 완료</td>
+									<%   } else if (qna.getQnaAnswer() == null || qna.getQnaStatus() == 1)     { %> 
+										<td>답변 대기 중(일반글)</td>
+									<%     } else if (qna.getQnaAnswer() != null || qna.getQnaStatus() == 1)     {   %>
+									    <td>답변완료(일반글)</td>
+									<%    } else if (qna.getQnaAnswer() == null || qna.getQnaStatus() == 2)     {  %>
+									    <td>답변 대기 중(비밀글)</td>
+									<%    } else if (qna.getQnaAnswer() != null || qna.getQnaStatus() == 2)     {  %>
+										<td>답변 완료(비밀글)</td>
 									    <% }%>
                                 </tr>
                             <% } %>
@@ -249,8 +285,12 @@
                     </tbody>
                 </table>
             </div>
+            <div id="admin-product" class="content-section">
+            	<h2>상품관리</h2>
+            
+            </div>
         </div>
     </div>
-    
+	    
 </body>
 </html>

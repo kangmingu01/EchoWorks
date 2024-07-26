@@ -22,7 +22,7 @@ MEMBER 테이블에 저장된 행의 권한을 변경하고 [/member/member_logo
         request.setAttribute("returnUrl", request.getContextPath() + "/index.jsp?workgroup=admin&work=admin_adminpage");
     } else {
         // 회원번호가 없는 경우 에러 처리
-        request.setAttribute("errorMsg", "회원 번호가 유효하지 않습니다.");
+        request.setAttribute("errorMsg", "회원 번호가 유효하지	않습니다.");
     }
 %>
 
