@@ -3,19 +3,18 @@ package echoworks.dto;
 import java.util.Date;
 
 public class QnaDTO {
-	private int qnaNo; // 문의 글 번호
-	private int qnaMemberNo; // 질문자 번호
-	private int qnaProductNo; // 문의할 제품 번호
-	private String qnaTitle; // 문의제목
-	private String qnaContent;// 문의내용
-	private Date qnaDate; // 문의작성일
-	private String qnaAnswer; // 답변내용
-	private Date qnaAnsDate; // 답변날짜
-	private int qnaStatus; // 글 상태
-
-	public QnaDTO() {
-		// TODO Auto-generated constructor stub
-	}
+    private int qnaNo;        // 문의 글 번호
+    private int qnaMemberNo;  // 질문자 번호
+    private int qnaProductNo; // 문의할 제품 번호
+    private String qnaTitle;  // 문의제목
+    private String qnaContent;// 문의내용
+    private Date qnaDate;     // 문의작성일
+    private String qnaAnswer; // 답변내용
+    private Date qnaAnsDate;  // 답변날짜
+    private int qnaStatus;    // 글 상태
+    private String Member_Name;
+    
+	
 
 	public int getQnaNo() {
 		return qnaNo;
@@ -89,4 +88,14 @@ public class QnaDTO {
 		this.qnaStatus = qnaStatus;
 	}
 
+
+	public String getMember_Name() {
+		return Member_Name;
+	}
+
+
+	public void setMember_Name(String member_Name) {
+		Member_Name = member_Name;
+	}
+    
 }

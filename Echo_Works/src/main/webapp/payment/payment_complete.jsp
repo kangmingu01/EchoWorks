@@ -1,4 +1,9 @@
+<<<<<<< HEAD
+<%@ page language="java" contentType="text/html; charset=utf-8"
+    pageEncoding="utf-8"%>
+=======
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+>>>>>>> branch 'main' of https://github.com/kangmingu01/EchoWorks
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -23,7 +28,11 @@
             	<h1>결제 완료!</h1>
             	<div>
                 <a href="<%=request.getContextPath() %>/index.jsp?" class="btn btn-dark btn-custom">홈으로</a>
+<<<<<<< HEAD
+                <a href="order_history.jsp" class="btn btn-outline-dark btn-custom">주문내역</a>
+=======
                 <a href="<%=request.getContextPath() %>/index.jsp?workgroup=member&work=member_mypage&paymentreocord" class="btn btn-outline-dark btn-custom">주문내역</a>
+>>>>>>> branch 'main' of https://github.com/kangmingu01/EchoWorks
             	</div>
          </div>
         </div>
