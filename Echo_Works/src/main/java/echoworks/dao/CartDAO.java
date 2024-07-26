@@ -10,20 +10,20 @@ import java.util.List;
 import echoworks.dto.CartDTO;
 
 public class CartDAO extends JdbcDAO {
-	private static CartDAO _dao;
-	
-	public CartDAO() {
-		// TODO Auto-generated constructor stub
-	}
-	
-	static {
-		_dao=new CartDAO();
-	}
-	
-	public static CartDAO getDao() {
-		return _dao;
-	}
-	
+    private static CartDAO _dao;
+
+    public CartDAO() {
+        // TODO Auto-generated constructor stub
+    }
+
+    static {
+        _dao = new CartDAO();
+    }
+
+    public static CartDAO getDao() {
+        return _dao;
+    }
+
     // 카트에 상품 추가
     public void addCart(CartDTO cart) throws SQLException {
         String sql = "INSERT INTO CART (CART_NO, CART_PSNO, CART_MEMBER, CART_NUM) VALUES (CART_SEQ.NEXTVAL, ?, ?, ?)";
@@ -98,6 +98,7 @@ public class CartDAO extends JdbcDAO {
             pstmt = con.prepareStatement(sql);
             pstmt.setInt(1, cartNo);
             pstmt.executeUpdate();
+         
         } finally {
             close(con, pstmt);
         }
@@ -118,6 +119,7 @@ public class CartDAO extends JdbcDAO {
             close(con, pstmt);
         }
     }
+
     public CartDTO getCartByNo(int cartNo) throws SQLException {
         String sql = "SELECT * FROM CART WHERE CART_NO = ?";
         Connection con = null;
@@ -142,5 +144,29 @@ public class CartDAO extends JdbcDAO {
             close(con, pstmt, rs);
         }
         return cart;
+    }
+
+    // 선택된 장바구니 항목 삭제
+    public void deleteSelectedCartItems(int[] cartNos) throws SQLException {
+        String sql = "DELETE FROM CART WHERE CART_NO = ?";
+        Connection con = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            con = getConnection();
+            pstmt = con.prepareStatement(sql);
+
+            for (int cartNo : cartNos) {
+                pstmt.setInt(1, cartNo);
+                pstmt.addBatch(); // Batch 처리
+            }
+
+            int[] results = pstmt.executeBatch(); // 일괄 실행
+            for (int result : results) {
+       
+            }
+        } finally {
+            close(con, pstmt);
+        }
     }
 }

@@ -1,11 +1,12 @@
-<%@page import="java.io.Console"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="echoworks.dao.CartDAO" %>
 <%@ page import="echoworks.dao.PaymentDAO" %>
 <%@ page import="echoworks.dto.PaymentDTO" %>
 <%@ page import="javax.servlet.http.HttpSession" %>
 <%@ page import="echoworks.dto.MemberDTO" %>
 <%@ page import="java.util.Date" %>
 <%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.sql.SQLException" %>
 
 <%
     // 로그인된 사용자 정보 가져오기
@@ -16,11 +17,14 @@
         out.println("<script>alert('로그인이 필요합니다.');location.href='index.jsp?workgroup=member&work=member_login';</script>");
         return;
     }
+
     request.setCharacterEncoding("utf-8");
+
     // 파라미터 처리
     String action = request.getParameter("action");
-    PaymentDAO paymentDAO = new PaymentDAO();
- 
+    PaymentDAO paymentDAO = PaymentDAO.getDAO();
+    CartDAO cartDAO = CartDAO.getDao();
+
     if (action != null && action.equals("pay")) {
         try {
             // 여러 psno와 num 값을 받기 위한 배열
@@ -59,7 +63,6 @@
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 payment.setPaymentDate(sdf.format(new Date()));
 
-
                 int result = paymentDAO.insertPayment(payment);
 
                 if (result <= 0) {
@@ -67,15 +70,31 @@
                     return;
                 }
             }
-            
-        	
+
+            // 결제가 완료된 장바구니 항목 삭제
+            String[] selectedCartNosStr = request.getParameterValues("cart_no");
+            if (selectedCartNosStr != null) {
+                int[] selectedCartNos = new int[selectedCartNosStr.length];
+                for (int i = 0; i < selectedCartNosStr.length; i++) {
+                    selectedCartNos[i] = Integer.parseInt(selectedCartNosStr[i]);
+                }
+
+                cartDAO.deleteSelectedCartItems(selectedCartNos);
+               
+            } else {
+               
+            }
+
+            response.sendRedirect(request.getContextPath() + "/index.jsp?workgroup=payment&work=payment_complete");
+
         } catch (NumberFormatException e) {
             e.printStackTrace();
             out.println("<script>alert('잘못된 입력입니다.');history.back();</script>");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            out.println("<script>alert('DB 오류가 발생했습니다.');history.back();</script>");
         }
     } else {
         out.println("<script>alert('잘못된 액션입니다.');history.back();</script>");
     }
-
-	response.sendRedirect(request.getContextPath() + "/index.jsp?workgroup=payment&work=payment_complete");
 %>

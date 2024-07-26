@@ -82,8 +82,15 @@
 </head>
 <body>
 <div class="container">
-     <h2 class="section-title text-center mt-3">결제하기</h2>
-    <form id="paymentForm" name="paymentForm" method="post" action="<%=request.getContextPath() %>/payment/payment_action.jsp?action=pay" >
+    <h2 class="section-title text-center mt-3">결제하기</h2>
+    <form id="paymentForm" name="paymentForm" method="post" action="<%=request.getContextPath() %>/payment/payment_action.jsp?action=pay">
+        <%
+            for (String cartNo : selectedCartNos) {
+        %>
+            <input type="hidden" name="cart_no" value="<%= cartNo %>" />
+        <%
+            }
+        %>
         <div class="row">
             <div class="col-md-7">
                 <div class="card">
@@ -104,9 +111,9 @@
                             <img src="assets/img/<%= ProductDAO.getDAO().selectProductByNo(stock.getpS_pNo()).getPRODUCT_IMG() %>.jpg" alt="상품 이미지" style="width: 100px; height: 100px; margin-right: 20px;">
                             <div>
                                 <p><%= stock.getpS_Option() %></p>
-                                <p><%= unitPrice %>원</p>
+                                <p><%= String.format("%,d", unitPrice) %>원</p>
                                 <p>수량: <%= cart.getCart_num() %></p>
-                                <p>총 가격: <%= totalPrice %>원</p>
+                                <p>총 가격: <%= String.format("%,d", totalPrice) %>원</p>
                                 <input type="hidden" name="psno" value="<%= cart.getCart_psno() %>">
                                 <input type="hidden" name="num" value="<%= cart.getCart_num() %>">
                             </div>
@@ -125,12 +132,15 @@
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
+                            <label for="ordererName" class="form-label">주문자 이름</label>
                             <input type="text" class="form-control" id="ordererName" name="jname" value="<%= loginMember.getMemberName() %>" disabled>
                         </div>
                         <div class="mb-3">
+                            <label for="ordererContact" class="form-label">전화번호</label>
                             <input type="text" class="form-control" id="ordererContact" name="phone" value="<%= loginMember.getMemberMobile() %>" disabled>
                         </div>
                         <div class="mb-3">
+                            <label for="ordererEmail" class="form-label">이메일</label>
                             <input type="email" class="form-control" id="ordererEmail" name="email" value="<%= loginMember.getMemberEmail() %>" disabled>
                         </div>
                         <button type="button" class="btn btn-outline-secondary" id="editOrdererInfo">수정</button>
@@ -144,18 +154,55 @@
                     <div class="card-body">
                         <ul class="nav nav-tabs" id="deliveryTab" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" id="existing-address-tab" data-bs-toggle="tab" href="#existing-address" role="tab" aria-controls="existing-address" aria-selected="true">배송지 선택</a>
+                                <a class="nav-link active" id="existing-address-tab" data-bs-toggle="tab" href="#existing-address" role="tab" aria-controls="existing-address" aria-selected="true">기존 배송지</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="new-address-tab" data-bs-toggle="tab" href="#new-address" role="tab" aria-controls="new-address" aria-selected="false">신규 입력</a>
+                                <a class="nav-link" id="new-address-tab" data-bs-toggle="tab" href="#new-address" role="tab" aria-controls="new-address" aria-selected="false">신규 배송지</a>
                             </li>
                         </ul>
                         <div class="tab-content" id="deliveryTabContent">
                             <div class="tab-pane fade show active" id="existing-address" role="tabpanel" aria-labelledby="existing-address-tab">
-                                <p><input type="radio" name="address" checked> <%= loginMember.getMemberName() %>, <%= loginMember.getMemberAddress1() %>, <%= loginMember.getMemberAddress2() %>, <%= loginMember.getMemberZipcode() %></p>
-                                <input type="hidden" name="zipcode" value="<%= loginMember.getMemberZipcode() %>">
-                                <input type="hidden" name="address1" value="<%= loginMember.getMemberAddress1() %>">
-                                <input type="hidden" name="address2" value="<%= loginMember.getMemberAddress2() %>">
+                                <div class="mt-3">
+                                    <div class="mb-3">
+                                        <label for="recipientExisting" class="form-label">수령인</label>
+                                        <input type="text" class="form-control" id="recipientExisting" placeholder="2글자 이상 입력해주세요" name="jnameExisting" value="<%= loginMember.getMemberName() %>" disabled>
+                                        <input type="hidden" name="jname" value="<%= loginMember.getMemberName() %>">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="contactExisting" class="form-label">연락처</label>
+                                        <input type="text" class="form-control" id="contactExisting" placeholder="전화번호를 입력하세요" name="phoneExisting" value="<%= loginMember.getMemberMobile() %>" disabled>
+                                        <input type="hidden" name="phone" value="<%= loginMember.getMemberMobile() %>">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="postcodeExisting" class="form-label">우편번호</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="postcodeExisting" placeholder="우편번호" name="zipcodeExisting" value="<%= loginMember.getMemberZipcode() %>" disabled>
+                                            <input type="hidden" name="zipcode" value="<%= loginMember.getMemberZipcode() %>">
+                                            <button class="btn btn-outline-secondary" type="button" id="findPostcodeExisting" disabled>주소찾기</button>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="addressExisting" class="form-label">주소</label>
+                                        <input type="text" class="form-control" id="addressExisting" placeholder="주소" name="address1Existing" value="<%= loginMember.getMemberAddress1() %>" disabled>
+                                        <input type="hidden" name="address1" value="<%= loginMember.getMemberAddress1() %>">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="detailedAddressExisting" class="form-label">상세주소</label>
+                                        <input type="text" class="form-control" id="detailedAddressExisting" placeholder="상세주소" name="address2Existing" value="<%= loginMember.getMemberAddress2() %>" disabled>
+                                        <input type="hidden" name="address2" value="<%= loginMember.getMemberAddress2() %>">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="deliveryMemoExisting" class="form-label">배송메모</label>
+                                        <select class="form-select" id="deliveryMemoExisting" name="omesg">
+                                            <option value="">배송메모를 선택해 주세요.</option>
+                                            <option value="문 앞에 놔주세요">문 앞에 놔주세요</option>
+                                            <option value="경비실에 맡겨주세요">경비실에 맡겨주세요</option>
+                                            <option value="직접 받아야 합니다">직접 받아야 합니다</option>
+                                            <option value="직접입력">직접입력</option>
+                                        </select>
+                                        <input type="text" class="form-control mt-2 hidden" id="deliveryMemoInputExisting" placeholder="배송메모를 입력해 주세요" name="omesgInput">
+                                    </div>
+                                </div>
                             </div>
                             <div class="tab-pane fade" id="new-address" role="tabpanel" aria-labelledby="new-address-tab">
                                 <div class="form-check">
@@ -188,12 +235,6 @@
                                         <label for="detailedAddress" class="form-label">상세주소</label>
                                         <input type="text" class="form-control" id="detailedAddress" placeholder="상세주소" name="address2">
                                     </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="addToAddressBook">
-                                        <label class="form-check-label" for="addToAddressBook">
-                                            배송지 목록에 추가
-                                        </label>
-                                    </div>
                                     <div class="mb-3">
                                         <label for="deliveryMemo" class="form-label">배송메모</label>
                                         <select class="form-select" id="deliveryMemo" name="omesg">
@@ -217,9 +258,9 @@
                         주문 요약
                     </div>
                     <div class="card-body">
-                        <p>상품가격: <%= totalProductPrice %>원</p>
-                        <p>배송비: <%= shippingCost %>원</p>
-                        <p>총 주문금액: <%= totalProductPrice + shippingCost %>원</p>
+                        <p>상품가격: <span id="totalProductPrice"><%= String.format("%,d", totalProductPrice) %></span></p>
+                        <p>배송비: <span id="shippingCost"><%= String.format("%,d", shippingCost) %></span></p>
+                        <p>총 주문금액: <span id="totalOrderAmount"><%= String.format("%,d", totalProductPrice + shippingCost) %></span></p>
                         <input type="hidden" name="total" value="<%= totalProductPrice + shippingCost %>">
                     </div>
                 </div>
@@ -266,6 +307,15 @@
         }
     });
 
+    document.getElementById('deliveryMemoExisting').addEventListener('change', function() {
+        var deliveryMemoInput = document.getElementById('deliveryMemoInputExisting');
+        if (this.value === '직접입력') {
+            deliveryMemoInput.classList.remove('hidden');
+        } else {
+            deliveryMemoInput.classList.add('hidden');
+        }
+    });
+
     document.getElementById('findPostcode').addEventListener('click', function() {
         new daum.Postcode({
             oncomplete: function(data) {
@@ -275,21 +325,41 @@
         }).open();
     });
 
-    document.getElementById('new-address-tab').addEventListener('click', function() {
-        document.getElementById('new-address').classList.add('show', 'active');
-        document.getElementById('existing-address').classList.remove('show', 'active');
-    });
-
-    document.getElementById('existing-address-tab').addEventListener('click', function() {
-        document.getElementById('existing-address').classList.add('show', 'active');
-        document.getElementById('new-address').classList.remove('show', 'active');
+    document.getElementById('findPostcodeExisting').addEventListener('click', function() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                document.getElementById('postcodeExisting').value = data.zonecode;
+                document.getElementById('addressExisting').value = data.address;
+            }
+        }).open();
     });
 
     document.getElementById('payButton').addEventListener('click', function(event) {
         if (!document.getElementById('agreeTerms').checked) {
             alert('구매조건 확인 및 결제진행에 동의해야 합니다.');
             event.preventDefault(); // 페이지 이동 막기
+        } else {
+            // 버튼 비활성화
+            this.disabled = true;
+            // 폼 제출
+            document.getElementById('paymentForm').submit();
         }
+    });
+
+    // 숫자 포맷 함수
+    function formatPrice(price) {
+        return price.toLocaleString();
+    }
+
+    // 페이지 로드 시 가격 포맷팅
+    document.addEventListener('DOMContentLoaded', function() {
+        var totalProductPrice = document.getElementById('totalProductPrice');
+        var shippingCost = document.getElementById('shippingCost');
+        var totalOrderAmount = document.getElementById('totalOrderAmount');
+
+        totalProductPrice.textContent = formatPrice(parseInt(totalProductPrice.textContent.replace(/[^0-9]/g, ''))) + '원';
+        shippingCost.textContent = formatPrice(parseInt(shippingCost.textContent.replace(/[^0-9]/g, ''))) + '원';
+        totalOrderAmount.textContent = formatPrice(parseInt(totalOrderAmount.textContent.replace(/[^0-9]/g, ''))) + '원';
     });
 </script>
 </body>
