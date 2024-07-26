@@ -44,6 +44,8 @@
 	
 	// 로그인 사용자인지 아닌지 검증
 	int memberNum = loginMember != null ? loginMember.getMemberNum() : 0;
+	
+	
 %>
 <%--
 - QNA 테이블에 저장된 행을 상품 번호에 따라 행을 검색하여 검색된 행을 HTML 태그에 포함하는 문서
@@ -445,6 +447,10 @@
                 </tbody>
               </table>
             </div> -->
+            
+     		<div id="page_list"></div>
+	
+            
             <div id="console-event"></div>
           </div>
         </section>
@@ -495,7 +501,7 @@ statusCheck();
 
 //비밀글 제외 눌렀을 때
 $('#secretCheck').change(function() {
-    secretCheck = $("#secretCheck").prop('checked') ? 1 : 0;
+	secretCheck = $("#secretCheck").prop('checked') ? 1 : 0;
     statusCheck();
     displayQnaList();
 });
@@ -614,7 +620,8 @@ displayQnaList();
 			"memberNum" : memberNum,
 			},
 		dataType:"json",
-		success: function(result) {			
+		success: function(result) {	
+				var pageNum=1;//임시		
 			//댓글목록태그의 자식태그(댓글)를 삭제 처리 - 기존 댓글 삭제
 			$("#qna_list").children().remove();
 			
@@ -623,7 +630,32 @@ displayQnaList();
 			console.log(result.data.length);
 			
 			if(result.code == "success") {
-				var arrLength = result.data.length; // 전체 질문 갯수
+			console.log("startPage="+result.startPage);
+			console.log("blockSize="+result.blockSize);
+			console.log("endPage="+result.endPage);
+			console.log("totalPage="+result.totalPage); 
+				 
+				var hhtml="";
+				if(result.startPage>result.blockSize){
+				 hhtml+="<a id='bbb'>[이전]</a>";
+				}else{
+					hhtml+="[이전]";
+				}
+				for(var i=result.startPage;i<=result.endPage;i++){
+					if(pageNum!=i){
+					hhtml+= "<a id=page_"+i+" >["+i+"]</a>";
+					}else{
+					hhtml+=	"["+i+"]" ;
+					}
+				}
+				if(result.endPage!=result.totalPage){
+				 hhtml+="<a id='aaa'>[다음]</a>";
+				}else{
+				hhtml+="[다음]";
+				}
+				$("#page_list").append(hhtml); 
+				
+				var arrLength = result.data.length; // 전체 질문 갯수				
 				$(result.data).each(function() {					
 					//질문자 질문 칸
 					
@@ -667,6 +699,10 @@ displayQnaList();
 	                html+="</div></div></div>";
 				  */
 					$("#qna_list").append(html);
+				  				  				
+				  
+				  
+			
 				});
 				// 상품 문의 갯수를 출력
                 $(".arrLength").text("( " + arrLength + " )");
@@ -708,7 +744,7 @@ $("#qna_insert").click(function() {
 		$.ajax({
 			type: "post",
 			url: "<%=request.getContextPath()%>/qna/detail_qna_insert.jsp",
-			data: {"title":title, "content":content, "secretCheck":secretCheck,"productNo":productNo},
+			data: {"title":title, "content":content, "secretCheck":secretCheck,"productNo":productNo, "pageNum":pageNum},
 			dataType: "json",
 			success: function(result) {
 				if(result.code == "success") {
@@ -729,7 +765,17 @@ $("#qna_insert").click(function() {
 		});
 	});
 
+//페이징 버튼!
+$("#bbb").click(function() {
+	
+});
+$("#aaa").click(function() {
+	
+});
 
+$("#page_1").click(function() {
+	
+});
 
 
 // detail 페이지 완성되면 경로 수정해야됨 => 문제는 상태가 변하면서 새로고침되는데 이게 header로 올라감
