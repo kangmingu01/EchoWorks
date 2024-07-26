@@ -1,3 +1,5 @@
+<%@page import="java.net.URLEncoder"%>
+<%@page import="echoworks.dto.CartDTO"%>
 <%@page import="echoworks.dto.MemberDTO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.nio.file.Files"%>
@@ -14,7 +16,20 @@
     pageEncoding="UTF-8"%>
 <%
 
-MemberDTO loginMember=(MemberDTO)session.getAttribute("loginMember");
+	MemberDTO loginMember=(MemberDTO)session.getAttribute("loginMember");
+	String requestURI=request.getRequestURI();
+	
+	String queryString=request.getQueryString();		
+	
+	String url=requestURI;
+	if(queryString != null) {
+		url+="?"+queryString;
+	}
+	
+	url=URLEncoder.encode(url, "utf-8");
+	
+	String contextPath = request.getContextPath();
+	
 
 // 현재 선택한 상품 정보 가져오기
 ProductDTO product=ProductDAO.getDAO().selectProductByNo(Integer.parseInt(request.getParameter("product_no")));
@@ -23,21 +38,23 @@ ProductDTO product=ProductDAO.getDAO().selectProductByNo(Integer.parseInt(reques
 List<ProductStockDTO> productStockList= ProductStockDAO.getDAO().selectProductStockList(product.getPRODUCT_NO());
 
 // 선택된 옵션
-class Option {
-	int id;
-	int price;
+class ProductOption {
+	int op_no;
+	int op_id;
+	int op_price;
 	
-	public Option(int id, int price) {
-		this.id=id;
-		this.price=price;
+	public ProductOption(int op_no, int id, int price) {
+		this.op_no=op_no;
+		this.op_id=id;
+		this.op_price=price;
 	}
 	
-	public int getId() { return id; }
-	
-	public int getPrice() { return price; }
+	public int getOpNo() { return op_no; }
+	public int getOpId() { return op_id; }
+	public int getOpPrice() { return op_price; }
 }
 
-List<Option> optionList=new ArrayList<Option>();
+List<ProductOption> optionList=new ArrayList<ProductOption>();
 %>
 
     
@@ -107,7 +124,7 @@ input[type="number"]::-webkit-inner-spin-button {
 										int price=productStockList.get(i).getpS_price();
 										int stock=productStockList.get(i).getpS_Stock();
 										
-										Option option=new Option(56068+i, price);
+										ProductOption option=new ProductOption(productStockList.get(i).getpS_No(),56068+i, price);
 										optionList.add(option);
 									%>
 									<option value="<%=op %>||<%=price %>||<%=stock %>||<%=56068+i %>" ><%=op %>   (<%=String.format("%,d", price) %>원)</option>
@@ -227,12 +244,13 @@ function numberWithCommas() {
 	var total=0;
 	
 <% for(int i=0;i<optionList.size();i++){%>
-	var opId = <%=optionList.get(i).getId()%>;//해당 옵션 id
+	var opId = <%=optionList.get(i).getOpId()%>;//해당 옵션 id
 	var curNum=$("#ct_qty"+opId).val();//해당 옵션의 현재 수량
-	var price=<%=optionList.get(i).getPrice()%>;//해당 옵션 가격
+	var price=<%=optionList.get(i).getOpPrice()%>;//해당 옵션 가격
 	if(isNaN(curNum) == false) {//해당 옵션이 현재 선택되어 있다면 false
 		total+= Number(curNum)*Number(price);
 	}
+	
 <%}%>
 	if(total != null) {
 		var parts = total.toString().split(".");
@@ -251,8 +269,6 @@ function selected_item(io_type, io_id, io_value,ver){
       var price=str[1];
       var stock=str[2];
       var sid=str[3];
-      
-      
   }
 
   opt = '<div class="shop_item_select" id="io_append'+sid+'" name="io_append['+sid+'][]" command='+sid+' >';
@@ -313,7 +329,6 @@ function item_minus(sid,price){
     if(num<1){// 최소 수량1로 고정
     	num=1;
     }else{
-        $("#ct_qty"+sss).val(num);
         numberWithCommas();
     }
 }
@@ -420,9 +435,81 @@ function show_num(e, sid, price, stock) {
 	}
 }
 
-
-$(".btn_payment").click(function() {
-	alert("주문하기");
+$(".btn_cart").click(function() {
+	var cartArr = "";
+	<%for(int i=0;i<optionList.size();i++) {%>
+	cartArr += <%=optionList.get(i).getOpNo()%>
+	cartArr+=" ";	
+	cartArr += $("#ct_qty"+(56068+<%=i%>)).val();	// 수량
+	cartArr+=",";	
+	<%}%>
+	
+	alert(cartArr);
+	$.ajax({
+		type: "post",
+		url: "<%=request.getContextPath()%>/detail/detail_cart.jsp",
+		data: {
+			"state":"cart",
+			"cartArr":cartArr
+			},
+		dataType: "json",
+		success: function(result) {
+			if(result.code == "success") {
+				alert("성공")
+			} else {
+				alert("실패");
+			}
+		},
+		error: function(xhr) {
+			alert("에러코드 = "+xhr.status);
+		}
+	});
 });
 
+
+$(".btn_payment").click(function() {
+
+	<%if(loginMember == null){%>
+		checkLogin();
+	<%}else {%>
+	var cartArr = "";
+	<%for(int i=0;i<optionList.size();i++) {%>
+	cartArr += <%=optionList.get(i).getOpNo()%>
+	cartArr+=" ";	
+	cartArr += $("#ct_qty"+(56068+<%=i%>)).val();	// 수량
+	cartArr+=",";	
+	<%}%>
+	
+	alert(cartArr);
+	$.ajax({
+		type: "post",
+		url: "<%=request.getContextPath()%>/detail/detail_cart.jsp",
+		data: {
+			"state":"payment",
+			"cartArr":cartArr
+			},
+		dataType: "json",
+		success: function(result) {
+			if(result.code == "success") {
+				alert("성공");
+				window.location.href = "<%=contextPath%>" + "/index.jsp?workgroup=payment&work=payment&url=" + "<%=url%>";
+				
+			} else {
+				alert("실패");
+			}
+		},
+		error: function(xhr) {
+			alert("에러코드 = "+xhr.status);
+		}
+	});
+	<%}%>
+});
+
+function checkLogin() {	
+    loginConfirm = confirm("로그인이 필요한 서비스입니다. 로그인 하시겠습니까?");    
+    if(loginConfirm) {
+		window.location.href = "<%=contextPath%>" + "/index.jsp?workgroup=member&work=member_login&url=" + "<%=url%>";
+		console.log("<%=contextPath%>" + "/index.jsp?workgroup=member&work=member_login&url=" + "<%=url%>");
+    }
+}
 </script>

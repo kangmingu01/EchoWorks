@@ -19,6 +19,11 @@
         return;
     }
 
+    List<CartDTO> cartList = (List<CartDTO>)session.getAttribute("cartList");
+    
+    //상품 옵션의 번호
+    //상품 수량
+    
     // 장바구니에서 선택한 상품 번호 목록을 가져옴
     String[] selectedCartNos = request.getParameterValues("cart_no");
 
@@ -27,7 +32,8 @@
         return;
     }
 
-    List<CartDTO> selectedCartList = new ArrayList<>();
+    //List<CartDTO> selectedCartList = new ArrayList<>();
+    List<CartDTO> selectedCartList = cartList;
     for (String cartNo : selectedCartNos) {
         int cartNoInt = Integer.parseInt(cartNo);
         CartDTO cart = CartDAO.getDao().getCartByNo(cartNoInt);
