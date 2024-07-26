@@ -23,7 +23,7 @@ public class PaymentDAO extends JdbcDAO {
         return _dao;
     }
 
-    // 결제 정보 삽입
+    //결제 
     public int insertPayment(PaymentDTO payment) {
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -33,17 +33,20 @@ public class PaymentDAO extends JdbcDAO {
             String sql = "INSERT INTO PAYMENT (PAYMENT_NO, PAYMENT_PSNO, PAYMENT_HNO, PAYMENT_NUM, PAYMENT_TOTAL, "
                          + "PAYMENT_DATE, PAYMENT_STATUS, PAYMENT_JNAME, PAYMENT_PHONE, PAYMENT_ZIPCODE, "
                          + "PAYMENT_ADDRESS1, PAYMENT_ADDRESS2, PAYMENT_OMESG) "
-                         + "VALUES (PAYMENT_SEQ.NEXTVAL, ?, ?, ?, 1, sysdate, ?, ?, ?, ?, ?, ?, ?)";
+                         + "VALUES (PAYMENT_SEQ.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             pstmt = con.prepareStatement(sql);
-            pstmt.setInt(1, payment.getPaymentHno());
-            pstmt.setInt(2, payment.getPaymentNum());
-            pstmt.setString(3, payment.getPaymentTotal());
-            pstmt.setString(4, payment.getPaymentJname());
-            pstmt.setString(5, payment.getPaymentPhone());
-            pstmt.setString(6, payment.getPaymentZipcode());
-            pstmt.setString(7, payment.getPaymentAddress1());
-            pstmt.setString(8, payment.getPaymentAddress2());
-            pstmt.setString(9, payment.getPaymentOmesg());
+            pstmt.setInt(1, payment.getPaymentPsno());
+            pstmt.setInt(2, payment.getPaymentHno());
+            pstmt.setInt(3, payment.getPaymentNum());
+            pstmt.setString(4, payment.getPaymentTotal());
+            pstmt.setString(5, payment.getPaymentDate());
+            pstmt.setInt(6, payment.getPaymentStatus());
+            pstmt.setString(7, payment.getPaymentJname());
+            pstmt.setString(8, payment.getPaymentPhone());
+            pstmt.setString(9, payment.getPaymentZipcode());
+            pstmt.setString(10, payment.getPaymentAddress1());
+            pstmt.setString(11, payment.getPaymentAddress2());
+            pstmt.setString(12, payment.getPaymentOmesg());
 
             rows = pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -53,7 +56,6 @@ public class PaymentDAO extends JdbcDAO {
         }
         return rows;
     }
-   
     // 특정 결제 정보 조회(마이페이지 결제내역 조회)
     public List<PaymentDTO> selectPaymentByMemberNo(int memberNo) {
         Connection con = null;

@@ -125,13 +125,13 @@
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
-                            <input type="text" class="form-control" id="ordererName" value="<%= loginMember.getMemberName() %>" disabled>
+                            <input type="text" class="form-control" id="ordererName" name="jname" value="<%= loginMember.getMemberName() %>" disabled>
                         </div>
                         <div class="mb-3">
-                            <input type="text" class="form-control" id="ordererContact" value="<%= loginMember.getMemberMobile() %>" disabled>
+                            <input type="text" class="form-control" id="ordererContact" name="phone" value="<%= loginMember.getMemberMobile() %>" disabled>
                         </div>
                         <div class="mb-3">
-                            <input type="email" class="form-control" id="ordererEmail" value="<%= loginMember.getMemberEmail() %>" disabled>
+                            <input type="email" class="form-control" id="ordererEmail" name="email" value="<%= loginMember.getMemberEmail() %>" disabled>
                         </div>
                         <button type="button" class="btn btn-outline-secondary" id="editOrdererInfo">수정</button>
                     </div>
@@ -153,6 +153,9 @@
                         <div class="tab-content" id="deliveryTabContent">
                             <div class="tab-pane fade show active" id="existing-address" role="tabpanel" aria-labelledby="existing-address-tab">
                                 <p><input type="radio" name="address" checked> <%= loginMember.getMemberName() %>, <%= loginMember.getMemberAddress1() %>, <%= loginMember.getMemberAddress2() %>, <%= loginMember.getMemberZipcode() %></p>
+                                <input type="hidden" name="zipcode" value="<%= loginMember.getMemberZipcode() %>">
+                                <input type="hidden" name="address1" value="<%= loginMember.getMemberAddress1() %>">
+                                <input type="hidden" name="address2" value="<%= loginMember.getMemberAddress2() %>">
                             </div>
                             <div class="tab-pane fade" id="new-address" role="tabpanel" aria-labelledby="new-address-tab">
                                 <div class="form-check">
@@ -164,26 +167,26 @@
                                 <div class="mt-3">
                                     <div class="mb-3">
                                         <label for="recipient" class="form-label">수령인</label>
-                                        <input type="text" class="form-control" id="recipient" placeholder="2글자 이상 입력해주세요">
+                                        <input type="text" class="form-control" id="recipient" placeholder="2글자 이상 입력해주세요" name="jname">
                                     </div>
                                     <div class="mb-3">
                                         <label for="contact" class="form-label">연락처</label>
-                                        <input type="text" class="form-control" id="contact" placeholder="전화번호를 입력하세요">
+                                        <input type="text" class="form-control" id="contact" placeholder="전화번호를 입력하세요" name="phone">
                                     </div>
                                     <div class="mb-3">
                                         <label for="postcode" class="form-label">우편번호</label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control" id="postcode" placeholder="우편번호">
+                                            <input type="text" class="form-control" id="postcode" placeholder="우편번호" name="zipcode">
                                             <button class="btn btn-outline-secondary" type="button" id="findPostcode">주소찾기</button>
                                         </div>
                                     </div>
                                     <div class="mb-3">
                                         <label for="address" class="form-label">주소</label>
-                                        <input type="text" class="form-control" id="address" placeholder="주소">
+                                        <input type="text" class="form-control" id="address" placeholder="주소" name="address1">
                                     </div>
                                     <div class="mb-3">
                                         <label for="detailedAddress" class="form-label">상세주소</label>
-                                        <input type="text" class="form-control" id="detailedAddress" placeholder="상세주소">
+                                        <input type="text" class="form-control" id="detailedAddress" placeholder="상세주소" name="address2">
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="addToAddressBook">
@@ -193,14 +196,14 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="deliveryMemo" class="form-label">배송메모</label>
-                                        <select class="form-select" id="deliveryMemo">
+                                        <select class="form-select" id="deliveryMemo" name="omesg">
                                             <option value="">배송메모를 선택해 주세요.</option>
                                             <option value="문 앞에 놔주세요">문 앞에 놔주세요</option>
                                             <option value="경비실에 맡겨주세요">경비실에 맡겨주세요</option>
                                             <option value="직접 받아야 합니다">직접 받아야 합니다</option>
                                             <option value="직접입력">직접입력</option>
                                         </select>
-                                        <input type="text" class="form-control mt-2 hidden" id="deliveryMemoInput" placeholder="배송메모를 입력해 주세요">
+                                        <input type="text" class="form-control mt-2 hidden" id="deliveryMemoInput" placeholder="배송메모를 입력해 주세요" name="omesgInput">
                                     </div>
                                 </div>
                             </div>
@@ -228,8 +231,7 @@
                                 구매조건 확인 및 결제진행에 동의
                             </label>
                         </div>
-                        <button type="submit" class="btn btn-primary mt-3" id="payButton" formaction="<%=request.getContextPath() %>/index.jsp?workgroup=payment&work=payment_complete">결제하기</button>
-
+                        <button type="submit" class="btn btn-primary mt-3" id="payButton">결제하기</button>
                     </div>
                 </div>
             </div>
@@ -287,8 +289,6 @@
         if (!document.getElementById('agreeTerms').checked) {
             alert('구매조건 확인 및 결제진행에 동의해야 합니다.');
             event.preventDefault(); // 페이지 이동 막기
-        } else {
-            document.getElementById('paymentForm').submit();
         }
     });
 </script>
