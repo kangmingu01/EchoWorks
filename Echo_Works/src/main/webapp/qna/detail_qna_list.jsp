@@ -16,7 +16,6 @@
 	int secretCheck = Integer.parseInt(request.getParameter("secretCheck"));
 	String replyStatus = request.getParameter("replyStatus");
 	int memberNum = Integer.parseInt(request.getParameter("memberNum"));
-    
 	List<QnaDTO> qnaList = QnaDAO.getDAO().selectQnAList(productNo, secretCheck, replyStatus, memberNum);
 %>
 <% if(qnaList.isEmpty()){%>
@@ -26,15 +25,24 @@
 	"data":[
 		<%for (int i=0;i<qnaList.size();i++){ %>
 			<% if(i > 0 ) { %>,<% } %>
-			{"qnaNO":"<%=qnaList.get(i).getQnaNo()%>"
+			{"qnaNo":"<%=qnaList.get(i).getQnaNo()%>"
 			,"qnaMemberNo":"<%=qnaList.get(i).getQnaMemberNo()%>"
 			,"qnaProductNo":"<%=qnaList.get(i).getQnaProductNo()%>"
-			,"qnaTitle":"<%=qnaList.get(i).getQnaTitle() %>"
-			,"qnaContent":"<%=qnaList.get(i).getQnaContent() %>"
+			,"qnaTitle":"<%=Utility.toJSON(qnaList.get(i).getQnaTitle()) %>"
+			,"qnaContent":"<%=Utility.toJSON(qnaList.get(i).getQnaContent()) %>"
 			,"qnaDate":"<%=qnaList.get(i).getQnaDate() %>"
-			,"qnaAnswer":"<%=qnaList.get(i).getQnaAnswer() %>"
-			,"qnaAnsdate":"<%=qnaList.get(i).getQnaAnsDate() %>"
-			,"qnaStatus":"<%=qnaList.get(i).getQnaStatus() %>"}
+			,"qnaAnswer":
+				<% if(qnaList.get(i).getQnaAnswer() != null) { %>
+					"<%=Utility.toJSON(qnaList.get(i).getQnaAnswer()) %>"
+				<% } else { %>
+					""
+				<% } %>	
+				<% if(qnaList.get(i).getQnaAnsDate() != null) {%>
+					,"qnaAnsdate":"<%=qnaList.get(i).getQnaAnsDate() %>"
+				<% } else { %>
+					,"qnaAnsdate":""
+				<% } %>	
+				,"qnaStatus":"<%=qnaList.get(i).getQnaStatus() %>"}
 		<% } %>	
 			]
 		}

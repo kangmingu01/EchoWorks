@@ -171,9 +171,14 @@
             <div class="table-responsive">
               <table class="table"></table>
             </div>
-
-            <div class="d-flex justify-content-between mt-3 align-items-center">
-              <div>
+			
+			
+			<!-- SM 사이즈에서는 보이게 메세지 -->
+            <div id="add_message1" class="text-nowrap d-block d-md-none text-center"></div>
+			
+			
+            <div class="d-flex justify-content-between mt-3 align-items-center text-nowrap container">
+              <div style="width: 30%;">
 
 								<% if(loginMember != null) { %>
 			    <button
@@ -183,8 +188,7 @@
 			        style="
 			            --bs-btn-padding-y: 0.25rem;
 			            --bs-btn-padding-x: 0.5rem;
-			            --bs-btn-font-size: 0.75rem;
-			        "
+			            --bs-btn-font-size: 0.75rem;			        "
 			        data-bs-toggle="collapse" 
 			        data-bs-target="#writeToggle"
 			    >
@@ -202,12 +206,16 @@
 				    </button>
 				<% } %>
               </div>
+              
+              <!-- 메세지 -->
+              <div id="add_message2" class="text-nowrap d-none d-md-block" style="width: 40%"></div>
+              
               <div
-                class="d-flex flex-nowrap align-items-center text-nowrap gap-2 fs-6"
+                class="d-flex flex-nowrap align-items-center text-nowrap gap-2 fs-6" style="width: 30%"
               >
               	<!-- scretWrite -->
-                <input type="checkbox" name="" id="secretCheck" />
-                <label for="secretCheck" class="">비밀글 제외</label>
+                <input type="checkbox" name="" id="secretCheck" class="d-none d-sm-none d-md-block"/>
+                <label for="secretCheck" class="d-none  d-sm-none d-md-block">비밀글 제외</label>
                 |
                 <% if (loginMember != null) { %>
                 	<label for="my_qna" onclick="toggleCheck()">내 Q&A 보기</label>
@@ -233,10 +241,10 @@
 	                />
 				<% } %>
                 
-
+				<div class="d-none d-sm-none d-md-block">
                 <select
                   id="replyStatusSelect"
-                  class="form-select form-select-sm d-sm-none d-md-block"
+                  class="form-select form-select-sm "
                   aria-label="Default select example form-select-sm"
                   name="reply"
                 >
@@ -244,6 +252,7 @@
                   <option value="unanswered_answer">미답변</option>
                   <option value="answer_completed">답변완료</option>
                 </select>
+                </div>
               </div>
             </div>
             <!-- 
@@ -252,9 +261,11 @@
             class="collapse bg-body-secondary pt-4 pe-4 ps-4 pb-3 mt-3 border border-opacity-25 border-black"
             -->
 			
-                        <div id="writeToggle" class="collapse mt-3">
+            <div id="writeToggle" class="collapse mt-3">
               <!-- action에 경로 추가 아마도 ajax로 작업할 듯 -->
-              <form action="" method="post" class="card card-body">
+             
+             <%-- 24.07.26 action 에 위치 추가 --%>
+              <form action="<%=request.getContextPath()%>/qna/detail_qna_insert.jsp" method="post" class="card card-body">
                 <div>
                   <div class="d-flex justify-content-between">
                     <label for="qnaTitle" class="form-label">문의사항</label>
@@ -292,7 +303,9 @@
               </form> 
                 </div>
                 <div class="d-flex justify-content-center mt-3 gap-4">
-                  <button type="button" class="btn btn-outline-primary">
+                <%-- 24.07.26 버튼 id 추가 --%>
+                  <button type="button" class="btn btn-outline-primary" id="qna_insert" data-bs-toggle="collapse" 
+			        data-bs-target="#writeToggle">
                     문의하기
                   </button>
                   <button type="reset" class="btn btn-outline-secondary">
@@ -300,21 +313,24 @@
                   </button>
                 </div>
             </div>
+            
+            
+            
             <!-- 테이블 -->
             <div class="mt-4 mb-5">
               <div
                 class="d-flex fw-bold text-center border border-2 border-start-0 border-end-0 border-black pt-1 pb-1"
               >
-                <div style="width: 15%">
+                <div style="width: 17%">
                   <span class="">답변상태</span>
                 </div>
-                <div style="width: 65%">
+                <div style="width: 66%">
                   <span>제목</span>
                 </div>
-                <div style="width: 10%">
+                <div style="width: 8.5%">
                   <span>작성자</span>
                 </div>
-                <div style="width: 10%">
+                <div style="width: 8.5%">
                   <span>작성일</span>
                 </div>
               </div>
@@ -604,6 +620,8 @@ displayQnaList();
 			
 			console.log(result.data.length);
 			
+			console.log(result.data.length);
+			
 			if(result.code == "success") {
 				var arrLength = result.data.length; // 전체 질문 갯수
 				$(result.data).each(function() {					
@@ -613,14 +631,14 @@ displayQnaList();
 				var arrLength = "";
 				var html = "<li id='qna_" + this.qnaNo + "' class='list-unstyled border-top qnaRows'>";
                     html += '<div class="d-flex pt-2 pb-2 border-bottom">';
-                    html += '<div style="width: 15%" class="text-center">';
-                    html += '<span>' + (this.qnaAnswer != "null" ? "답변완료" : "미답변") + '</span>';
+                    html += '<div style="width: 17%" class="text-center">';
+                    html += '<span>' + (this.qnaAnswer != "" ? "답변완료" : "미답변") + '</span>';
                     html += '</div>';
-                    html += '<div style="width: 65%">';
+                    html += '<div style="width: 66%">';
                     html += '<span><a href="" class="text-decoration-none text-black">' + this.qnaTitle + '</a></span>';
                     html += '</div>';
-                    html += '<div style="width: 10%" class="text-center"><span>' + this.qnaMemberNo + '</span></div>';
-                    html += '<div style="width: 10%" class="text-center"><span>' + this.qnaDate + '</span></div>';
+                    html += '<div style="width: 8.5%" class="text-center"><span>' + this.qnaMemberNo + '</span></div>';
+                    html += '<div style="width: 8.5%" class="text-center"><span>' + this.qnaDate + '</span></div>';
                     html += '</div>';
                     html += '</li>'; // 닫힘 태그 추가
 				 
@@ -661,6 +679,56 @@ displayQnaList();
 		}
 	});	
 }
+
+//------------------24.07.26  문의글 추가 ajax ----------------
+$("#qna_insert").click(function() {
+	    if($("#inlineCheckbox1").is(":checked")){		
+			secretCheck=2;	
+		}else{	
+			secretCheck=1;
+		}	
+		var title=$("#qnaTitle").val();
+		if(title == "") {
+			alert("제목을 입력해 주세요.")
+			$("#qnaTitle").focus();
+			return;
+		}
+		
+		var content=$("#floatingTextarea2").val();
+		if(content == "") {
+			alert("내용을 입력해 주세요.")
+			$("#floatingTextarea2").focus();
+			return;
+		}
+		
+		$("#qnaTitle").val("");
+		$("#floatingTextarea2").val("");
+		//$("#add_message").html("");
+		
+		$.ajax({
+			type: "post",
+			url: "<%=request.getContextPath()%>/qna/detail_qna_insert.jsp",
+			data: {"title":title, "content":content, "secretCheck":secretCheck,"productNo":productNo},
+			dataType: "json",
+			success: function(result) {
+				if(result.code == "success") {
+					displayQnaList();
+					$("#add_message1").html("문의가 완료되었습니다.");
+					$("#add_message2").html("문의가 완료되었습니다.");
+					setInterval(function() {
+						$("#add_message1").html("");
+						$("#add_message2").html("");
+					}, 5000);
+				} else {
+					alert("댓글 삽입 실패");
+				}
+			},
+			error: function(xhr) {
+				alert("에러코드 = "+xhr.status);
+			}
+		});
+	});
+
 
 
 
