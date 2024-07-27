@@ -797,7 +797,7 @@ $("#qna_insert").click(function() {
 					$("#add_message").html("🔶 문의가 접수되었습니다 🔶");
 					setInterval(function() {
 						$("#add_message").html("");
-					}, 5000);
+					}, 3000);
 				} else {
 					alert("댓글 삽입 실패");
 				}
