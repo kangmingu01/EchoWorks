@@ -755,7 +755,7 @@ function generateQnaHtml(qna, loginMemberNum, loginMemberAuth, isAdmin) {
         html += '</div>';
         html += '</div>';
         html += '</div>';
-        html += '</div>';
+        html += '</div>'; 
         html += '</div>';
     }
 
