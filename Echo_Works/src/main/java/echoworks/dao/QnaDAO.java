@@ -279,6 +279,7 @@ public class QnaDAO extends JdbcDAO {
 
 	}
 
+	// Q&A 상품 번호마다 다른 Q&A 게시판 리스트 뽑는 기능
 	public List<QnaDTO> selectQnAList(int productNo, int secretCheck, String replyStatus, int memberNum) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -298,12 +299,12 @@ public class QnaDAO extends JdbcDAO {
 				sql += " AND QNA_ANSWER IS NULL";
 			} else if ("answer_completed".equals(replyStatus)) {
 				sql += " AND QNA_ANSWER IS NOT NULL";
-			}else {
+			} else {
 				sql += "";
 			}
 			if (memberNum != 0) {
 				sql += " AND QNA_MEMBER_NO = ? order by qna_no desc";
-			}else {
+			} else {
 				sql += " order by qna_no desc ";
 			}
 
@@ -317,8 +318,6 @@ public class QnaDAO extends JdbcDAO {
 			if (memberNum != 0) {
 				pstmt.setInt(2, memberNum);
 			}
-
-			
 
 			rs = pstmt.executeQuery();
 
@@ -344,26 +343,46 @@ public class QnaDAO extends JdbcDAO {
 		return qnaList;
 	}
 
-	
-	//========================24.07.26 insert DAO 추가
+	// ========================24.07.26 insert DAO 추가
 	public int insertQnaUser(QnaDTO qna) {
-		Connection con=null;
-		PreparedStatement pstmt=null;
-		int rows=0;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		int rows = 0;
 		try {
-			con=getConnection();
-			
-			String sql="insert into qna values(qna_seq.nextval,?,?,?,?,sysdate,null,null,?)";
-			pstmt=con.prepareStatement(sql);
+			con = getConnection();
+
+			String sql = "insert into qna values(qna_seq.nextval,?,?,?,?,sysdate,null,null,?)";
+			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, qna.getQnaMemberNo());
 			pstmt.setInt(2, qna.getQnaProductNo());
 			pstmt.setString(3, qna.getQnaTitle());
 			pstmt.setString(4, qna.getQnaContent());
 			pstmt.setInt(5, qna.getQnaStatus());
-			
-			rows=pstmt.executeUpdate();
+
+			rows = pstmt.executeUpdate();
 		} catch (SQLException e) {
-			System.out.println("[에러]insertQnaUser() 메소드의 SQL 오류 = "+e.getMessage());
+			System.out.println("[에러]insertQnaUser() 메소드의 SQL 오류 = " + e.getMessage());
+		} finally {
+			close(con, pstmt);
+		}
+		return rows;
+	}
+
+	// Q&A 질문 글 삭제
+	public int deleteQna(int qnaNo) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		int rows = 0;
+		try {
+			con = getConnection();
+
+			String sql = "delete from qna where QNA_NO = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, qnaNo);
+
+			rows = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("[에러]deleteQna() 메소드의 SQL 오류 = " + e.getMessage());
 		} finally {
 			close(con, pstmt);
 		}

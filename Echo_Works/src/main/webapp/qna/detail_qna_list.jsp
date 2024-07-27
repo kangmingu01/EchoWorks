@@ -1,3 +1,5 @@
+<%@page import="echoworks.dao.MemberDAO"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="echoworks.util.Utility"%>
 <%@page import="echoworks.dto.MemberDTO"%>
 <%@page import="echoworks.dao.QnaDAO"%>
@@ -7,10 +9,6 @@
     pageEncoding="UTF-8"%>
 <%
     MemberDTO loginMember = (MemberDTO)session.getAttribute("loginMember");
-
-    if(loginMember != null){
-        System.out.println("나 로그인 했어!!");
-    }
 
     if(request.getMethod().equals("GET")) {
         response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
@@ -22,6 +20,9 @@
     String replyStatus = request.getParameter("replyStatus");
     int memberNum = Integer.parseInt(request.getParameter("memberNum"));
     List<QnaDTO> qnaList = QnaDAO.getDAO().selectQnAList(productNo, secretCheck, replyStatus, memberNum);
+    
+   	SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
+
 %>
 <% if(qnaList.isEmpty()){%>
 {"code":"empty","message":"질문이 없습니다."}
@@ -39,10 +40,11 @@
 			<% if(i > 0 ) { %>,<% } %>
 			{"qnaNo":"<%=qnaList.get(i).getQnaNo()%>"
 			,"qnaMemberNo":"<%=qnaList.get(i).getQnaMemberNo()%>"
+			,"qnaMemberId":"<%=MemberDAO.getDAO().selectMemberByNum(qnaList.get(i).getQnaMemberNo()).getMemberId()%>"
 			,"qnaProductNo":"<%=qnaList.get(i).getQnaProductNo()%>"
 			,"qnaTitle":"<%=Utility.toJSON(qnaList.get(i).getQnaTitle()) %>"
 			,"qnaContent":"<%=Utility.toJSON(qnaList.get(i).getQnaContent()) %>"
-			,"qnaDate":"<%=qnaList.get(i).getQnaDate() %>"
+			,"qnaDate":"<%=sdf.format(qnaList.get(i).getQnaDate()) %>"
 			,"qnaAnswer":
 				<% if(qnaList.get(i).getQnaAnswer() != null) { %>
 					"<%=Utility.toJSON(qnaList.get(i).getQnaAnswer()) %>"

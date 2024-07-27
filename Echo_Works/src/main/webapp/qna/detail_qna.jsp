@@ -172,15 +172,12 @@
               <table class="table"></table>
             </div>
 			
-			
-			<!-- SM 사이즈에서는 보이게 메세지 -->
-            <div id="add_message1" class="text-nowrap d-block d-md-none text-center"></div>
+            
 			
 			
-            <div class="d-flex justify-content-between mt-3 align-items-center text-nowrap container">
-              <div style="width: 30%;">
-
-								<% if(loginMember != null) { %>
+            <div class="d-flex justify-content-between mt-3 align-items-center text-nowrap ">
+              <div class="col-6">
+				<% if(loginMember != null) { %>
 			    <button
 			        id="writeQnA"
 			        type="button"
@@ -188,7 +185,7 @@
 			        style="
 			            --bs-btn-padding-y: 0.25rem;
 			            --bs-btn-padding-x: 0.5rem;
-			            --bs-btn-font-size: 0.75rem;			        "
+			            --bs-btn-font-size: 0.75rem;"
 			        data-bs-toggle="collapse" 
 			        data-bs-target="#writeToggle"
 			    >
@@ -208,15 +205,15 @@
               </div>
               
               <!-- 메세지 -->
-              <div id="add_message2" class="text-nowrap d-none d-md-block" style="width: 40%"></div>
+              <!-- <div id="add_message2" class="text-nowrap d-none d-md-block col-4"></div> -->
               
               <div
-                class="d-flex flex-nowrap align-items-center text-nowrap gap-2 fs-6" style="width: 30%"
+                class="d-flex justify-content-end flex-nowrap align-items-center text-nowrap gap-2 fs-6 col-6"
               >
               	<!-- scretWrite -->
-                <input type="checkbox" name="" id="secretCheck" class="d-none d-sm-none d-md-block"/>
-                <label for="secretCheck" class="d-none  d-sm-none d-md-block">비밀글 제외</label>
-                |
+                <input type="checkbox" name="" id="secretCheck"/>
+                <label for="secretCheck">비밀글 제외 |</label>
+                
                 <% if (loginMember != null) { %>
                 	<label for="my_qna" onclick="toggleCheck()">내 Q&A 보기</label>
 					<input
@@ -230,21 +227,13 @@
 	                />
 				<% } else { %>
                 	<label for="my_qna" onclick="checkLogin()">내 Q&A 보기</label>
-					<input
-	                  id="my_qna"
-	                  type="checkbox"
-	                  data-toggle="toggle"
-	                  data-style="android"
-	                  data-onstyle="default"
-	                  data-size="small"
-	                  disabled
-	                />
 				<% } %>
                 
-				<div class="d-none d-sm-none d-md-block">
+				<!-- <div class="d-none d-sm-none d-md-block"> -->
                 <select
                   id="replyStatusSelect"
                   class="form-select form-select-sm "
+                  style="width: 100px; height: auto;"
                   aria-label="Default select example form-select-sm"
                   name="reply"
                 >
@@ -252,7 +241,7 @@
                   <option value="unanswered_answer">미답변</option>
                   <option value="answer_completed">답변완료</option>
                 </select>
-                </div>
+                <!-- </div> -->
               </div>
             </div>
             <!-- 
@@ -313,6 +302,8 @@
                   </button>
                 </div>
             </div>
+            
+            <div id="add_message" class="text-center fs-4"></div>
             
             <!-- 딸깍이 테스트 -->
             <p>
@@ -381,26 +372,24 @@
             
             <!-- 테이블 -->
             <div class="mt-4 mb-5">
-              <div
-                class="d-flex fw-bold text-center border border-2 border-start-0 border-end-0 border-black pt-1 pb-1"
-              >
-                <div style="width: 17%">
-                  <span class="">답변상태</span>
-                </div>
-                <div style="width: 66%">
-                  <span>제목</span>
-                </div>
-                <div style="width: 8.5%">
-                  <span>작성자</span>
-                </div>
-                <div style="width: 8.5%">
-                  <span>작성일</span>
-                </div>
-              </div>
+              <div class="d-flex align-items-center text-nowrap fw-bold text-center border border-2 border-start-0 border-end-0 border-black pt-1 pb-1">
+			    <div class="col-2 text-center">
+			        <span>답변상태</span>
+			    </div>
+			    <div class="col-6 text-center">
+			        <span>제목</span>
+			    </div>
+			    <div class="col-2 text-center">
+			        <span>작성자</span>
+			    </div>
+			    <div class="col-2 text-center">
+			        <span>작성일</span>
+			    </div>
+			</div>
               <!-- 상품 QnA -->
               <ul id="qna_list" class="ps-0">
               <%-- Qna list 시~ 작 --%>
-                 <li class="list-unstyled border-top qnaRows" id="">
+                 <li class="list-unstyled border-top  qnaRows" id="">
                   <!-- 질문자 질문 칸
                   <div class="d-flex pt-2 pb-2 border-bottom">
                     <div style="width: 15%" class="text-center">
@@ -659,6 +648,11 @@ function statusCheck() {
 	});
  
 } --%>
+function init() {
+	$("#qna_list").val("");
+}
+
+
 displayQnaList();
 function displayQnaList() {
     // 변수 값 확인 (디버깅용)
@@ -670,13 +664,13 @@ function displayQnaList() {
     $.ajax({
         type: "post",
         url: "<%=request.getContextPath()%>/qna/detail_qna_list.jsp",
-        data:{
+        data: {
             "productNo": productNo, 
             "secretCheck": secretCheck,
             "replyStatus": replyStatus,
-            "memberNum" : memberNum,
+            "memberNum": memberNum,
         },
-        dataType:"json",
+        dataType: "json",
         success: function(result) {            
             // 댓글목록태그의 자식태그(댓글)를 삭제 처리 - 기존 댓글 삭제
             $("#qna_list").children().remove();
@@ -692,56 +686,26 @@ function displayQnaList() {
 				console.log(loginMemberAuth);
                 $(result.data).each(function() {                    
                     // 질문자 질문 칸
-                    var isAuthorized = (this.qnaStatus == 2 || (this.qnaMemberNo == loginMemberNum || loginMemberAuth == 9));
+                    var isAuthorized = !(this.qnaStatus == 2 && (this.qnaMemberNo == loginMemberNum || loginMemberAuth == 9));
                     var isAdmin = (loginMemberAuth == 9);
                 	
-                    console.log(this.qnaStatus);
-                    console.log(this.qnaMemberNo);
-                    console.log(loginMemberNum);
-                    console.log(this.qnaStatus);
+                    // 디버깅 검증
+                    /* 
+                    console.log("질문 번호 :" + this.qnaNo);
+                    console.log("질문한 사람 번호" + this.qnaMemberNo);
+                    console.log("사용자 로그인 번호:" + loginMemberNum);
+                    console.log("일반글 1, 비밀글 2 :" + this.qnaStatus);
                     
-                    console.log(isAuthorized);
-    				console.log(isAdmin);
+                    console.log("로그인한 사람이랑 질문한 사람의 번호가 같은지 :" + (this.qnaMemberNo == loginMemberNum || loginMemberAuth == 9));
+    				console.log("비밀글로 질문했나 :" + (this.qnaStatus == 2));
     				
     				console.log(typeof isAuthorized);
     				console.log(typeof isAdmin);
-    				console.log("--------------------------")
-                    
-
-                    var html = "<li id='qna_" + this.qnaNo + "' class='list-unstyled border-top qnaRows'>";
-                    html += '<div class="d-flex pt-2 pb-2 border-bottom">';
-                    html += '<div style="width: 17%" class="text-center">';
-                    html += '<span>' + (this.qnaAnswer != "" ? "답변완료" : "미답변") + '</span>';
-                    html += '</div>';
-                    html += '<div style="width: 66%">';
-                    html += '<span><a class="text-decoration-none text-black" data-bs-toggle="collapse" href="#collapseQnA' 
-                        + this.qnaNo + '" role="button" aria-controls="collapseQnA' + this.qnaNo + '">' 
-                        + (this.qnaStatus ? this.qnaTitle : "비밀글입니다.") + '</a></span>';
-                    html += '</div>';
-                    html += '<div style="width: 8.5%" class="text-center"><span>' + this.qnaMemberNo + '</span></div>';
-                    html += '<div style="width: 8.5%" class="text-center"><span>' + this.qnaDate + '</span></div>';
-                    html += '</div>';
-
-                    if(this.qnaAnswer != "") {
-                        html += '<div class="collapse" id="collapseQnA' + this.qnaNo + '">';
-                        html += '<div class="card card-body">';
-                        html += '<div class="d-flex pt-2 pb-2 border-bottom">';
-                        html += '<div style="width: 15%" class="text-center"></div>';
-                        html += '<div style="width: 85%">';
-                        html += '<p class="border-bottom">' + this.qnaTitle + '</p>';
-                        html += '<p>' + this.qnaContent + '</p>';
-                        html += '<div>';
-                        html += '<a href="" class="text-decoration-none fs-6 text-black-50">수정</a>';
-                        html += '<a href="" class="text-decoration-none fs-6 text-black-50 ps-2">삭제</a>';
-                        if (isAdmin) {
-                            html += '<a href="" class="text-decoration-none fs-6 text-black-50 ps-2">답변(관리자)</a>';
-                        }
-                        html += '</div>';
-                        html += '</div>';
-                        html += '</div>';
-                        html += '</div>';
-                        html += '</div>';
-                    }
+    				console.log("--------------------------");
+					 */
+					
+                    var html = "<li id='qna_" + this.qnaNo + "' class='list-unstyled border-top qnaRows '>";
+                    html += generateQnaHtml(this, loginMemberNum, loginMemberAuth, isAdmin);
                     html += '</li>';
                     $("#qna_list").append(html);
                 });
@@ -755,6 +719,47 @@ function displayQnaList() {
             alert("에러코드 = " + xhr.status);
         }
     });    
+}
+
+function generateQnaHtml(qna, loginMemberNum, loginMemberAuth, isAdmin) {
+    var html = '<div class="d-flex pt-2 pb-2 border-bottom align-items-center text-nowrap ">';
+    html += '<div class="text-center col-2">';
+    html += '<span>' + (qna.qnaAnswer != "" ? "답변완료" : "미답변") + '</span>';
+    html += '</div>';
+    html += '<div class="col-6">';
+    html += '<span><a class="text-decoration-none text-black" data-bs-toggle="collapse" href="#collapseQnA' 
+        + qna.qnaNo + '" role="button" aria-controls="collapseQnA' + qna.qnaNo + '">' 
+        + (qna.qnaStatus == 1 ? qna.qnaTitle : qna.qnaMemberNo == loginMemberNum ? qna.qnaTitle : "비밀글입니다  " 
+        + '<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" viewBox="0 0 48 48"><path fill="#424242" d="M24,4c-5.5,0-10,4.5-10,10v4h4v-4c0-3.3,2.7-6,6-6s6,2.7,6,6v4h4v-4C34,8.5,29.5,4,24,4z"></path><path fill="#FB8C00" d="M36,44H12c-2.2,0-4-1.8-4-4V22c0-2.2,1.8-4,4-4h24c2.2,0,4,1.8,4,4v18C40,42.2,38.2,44,36,44z"></path><path fill="#C76E00" d="M24 28A3 3 0 1 0 24 34A3 3 0 1 0 24 28Z"></path></svg>') + '</a></span>';
+    html += '</div>';
+    html += '<div class="text-center col-2"><span>' + qna.qnaMemberId.substring(0, 3) + "***" + '</span></div>';
+    html += '<div class="text-center text-nowrap col-2"><span>' + qna.qnaDate + '</span></div>';
+    html += '</div>';
+
+    if(qna.qnaStatus == 1 || (qna.qnaStatus == 2 && (qna.qnaMemberNo == loginMemberNum || loginMemberAuth == 9))) {
+        html += '<div class="collapse" id="collapseQnA' + qna.qnaNo + '">';
+        html += '<div class="">';
+        html += '<div class="d-flex pt-2 pb-2 border-bottom">';
+        html += '<div class="text-center col-2"></div>';
+        html += '<div class="col-10">';
+        html += '<p class="border-bottom">' + qna.qnaTitle + '</p>';
+        html += '<p>' + qna.qnaContent + '</p>';
+        html += '<div>';
+        if(qna.qnaMemberNo == loginMemberNum || loginMemberAuth == 9) {
+            html += '<a href="" class="text-decoration-none fs-6 text-black-50">수정</a>';
+            html += "<a href='' class='text-decoration-none fs-6 text-black-50 ps-2' onclick='removeQnA(\"" + qna.qnaNo + "\")'>삭제</a>";
+        }
+        if (isAdmin) {
+            html += '<a href="" class="text-decoration-none fs-6 text-black-50 ps-2">답변(관리자)</a>';
+        }
+        html += '</div>';
+        html += '</div>';
+        html += '</div>';
+        html += '</div>';
+        html += '</div>';
+    }
+
+    return html;
 }
 
 //------------------24.07.26  문의글 추가 ajax ----------------
@@ -780,7 +785,6 @@ $("#qna_insert").click(function() {
 		
 		$("#qnaTitle").val("");
 		$("#floatingTextarea2").val("");
-		//$("#add_message").html("");
 		
 		$.ajax({
 			type: "post",
@@ -790,11 +794,9 @@ $("#qna_insert").click(function() {
 			success: function(result) {
 				if(result.code == "success") {
 					displayQnaList();
-					$("#add_message1").html("문의가 완료되었습니다.");
-					$("#add_message2").html("문의가 완료되었습니다.");
+					$("#add_message").html("🔶 문의가 접수되었습니다 🔶");
 					setInterval(function() {
-						$("#add_message1").html("");
-						$("#add_message2").html("");
+						$("#add_message").html("");
 					}, 5000);
 				} else {
 					alert("댓글 삽입 실패");
@@ -807,12 +809,27 @@ $("#qna_insert").click(function() {
 	});
 
 
-
-
-// detail 페이지 완성되면 경로 수정해야됨 => 문제는 상태가 변하면서 새로고침되는데 이게 header로 올라감
-<%-- $("#secretCheck").change(function() {
-	console.log("<%=secretCheck%>");
-	location.href="<%=request.getContextPath()%>/index.jsp?workgroup=qna&work=detail_qna_list"
-		+"&pageNum=<%=pageNum%>&pageSize="+$("#pageSize").val()+"&search=<%=search%>&keyword=<%=keyword%>";
-}) --%>
+function removeQnA(qnaNo){
+	var qnaNo = qnaNo;
+	init();
+	
+	$.ajax({
+		type: "get",
+		url: "<%=request.getContextPath() %>/qna/detail_qna_remove.jsp",
+		data: {"qnaNo": qnaNo},
+		dataType: "json",
+		succes: function(result) {
+			alert("삭제");
+			if(result.code == "success") {
+				init
+				displayQnaList();//댓글목록 출력
+			} else {
+				alert("질문 삭제 실패했습니다");
+			}
+		},
+		error: function(xhr) {
+			alert("에러코드 = "+xhr.status);
+		}
+	})
+}
 </script>
