@@ -729,8 +729,8 @@ function generateQnaHtml(qna, loginMemberNum, loginMemberAuth, isAdmin) {
     html += '<div class="col-6">';
     html += '<span><a class="text-decoration-none text-black" data-bs-toggle="collapse" href="#collapseQnA' 
         + qna.qnaNo + '" role="button" aria-controls="collapseQnA' + qna.qnaNo + '">' 
-        + (qna.qnaStatus == 1 ? qna.qnaTitle : qna.qnaMemberNo == loginMemberNum ? qna.qnaTitle : "비밀글입니다  " 
-        + '<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" viewBox="0 0 48 48"><path fill="#424242" d="M24,4c-5.5,0-10,4.5-10,10v4h4v-4c0-3.3,2.7-6,6-6s6,2.7,6,6v4h4v-4C34,8.5,29.5,4,24,4z"></path><path fill="#FB8C00" d="M36,44H12c-2.2,0-4-1.8-4-4V22c0-2.2,1.8-4,4-4h24c2.2,0,4,1.8,4,4v18C40,42.2,38.2,44,36,44z"></path><path fill="#C76E00" d="M24 28A3 3 0 1 0 24 34A3 3 0 1 0 24 28Z"></path></svg>') + '</a></span>';
+        + (qna.qnaStatus == 1 ? qna.qnaTitle : qna.qnaMemberNo == loginMemberNum ? qna.qnaTitle : '<span onclick="alert(\'비공개 문의내역은 작성자 본인만 확인하실 수 있습니다.\')">비밀글입니다. ' 
+            + '<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" viewBox="0 0 48 48"><path fill="#424242" d="M24,4c-5.5,0-10,4.5-10,10v4h4v-4c0-3.3,2.7-6,6-6s6,2.7,6,6v4h4v-4C34,8.5,29.5,4,24,4z"></path><path fill="#FB8C00" d="M36,44H12c-2.2,0-4-1.8-4-4V22c0-2.2,1.8-4,4-4h24c2.2,0,4,1.8,4,4v18C40,42.2,38.2,44,36,44z"></path><path fill="#C76E00" d="M24 28A3 3 0 1 0 24 34A3 3 0 1 0 24 28Z"></path></svg></span>') + '</a></span>';
     html += '</div>';
     html += '<div class="text-center col-2"><span>' + qna.qnaMemberId.substring(0, 3) + "***" + '</span></div>';
     html += '<div class="text-center text-nowrap col-2"><span>' + qna.qnaDate + '</span></div>';
@@ -809,6 +809,7 @@ $("#qna_insert").click(function() {
 	});
 
 
+// 댓글 삭제 기능
 function removeQnA(qnaNo){
 	var qnaNo = qnaNo;
 	init();
