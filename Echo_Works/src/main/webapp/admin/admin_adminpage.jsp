@@ -1,4 +1,7 @@
+<%@page import="echoworks.dao.ProductDAO"%>
 <%@page import="echoworks.dto.ProductDTO"%>
+<%@page import="echoworks.dto.ProductStockDTO"%>
+<%@page import="echoworks.dao.ProductStockDAO"%>
 <%@page import="echoworks.dao.MemberDAO"%>
 <%@page import="echoworks.dao.QnaDAO"%>
 <%@page import="echoworks.dto.QnaDTO"%>
@@ -19,6 +22,7 @@
     List<QnaDTO> qnaList = QnaDAO.getDAO().selectAllQnAList();
     
   	// 모든 상품정보 불러오기
+  	 List<ProductDTO> productList = ProductDAO.getDAO().selectProductAll();
 %>
 
 <!DOCTYPE html>
@@ -28,7 +32,7 @@
     <title>관리자 페이지</title>
     <style>
 
-        #container12 { 
+         #container12 { 
             display: flex; 
             height: 100vh; 
         }
@@ -82,14 +86,11 @@
             width: 100%; 
             border-collapse: collapse; 
             margin-top: 20px;
-           
-            
         }
         th, td { 
             border: 1px solid #ddd; 
-            padding: 1.5px; 
+            padding: 8px; 
             text-align: center; 
-            
         }
         th { 
             background-color: #f2f2f2; 
@@ -100,20 +101,46 @@
         tbody tr:hover {
             background-color: #f1f1f1;
         }
+        form {
+            margin-top: 20px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input[type="text"], input[type="number"] {
+            width: calc(100% - 12px);
+            padding: 5px;
+            margin-top: 5px;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #34495e;
+        }
     </style>
     <script>
-        function showSection(sectionId) {
-            var sections = document.getElementsByClassName('content-section');
-            for (var i = 0; i < sections.length; i++) {
-                sections[i].classList.remove('active');
-            }
-            document.getElementById(sectionId).classList.add('active');
+    function showSection(sectionId) {
+        var sections = document.getElementsByClassName('content-section');
+        for (var i = 0; i < sections.length; i++) {
+            sections[i].classList.remove('active');
         }
-        
-        function confirmCancel(memberId) {
-            return confirm(memberId+"의 주문을 취소하시겠습니까?");
-        }
-    
+        document.getElementById(sectionId).classList.add('active');
+    }
+
+    function confirmCancel(memberId) {
+        return confirm(memberId + "의 주문을 취소하시겠습니까?");
+    }
+
+    function confirmDelete(productId) {
+        return confirm("상품 번호 " + productId + "을(를) 삭제하시겠습니까?");
+    }
 
     </script>
 </head>
@@ -126,6 +153,7 @@
                     <li><a href="#admin_payment" onclick="showSection('admin-payment')">주문 관리</a></li>
                     <li><a href="#admin_qna" onclick="showSection('admin-qna')">QnA 관리</a></li>
                     <li><a href="#admin_product" onclick="showSection('admin-product')">상품 관리</a></li>
+                     <li><a href="#admin_product_add" onclick="showSection('admin-product-add')">상품 추가</a></li>
                 </ul>
             </nav>
         </div>
@@ -250,6 +278,7 @@
                             <th>작성자</th>
                             <th>날짜</th>
                             <th>답변유무</th>
+                            <th>관리</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -279,18 +308,76 @@
 									<%    } else if (qna.getQnaAnswer() != null || qna.getQnaStatus() == 2)     {  %>
 										<td>답변 완료(비밀글)</td>
 									    <% }%>
+									    <td>
+                                        <a href="<%=request.getContextPath() %>/index.jsp?workgroup=admin&work=admin_reply_qna_action&qnaNum=<%= qna.getQnaNo() %>">답변</a>
+                                        <a href="<%=request.getContextPath() %>/index.jsp?workgroup=admin&work=admin_remove_qna_action&qnaNum=<%= qna.getQnaNo() %>">삭제</a>
                                 </tr>
                             <% } %>
                         <% } %>
                     </tbody>
                 </table>
             </div>
-            <div id="admin-product" class="content-section">
-            	<h2>상품관리</h2>
             
+            <!-- 상품 관리 섹션 -->
+            <div id="admin-product" class="content-section">
+                <h2>상품 관리</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>상품 번호</th>
+                            <th>상품명</th>
+                            <th>가격</th>
+                            <th>재고</th>
+                            <th>관리</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (productList.isEmpty()) { %>
+                            <tr>
+                                <td colspan="5">등록된 상품이 없습니다.</td>
+                            </tr>
+                        <% } else { %>
+                            <% for (ProductDTO product : productList) { %>
+                                <tr>
+                                    <td><%= product.getPRODUCT_NO() %></td>
+                                    <td><%= product.getPRODUCT_NAME() %></td>
+                                    <td><%= product.getPRODUCT_PRICE() %></td>
+                                   <td>
+								    <%
+								        List<ProductStockDTO> stockList = ProductStockDAO.getDAO().selectProductStockList(product.getPRODUCT_NO());
+								        int totalStock = 0;
+								        for (ProductStockDTO stock : stockList) {
+								            totalStock += stock.getpS_Stock();
+								        }%>
+								        <%= totalStock %>
+</td>
+                                    <td>
+                                        <a href="<%=request.getContextPath() %>/index.jsp?workgroup=admin&work=admin_edit_product_form&productNo=<%= product.getPRODUCT_NO() %>">수정</a>
+                                        <a href="<%=request.getContextPath() %>/index.jsp?workgroup=admin&work=admin_delete_product_action&productNo=<%= product.getPRODUCT_NO() %>" onclick="return confirmDelete('<%= product.getPRODUCT_NO() %>')">삭제</a>
+                                    </td>
+                                </tr>
+                            <% } %>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 상품 추가 섹션 -->
+            <div id="admin-product-add" class="content-section">
+                <h2>상품 추가</h2>
+                <form action="<%=request.getContextPath() %>/index.jsp" method="post">
+                    <input type="hidden" name="workgroup" value="admin">
+                    <input type="hidden" name="work" value="admin_add_product_action">
+                    <label for="productName">상품명:</label>
+                    <input type="text" id="productName" name="productName" required>
+                    <label for="productPrice">가격:</label>
+                    <input type="number" id="productPrice" name="productPrice" required>
+                    <label for="productStock">재고:</label>
+                    <input type="number" id="productStock" name="productStock" required>
+                    <button type="submit">상품 추가</button>
+                </form>
             </div>
         </div>
     </div>
-	    
 </body>
 </html>
