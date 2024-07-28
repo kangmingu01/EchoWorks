@@ -116,6 +116,7 @@
 	// 게시글의 출력될 일련번호 시작값을 계산하여 저장
 	int displayNum = totalQnA - (pageNum - 1) * pageSize;
  --%>
+ 
     <style>
           .toggle.android {
             border-radius: 30px;
@@ -497,7 +498,7 @@
                 </tbody>
               </table>
             </div> -->
-            <div id="console-event"></div>
+            <!-- <div id="console-event"></div> -->
           </div>
         </section>
 <script type="text/javascript">
@@ -543,26 +544,26 @@
 	var replyStatus = "reply_status"; 
 	
 	
-	statusCheck();	
+	/* statusCheck();	 */
 	
 	//비밀글 제외 눌렀을 때
 	$('#secretCheck').change(function() {
 	    secretCheck = $("#secretCheck").prop('checked') ? 1 : 0;
-	    statusCheck();
+	    /* statusCheck(); */
 	    displayQnaList();
 	});
 	
 	//Q&A
 	$('#my_qna').change(function() {
 		memberNum = $('#my_qna').prop('checked') ? <%=memberNum%> : 0;
-		statusCheck();	
+		/* statusCheck();	 */
 		displayQnaList();
 	});
 	
 	//답글상태 눌렀을 때
 	$('#replyStatusSelect').change(function() {
 		replyStatus = $("#replyStatusSelect").val();
-		statusCheck();
+		/* statusCheck(); */
 		displayQnaList();
 	})
 	
@@ -658,10 +659,13 @@
 	displayQnaList();
 	function displayQnaList() {
 	    // 변수 값 확인 (디버깅용)
+	    /* 
 	    console.log("productNo: " + productNo);
 	    console.log("secretCheck: " + secretCheck);
 	    console.log("replyStatus: " + replyStatus);
-	    console.log("memberNum: " + memberNum);
+	    console.log("memberNum: " + memberNum); 
+	    */
+	    
 	
 	    $.ajax({
 	        type: "post",
@@ -676,16 +680,18 @@
 	        success: function(result) {            
 	            // 댓글목록태그의 자식태그(댓글)를 삭제 처리 - 기존 댓글 삭제
 	            $("#qna_list").children().remove();
-
+				/* 
 	            console.log(result);
 	            console.log(result.data.length);
-				
+				 */
 	            if(result.code == "success") {
 	                var arrLength = result.data.length; // 전체 질문 갯수
 	                var loginMemberNum = result.loginMemberNum;
 	                var loginMemberAuth = result.loginMemberAuth;
-					console.log(loginMemberNum);
+					/* 
+	                console.log(loginMemberNum);
 					console.log(loginMemberAuth);
+					 */
 	                $(result.data).each(function() {                    
 	                    // 질문자 질문 칸
 	                    var isAuthorized = !(this.qnaStatus == 2 && (this.qnaMemberNo == loginMemberNum || loginMemberAuth == 9));
@@ -821,7 +827,7 @@
 	    var title = $titleElement.text();
 	    var content = $contentElement.text();
 	
-	    // 설정 데이터: $element.data('key', value)는 요소의 key와 연관된 value를 저장
+	    // 설정 데이터: $element.data('key', value')는 요소의 key와 연관된 value를 저장
 	    $titleElement.data('originalText', title);
 	    $contentElement.data('originalText', content);
 	
@@ -832,12 +838,53 @@
 	    $actionsElement.append('<button class="btn btn-link text-decoration-none fs-6 text-black-50 ps-2" onclick="cancelEdit(' + qnaNo + ', ' + isAdmin + ')">취소</button>');
 	}	
 	
+	function saveQna(qnaNo, isAdmin) {
+	    var editedTitle = $('#editTitle' + qnaNo).val();
+	    var editedContent = $('#editContent' + qnaNo).val();
+
+	    if (editedTitle == "") {
+	        alert("제목을 입력해주세요");
+	        $('#editTitle' + qnaNo).focus();
+	        return;
+	    }
+
+	    if (editedContent == "") {
+	        alert("내용을 입력해주세요");
+	        $('#editContent' + qnaNo).focus();
+	        return;
+	    }
+
+	    $.ajax({
+	        type: "post",
+	        url: "<%=request.getContextPath() %>/qna/detail_qna_update.jsp",
+	        data: {
+	            "productNo": productNo,
+	            "qnaNo": qnaNo,
+	            "editedTitle": editedTitle,
+	            "editedContent": editedContent
+	        },
+	        dataType: "json",
+	        success: function(result) {
+	            if(result.code == "success") {
+	                displayQnaList();
+
+	                // 저장 후, 동작 버튼을 재설정
+	                resetActions(qnaNo, isAdmin);
+	            } else {
+	                alert("Q&A 업데이트 실패");
+	            }
+	        },
+	        error: function(xhr) {
+	            alert("에러코드 = " + xhr.status);
+	        }
+	    });
+	}
 	
 	function cancelEdit(qnaNo, isAdmin) {
 	    var $titleElement = $('#qnaTitle' + qnaNo);
 	    var $contentElement = $('#qnaContent' + qnaNo);
 
-	    // Revert to original text using data attributes
+	    // 데이터 가져오기: $element.data('key')는 요소에서 key와 연결된 값을 검색하여 저장한 값 가져옴
 	    var originalTitle = $titleElement.data('originalText');
 	    var originalContent = $contentElement.data('originalText');
 
