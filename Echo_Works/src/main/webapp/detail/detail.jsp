@@ -230,6 +230,9 @@ input[type="number"]::-webkit-inner-spin-button {
 							</div>
 						</div>
 					</div>
+					<div  style="text-align: center;">
+						
+					</div>
 				<!-- 리뷰 -->
 				
 			</div>
@@ -414,9 +417,7 @@ $(document).ready(function(){
     jQuery(".inquireAwrap").hide();
 
     $(".inquireCon").click(function(){
-
         $(".inquireAwrap").not( $(this).next(".inquireAwrap").slideToggle(100) ).slideUp(100);
-
     });
 
 });
@@ -435,7 +436,12 @@ function show_num(e, sid, price, stock) {
 	}
 }
 
+// 장바구니 버튼 클릭
 $(".btn_cart").click(function() {
+
+<%if(loginMember == null){%>
+	checkLogin();
+<%}else {%>
 	var cartArr = "";
 	<%for(int i=0;i<optionList.size();i++) {%>
 	cartArr += <%=optionList.get(i).getOpNo()%>
@@ -444,7 +450,7 @@ $(".btn_cart").click(function() {
 	cartArr+=",";	
 	<%}%>
 	
-	alert(cartArr);
+	//alert(cartArr);
 	$.ajax({
 		type: "post",
 		url: "<%=request.getContextPath()%>/detail/detail_cart.jsp",
@@ -455,23 +461,26 @@ $(".btn_cart").click(function() {
 		dataType: "json",
 		success: function(result) {
 			if(result.code == "success") {
-				alert("성공")
+				alert("장바구니에 담았습니다.")
+			} else if(result.code == "notOption") {
+				alert("옵션을 선택해 주세요.");
 			} else {
-				alert("실패");
+				//alert("실패");
 			}
 		},
 		error: function(xhr) {
 			alert("에러코드 = "+xhr.status);
 		}
 	});
+<%}%>
 });
 
 
 $(".btn_payment").click(function() {
 
-	<%if(loginMember == null){%>
-		checkLogin();
-	<%}else {%>
+<%if(loginMember == null){%>
+	checkLogin();
+<%}else {%>
 	var cartArr = "";
 	<%for(int i=0;i<optionList.size();i++) {%>
 	cartArr += <%=optionList.get(i).getOpNo()%>
@@ -480,7 +489,7 @@ $(".btn_payment").click(function() {
 	cartArr+=",";	
 	<%}%>
 	
-	alert(cartArr);
+	//alert(cartArr);
 	$.ajax({
 		type: "post",
 		url: "<%=request.getContextPath()%>/detail/detail_cart.jsp",
@@ -491,18 +500,19 @@ $(".btn_payment").click(function() {
 		dataType: "json",
 		success: function(result) {
 			if(result.code == "success") {
-				alert("성공");
+				//alert("성공");
 				window.location.href = "<%=contextPath%>" + "/index.jsp?workgroup=payment&work=payment&url=" + "<%=url%>";
-				
+			} else if(result.code == "notOption") {
+				alert("옵션을 선택해 주세요.");
 			} else {
-				alert("실패");
+				//alert("실패");
 			}
 		},
 		error: function(xhr) {
 			alert("에러코드 = "+xhr.status);
 		}
 	});
-	<%}%>
+<%}%>
 });
 
 function checkLogin() {	

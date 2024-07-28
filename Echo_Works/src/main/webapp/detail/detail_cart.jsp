@@ -23,22 +23,19 @@
 		} 
 	}
 	
-	if(state == "cart") {
+	String resultState="";
+	if(cartList.size() == 0) {//옵션을 선택하지 않은 경우
+		System.out.println("cartList.size() " + cartList.size());
+		resultState="notOption";
+	} else if(state == "cart") {//장바구니 버튼일 경우 	
 		for(int i=0;i<cartList.size();i++) {
 			CartDAO.getDao().addCart(cartList.get(i));
 		}
-	} else {
+		resultState = "success";
+	} else {//주문하기 버튼일 경우
 		session.setAttribute("cartList", cartList);
-		System.out.println("카드 " + session.getAttribute("cartList"));
-	}
+		resultState = "success";
+	} 
 	
-	
-	/*
-	int rows=AjaxCommentDAO.getDAO().updateAjaxComment(ajaxComment);
-	*/
 %>
-<% if(true) {//변경행이 있는 경우 %>
-{"code":"success"}
-<% } else {//변경행이 없는 경우 %>
-{"code":"error"}
-<% } %>
+{"code":"<%=resultState %>"}
