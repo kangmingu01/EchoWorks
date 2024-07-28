@@ -132,6 +132,17 @@
           /* .qnaRows:hover {
             background-color: rgb(230, 230, 230);
           } */
+          
+          /*  페이지 버튼 가운데 정렬  */
+          #page_list{
+			display:flex;
+			justify-content:center;
+				align-content:center;
+			}
+          
+          
+          
+          
         </style>
        <!-- 리뷰 -->
         <section>
@@ -495,7 +506,7 @@ var secretCheck = 0;
 var memberNum = 0;
 // 답변상태 = reply_status(모든글: 조건 없음), 미답변 = unanswered_answer(미답변: 조건있음), 답변완료 = answer_completed(답변완료:조건있음)
 var replyStatus = "reply_status"; 
-
+var pageNum=1;
 
 statusCheck();	
 
@@ -605,10 +616,6 @@ function statusCheck() {
 displayQnaList();
  function displayQnaList() {
 	    // 변수 값 확인 (디버깅용)
-	    console.log("productNo: " + productNo);
-	    console.log("secretCheck: " + secretCheck);
-	    console.log("replyStatus: " + replyStatus);
-	    console.log("memberNum: " + memberNum);
 	
 	$.ajax({
 		type: "post",
@@ -618,41 +625,40 @@ displayQnaList();
 			"secretCheck": secretCheck,
 			"replyStatus": replyStatus,
 			"memberNum" : memberNum,
+			"pageNum":pageNum,
 			},
 		dataType:"json",
 		success: function(result) {	
-				var pageNum=1;//임시		
+						
 			//댓글목록태그의 자식태그(댓글)를 삭제 처리 - 기존 댓글 삭제
 			$("#qna_list").children().remove();
-			
-			console.log(result.data.length);
-			
-			console.log(result.data.length);
+			$("#page_list").children().remove();
 			
 			if(result.code == "success") {
-			console.log("startPage="+result.startPage);
-			console.log("blockSize="+result.blockSize);
-			console.log("endPage="+result.endPage);
-			console.log("totalPage="+result.totalPage); 
-				 
+				var startPage=parseInt(result.startPage);
+				var endPage=parseInt(result.endPage);
+				
 				var hhtml="";
 				if(result.startPage>result.blockSize){
-				 hhtml+="<a id='bbb'>[이전]</a>";
+					 hhtml += "<a id='prev_page' href='#' data-info='" + (startPage - 1) + "'>[이전]</a>";
 				}else{
-					hhtml+="[이전]";
+					hhtml+="<a>[이전]</a>";
 				}
 				for(var i=result.startPage;i<=result.endPage;i++){
 					if(pageNum!=i){
-					hhtml+= "<a id=page_"+i+" >["+i+"]</a>";
+					 hhtml += "<a id='page_" + i + "' href='#' data-info='"+i+"'>[" + i + "]</a>";
 					}else{
-					hhtml+=	"["+i+"]" ;
+					hhtml+=	"<a>["+i+"]</a>" ;
 					}
 				}
 				if(result.endPage!=result.totalPage){
-				 hhtml+="<a id='aaa'>[다음]</a>";
+					hhtml += "<a id='next_page' href='#' data-info='" + (endPage + 1) + " '>[다음]</a>";
 				}else{
-				hhtml+="[다음]";
+				hhtml+="<a>[다음]</a>";
 				}
+				
+				
+				
 				$("#page_list").append(hhtml); 
 				
 				var arrLength = result.data.length; // 전체 질문 갯수				
@@ -704,6 +710,18 @@ displayQnaList();
 				  
 			
 				});
+				
+				 $("#page_list a").click(function(event) {
+		                event.preventDefault(); 
+		                var targetPage = $(this).data('info');
+		                console.log("targetPage"+targetPage);
+		                pageNum=targetPage;
+		                statusCheck();
+		                displayQnaList();
+		        });
+				
+				
+				
 				// 상품 문의 갯수를 출력
                 $(".arrLength").text("( " + arrLength + " )");
 			} else {//검색된 댓글정보가 없는 경우		
@@ -764,18 +782,6 @@ $("#qna_insert").click(function() {
 			}
 		});
 	});
-
-//페이징 버튼!
-$("#bbb").click(function() {
-	
-});
-$("#aaa").click(function() {
-	
-});
-
-$("#page_1").click(function() {
-	
-});
 
 
 // detail 페이지 완성되면 경로 수정해야됨 => 문제는 상태가 변하면서 새로고침되는데 이게 header로 올라감

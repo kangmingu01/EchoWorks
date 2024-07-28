@@ -25,22 +25,21 @@
 	//페이징 처리
     //사전 값 처리
    	int productNo = Integer.parseInt(request.getParameter("productNo"));
-		System.out.println("productNo ="+productNo);
 	int secretCheck = Integer.parseInt(request.getParameter("secretCheck"));
-		System.out.println("secretCheck ="+secretCheck);
 	String replyStatus = request.getParameter("replyStatus");
-		System.out.println("replyStatus ="+replyStatus);
 	int memberNum = Integer.parseInt(request.getParameter("memberNum"));
-		System.out.println("memberNum ="+memberNum);
    		
-		int pageNum=1;
-		if(request.getParameter("pageNum") != null) {
-			pageNum=Integer.parseInt(request.getParameter("pageNum"));
-		}	
-		System.out.println("pageNum ="+pageNum);
+	int pageNum=1;
+	String pageNumString = request.getParameter("pageNum");
+	if (pageNumString != null && !pageNumString.trim().isEmpty()) {//공백인식
+		try {
+	  	 pageNum = Integer.parseInt(pageNumString.trim());
+		} catch (NumberFormatException e) {
+		            pageNum = 1;
+		}
+	}
 		int pageSize=12;//출력 글 수
 		int totalRow=QnaDAO.getDAO().selectTotalQnaRows(productNo, secretCheck, replyStatus, memberNum);
-		System.out.println(1);
 		int totalPage=(int)Math.ceil((double)totalRow/pageSize);
 		if(pageNum <= 0 || pageNum > totalPage) {
 			pageNum=1;
@@ -50,12 +49,12 @@
 		if(endRow > totalRow) {
 			endRow=totalRow;
 		}
+		
 		int displayNum=totalRow-(pageNum-1)*pageSize;
 		//리스트 받아와서 저장
 		
 		//List<ProductDTO> productList = ProductDAO.getDAO().selectProductAsList(startRow, endRow, keyword);
 		List<QnaDTO> qnaList=QnaDAO.getDAO().selectQnaList(startRow, endRow, productNo, secretCheck, replyStatus, memberNum);
-		System.out.println(2);
 		
 		//페이지번호
 		int blockSize=5;
@@ -64,7 +63,6 @@
 		if(endPage > totalPage) {
 			endPage=totalPage;
 		}
-		
 %>
  <%-- <% if(qnaList.isEmpty()){%>
 {"code":"empty","message":"질문이 없습니다."}
@@ -121,6 +119,6 @@
 				<% } %>	
 				,"qnaStatus":"<%=qnaList.get(i).getQnaStatus() %>"}
 		<% } %>	
-			],"startPage":"<%=startPage %>","blockSize":"<%=blockSize %>","endPage":"<%=blockSize %>" ,"totalPage":"<%=blockSize %>"
+			],"startPage":"<%=startPage %>","blockSize":"<%=blockSize %>","endPage":"<%=endPage %>" ,"totalPage":"<%=totalPage %>","pageNum":"<%=pageNum %>"
 		}
 <% } %> 
