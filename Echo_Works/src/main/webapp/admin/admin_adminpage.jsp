@@ -342,6 +342,8 @@
                                     <td><%= product.getPRODUCT_NO() %></td>
                                     <td><%= product.getPRODUCT_NAME() %></td>
                                     <td><%= product.getPRODUCT_PRICE() %></td>
+                                    <td><%= product.getPRODUCT_CATEGORY_MAIN() %></td>
+                                    <td><%= product.getPRODUCT_CATEGORY_SUB() %></td>
                                    <td>
 								    <%
 								        List<ProductStockDTO> stockList = ProductStockDAO.getDAO().selectProductStockList(product.getPRODUCT_NO());
@@ -349,8 +351,7 @@
 								        for (ProductStockDTO stock : stockList) {
 								            totalStock += stock.getpS_Stock();
 								        }%>
-								        <%= totalStock %>
-</td>
+								        <%= totalStock %></td>
                                     <td>
                                         <a href="<%=request.getContextPath() %>/index.jsp?workgroup=admin&work=admin_edit_product_form&productNo=<%= product.getPRODUCT_NO() %>">수정</a>
                                         <a href="<%=request.getContextPath() %>/index.jsp?workgroup=admin&work=admin_delete_product_action&productNo=<%= product.getPRODUCT_NO() %>" onclick="return confirmDelete('<%= product.getPRODUCT_NO() %>')">삭제</a>
