@@ -134,12 +134,12 @@
     </script>
 </head>
 <body>
-    <div class="container" id="container12">
+    <div class="" id="container12">
         <div class="sidebar">
             <nav>
                 <ul>
                     <li><a href="#myinfo" onclick="showSection('account-info')">내 정보</a></li>
-                    <li><a href="#paymentreocord" onclick="showSection('payment-history')">결제 내역</a></li>
+                    <li><a href="#paymentrecord" onclick="showSection('payment-history')">결제 내역</a></li>
                     <li><a href="#QnA" onclick="showSection('qna')">QnA</a></li>
                 </ul>
             </nav>
@@ -184,32 +184,45 @@
                         <tr>
                             <th>결제 번호</th>
                             <th>결제 날짜</th>
-                            <th>결제 상태</th>
                             <th>결제 총액</th>
                             <th>결제 수량</th>
                             <th>배송지 이름</th>
                             <th>주문자 전화번호</th>
                             <th>배송지 주소</th>
                             <th>배송 메시지</th>
+                            <th>결제 상태</th>
+                            <th>관리</th>
                         </tr>
                     </thead>
                     <tbody>
                         <% if (paymentList.isEmpty()) { %>
                             <tr>
-                                <td colspan="9">결제 내역이 없습니다.</td>
+                                <td colspan="10">결제 내역이 없습니다.</td>
                             </tr>
                         <% } else { %>
                            <% for (PaymentDTO payment : paymentList) { %>
                                 <tr>
                                     <td><%= payment.getPaymentNo() %></td>
                                     <td><%= payment.getPaymentDate() %></td>
-                                    <td><%= payment.getPaymentStatus() %></td>
                                     <td><%= payment.getPaymentTotal() %></td>
                                     <td><%= payment.getPaymentNum() %></td>
                                     <td><%= payment.getPaymentJname() %></td>
                                     <td><%= payment.getPaymentPhone() %></td>
                                     <td><%= payment.getPaymentAddress1() %> <%= payment.getPaymentAddress2() %></td>
+                                     <% if(payment.getPaymentStatus() == 0) { %>
+                                    <td>결제취소</td>
+                                    <% } else if(payment.getPaymentStatus() == 1) { %>
+                                    <td>결제완료</td>
+                                    <% } else if(payment.getPaymentStatus() == 2) { %>
+                                    <td>배송중</td>
+                                    <% } else if(payment.getPaymentStatus() == 3) { %>
+                                    <td>배송완료</td>
+                                    <%} %>
                                     <td><%= payment.getPaymentOmesg() %></td>
+                                   <td><form action="<%=request.getContextPath() %>/member/member_mypage_payment_cancel_action.jsp" method="post"><button type="submit" name="paymentNo" value="<%=payment.getPaymentNo() %>" id="CantcelBtn">결제취소</button></td></form>
+                                  
+                                    
+                                    
                                 </tr>
                             <% }%>
                      <%    } %>
@@ -224,6 +237,7 @@
                             <th>제목</th>
                             <th>내용</th>
                             <th>날짜</th>
+                            <th>답변유무</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -237,6 +251,17 @@
                                     <td><%= qna.getQnaTitle() %></td>
                                     <td><%= qna.getQnaContent() %></td>
                                     <td><%= qna.getQnaDate() %></td>
+                                    <%  if (qna.getQnaStatus() == 0) { %>
+									    <td>삭제된 글</td>
+									<%   } else if (qna.getQnaAnswer() == null || qna.getQnaStatus() == 1)     { %> 
+										<td>답변 대기 중(일반글)</td>
+									<%     } else if (qna.getQnaAnswer() != null || qna.getQnaStatus() == 1)     {   %>
+									    <td>답변완료(일반글)</td>
+									<%    } else if (qna.getQnaAnswer() == null || qna.getQnaStatus() == 2)     {  %>
+									    <td>답변 대기 중(비밀글)</td>
+									<%    } else if (qna.getQnaAnswer() != null || qna.getQnaStatus() == 2)     {  %>
+										<td>답변 완료(비밀글)</td>
+									    <% }%>
                                 </tr>
                             <% } %>
                      <%  } %> 
@@ -245,5 +270,7 @@
             </div>
         </div>
     </div>
+    
+    </script>
 </body>
 </html>

@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import echoworks.dto.MemberDTO;
 import echoworks.dto.PaymentDTO;
  
 
@@ -64,7 +66,7 @@ public class PaymentDAO extends JdbcDAO {
         List<PaymentDTO> paymentList = new ArrayList<>();
         try {
             con = getConnection();
-       
+            
             String sql = "select p.payment_no, p.payment_psno, p.payment_hno, p.payment_num, p.payment_total, "
                        + "p.payment_date, p.payment_status, p.payment_jname, p.payment_phone, p.payment_zipcode, "
                        + "p.payment_address1, p.payment_address2, p.payment_omesg, m.member_name "
@@ -113,7 +115,9 @@ public class PaymentDAO extends JdbcDAO {
                     + "p.payment_date, p.payment_status, p.payment_jname, p.payment_phone, p.payment_zipcode, "
                     + "p.payment_address1, p.payment_address2, p.payment_omesg "
                     + "from payment p "
-                    + "join member m on p.payment_hno = m.member_no";
+                    + "join member m on p.payment_hno = m.member_num"
+                    + " order by p.payment_no desc";
+                   
          pstmt = con.prepareStatement(sql);
          rs = pstmt.executeQuery();
 
@@ -142,4 +146,25 @@ public class PaymentDAO extends JdbcDAO {
         }
         return paymentList;
     }
+    public int updatePayment(PaymentDTO payment) {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		int rows=0;
+		try {
+			con=getConnection();
+			
+			 String sql = "UPDATE payment SET payment_status = ? WHERE payment_no = ?";					
+			pstmt=con.prepareStatement(sql);
+			pstmt.setInt(1, payment.getPaymentStatus());
+			pstmt.setInt(2, payment.getPaymentNo());
+			
+			rows=pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("[에러]updateMember() 메서드의 SQL 오류 = "+e.getMessage());
+		} finally {
+			close(con, pstmt);
+		}
+		return rows;
+	}
+	
 }

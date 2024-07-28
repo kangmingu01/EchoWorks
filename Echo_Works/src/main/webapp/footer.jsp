@@ -47,7 +47,7 @@
                   </a>
                 </li>
                 <li class="list-inline-item">
-                  <a href="#!" class="text-gray-350">
+                  <a href="https://github.com/kangmingu01/EchoWorks" target="_blank" class="text-gray-350">
                     <i class="fa-brands fa-github fs-5"></i>
                   </a>
                 </li>
@@ -125,7 +125,7 @@
               <ul class="list-unstyled mb-0" style="text-align: left">
                 <li>
                   <i class="fas fa-home me-3 text-white-50"></i>
-                  <a class="text-gray-300" href="#!"
+                  <a class="text-gray-300" target="_blank" href="https://naver.me/FWf3NLsg"
                     >서울특별시 강남구 역삼동</a
                   >
                 </li>
