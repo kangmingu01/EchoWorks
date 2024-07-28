@@ -44,6 +44,8 @@
 	
 	// 로그인 사용자인지 아닌지 검증
 	int memberNum = loginMember != null ? loginMember.getMemberNum() : 0;
+	
+	
 %>
 <%--
 - QNA 테이블에 저장된 행을 상품 번호에 따라 행을 검색하여 검색된 행을 HTML 태그에 포함하는 문서
@@ -130,6 +132,17 @@
           /* .qnaRows:hover {
             background-color: rgb(230, 230, 230);
           } */
+          
+          /*  페이지 버튼 가운데 정렬  */
+          #page_list{
+			display:flex;
+			justify-content:center;
+				align-content:center;
+			}
+          
+          
+          
+          
         </style>
        <!-- 리뷰 -->
         <section>
@@ -445,6 +458,10 @@
                 </tbody>
               </table>
             </div> -->
+            
+     		<div id="page_list"></div>
+	
+            
             <div id="console-event"></div>
           </div>
         </section>
@@ -489,13 +506,13 @@ var secretCheck = 0;
 var memberNum = 0;
 // 답변상태 = reply_status(모든글: 조건 없음), 미답변 = unanswered_answer(미답변: 조건있음), 답변완료 = answer_completed(답변완료:조건있음)
 var replyStatus = "reply_status"; 
-
+var pageNum=1;
 
 statusCheck();	
 
 //비밀글 제외 눌렀을 때
 $('#secretCheck').change(function() {
-    secretCheck = $("#secretCheck").prop('checked') ? 1 : 0;
+	secretCheck = $("#secretCheck").prop('checked') ? 1 : 0;
     statusCheck();
     displayQnaList();
 });
@@ -599,10 +616,6 @@ function statusCheck() {
 displayQnaList();
  function displayQnaList() {
 	    // 변수 값 확인 (디버깅용)
-	    console.log("productNo: " + productNo);
-	    console.log("secretCheck: " + secretCheck);
-	    console.log("replyStatus: " + replyStatus);
-	    console.log("memberNum: " + memberNum);
 	
 	$.ajax({
 		type: "post",
@@ -612,18 +625,43 @@ displayQnaList();
 			"secretCheck": secretCheck,
 			"replyStatus": replyStatus,
 			"memberNum" : memberNum,
+			"pageNum":pageNum,
 			},
 		dataType:"json",
-		success: function(result) {			
+		success: function(result) {	
+						
 			//댓글목록태그의 자식태그(댓글)를 삭제 처리 - 기존 댓글 삭제
 			$("#qna_list").children().remove();
-			
-			console.log(result.data.length);
-			
-			console.log(result.data.length);
+			$("#page_list").children().remove();
 			
 			if(result.code == "success") {
-				var arrLength = result.data.length; // 전체 질문 갯수
+				var startPage=parseInt(result.startPage);
+				var endPage=parseInt(result.endPage);
+				
+				var hhtml="";
+				if(result.startPage>result.blockSize){
+					 hhtml += "<a id='prev_page' href='#' data-info='" + (startPage - 1) + "'>[이전]</a>";
+				}else{
+					hhtml+="<a>[이전]</a>";
+				}
+				for(var i=result.startPage;i<=result.endPage;i++){
+					if(pageNum!=i){
+					 hhtml += "<a id='page_" + i + "' href='#' data-info='"+i+"'>[" + i + "]</a>";
+					}else{
+					hhtml+=	"<a>["+i+"]</a>" ;
+					}
+				}
+				if(result.endPage!=result.totalPage){
+					hhtml += "<a id='next_page' href='#' data-info='" + (endPage + 1) + " '>[다음]</a>";
+				}else{
+				hhtml+="<a>[다음]</a>";
+				}
+				
+				
+				
+				$("#page_list").append(hhtml); 
+				
+				var arrLength = result.data.length; // 전체 질문 갯수				
 				$(result.data).each(function() {					
 					//질문자 질문 칸
 					
@@ -667,7 +705,23 @@ displayQnaList();
 	                html+="</div></div></div>";
 				  */
 					$("#qna_list").append(html);
+				  				  				
+				  
+				  
+			
 				});
+				
+				 $("#page_list a").click(function(event) {
+		                event.preventDefault(); 
+		                var targetPage = $(this).data('info');
+		                console.log("targetPage"+targetPage);
+		                pageNum=targetPage;
+		                statusCheck();
+		                displayQnaList();
+		        });
+				
+				
+				
 				// 상품 문의 갯수를 출력
                 $(".arrLength").text("( " + arrLength + " )");
 			} else {//검색된 댓글정보가 없는 경우		
@@ -708,7 +762,7 @@ $("#qna_insert").click(function() {
 		$.ajax({
 			type: "post",
 			url: "<%=request.getContextPath()%>/qna/detail_qna_insert.jsp",
-			data: {"title":title, "content":content, "secretCheck":secretCheck,"productNo":productNo},
+			data: {"title":title, "content":content, "secretCheck":secretCheck,"productNo":productNo, "pageNum":pageNum},
 			dataType: "json",
 			success: function(result) {
 				if(result.code == "success") {
@@ -728,8 +782,6 @@ $("#qna_insert").click(function() {
 			}
 		});
 	});
-
-
 
 
 // detail 페이지 완성되면 경로 수정해야됨 => 문제는 상태가 변하면서 새로고침되는데 이게 header로 올라감
