@@ -19,10 +19,11 @@
         return;
     }
 
+    String[] selectedCartNos = null;
     List<CartDTO> selectedCartList = null;
 	if(session.getAttribute("cartList")  == null) {
 	    // 장바구니에서 선택한 상품 번호 목록을 가져옴
-	    String[] selectedCartNos = request.getParameterValues("cart_no");
+	    selectedCartNos = request.getParameterValues("cart_no");
 	
 	    if (selectedCartNos == null || selectedCartNos.length == 0) {
 	        out.println("<script>alert('선택한 상품이 없습니다.');location.href='cart.jsp';</script>");
@@ -95,11 +96,13 @@
     <h2 class="section-title text-center mt-3">결제하기</h2>
     <form id="paymentForm" name="paymentForm" method="post" action="<%=request.getContextPath() %>/payment/payment_action.jsp?action=pay">
         <%
-            for (String cartNo : selectedCartNos) {
+        if(session.getAttribute("cartList")  != null) {
+        	for (String cartNo : selectedCartNos) {
         %>
             <input type="hidden" name="cart_no" value="<%= cartNo %>" />
         <%
             }
+        }
         %>
         <div class="row">
             <div class="col-md-7">

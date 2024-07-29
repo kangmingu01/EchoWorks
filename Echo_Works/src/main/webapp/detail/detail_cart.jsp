@@ -24,15 +24,18 @@
 	}
 	
 	String resultState="";
+	System.out.println("상태 " + state);
 	if(cartList.size() == 0) {//옵션을 선택하지 않은 경우
 		System.out.println("cartList.size() " + cartList.size());
 		resultState="notOption";
-	} else if(state == "cart") {//장바구니 버튼일 경우 	
+	} else if(state.equals("cart")) {//장바구니 버튼일 경우 	
+		System.out.println(2);
 		for(int i=0;i<cartList.size();i++) {
 			CartDAO.getDao().addCart(cartList.get(i));
 		}
 		resultState = "success";
 	} else {//주문하기 버튼일 경우
+		System.out.println(3);
 		session.setAttribute("cartList", cartList);
 		resultState = "success";
 	} 
