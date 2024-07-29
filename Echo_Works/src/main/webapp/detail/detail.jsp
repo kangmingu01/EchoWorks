@@ -103,14 +103,11 @@ input[type="number"]::-webkit-inner-spin-button {
     margin: 0;
 }
 
-
-
-
-
 .review_table {
-	width: 500px;
+	width: 100%;
 	margin: 0 auto;
-	border: 2px solid #cccccc;
+	border-top: 2px solid #cccccc;
+	border-bottom: 2px solid #cccccc;
 	border-collapse: collapse;
 }
 
@@ -118,18 +115,15 @@ input[type="number"]::-webkit-inner-spin-button {
 	width: 100px;
 	padding: 5px 10px;
 	text-align: center;
-	border: 1px solid #cccccc;
 }
 
 .input {
-	width: 400px;
+	width: 100%;
 	padding: 5px 10px;
-	border: 1px solid #cccccc;
 }
 
 .btn {
 	text-align: center;
-	border: 1px solid #cccccc;
 }
 
 #review_add {
@@ -156,11 +150,11 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .review {
-	width: 550px;
+	width: 100%;
 	margin: 0 auto;
 	margin-bottom: 5px;
 	padding: 3px;
-	border: 1px solid #cccccc;
+	border-bottom: 1px solid #cccccc;
 }
 
 .no_review {
@@ -324,9 +318,12 @@ input[type="number"]::-webkit-inner-spin-button {
 				            	<div id="review_add">
 									<table class="review_table">
 										<tr>
-											<td class="title">내용</td>
+											<td>&nbsp;<b>[<%=loginMember.getMemberName() %>]</b></td>
+										</tr>
+										<tr>
+											
 											<td class="input">
-												<textarea rows="3" cols="50" id="add_content"></textarea>
+												<textarea rows="3" cols="50" id="add_content" style="width:100%; resize: none;"></textarea>
 											</td>
 										</tr>
 										<tr>
@@ -346,13 +343,12 @@ input[type="number"]::-webkit-inner-spin-button {
 									<input type="hidden" id="modify_num">
 									<table class="review_table">
 										<tr>
-											<td class="title">내용</td>
 											<td class="input">
-												<textarea rows="3" cols="50" id="modify_content"></textarea>
+												<textarea rows="3" cols="50" id="modify_content" style="width:100%; resize: none;"></textarea>
 											</td>
 										</tr>
 										<tr>
-											<td class="btn" colspan="2">
+											<td class="btn" colspan="6">
 												<button type="button" id="modify_btn">변경</button>
 												<button type="button" id="modify_cancel_btn">취소</button>
 											</td>
@@ -422,33 +418,33 @@ input[type="number"]::-webkit-inner-spin-button {
 								// => 입력값(작성자와 내용)을 [review_add.jsp] 문서를 요청시 전달
 								$("#add_btn").click(function() {
 									var pyNo=0;
-									var content=$("#add_content").val();
-									if(content == "") {
-										$("#add_message").html("내용을 입력해 주세요.");
-										$("#add_content").focus();
-										return;
-									}
-									
-									$("#add_content").val("");
-									$("#add_message").html("");
-									
-									$.ajax({
-										type: "post",
-										url: "<%=request.getContextPath()%>/review/review_add.jsp",
-										data: {"content":content},
-										dataType: "json",
-										success: function(result) {
-											if(result.code == "success") {
-												displayReview();//댓글목록 출력
-											} else {
-												//alert("댓글 삽입 실패");
-												alert("구매평 작성이 가능한 주문이 존재하지 않습니다.\n구매평은 주문당 품목별로 1번만 작성이 가능하며, 삭제 후 재작성은 불가합니다.");
-											}
-										},
-										error: function(xhr) {
-											alert("에러코드 = "+xhr.status);
+										var content=$("#add_content").val();
+										if(content == "") {
+											$("#add_message").html("내용을 입력해 주세요.");
+											$("#add_content").focus();
+											return;
 										}
-									});
+										
+										$("#add_content").val("");
+										$("#add_message").html("");
+										
+										$.ajax({
+											type: "post",
+											url: "<%=request.getContextPath()%>/review/review_add.jsp",
+											data: {"content":content},
+											dataType: "json",
+											success: function(result) {
+												if(result.code == "success") {
+													displayReview();//댓글목록 출력
+												} else {
+													//alert("댓글 삽입 실패");
+													alert("구매평 작성이 가능한 주문이 존재하지 않습니다.\n구매평은 주문당 품목별로 1번만 작성이 가능하며, 삭제 후 재작성은 불가합니다.");
+												}
+											},
+											error: function(xhr) {
+												alert("에러코드 = "+xhr.status);
+											}
+										});
 									
 								});
 
