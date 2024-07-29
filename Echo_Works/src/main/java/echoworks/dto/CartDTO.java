@@ -18,9 +18,8 @@ public class CartDTO {
 		// TODO Auto-generated constructor stub
 	}
 
-	public CartDTO(int cart_no, int cart_psno, int cart_member, int cart_num) {
+	public CartDTO(int cart_psno, int cart_member, int cart_num) {
 		super();
-		this.cart_no = cart_no;
 		this.cart_psno = cart_psno;
 		this.cart_member = cart_member;
 		this.cart_num = cart_num;
