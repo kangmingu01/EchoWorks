@@ -17,17 +17,17 @@
             justify-content: center;
         }
         form {
-  		  	width: 100%;
-   			max-width: 800px;  /* 여기서 max-width를 800px로 변경합니다 */
-    		padding: 30px;
-  	  		border: 2px solid black;
-  	 		border-radius: 20px;
-  	  		box-shadow: 8px 4px 16px rgba(0, 0, 0, 0.3);
-  	 		height: auto;
-  	 		display: flex;
-   		 	flex-direction: column;
-  	 		 justify-content: center;
-		}
+            width: 100%;
+            max-width: 800px;  /* 여기서 max-width를 800px로 변경합니다 */
+            padding: 30px;
+            border: 2px solid black;
+            border-radius: 20px;
+            box-shadow: 8px 4px 16px rgba(0, 0, 0, 0.3);
+            height: auto;
+            display: flex;
+            flex-direction: column;
+             justify-content: center;
+        }
         .btn-primary, .btn-secondary {
             border: none;
             border-radius: 50px;
@@ -80,15 +80,15 @@
             100% { transform: translateX(0); }
         }
         #idCheck, #postSearch {
-            font-size: 12px;
+            font-size: 14px; /* 폰트 크기를 약간 키웠습니다 */
             font-weight: bold;
             cursor: pointer;
             margin-left: 10px;
-            padding: 2px 10px;
+            padding: 5px 15px; /* 패딩을 늘려서 버튼을 키웠습니다 */
             border: 1px solid black;
         }
         #idCheck:hover, #postSearch:hover {
-            background: aqua;
+            background: black;
         }
     </style>
 </head>
