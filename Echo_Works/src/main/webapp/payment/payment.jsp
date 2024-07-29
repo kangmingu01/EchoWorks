@@ -19,34 +19,25 @@
         return;
     }
 
-    String[] selectedCartNos = null;
-    List<CartDTO> selectedCartList = null;
-	if(session.getAttribute("cartList")  == null) {
-	    // 장바구니에서 선택한 상품 번호 목록을 가져옴
-	    selectedCartNos = request.getParameterValues("cart_no");
-	
-	    if (selectedCartNos == null || selectedCartNos.length == 0) {
-	        out.println("<script>alert('선택한 상품이 없습니다.');location.href='cart.jsp';</script>");
-	        return;
-	    }
-	
-	    selectedCartList = new ArrayList<>();
-	    
-	    for (String cartNo : selectedCartNos) {
-	        int cartNoInt = Integer.parseInt(cartNo);
-	        CartDTO cart = CartDAO.getDao().getCartByNo(cartNoInt);
-	        selectedCartList.add(cart);
-	    }
-    } else {
-    	List<CartDTO> cartList = (List<CartDTO>)session.getAttribute("cartList");
+    String[] selectedCartNos = request.getParameterValues("cart_no");
+    List<CartDTO> selectedCartList = new ArrayList<>();
+
+    if (selectedCartNos != null) {
+        for (String cartNo : selectedCartNos) {
+            int cartNoInt = Integer.parseInt(cartNo);
+            CartDTO cart = CartDAO.getDao().getCartByNo(cartNoInt);
+            selectedCartList.add(cart);
+        }
+    } else if (session.getAttribute("cartList") != null) {
+        selectedCartList = (List<CartDTO>) session.getAttribute("cartList");
         session.removeAttribute("cartList");
-        
-        selectedCartList = cartList;
+    } else {
+        out.println("<script>alert('선택한 상품이 없습니다.');location.href='cart.jsp';</script>");
+        return;
     }
-	
+
     int totalProductPrice = 0;
     int shippingCost = 2500; // 고정 배송비
-    
 %>
 
 <!DOCTYPE html>
@@ -95,15 +86,10 @@
 <div class="container">
     <h2 class="section-title text-center mt-3">결제하기</h2>
     <form id="paymentForm" name="paymentForm" method="post" action="<%=request.getContextPath() %>/payment/payment_action.jsp?action=pay">
-        <%
-        if(session.getAttribute("cartList")  != null) {
-        	for (String cartNo : selectedCartNos) {
-        %>
-            <input type="hidden" name="cart_no" value="<%= cartNo %>" />
-        <%
-            }
-        }
-        %>
+        <% if (selectedCartNos != null) {
+            for (String cartNo : selectedCartNos) { %>
+                <input type="hidden" name="cart_no" value="<%= cartNo %>" />
+        <% } } %>
         <div class="row">
             <div class="col-md-7">
                 <div class="card">
@@ -111,14 +97,12 @@
                         주문 상품 정보
                     </div>
                     <div class="card-body">
-                        <%
-                            for (CartDTO cart : selectedCartList) {
-                                ProductStockDTO stock = ProductStockDAO.getDAO().selectProductStock(cart.getCart_psno());
-                                
-                                if (stock != null) {
-                                    int unitPrice = stock.getpS_price(); // product_stock 테이블에서 가격 가져오기
-                                    int totalPrice = unitPrice * cart.getCart_num();
-                                    totalProductPrice += totalPrice;
+                        <% for (CartDTO cart : selectedCartList) {
+                            ProductStockDTO stock = ProductStockDAO.getDAO().selectProductStock(cart.getCart_psno());
+                            if (stock != null) {
+                                int unitPrice = stock.getpS_price(); // product_stock 테이블에서 가격 가져오기
+                                int totalPrice = unitPrice * cart.getCart_num();
+                                totalProductPrice += totalPrice;
                         %>
                         <div class="d-flex align-items-center">
                             <img src="assets/img/<%= ProductDAO.getDAO().selectProductByNo(stock.getpS_pNo()).getPRODUCT_IMG() %>.jpg" alt="상품 이미지" style="width: 100px; height: 100px; margin-right: 20px;">
@@ -132,10 +116,7 @@
                             </div>
                         </div>
                         <hr>
-                        <%
-                                }
-                            }
-                        %>
+                        <% } } %>
                     </div>
                 </div>
 
@@ -345,6 +326,34 @@
                 document.getElementById('addressExisting').value = data.address;
             }
         }).open();
+    });
+
+    // postcode와 address 필드 클릭 시 Daum Postcode Service 창이 뜨도록 설정하고 키보드 입력 방지
+    document.getElementById('postcode').addEventListener('click', function() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                document.getElementById('postcode').value = data.zonecode;
+                document.getElementById('address').value = data.address;
+            }
+        }).open();
+    });
+
+    document.getElementById('address').addEventListener('click', function() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                document.getElementById('postcode').value = data.zonecode;
+                document.getElementById('address').value = data.address;
+            }
+        }).open();
+    });
+
+    // 키보드 입력 방지 설정
+    document.getElementById('postcode').addEventListener('keydown', function(event) {
+        event.preventDefault();
+    });
+
+    document.getElementById('address').addEventListener('keydown', function(event) {
+        event.preventDefault();
     });
 
     document.getElementById('payButton').addEventListener('click', function(event) {
