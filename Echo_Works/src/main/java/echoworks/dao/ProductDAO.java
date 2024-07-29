@@ -343,25 +343,23 @@ public class ProductDAO extends JdbcDAO{
 }
 		
 				// 관리자 페이지에서 상품 가격 수정
-				public int updateProduct(int productNo){
-					Connection con=null;
-					PreparedStatement pstmt=null;
-					int rows=0;
-					try {
-						con=getConnection();
-						String sql="update product set product_price=?, product_img=?, product_img_detail=?, product_url=?, product_main_category=?, product_sub_category=? where product_no=?";
-						 pstmt = con.prepareStatement(sql);
-				            pstmt.setInt(1, productNo);
-				            pstmt.executeUpdate();
-						
-								
-					}catch (SQLException e) {
-						System.out.println("[에러]selectProductByNo() 메소드의 SQL 오류 = "+e.getMessage());
-					} finally {
-						close(con, pstmt);
-					}
-					return rows;		
-				
-}
-				
+				public int updateProduct(ProductDTO product){
+				    Connection con = null;
+				    PreparedStatement pstmt = null;
+				    int rows = 0;
+				    try {
+				        con = getConnection();
+				        String sql = "update product set product_price = ? where product_no = ?";
+				        pstmt = con.prepareStatement(sql);
+				        pstmt.setInt(1, product.getPRODUCT_PRICE());
+				        pstmt.setInt(2, product.getPRODUCT_NO());
+				        rows = pstmt.executeUpdate();
+				    } catch (SQLException e) {
+				        System.out.println("[에러] updateProduct() 메소드의 SQL 오류 = " + e.getMessage());
+				    } finally {
+				        close(con, pstmt);
+				    }
+				    return rows;
+				}
+
 }
