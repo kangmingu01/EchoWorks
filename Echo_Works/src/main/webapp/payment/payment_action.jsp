@@ -1,6 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.List" %>
 <%@ page import="echoworks.dao.CartDAO" %>
+<%@ page import="echoworks.dao.ProductStockDAO" %>
 <%@ page import="echoworks.dao.PaymentDAO" %>
+<%@ page import="echoworks.dto.CartDTO" %>
+<%@ page import="echoworks.dto.ProductStockDTO" %>
 <%@ page import="echoworks.dto.PaymentDTO" %>
 <%@ page import="javax.servlet.http.HttpSession" %>
 <%@ page import="echoworks.dto.MemberDTO" %>
@@ -24,6 +29,7 @@
     String action = request.getParameter("action");
     PaymentDAO paymentDAO = PaymentDAO.getDAO();
     CartDAO cartDAO = CartDAO.getDao();
+    ProductStockDAO productStockDAO = ProductStockDAO.getDAO();
 
     if (action != null && action.equals("pay")) {
         try {
@@ -44,6 +50,30 @@
                 omesg = omesgInput;  // 직접 입력한 배송메모로 설정
             }
 
+            boolean isStockSufficient = true;
+
+            // 재고 확인 및 차감
+            for (int i = 0; i < psnoArray.length; i++) {
+                int psno = Integer.parseInt(psnoArray[i]);
+                int num = Integer.parseInt(numArray[i]);
+                
+                ProductStockDTO productStock = productStockDAO.selectProductStock(psno);
+                if (productStock != null && productStock.getpS_Stock() >= num) {
+                    int newStock = productStock.getpS_Stock() - num;
+                    productStock.setpS_Stock(newStock);
+                    productStockDAO.updateProductStock(productStock);
+                } else {
+                    isStockSufficient = false;
+                    break;
+                }
+            }
+
+            if (!isStockSufficient) {
+                out.println("<script>alert('재고가 부족한 상품이 있습니다.');history.back();</script>");
+                return;
+            }
+
+            // 결제 정보 저장
             for (int i = 0; i < psnoArray.length; i++) {
                 int psno = Integer.parseInt(psnoArray[i]);
                 int num = Integer.parseInt(numArray[i]);
