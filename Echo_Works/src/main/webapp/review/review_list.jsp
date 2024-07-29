@@ -17,9 +17,10 @@
 	<% for(int i=0;i<reviewList.size();i++) { %>
 		<% if(i > 0 ) { %>,<% } %>
 		{"num":<%=reviewList.get(i).getReview_No() %>
-			
+			, "writer":"<%=ReviewDAO.getDAO().selectMember(reviewList.get(i).getReview_pyNo()) %>"
 			, "content":"<%=Utility.toJSON(reviewList.get(i).getReview_Content()) %>"
-			, "regdate":"<%=reviewList.get(i).getReview_Date() %>"}
+			, "regdate":"<%=reviewList.get(i).getReview_Date() %>"
+			, "state":"<%=reviewList.get(i).getReview_state() %>"}
 	<% } %>	
 	]
 }

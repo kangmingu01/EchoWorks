@@ -174,7 +174,7 @@ input[type="number"]::-webkit-inner-spin-button {
 
 
 </style>
-	<div class="container">
+	<div class="container mt-4">
 		<div>
 			<div class="row">
 				<div class="col-md-5">
@@ -338,10 +338,6 @@ input[type="number"]::-webkit-inner-spin-button {
 									<input type="hidden" id="modify_num">
 									<table class="review_table">
 										<tr>
-											<td class="title">작성자</td>
-											<td class="input"><input type="text" id="modify_writer"></td>
-										</tr>
-										<tr>
 											<td class="title">내용</td>
 											<td class="input">
 												<textarea rows="3" cols="50" id="modify_content"></textarea>
@@ -367,11 +363,11 @@ input[type="number"]::-webkit-inner-spin-button {
 									</div>
 								</div>
 								<script type="text/javascript">
-								displayreview();
+								displayReview();
 								
 								//Ajax 엔진으로 [review_list.jsp] 문서를 요청하여 실행결과(댓글목록)를 JSON으로 제공받아
 								//HTML 태그로 변환하여 댓글목록태그의 태그내용을 변경하는 함수
-								function displayreview() {
+								function displayReview() {
 									$.ajax({
 										type: "get",
 										url: "<%=request.getContextPath()%>/review/review_list.jsp",
@@ -383,17 +379,19 @@ input[type="number"]::-webkit-inner-spin-button {
 											if(result.code == "success") {//검색된 댓글정보가 있는 경우
 												//Array 객체를 일괄처리하기 위해 each() 멤버함수 호출
 												$(result.data).each(function() {
-													//Array 객체의 요소값(Object 객체 - 댓글정보)를 HTML 태그로 변환
-													var html="<div class='review' id='review_"+this.num+"'>";//댓글태그
-													html+="<b>["+this.writer+"]</b><br>";//댓글태그에 작성자 포함
-													html+=this.content.replace(/\n/g,"<br>")+"<br>";//댓글태그에 댓글내용 포함
-													html+="("+this.regdate+")<br>";//댓글태그에 작성날짜 포함
-													html+="<button type='button' onclick='modifyreview("+this.num+");'>댓글변경</button>&nbsp;";//댓글태그에 댓글변경버튼 포함
-													html+="<button type='button' onclick='removereview("+this.num+");'>댓글삭제</button>&nbsp;";//댓글태그에 댓글삭제버튼 포함
-													html+="</div>";
-													
-													//댓글목록태그에 댓글태그를 마지막 자식태그로 추가하여 출력 처리 
-													$("#review_list").append(html);
+													if(this.state == 1) {
+														//Array 객체의 요소값(Object 객체 - 댓글정보)를 HTML 태그로 변환
+														var html="<div class='review' id='review_"+this.num+"'>";//댓글태그
+														html+="<b>["+this.writer+"]</b><br>";//댓글태그에 작성자 포함
+														html+=this.content.replace(/\n/g,"<br>")+"<br>";//댓글태그에 댓글내용 포함
+														html+="("+this.regdate+")<br>";//댓글태그에 작성날짜 포함
+														html+="<button type='button' onclick='modifyreview("+this.num+");'>댓글변경</button>&nbsp;";//댓글태그에 댓글변경버튼 포함
+														html+="<button type='button' onclick='removereview("+this.num+");'>댓글삭제</button>&nbsp;";//댓글태그에 댓글삭제버튼 포함
+														html+="</div>";
+														
+														//댓글목록태그에 댓글태그를 마지막 자식태그로 추가하여 출력 처리 
+														$("#review_list").append(html);
+													}
 												});
 											} else {//검색된 댓글정보가 없는 경우
 												$("#review_list").html("<div class='no_review'>"+result.message+"</div>");
@@ -409,7 +407,7 @@ input[type="number"]::-webkit-inner-spin-button {
 								// => Ajax 엔진으로 [review_add.jsp] 문서를 요청하여 실행결과를 JSON으로 제공받아 처리
 								// => 입력값(작성자와 내용)을 [review_add.jsp] 문서를 요청시 전달
 								$("#add_btn").click(function() {
-									var pyNo=1;
+									var pyNo=194;
 									
 									var content=$("#add_content").val();
 									if(content == "") {
@@ -428,7 +426,7 @@ input[type="number"]::-webkit-inner-spin-button {
 										dataType: "json",
 										success: function(result) {
 											if(result.code == "success") {
-												displayreview();//댓글목록 출력
+												displayReview();//댓글목록 출력
 											} else {
 												alert("댓글 삽입 실패");
 											}
@@ -458,7 +456,6 @@ input[type="number"]::-webkit-inner-spin-button {
 								// => 댓글변경태그를 댓글태그의 자식태그로 이동하여 출력하고 Ajax 엔진으로 [commant_get.jsp]
 								//문서를 요청해 실행결과(댓글정보)를 JSON으로 응답받아 입력태그의 입력값으로 출력 처리 - 댓글번호 전달
 								function modifyreview(num) {
-									//alert(num);
 									
 									init();
 									
@@ -489,12 +486,6 @@ input[type="number"]::-webkit-inner-spin-button {
 								//처리 - 입력태그의 입력값을 전달
 								$("#modify_btn").click(function() {
 									var num=$("#modify_num").val();
-
-									if(writer == "") {
-										$("#modify_message").html("작성자를 입력해 주세요.");
-										$("#modify_writer").focus();
-										return;
-									}
 									
 									var content=$("#modify_content").val();
 									if(content == "") {
@@ -511,7 +502,7 @@ input[type="number"]::-webkit-inner-spin-button {
 										success: function(result) {
 											if(result.code == "success") {
 												init();
-												displayreview();//댓글목록 출력
+												displayReview();//댓글목록 출력
 											} else {
 												alert("댓글 변경 실패");
 											}
@@ -547,7 +538,7 @@ input[type="number"]::-webkit-inner-spin-button {
 										success: function(result) {
 											if(result.code == "success") {
 												init();
-												displayreview();//댓글목록 출력
+												displayReview();//댓글목록 출력
 											} else {
 												alert("댓글 삭제 실패");
 											}
