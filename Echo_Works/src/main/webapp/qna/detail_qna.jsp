@@ -802,7 +802,10 @@
 	        html += '<hr class=mt-1 mb-1>'
 	        html += '<p id="qnaContent' + qna.qnaNo + '">' + qna.qnaContent + '</p>';
 	        if(qna.qnaAnswer!=""){
-	        html += '<p id="adminAnswer' + qna.qnaNo + '">┖ 답변 <관리자> : ' + qna.qnaAnswer + '</p>';
+	        	html += '<div id="adminAnswer' + qna.qnaNo + '">'
+	            + '<p>👑<관리자>👑</p>'
+	            + '<span><i class="fa-regular fa-comment fa-flip-horizontal pe-1 me-2" style="color: #050505;"></i> ' + qna.qnaAnswer + '</span>'  // i 태그와 qna.qnaAnswer 사이에 공백 추가
+	            + '</div>';
 	        }
 	        if(qna.qnaAnswer==""){
 	        html += '<div id="qnaActions' + qna.qnaNo + '">';
