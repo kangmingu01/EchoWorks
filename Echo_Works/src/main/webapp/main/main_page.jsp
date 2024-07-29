@@ -240,9 +240,11 @@ small {
 	<h3 class="text-center fs-2 fw-bold ">08.01 Cycle8 Open</h3>
 	<div class="mt-5 d-flex align-items-center justify-content-center mt-3 mb-3">
 		<div id="frame" >
-			<div id="specialCard">
+			<a href="https://www.youtube.com/embed/qZ-n6h4zpfY?si=QuttSCa5tDJ5qLrf" target="_blank">
+				<div id="specialCard">
 				<div id="light"></div>
 			</div>
+			</a>
 		</div>
 	</div>
 </section>
