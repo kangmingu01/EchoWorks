@@ -648,7 +648,7 @@ displayQnaList();
 					if(pageNum!=i){
 					 hhtml += "<a id='page_" + i + "' href='#' data-info='"+i+"'>[" + i + "]</a>";
 					}else{
-					hhtml+=	"<a>["+i+"]</a>" ;
+					hhtml+=	"<p>["+i+"]</p>" ;
 					}
 				}
 				if(result.endPage!=result.totalPage){
