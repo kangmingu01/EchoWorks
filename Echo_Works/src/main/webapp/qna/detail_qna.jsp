@@ -131,6 +131,12 @@
           /* .qnaRows:hover {
             background-color: rgb(230, 230, 230);
           } */
+          /*  페이지 버튼 가운데 정렬  */
+          #page_list{
+			display:flex;
+			justify-content:center;
+			align-content:center;
+		}
         </style>
        <!-- 리뷰 -->
         <section>
@@ -499,6 +505,8 @@
               </table>
             </div> -->
             <!-- <div id="console-event"></div> -->
+            
+     		<div id="page_list"></div>
           </div>
         </section>
 <script type="text/javascript">
@@ -542,6 +550,9 @@
 	var memberNum = 0;
 	// 답변상태 = reply_status(모든글: 조건 없음), 미답변 = unanswered_answer(미답변: 조건있음), 답변완료 = answer_completed(답변완료:조건있음)
 	var replyStatus = "reply_status"; 
+	
+	// 페이지 번호
+	var pageNum=1;
 	
 	
 	/* statusCheck();	 */
@@ -675,11 +686,13 @@
 	            "secretCheck": secretCheck,
 	            "replyStatus": replyStatus,
 	            "memberNum": memberNum,
+	            "pageNum":pageNum,
 	        },
 	        dataType: "json",
 	        success: function(result) {            
 	            // 댓글목록태그의 자식태그(댓글)를 삭제 처리 - 기존 댓글 삭제
 	            $("#qna_list").children().remove();
+	            $("#page_list").children().remove();
 				/* 
 	            console.log(result);
 	            console.log(result.data.length);
@@ -688,10 +701,35 @@
 	                var arrLength = result.data.length; // 전체 질문 갯수
 	                var loginMemberNum = result.loginMemberNum;
 	                var loginMemberAuth = result.loginMemberAuth;
-					/* 
-	                console.log(loginMemberNum);
-					console.log(loginMemberAuth);
-					 */
+	                
+	                // 페이징
+	                var startPage=parseInt(result.startPage);
+					var endPage=parseInt(result.endPage);
+					
+					var hhtml="";
+					if(result.startPage>result.blockSize){
+						 hhtml += "<a id='prev_page' href='#' data-info='" + (startPage - 1) + "'>[이전]</a>";
+					}else{
+						hhtml+="<a>[이전]</a>";
+					}
+					for(var i=result.startPage;i<=result.endPage;i++){
+						if(pageNum!=i){
+						 hhtml += "<a id='page_" + i + "' href='#' data-info='"+i+"'>[" + i + "]</a>";
+						}else{
+						hhtml+=	"<p>["+i+"]</p>" ;
+						}
+					}
+					if(result.endPage!=result.totalPage){
+						hhtml += "<a id='next_page' href='#' data-info='" + (endPage + 1) + " '>[다음]</a>";
+					}else{
+					hhtml+="<a>[다음]</a>";
+					}
+					
+					// 페이징 처리
+					$("#page_list").append(hhtml); 
+					
+					 
+					 // 리스트 가져오기
 	                $(result.data).each(function() {                    
 	                    // 질문자 질문 칸
 	                    var isAuthorized = !(this.qnaStatus == 2 && (this.qnaMemberNo == loginMemberNum || loginMemberAuth == 9));
@@ -717,6 +755,16 @@
 	                    html += '</li>';
 	                    $("#qna_list").append(html);
 	                });
+					 
+	                $("#page_list a").click(function(event) {
+		                event.preventDefault(); 
+		                var targetPage = $(this).data('info');
+		                console.log("targetPage"+targetPage);
+		                pageNum=targetPage;
+		                statusCheck();
+		                displayQnaList();
+		        	});
+					 
 	                // 상품 문의 갯수를 출력
 	                $(".arrLength").text("( " + arrLength + " )");
 	            } else { // 검색된 댓글 정보가 없는 경우
