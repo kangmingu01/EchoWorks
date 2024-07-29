@@ -14,7 +14,7 @@
     <meta charset="UTF-8">
     <title>상품 관리</title>
     <style>
-        /* 스타일 코드 생략 */
+        
         .hidden { display: none; }
     </style>
     <script>

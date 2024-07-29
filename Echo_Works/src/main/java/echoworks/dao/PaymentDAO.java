@@ -166,5 +166,4 @@ public class PaymentDAO extends JdbcDAO {
 		}
 		return rows;
 	}
-	
 }
