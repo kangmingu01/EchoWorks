@@ -57,37 +57,115 @@ DecimalFormat money = new DecimalFormat("###,###");
 	List<ProductDTO> productList = ProductDAO.getDAO().selectProductList(startRow, endRow, keyword, cateOne, cateTwo);
 %>
 <style type="text/css">
-<%if (request.getParameter("cateOne ") != null) { %> .<%=request .getParameter("cateOne")%>: { display : flex;}
-<%}%>
-.btn:hover {
-	font-weight: bold;
+	<%if (request.getParameter("cateOne ") != null) { %> .<%=request .getParameter("cateOne")%>: { display : flex;}
+	<%}%>
+	.btn:hover {
+		font-weight: bold;
+	}
+	.Produck-img {
+		overflow: hidden;
+	}
+	.Produck-img img {
+		-webkit-transition: all 0.3s ease;
+		-o-transition: all 0.3s ease;
+		transition: all 0.3s ease;
+	}
+	.Produck-img img:hover {
+		-webkit-transform: scale(1.2);
+		-ms-transform: scale(1.2);
+		transform: scale(1.2);
+	}
+	.dropdown-menu {
+		display: none;
+	}
+	#page_list{
+		display:flex;
+		justify-content:center;
+		align-content:center;
+	}
+	
+	#searchDiv {
+		margin-top: 40px;
+        background-color: white;
+        border: 1px solid #ced4da;
+        border-radius: .25rem;
+        box-shadow: 0 0 5px rgba(0,0,0,0.2);
+        max-width: 324px; /* input 태그와 같은 최대 너비 설정 */
+    }
+    #searchList a {
+        display: block;
+        padding: .5rem;
+        color: black;
+        text-decoration: none;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    #searchList a:hover {
+        background-color: rgba(33, 37, 41, 0.1);
+    }
+    
+.keyboards_list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 기본: 4개의 열 */
+    gap: 1rem; /* 항목 간의 간격 추가 */
+    justify-content: start; /* 전체적으로 항목을 왼쪽 정렬 */
 }
-.Produck-img {
-	overflow: hidden;
+
+.keyboards_list > .card {
+    width: 100%; /* 그리드 열의 전체 너비 사용 */
+    max-width: 18rem; /* 각 카드의 최대 너비 설정 */
+    margin: 0 auto; /* 카드를 가운데 정렬 */
 }
-.Produck-img img {
-	-webkit-transition: all 0.3s ease;
-	-o-transition: all 0.3s ease;
-	transition: all 0.3s ease;
+
+/* 중간 화면: 3개의 열 */
+@media (max-width: 992px) {
+    .keyboards_list {
+        grid-template-columns: repeat(3, 1fr); /* 3개의 열 */
+    }
 }
-.Produck-img img:hover {
-	-webkit-transform: scale(1.2);
-	-ms-transform: scale(1.2);
-	transform: scale(1.2);
+
+/* 작은 화면: 2개의 열 */
+@media (max-width: 768px) {
+    .keyboards_list {
+        grid-template-columns: repeat(2, 1fr); /* 2개의 열 */
+    }
 }
-.dropdown-menu {
-	display: none;
+
+/* 아주 작은 화면: 1개의 열 */
+@media (max-width: 576px) {
+    .keyboards_list {
+        grid-template-columns: repeat(1, 1fr); /* 1개의 열 */
+    }
+
+    .keyboards_list > .card {
+        max-width: 20rem; /* 한 줄에 하나의 상품일 때 크기를 약간 줄임 */
+    }
 }
-#page_list{
-	display:flex;
-	justify-content:center;
-	align-content:center;
+
+.page-item .page-link.text-white.bg-dark {
+    background-color: rgb(33,37,41);
+    color: white;
 }
-#searchDiv{
-	background: rgba(255, 255, 254, 1);
-	z-index: 999;
-	display: none;
+
+.page-item .page-link.text-dark.bg-white {
+    background-color: white;
+    color: rgb(33,37,41);
 }
+
+.page-item.disabled .page-link {
+    color: rgba(33,37,41,0.5);
+}
+// 상품
+    .card-body {
+      position: relative;
+    }
+    .card-text {
+      position: absolute;
+      right: 16px;
+      bottom: 5px;
+    }
+
 </style>
 <!-- product page -->
 <section id="PDpage" class="">
@@ -120,45 +198,43 @@ DecimalFormat money = new DecimalFormat("###,###");
 		<!--  버튼 div 끝  -->
 
 		<!--  상황표 ? 그 숫자 =============================================================================-->
-	 	<div class="" id="inpo">
-			<form class="d-flex" method="post" action="<%=request.getContextPath() %>/index.jsp?workgroup=product&work=product_action">
-				<input class="form-control me-2" type="text" placeholder="Search" aria-label="Search" name="insearch" id="insearch">
-				<button class="btn btn-outline-success" type="submit">Search</button>
-			</form>
-			<div class="form-control me-2" placeholder="Search" aria-label="Search" id="searchDiv" >
-				<div id="searchList"></div>
-			</div>
-			<p id="inpopo"></p>
-		</div> 
+		<div class="d-flex justify-content-between align-items-center mt-3" id="inpo">
+		    <span class="fs-5 col-3 text-nowrap" id="inpopo"></span>
+		    <div class="d-flex col-3 justify-content-end position-relative">
+		        <form class="d-flex w-100" method="post" action="<%=request.getContextPath() %>/index.jsp?workgroup=product&work=product_action">
+		            <input class="form-control me-2 flex-grow-1" type="text" style="min-width: 100px; max-width: 250px;" placeholder="Search" aria-label="Search" name="insearch" id="insearch">
+		            <button class="btn btn-outline-success" type="submit">Search</button>
+		        </form>
+		        <div class="position-absolute w-100" id="searchDiv" style="display:none; z-index: 1000;">
+		            <div id="searchList"></div>
+		        </div>
+		    </div>
+		</div>
 		<!--  상품 div -->
-		<div class="keyboards_list mt-4 row gx-0 gy-3">
-		<% if(totalRow == 0) { %>
-			<tr>
-				<td colspan="5">검색된 상품이 없습니다.</td>
-			</tr>
-		<% } else { %>
-			<!--  상품 시작 ====================================== -->			
-			<%if (productList != null) {%>
-			    <%for (ProductDTO product : productList) {%>
-		    	<%String price = money.format(product.getPRODUCT_PRICE());%>
-			<div class="col-md-6 col-lg-4 col-xl-3 p-2 <%=product.getPRODUCT_CATEGORY_MAIN()%> <%=product.getPRODUCT_CATEGORY_SUB()%> PRDC">
-				<a href="<%=request.getContextPath()%>/index.jsp?workgroup=detail&work=detail&product_no=<%=product.getPRODUCT_NO()%>" class="text-decoration-none text-black">
-					<div class="Produck-img position-relative">
-						<img src="<%=request.getContextPath()%>/assets/img/<%=product.getPRODUCT_IMG()%>.jpg" class="w-100" />
-					</div>
-					<div class="text-center">
-						<p class="text-capitalize my-1"><%=product.getPRODUCT_NAME()%></p>
-						<span class="fw-bold"><%=price%>원</span>
-					</div>
-				</a>
-			</div>
-			   <%}%>
-			<%}%>
-		<%}%>
-			<!--  상품 끝 -->
-			
-		
-			<%-- 페이지 번호 출력 --%>
+		<!-- row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4 -->
+		<div class="keyboards_list mt-4 w-100">
+		    <% if(totalRow == 0) { %>
+		        <div class="col-12 text-center">
+		            <p>검색된 상품이 없습니다.</p>
+		        </div>
+		    <% } else { %>
+		        <% if (productList != null) { %>
+		            <% for (ProductDTO product : productList) { %>
+		                <% String price = money.format(product.getPRODUCT_PRICE()); %>
+						<div class="card p-0 <%=product.getPRODUCT_CATEGORY_MAIN()%> <%=product.getPRODUCT_CATEGORY_SUB()%> PRDC">
+						    <a href="<%=request.getContextPath()%>/index.jsp?workgroup=detail&work=detail&product_no=<%=product.getPRODUCT_NO()%>" class="text-decoration-none text-black">
+						      <img class="card-img-top" src="<%=request.getContextPath()%>/assets/img/<%=product.getPRODUCT_IMG()%>.jpg" style="width: 100%;" />
+						      <div class="card-body mb-">
+						        <p class="card-title"><%=product.getPRODUCT_NAME()%></p>
+						        <span class="card-text"><%=price%>원</span>
+						      </div>
+						    </a>
+						  </div>
+		            <% } %>
+		        <% } %>
+		    <% } %>
+		</div>
+					<%-- 페이지 번호 출력 --%>
 	<%
 		int blockSize=5;
 		int startPage=(pageNum-1)/blockSize*blockSize+1; 
@@ -172,35 +248,33 @@ DecimalFormat money = new DecimalFormat("###,###");
 			+"&pageSize="+pageSize+"&keyword="+keyword+"&cateOne="+cateOne+"&cateTwo="+cateTwo;
 	%>
 	
-	<div id="page_list">
-		<%-- 이전 블럭을 출력할 수 있는 링크 제공 --%>
-		<% if(startPage > blockSize) { %>
-			<a href="<%=myUrl%>&pageNum=<%=startPage-blockSize%>">[이전]</a>
-		<% } else { %>
-			[이전]
-		<% } %>
-	
-		<% for(int i = startPage ; i <= endPage ; i++) { %>
-			<%-- 현재 처리중인 페이지 번호와 출력된 페이지 번호가 같지 않은 경우 링크 제공 --%>
-			<% if(pageNum != i) { %>
-				<a href="<%=myUrl%>&pageNum=<%=i%>">[<%=i %>]</a>
-			<%} else { %>
-				[<%=i %>]
-			<% } %>
-		<% } %>
-
-		<%-- 다음 블럭을 출력할 수 있는 링크 제공 --%>
-		<% if(endPage != totalPage) { %>
-			<a href="<%=myUrl%>&pageNum=<%=startPage+blockSize%>">[다음]</a>
-		<% } else { %>
-			[다음]
-		<% } %>
-	</div>
-	
-	
-		</div>
+		<nav aria-label="Page navigation" class="mt-4">
+		  <ul class="pagination justify-content-center">
+		    <% if(totalPage > 5) { %>
+		      <%-- 이전 블럭을 출력할 수 있는 링크 제공 --%>
+		      <li class="page-item <%= (startPage > blockSize) ? "" : "disabled" %>">
+		        <a class="page-link" href="<%= (startPage > blockSize) ? myUrl + "&pageNum=" + (startPage - blockSize) : "#" %>" tabindex="-1">이전</a>
+		      </li>
+		    <% } %>
+		
+		    <%-- 페이지 번호 링크 생성 --%>
+		    <% for(int i = startPage; i <= endPage; i++) { %>
+		      <li class="page-item <%= (pageNum == i) ? "active" : "" %>">
+		        <a class="page-link <%= (pageNum == i) ? "text-white bg-dark" : "text-dark bg-white" %>" href="<%= myUrl + "&pageNum=" + i %>"><%= i %></a>
+		      </li>
+		    <% } %>
+		
+		    <% if(totalPage > 5) { %>
+		      <%-- 다음 블럭을 출력할 수 있는 링크 제공 --%>
+		      <li class="page-item <%= (endPage != totalPage) ? "" : "disabled" %>">
+		        <a class="page-link" href="<%= (endPage != totalPage) ? myUrl + "&pageNum=" + (startPage + blockSize) : "#" %>">다음</a>
+		      </li>
+		    <% } %>
+		  </ul>
+		</nav>
 	</div>
 </section>
+
 <!-- end product page -->
 
 
@@ -208,38 +282,37 @@ DecimalFormat money = new DecimalFormat("###,###");
 <script type="text/javascript">	
 	//---------------------------검색 기능 --------------------------------------
 	 //$("#insearch").focus();
-	 $("#insearch").keyup(function() {
-		var insearch=$("#insearch").val();		
-		if(insearch==""){
-			$("#searchDiv").hide();
-			return;
-		}		
-		$.ajax({
-			type:"post",
-			url:"<%=request.getContextPath()%>/product/product_sch.jsp",
-			data: {"insearch":insearch},
-			dataType: "xml",
-			success: function(xmlDoc) {
-				var code=$(xmlDoc).find("code").text();				
-				if(code=="success"){
-					var data=$(xmlDoc).find("data").text();					
-					var searchList=JSON.parse(data);					
-					var html="";
-					$(searchList).each(function() {
-						html+="<a href='<%=request.getContextPath()%>/index.jsp?workgroup=product&work=product&insearch="+encodeURIComponent(this.pname)+"'>"+this.pname+"</a><br>";						
-					});					
-					$("#searchList").html(html);					
-					$("#searchDiv").show();
-				}else{
-					$("#searchDiv").hide();
-				}				
-			},
-			errror: function(xhr) {
-				alert("에러코드 = "+xhr.status);
-			}			
-		});
-
-	}); 
+	$("#insearch").keyup(function() {
+    var insearch = $("#insearch").val();
+    if (insearch == "") {
+        $("#searchDiv").hide();
+        return;
+    }
+    $.ajax({
+        type: "post",
+        url: "<%=request.getContextPath()%>/product/product_sch.jsp",
+        data: { "insearch": insearch },
+        dataType: "xml",
+        success: function(xmlDoc) {
+            var code = $(xmlDoc).find("code").text();
+            if (code == "success") {
+                var data = $(xmlDoc).find("data").text();
+                var searchList = JSON.parse(data);
+                var html = "";
+                $(searchList).each(function() {
+                    html += "<a href='<%=request.getContextPath()%>/index.jsp?workgroup=product&work=product&insearch=" + encodeURIComponent(this.pname) + "'>" + this.pname + "</a>";
+                });
+                $("#searchList").html(html);
+                $("#searchDiv").show();
+            } else {
+                $("#searchDiv").hide();
+            }
+        },
+        error: function(xhr) {
+            alert("에러코드 = " + xhr.status);
+        }
+    });
+});
 	//-------------상품 종류 수량 div-----
 	var count = 0;
 	<%if (request.getParameter("cateOne") != null) {%>

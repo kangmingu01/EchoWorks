@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import echoworks.dto.ProductDTO;
 import echoworks.dto.QnaDTO;
 
 public class QnaDAO extends JdbcDAO {
@@ -280,6 +279,7 @@ public class QnaDAO extends JdbcDAO {
 
 	}
 
+	// Q&A 상품 번호마다 다른 Q&A 게시판 리스트 뽑는 기능(일단 보류)
 	public List<QnaDTO> selectQnAList(int productNo, int secretCheck, String replyStatus, int memberNum) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -294,17 +294,19 @@ public class QnaDAO extends JdbcDAO {
 
 			if (secretCheck == 1) {
 				sql += " AND QNA_STATUS = 1";
+			}else {
+				sql += " AND QNA_STATUS between 1 and 2 ";
 			}
 			if ("unanswered_answer".equals(replyStatus)) {
 				sql += " AND QNA_ANSWER IS NULL";
 			} else if ("answer_completed".equals(replyStatus)) {
 				sql += " AND QNA_ANSWER IS NOT NULL";
-			}else {
+			} else {
 				sql += "";
 			}
 			if (memberNum != 0) {
 				sql += " AND QNA_MEMBER_NO = ? order by qna_no desc";
-			}else {
+			} else {
 				sql += " order by qna_no desc ";
 			}
 
@@ -318,8 +320,6 @@ public class QnaDAO extends JdbcDAO {
 			if (memberNum != 0) {
 				pstmt.setInt(2, memberNum);
 			}
-
-			
 
 			rs = pstmt.executeQuery();
 
@@ -345,40 +345,87 @@ public class QnaDAO extends JdbcDAO {
 		return qnaList;
 	}
 
-	
-	//========================24.07.26 insert DAO 추가
+	// ========================24.07.26 insert DAO 추가
 	public int insertQnaUser(QnaDTO qna) {
-		Connection con=null;
-		PreparedStatement pstmt=null;
-		int rows=0;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		int rows = 0;
 		try {
-			con=getConnection();
-			
-			String sql="insert into qna values(qna_seq.nextval,?,?,?,?,sysdate,null,null,?)";
-			pstmt=con.prepareStatement(sql);
+			con = getConnection();
+
+			String sql = "insert into qna values(qna_seq.nextval,?,?,?,?,sysdate,null,null,?)";
+			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, qna.getQnaMemberNo());
 			pstmt.setInt(2, qna.getQnaProductNo());
 			pstmt.setString(3, qna.getQnaTitle());
 			pstmt.setString(4, qna.getQnaContent());
 			pstmt.setInt(5, qna.getQnaStatus());
-			
-			rows=pstmt.executeUpdate();
+
+			rows = pstmt.executeUpdate();
 		} catch (SQLException e) {
-			System.out.println("[에러]insertQnaUser() 메소드의 SQL 오류 = "+e.getMessage());
+			System.out.println("[에러]insertQnaUser() 메소드의 SQL 오류 = " + e.getMessage());
 		} finally {
 			close(con, pstmt);
 		}
 		return rows;
 	}
-	//=================조건별 행 갯수 출력
-	public int selectTotalQnaRows(int productNo, int secretCheck, String replyStatus, int memberNum) {
-		Connection con=null;
-		PreparedStatement pstmt=null;
-		ResultSet rs=null;
-		int count=0;
+
+	// 변경 버튼 누르고 제목이랑 내용 업데이트 하는 기능
+	public int updateQna(QnaDTO qna) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		int rows = 0;
 		try {
-			con=getConnection();
-			String sql="select count(*) from qna where QNA_PRODUCT_NO=? ";
+			con = getConnection();
+
+			String sql = "update qna set QNA_TITLE = ?, QNA_CONTENT = ? where QNA_NO = ? and QNA_PRODUCT_NO = ? and QNA_MEMBER_NO = ?";
+
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, qna.getQnaTitle());
+			pstmt.setString(2, qna.getQnaContent());
+			pstmt.setInt(3, qna.getQnaNo());
+			pstmt.setInt(4, qna.getQnaProductNo());
+			pstmt.setInt(5, qna.getQnaMemberNo());
+
+			rows = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("[에러]updateQna() 메소드의 SQL 오류 = " + e.getMessage());
+		} finally {
+			close(con, pstmt);
+		}
+		return rows;
+	}
+
+	// Q&A 질문 글 삭제
+	public int deleteQna(int qnaNo) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		int rows = 0;
+		try {
+			con = getConnection();
+
+			String sql = "update qna set QNA_STATUS=0 where QNA_NO = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, qnaNo);
+
+			rows = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("[에러]deleteQna() 메소드의 SQL 오류 = " + e.getMessage());
+		} finally {
+			close(con, pstmt);
+		}
+		return rows;
+	}
+
+	// =================조건별 행 갯수 출력
+	public int selectTotalQnaRows(int productNo, int secretCheck, String replyStatus, int memberNum) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int count = 0;
+		try {
+			con = getConnection();
+			String sql = "select count(*) from qna where QNA_PRODUCT_NO=? ";
 			if (secretCheck == 1) {
 				sql += " AND QNA_STATUS = 1";
 			}
@@ -386,73 +433,76 @@ public class QnaDAO extends JdbcDAO {
 				sql += " AND QNA_ANSWER IS NULL";
 			} else if ("answer_completed".equals(replyStatus)) {
 				sql += " AND QNA_ANSWER IS NOT NULL";
-			}else {
+			} else {
 				sql += "";
 			}
 			if (memberNum != 0) {
 				sql += " AND QNA_MEMBER_NO = ? ";
 			}
-			pstmt = con.prepareStatement(sql);			
+			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, productNo);
-			
+
 			if (memberNum != 0) {
 				pstmt.setInt(2, memberNum);
 			}
-			
-			rs=pstmt.executeQuery();
-			
-			if(rs.next()) {
-				count=rs.getInt(1);
+
+			rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				count = rs.getInt(1);
 			}
 		} catch (SQLException e) {
-			System.out.println("[에러]selectTotalQnaRows() 메소드의 SQL 오류 = "+e.getMessage());
+			System.out.println("[에러]selectTotalQnaRows() 메소드의 SQL 오류 = " + e.getMessage());
 		} finally {
 			close(con, pstmt, rs);
 		}
 		return count;
 	}
-	//---------페이징 처리된 글 수 출력----- 있는거 포함 ///2
-	public List<QnaDTO> selectQnaList(int startRow, int endRow,int productNo, int secretCheck, String replyStatus, int memberNum) {
-		Connection con=null;
-		PreparedStatement pstmt=null;
-		ResultSet rs=null;
-		List<QnaDTO> qnaList=new ArrayList<QnaDTO>();
+
+	// ---------페이징 처리된 글 수 출력----- 있는거 포함 ///2
+	public List<QnaDTO> selectQnaList(int startRow, int endRow, int productNo, int secretCheck, String replyStatus,
+			int memberNum) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<QnaDTO> qnaList = new ArrayList<QnaDTO>();
 		try {
-			con=getConnection();
-			String sql="select * from (select rownum rn, temp.* from (select QNA_NO, QNA_MEMBER_NO,QNA_PRODUCT_NO,QNA_TITLE,QNA_CONTENT,QNA_DATE,QNA_ANSWER,QNA_ANSDATE,QNA_STATUS from qna where QNA_PRODUCT_NO=? ";
+			con = getConnection();
+			String sql = "select * from (select rownum rn, temp.* from (select QNA_NO, QNA_MEMBER_NO,QNA_PRODUCT_NO,QNA_TITLE,QNA_CONTENT,QNA_DATE,QNA_ANSWER,QNA_ANSDATE,QNA_STATUS from qna where QNA_PRODUCT_NO=? ";
 			if (secretCheck == 1) {
 				sql += " AND QNA_STATUS = 1";
+			}else {
+				sql += " and QNA_STATUS between 1and 2 ";
 			}
 			if ("unanswered_answer".equals(replyStatus)) {
 				sql += " AND QNA_ANSWER IS NULL";
 			} else if ("answer_completed".equals(replyStatus)) {
 				sql += " AND QNA_ANSWER IS NOT NULL";
-			}else {
+			} else {
 				sql += "";
 			}
 			if (memberNum != 0) {
 				sql += " AND QNA_MEMBER_NO = ? ";
-				sql	+= " order by QNA_NO desc ) temp) where rn between ? and ?";
-			}else {
-				sql	+= " order by QNA_NO desc ) temp) where rn between ? and ?";
+				sql += " order by QNA_NO desc ) temp) where rn between ? and ?";
+			} else {
+				sql += " order by QNA_NO desc ) temp) where rn between ? and ?";
 			}
-				
-			pstmt = con.prepareStatement(sql);	
+
+			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, productNo);
 			if (memberNum != 0) {
 				pstmt.setInt(2, memberNum);
 				pstmt.setInt(3, startRow);
-				pstmt.setInt(4, endRow);	
-			}else {
-				pstmt.setInt(2, startRow);	
-				pstmt.setInt(3, endRow);				
+				pstmt.setInt(4, endRow);
+			} else {
+				pstmt.setInt(2, startRow);
+				pstmt.setInt(3, endRow);
 			}
-	
-			
-			rs=pstmt.executeQuery();
-			
-			while(rs.next()) {
-				QnaDTO qna=new QnaDTO();
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				QnaDTO qna = new QnaDTO();
 				qna.setQnaNo(rs.getInt("QNA_NO"));
 				qna.setQnaMemberNo(rs.getInt("QNA_MEMBER_NO"));
 				qna.setQnaProductNo(rs.getInt("QNA_PRODUCT_NO"));
@@ -462,14 +512,35 @@ public class QnaDAO extends JdbcDAO {
 				qna.setQnaAnswer(rs.getString("QNA_ANSWER"));
 				qna.setQnaAnsDate(rs.getDate("QNA_ANSDATE"));
 				qna.setQnaStatus(rs.getInt("QNA_STATUS"));
-		
+
 				qnaList.add(qna);
 			}
 		} catch (SQLException e) {
-			System.out.println("[에러]selectQnaList() 메소드의 SQL 오류 = "+e.getMessage());
+			System.out.println("[에러]selectQnaList() 메소드의 SQL 오류 = " + e.getMessage());
 		} finally {
 			close(con, pstmt, rs);
 		}
 		return qnaList;
 	}
+	
+	// QNA 관리자 답글 
+		public int insertAdminAnswer(QnaDTO qna) {
+			Connection con = null;
+			PreparedStatement pstmt = null;
+			int rows = 0;
+			try {
+				con = getConnection();
+				String sql = "update qna set qna_answer=? ,QNA_ANSDATE=sysdate where qna_no=?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, qna.getQnaAnswer());
+				pstmt.setInt(2, qna.getQnaNo());
+				
+				rows = pstmt.executeUpdate();
+			} catch (SQLException e) {
+				System.out.println("[에러] insertAdminAnswer() 메서드의 SQL 오류 = " + e.getMessage());
+			} finally {
+				close(con, pstmt);
+			}
+			return rows;
+		}
 }
