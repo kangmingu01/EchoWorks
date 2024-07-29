@@ -156,6 +156,16 @@ DecimalFormat money = new DecimalFormat("###,###");
 .page-item.disabled .page-link {
     color: rgba(33,37,41,0.5);
 }
+// 상품
+    .card-body {
+      position: relative;
+    }
+    .card-text {
+      position: absolute;
+      right: 16px;
+      bottom: 5px;
+    }
+
 </style>
 <!-- product page -->
 <section id="PDpage" class="">
@@ -211,15 +221,15 @@ DecimalFormat money = new DecimalFormat("###,###");
 		        <% if (productList != null) { %>
 		            <% for (ProductDTO product : productList) { %>
 		                <% String price = money.format(product.getPRODUCT_PRICE()); %>
-		                <div class="card p-0 <%=product.getPRODUCT_CATEGORY_MAIN()%> <%=product.getPRODUCT_CATEGORY_SUB()%> PRDC">
-		                    <a href="<%=request.getContextPath()%>/index.jsp?workgroup=detail&work=detail&product_no=<%=product.getPRODUCT_NO()%>" class="text-decoration-none text-black">
-		                        <img class="card-img-top" src="<%=request.getContextPath()%>/assets/img/<%=product.getPRODUCT_IMG()%>.jpg" style="width: 100%;" />
-		                        <div class="card-body">
-		                            <p class="card-title"><%=product.getPRODUCT_NAME()%></p>
-		                            <span class="card-text"><%=price%>원</span>
-		                        </div>
-		                    </a>
-		                </div>
+						<div class="card p-0 <%=product.getPRODUCT_CATEGORY_MAIN()%> <%=product.getPRODUCT_CATEGORY_SUB()%> PRDC">
+						    <a href="<%=request.getContextPath()%>/index.jsp?workgroup=detail&work=detail&product_no=<%=product.getPRODUCT_NO()%>" class="text-decoration-none text-black">
+						      <img class="card-img-top" src="<%=request.getContextPath()%>/assets/img/<%=product.getPRODUCT_IMG()%>.jpg" style="width: 100%;" />
+						      <div class="card-body mb-">
+						        <p class="card-title"><%=product.getPRODUCT_NAME()%></p>
+						        <span class="card-text"><%=price%>원</span>
+						      </div>
+						    </a>
+						  </div>
 		            <% } %>
 		        <% } %>
 		    <% } %>
