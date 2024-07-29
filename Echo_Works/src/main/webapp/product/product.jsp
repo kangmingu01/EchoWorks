@@ -120,16 +120,15 @@ DecimalFormat money = new DecimalFormat("###,###");
 		<!--  버튼 div 끝  -->
 
 		<!--  상황표 ? 그 숫자 =============================================================================-->
-	 	<div class="" id="inpo">
-			<form class="d-flex" method="post" action="<%=request.getContextPath() %>/index.jsp?workgroup=product&work=product_action">
-				<input class="form-control me-2" type="text" placeholder="Search" aria-label="Search" name="insearch" id="insearch">
-				<button class="btn btn-outline-success" type="submit">Search</button>
-			</form>
-			<div class="form-control me-2" placeholder="Search" aria-label="Search" id="searchDiv" >
-				<div id="searchList"></div>
-			</div>
-			<p id="inpopo"></p>
-		</div> 
+	 	<div class="d-flex justify-content-between align-items-center" id="inpo">
+	        <span class="fs-5 col-4" id="inpopo">Some Text</span>
+	        <div class="d-flex col-4 justify-content-end">
+	            <form class="d-flex" method="post" action="<%=request.getContextPath() %>/index.jsp?workgroup=product&work=product_action">
+	                <input class="form-control me-2" type="text" style="max-width: 200px;" placeholder="Search" aria-label="Search" name="insearch" id="insearch">
+	                <button class="btn btn-outline-success" type="submit">Search</button>
+	            </form>
+	        </div>
+   		</div>
 		<!--  상품 div -->
 		<div class="keyboards_list mt-4 row gx-0 gy-3">
 		<% if(totalRow == 0) { %>
