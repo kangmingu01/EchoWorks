@@ -106,6 +106,43 @@ small {
 	border: 2px solid white;
 	color: white;
 }
+
+#frame {
+	width: 690px;
+	height: 338px;
+	transition: transform 200ms;
+	
+}
+
+#frame:hover {
+	transform: scale3d(1.05, 1.05, 1.05);
+}
+
+#specialCard {
+	width: 100%;
+	height: 100%;
+	border-radius: 9px;
+	background-image: url("assets/img/cycle1.jpg");
+	background-position: center;
+	background-repeat: no-repeat;
+	box-shadow: 0 0 10px 2px rgba(0,0,0,0.1);
+	position: relative;
+	transition-duration: 250ms;
+	transition-property: transform, box-shadow;
+	transition-timing-function: ease-out;
+}
+
+#light {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 9px;
+}
+
+#specialCard > h1 {
+  font-size: 50px;
+}
+
 </style>
 <!-- Carousel -->
 <div id="hero-carousel" class="carousel slide z-2"
@@ -267,3 +304,57 @@ ECHOWORKS는 단순한 매장 그 이상입니다. 최고의 타이핑 경험을
 		</div>
 	</div>
 </section>
+<section class="d-flex align-items-center justify-content-center mt-3 mb-3">
+	<div id="frame" >
+		<div id="specialCard">
+			<div id="light"></div>
+		</div>
+	</div>
+</section>
+
+<script type="text/javascript">
+const frame = document.getElementById('frame')
+const card = document.getElementById('specialCard')
+/* const light = document.getElementById('light') */
+
+let { x, y, width, height } = frame.getBoundingClientRect()
+
+function mouseMove(e) {
+  const left = e.clientX - x
+  const top = e.clientY - y
+  const centerX = left - width / 2
+  const centerY = top - height / 2
+  const d = Math.sqrt(centerX**2 + centerY**2)
+
+  card.style.boxShadow = 
+      (-centerX / 20) + "px " + (-centerY / 20) + "px 5px rgba(0, 0, 0, 0.2)";
+
+  card.style.transform = 
+      "rotate3d(" + (-centerY / 200) + ", " + (centerX / 200) + ", 0, " + (d / 80) + "deg)";
+
+  /* light.style.backgroundImage = 
+      "radial-gradient(circle at " + left + "px " + top + "px, #00000040, #ffffff00, #ffffff99)"; */
+}
+
+frame.addEventListener('mouseenter', () => {
+  frame.addEventListener('mousemove', mouseMove)
+})
+
+frame.addEventListener('mouseleave', () => {
+  frame.removeEventListener('mousemove', mouseMove)
+  card.style.boxShadow = ''
+  card.style.transform = ''
+  light.style.backgroundImage = ''
+})
+
+window.addEventListener('resize', () => {
+  rect = frame.getBoundingClientRect()
+  x = rect.x
+  y = rect.y
+  width = rect.width
+  height = rect.height
+})
+
+
+
+</script>
