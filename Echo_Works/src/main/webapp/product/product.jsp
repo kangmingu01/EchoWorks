@@ -199,8 +199,8 @@ DecimalFormat money = new DecimalFormat("###,###");
 
 		<!--  상황표 ? 그 숫자 =============================================================================-->
 		<div class="d-flex justify-content-between align-items-center mt-3" id="inpo">
-		    <span class="fs-5 col-3 text-nowrap" id="inpopo"></span>
-		    <div class="d-flex col-3 justify-content-end position-relative">
+		    <span class="fs-5 col-6 col-sm-6 col-md-3 text-nowrap" id="inpopo"></span>
+		    <div class="d-flex col-6 col-sm-6 col-md-3 justify-content-end position-relative">
 		        <form class="d-flex w-100" method="post" action="<%=request.getContextPath() %>/index.jsp?workgroup=product&work=product_action">
 		            <input class="form-control me-2 flex-grow-1" type="text" style="min-width: 100px; max-width: 250px;" placeholder="Search" aria-label="Search" name="insearch" id="insearch">
 		            <button class="btn btn-outline-success" type="submit">Search</button>
