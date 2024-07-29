@@ -1,3 +1,4 @@
+<%@page import="echoworks.dao.MemberDAO"%>
 <%@page import="echoworks.dto.PaymentDTO"%>
 <%@page import="echoworks.dao.PaymentDAO"%>
 <%@page import="echoworks.dao.ReviewDAO"%>
@@ -21,6 +22,7 @@
 <%
 
 	MemberDTO loginMember=(MemberDTO)session.getAttribute("loginMember");
+	
 	String requestURI=request.getRequestURI();
 	
 	String queryString=request.getQueryString();		
@@ -393,8 +395,11 @@ input[type="number"]::-webkit-inner-spin-button {
 														html+=this.content.replace(/\n/g,"<br>")+"<br>";//댓글태그에 댓글내용 포함
 														html+="("+this.regdate+")<br>";//댓글태그에 작성날짜 포함
 														<%if(loginMember != null) {%>
-														html+="<button type='button' onclick='modifyreview("+this.num+");'>댓글변경</button>&nbsp;";//댓글태그에 댓글변경버튼 포함
-														html+="<button type='button' onclick='removereview("+this.num+");'>댓글삭제</button>&nbsp;";//댓글태그에 댓글삭제버튼 포함
+														var mb = "<%=loginMember.getMemberName()%>";
+														if(this.writer == mb) {
+															html+="<button type='button' onclick='modifyreview("+this.num+");'>댓글변경</button>&nbsp;";//댓글태그에 댓글변경버튼 포함
+															html+="<button type='button' onclick='removereview("+this.num+");'>댓글삭제</button>&nbsp;";//댓글태그에 댓글삭제버튼 포함
+														}
 														<%}%>
 														html+="</div>";
 														
@@ -416,22 +421,7 @@ input[type="number"]::-webkit-inner-spin-button {
 								// => Ajax 엔진으로 [review_add.jsp] 문서를 요청하여 실행결과를 JSON으로 제공받아 처리
 								// => 입력값(작성자와 내용)을 [review_add.jsp] 문서를 요청시 전달
 								$("#add_btn").click(function() {
-									var pyNo=194;
-									<%if(loginMember == null){%>
-									checkLogin();
-									<%}else {%>	
-										<%List<PaymentDTO> paymentList =PaymentDAO.getDAO().selectPaymentByMemberNo(loginMember.getMemberNum());%>
-										
-										<%for(int i=0;i<paymentList.size();i++) {%>
-											alert(<%=ReviewDAO.getDAO().selectPaymentNo(paymentList.get(i)) %>);
-											<%if(ReviewDAO.getDAO().selectPaymentNo(paymentList.get(i)) == 0) {%> 
-											pyNo =<%=paymentList.get(i).getPaymentNo()%>;
-											alert("pyNo " + pyNo);
-											<%}%>
-										<%}%>
-									
-									
-									
+									var pyNo=0;
 									var content=$("#add_content").val();
 									if(content == "") {
 										$("#add_message").html("내용을 입력해 주세요.");
@@ -445,20 +435,21 @@ input[type="number"]::-webkit-inner-spin-button {
 									$.ajax({
 										type: "post",
 										url: "<%=request.getContextPath()%>/review/review_add.jsp",
-										data: {"pyNo":pyNo, "content":content},
+										data: {"content":content},
 										dataType: "json",
 										success: function(result) {
 											if(result.code == "success") {
 												displayReview();//댓글목록 출력
 											} else {
-												alert("댓글 삽입 실패");
+												//alert("댓글 삽입 실패");
+												alert("구매평 작성이 가능한 주문이 존재하지 않습니다.\n구매평은 주문당 품목별로 1번만 작성이 가능하며, 삭제 후 재작성은 불가합니다.");
 											}
 										},
 										error: function(xhr) {
 											alert("에러코드 = "+xhr.status);
 										}
 									});
-									<%}%>
+									
 								});
 
 								//댓글변경태그와 댓글삭제태그를 초기화 처리하기 위한 함수
