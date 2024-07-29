@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import echoworks.dto.MemberDTO;
 
@@ -337,7 +339,44 @@ public class MemberDAO extends JdbcDAO {
 		}
 		return rows;
 	}
+	 //관리자페이지에서 모든 회원 정보 검색하는 메소드
+	 public List<MemberDTO> selectAllMembers() {
+	        Connection con = null;
+	        PreparedStatement pstmt = null;
+	        ResultSet rs = null;
+	        List<MemberDTO> memberList = new ArrayList<>();
+	        try {
+	            con = getConnection();
+	            String sql = "select member_num, member_id, member_name, member_email, member_mobile, member_zipcode, member_address1, member_address2, member_register_date, member_last_login, member_auth from member order by member_num desc";
+	                    
+	         pstmt = con.prepareStatement(sql);
+	         rs = pstmt.executeQuery();
 
+	         while (rs.next()) {
+	             MemberDTO member = new MemberDTO();
+	             member.setMemberNum(rs.getInt("member_num"));
+	             member.setMemberId(rs.getString("member_id"));
+	             member.setMemberName(rs.getString("member_name"));
+	             member.setMemberEmail(rs.getString("member_email"));
+	             member.setMemberMobile(rs.getString("member_mobile"));
+	             member.setMemberZipcode(rs.getString("member_zipcode"));
+	             member.setMemberAddress1(rs.getString("member_address1"));
+	             member.setMemberAddress2(rs.getString("member_address2"));
+	             member.setMemberRegisterDate(rs.getString("member_register_date"));
+	             member.setMemberLastLogin(rs.getString("member_last_login"));
+	             member.setMemberAuth(rs.getInt("member_auth"));
+	             memberList.add(member);
+	            
+	         }
+	         
+	        } catch (SQLException e) {
+	            System.out.println("[에러]selectAllMembers() 메서드의 SQL 오류 = " + e.getMessage());
+	        } finally {
+	            close(con, pstmt, rs);
+	        }
+	        return memberList;
+	    }
+	
 }
 
 
