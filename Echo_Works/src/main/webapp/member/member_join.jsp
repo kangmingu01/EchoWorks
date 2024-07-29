@@ -9,7 +9,6 @@
     <style>
         body {
             background: white;
-             
         }
         .form-container {
             margin-top: 50px;
@@ -17,17 +16,17 @@
             justify-content: center;
         }
         form {
-  		  	width: 100%;
-   			max-width: 800px;  /* 여기서 max-width를 800px로 변경합니다 */
-    		padding: 30px;
-  	  		border: 2px solid black;
-  	 		border-radius: 20px;
-  	  		box-shadow: 8px 4px 16px rgba(0, 0, 0, 0.3);
-  	 		height: auto;
-  	 		display: flex;
-   		 	flex-direction: column;
-  	 		 justify-content: center;
-		}
+            width: 100%;
+            max-width: 800px;
+            padding: 30px;
+            border: 2px solid black;
+            border-radius: 20px;
+            box-shadow: 8px 4px 16px rgba(0, 0, 0, 0.3);
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
         .btn-primary, .btn-secondary {
             border: none;
             border-radius: 50px;
@@ -80,22 +79,22 @@
             100% { transform: translateX(0); }
         }
         #idCheck, #postSearch {
-            font-size: 12px;
+            font-size: 14px;
             font-weight: bold;
             cursor: pointer;
             margin-left: 10px;
-            padding: 2px 10px;
+            padding: 5px 15px;
             border: 1px solid black;
         }
         #idCheck:hover, #postSearch:hover {
-            background: aqua;
+            background: black;
         }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="row">
-        <div class="col-md-6 offset-md-3 form-container ">
+        <div class="col-md-6 offset-md-3 form-container">
             <form id="join" action="<%=request.getContextPath() %>/index.jsp?workgroup=member&work=member_join_action" method="post">
                 <input type="hidden" id="idCheckResult" value="0">
                 <h4 class="jointitle">회원가입</h4>
@@ -202,8 +201,6 @@
     </div>
 </div>
 <br>
-
-
 <script>
     $("#id").focus();
     $("#join").submit(function() {
@@ -306,7 +303,7 @@
         $("#idCheckResult").val("0");
         $("#id").removeClass("is-invalid");
     });
-    $("#postSearch").click(function() {
+    function openPostcode() {
         new daum.Postcode({
             oncomplete: function(data) {
                 $("#zipcode").val(data.zonecode);
@@ -315,7 +312,11 @@
                 $("#address1").removeClass("is-invalid");
             }
         }).open();
-    });
+    }
+    $("#postSearch").click(openPostcode);
+    $("#zipcode").click(openPostcode);
+    $("#address1").click(openPostcode);
 </script>
 </body>
 </html>
+  

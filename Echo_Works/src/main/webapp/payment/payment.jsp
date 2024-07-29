@@ -80,6 +80,14 @@
         .hidden {
             display: none;
         }
+        .error {
+            color: red;
+            font-size: 0.875rem;
+            margin-left: 10px;
+            display: block;
+            visibility: hidden;
+            height: 1.2em;
+        }
     </style>
 </head>
 <body>
@@ -131,7 +139,8 @@
                         </div>
                         <div class="mb-3">
                             <label for="ordererContact" class="form-label">전화번호</label>
-                            <input type="text" class="form-control" id="ordererContact" name="phone" value="<%= loginMember.getMemberMobile() %>" disabled>
+                            <input type="text" class="form-control phone-input" id="ordererContact" name="phone" value="<%= loginMember.getMemberMobile() %>" disabled>
+                            <div id="ordererContactMsg" class="error">전화번호를 올바르게 입력해 주세요.</div>
                         </div>
                         <div class="mb-3">
                             <label for="ordererEmail" class="form-label">이메일</label>
@@ -164,7 +173,8 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="contactExisting" class="form-label">연락처</label>
-                                        <input type="text" class="form-control" id="contactExisting" placeholder="전화번호를 입력하세요" name="phoneExisting" value="<%= loginMember.getMemberMobile() %>" disabled>
+                                        <input type="text" class="form-control phone-input" id="contactExisting" placeholder="전화번호를 입력하세요" name="phoneExisting" value="<%= loginMember.getMemberMobile() %>" disabled>
+                                        <div id="contactExistingMsg" class="error">전화번호를 올바르게 입력해 주세요.</div>
                                         <input type="hidden" name="phone" value="<%= loginMember.getMemberMobile() %>">
                                     </div>
                                     <div class="mb-3">
@@ -212,7 +222,8 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="contact" class="form-label">연락처</label>
-                                        <input type="text" class="form-control" id="contact" placeholder="전화번호를 입력하세요" name="phone">
+                                        <input type="text" class="form-control phone-input" id="contact" placeholder="전화번호를 입력하세요" name="phone">
+                                        <div id="contactMsg" class="error">전화번호를 올바르게 입력해 주세요.</div>
                                     </div>
                                     <div class="mb-3">
                                         <label for="postcode" class="form-label">우편번호</label>
@@ -382,6 +393,27 @@
         totalProductPrice.textContent = formatPrice(parseInt(totalProductPrice.textContent.replace(/[^0-9]/g, ''))) + '원';
         shippingCost.textContent = formatPrice(parseInt(shippingCost.textContent.replace(/[^0-9]/g, ''))) + '원';
         totalOrderAmount.textContent = formatPrice(parseInt(totalOrderAmount.textContent.replace(/[^0-9]/g, ''))) + '원';
+    });
+
+    // 전화번호 입력 시 숫자만 입력받도록 설정
+    document.querySelectorAll('.phone-input').forEach(function(element) {
+        element.addEventListener('input', function(event) {
+            event.target.value = event.target.value.replace(/[^0-9]/g, '');
+        });
+
+        element.addEventListener('blur', function(event) {
+            var phone = event.target.value;
+            var errorMsg = document.getElementById(event.target.id + 'Msg');
+            if (phone.length === 10) {
+                event.target.value = phone.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+                errorMsg.style.visibility = 'hidden'; // 전화번호가 올바를 경우 오류 메시지 숨기기
+            } else if (phone.length === 11) {
+                event.target.value = phone.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+                errorMsg.style.visibility = 'hidden'; // 전화번호가 올바를 경우 오류 메시지 숨기기
+            } else {
+                errorMsg.style.visibility = 'visible'; // 전화번호가 잘못되었을 경우 오류 메시지 표시
+            }
+        });
     });
 </script>
 </body>
