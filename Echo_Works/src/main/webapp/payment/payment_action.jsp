@@ -80,9 +80,6 @@
                 }
 
                 cartDAO.deleteSelectedCartItems(selectedCartNos);
-               
-            } else {
-               
             }
 
             response.sendRedirect(request.getContextPath() + "/index.jsp?workgroup=payment&work=payment_complete");
