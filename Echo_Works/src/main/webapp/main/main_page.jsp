@@ -106,12 +106,10 @@ small {
 	border: 2px solid white;
 	color: white;
 }
-
 #frame {
 	width: 690px;
 	height: 338px;
 	transition: transform 200ms;
-	
 }
 
 #frame:hover {
@@ -127,20 +125,55 @@ small {
 	background-repeat: no-repeat;
 	box-shadow: 0 0 10px 2px rgba(0,0,0,0.1);
 	position: relative;
-	transition-duration: 250ms;
+	transition-duration: 200ms;
 	transition-property: transform, box-shadow;
 	transition-timing-function: ease-out;
 }
 
 #light {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 9px;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	border-radius: 9px;
 }
 
-#specialCard > h1 {
-  font-size: 50px;
+/* 반응형 디자인: 작은 화면에서 크기 조정 */
+@media (max-width: 768px) {
+	#frame {
+		width: 90%;
+		height: auto;
+	}
+
+	#specialCard {
+		width: 100%;
+		height: 0; /* 높이를 0으로 설정하여 요소가 사라지지 않도록 함 */
+		padding-bottom: 48.9%; /* 원래 비율을 유지하기 위해 padding-bottom 사용 */
+		background-size: cover;
+	}
+
+	#light {
+		width: 100%;
+		height: 100%;
+	}
+}
+
+@media (max-width: 576px) {
+	#frame {
+		width: 100%;
+		height: auto;
+	}
+
+	#specialCard {
+		width: 100%;
+		height: 0; /* 높이를 0으로 설정하여 요소가 사라지지 않도록 함 */
+		padding-bottom: 48.9%; /* 원래 비율을 유지하기 위해 padding-bottom 사용 */
+		background-size: cover;
+	}
+
+	#light {
+		width: 100%;
+		height: 100%;
+	}
 }
 
 </style>
@@ -202,6 +235,17 @@ small {
 	</div>
 </div>
 
+<!-- 키보드 공중에 띄우기 -->
+<section class="mt-5 mb-5">
+	<h3 class="text-center fs-2 fw-bold ">08.01 Cycle8 Open</h3>
+	<div class="mt-5 d-flex align-items-center justify-content-center mt-3 mb-3">
+		<div id="frame" >
+			<div id="specialCard">
+				<div id="light"></div>
+			</div>
+		</div>
+	</div>
+</section>
 <!-- Best Selling Keyboards -->
 <div class="container mt-5">
 	<h2 class="text-center mb-4">BEST SELLING KEYBOARDS!</h2>
@@ -280,6 +324,7 @@ small {
 		</div>
 	</div>
 </div>
+
 <section id="call-to-action"
 	class="call-to-action section dark-background"
 >
@@ -304,57 +349,61 @@ ECHOWORKS는 단순한 매장 그 이상입니다. 최고의 타이핑 경험을
 		</div>
 	</div>
 </section>
-<section class="d-flex align-items-center justify-content-center mt-3 mb-3">
-	<div id="frame" >
-		<div id="specialCard">
-			<div id="light"></div>
-		</div>
-	</div>
-</section>
+
 
 <script type="text/javascript">
-const frame = document.getElementById('frame')
-const card = document.getElementById('specialCard')
-/* const light = document.getElementById('light') */
+const frame = document.getElementById('frame');
+const card = document.getElementById('specialCard');
+const light = document.getElementById('light');
 
-let { x, y, width, height } = frame.getBoundingClientRect()
+function updateDimensions() {
+    const rect = frame.getBoundingClientRect();
+    return {
+        x: rect.x,
+        y: rect.y,
+        width: rect.width,
+        height: rect.height
+    };
+}
+
+let { x, y, width, height } = updateDimensions();
 
 function mouseMove(e) {
-  const left = e.clientX - x
-  const top = e.clientY - y
-  const centerX = left - width / 2
-  const centerY = top - height / 2
-  const d = Math.sqrt(centerX**2 + centerY**2)
+    const left = e.clientX - x;
+    const top = e.clientY - y;
+    const centerX = left - width / 2;
+    const centerY = top - height / 2;
+    const d = Math.sqrt(centerX ** 2 + centerY ** 2);
 
-  card.style.boxShadow = 
-      (-centerX / 20) + "px " + (-centerY / 20) + "px 5px rgba(0, 0, 0, 0.2)";
+    card.style.transition = "box-shadow 200ms ease-out, transform 200ms ease-out";
+    card.style.boxShadow = 
+        (-centerX / 15) + "px " + (-centerY / 15) + "px 20px rgba(0, 0, 0, 0.5)";
+    card.style.transform = 
+        "rotate3d(" + (-centerY / 100) + ", " + (centerX / 100) + ", 0, " + (d / 80) + "deg)";
 
-  card.style.transform = 
-      "rotate3d(" + (-centerY / 200) + ", " + (centerX / 200) + ", 0, " + (d / 80) + "deg)";
-
-  /* light.style.backgroundImage = 
-      "radial-gradient(circle at " + left + "px " + top + "px, #00000040, #ffffff00, #ffffff99)"; */
+    light.style.backgroundImage = 
+        "radial-gradient(circle at " + left + "px " + top + "px, " +
+        "rgba(255, 0, 0, 0.1), rgba(255, 127, 0, 0.1), rgba(255, 255, 0, 0.1), " +
+        "rgba(0, 255, 0, 0.1), rgba(0, 0, 255, 0.1), rgba(75, 0, 130, 0.1), rgba(139, 0, 255, 0.1))";
 }
 
 frame.addEventListener('mouseenter', () => {
-  frame.addEventListener('mousemove', mouseMove)
-})
+    frame.addEventListener('mousemove', mouseMove);
+});
 
 frame.addEventListener('mouseleave', () => {
-  frame.removeEventListener('mousemove', mouseMove)
-  card.style.boxShadow = ''
-  card.style.transform = ''
-  light.style.backgroundImage = ''
-})
+    frame.removeEventListener('mousemove', mouseMove);
+    card.style.transition = "box-shadow 200ms ease-out, transform 200ms ease-out";
+    card.style.boxShadow = '';
+    card.style.transform = '';
+    light.style.backgroundImage = '';
+});
 
 window.addEventListener('resize', () => {
-  rect = frame.getBoundingClientRect()
-  x = rect.x
-  y = rect.y
-  width = rect.width
-  height = rect.height
-})
-
-
-
+    const dimensions = updateDimensions();
+    x = dimensions.x;
+    y = dimensions.y;
+    width = dimensions.width;
+    height = dimensions.height;
+});
 </script>
