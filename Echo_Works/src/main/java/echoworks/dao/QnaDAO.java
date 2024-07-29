@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import echoworks.dto.ProductDTO;
 import echoworks.dto.QnaDTO;
 
 public class QnaDAO extends JdbcDAO {
@@ -368,5 +369,107 @@ public class QnaDAO extends JdbcDAO {
 			close(con, pstmt);
 		}
 		return rows;
+	}
+	//=================조건별 행 갯수 출력
+	public int selectTotalQnaRows(int productNo, int secretCheck, String replyStatus, int memberNum) {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		int count=0;
+		try {
+			con=getConnection();
+			String sql="select count(*) from qna where QNA_PRODUCT_NO=? ";
+			if (secretCheck == 1) {
+				sql += " AND QNA_STATUS = 1";
+			}
+			if ("unanswered_answer".equals(replyStatus)) {
+				sql += " AND QNA_ANSWER IS NULL";
+			} else if ("answer_completed".equals(replyStatus)) {
+				sql += " AND QNA_ANSWER IS NOT NULL";
+			}else {
+				sql += "";
+			}
+			if (memberNum != 0) {
+				sql += " AND QNA_MEMBER_NO = ? ";
+			}
+			pstmt = con.prepareStatement(sql);			
+			pstmt.setInt(1, productNo);
+			
+			if (memberNum != 0) {
+				pstmt.setInt(2, memberNum);
+			}
+			
+			rs=pstmt.executeQuery();
+			
+			if(rs.next()) {
+				count=rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			System.out.println("[에러]selectTotalQnaRows() 메소드의 SQL 오류 = "+e.getMessage());
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return count;
+	}
+	//---------페이징 처리된 글 수 출력----- 있는거 포함 ///2
+	public List<QnaDTO> selectQnaList(int startRow, int endRow,int productNo, int secretCheck, String replyStatus, int memberNum) {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		List<QnaDTO> qnaList=new ArrayList<QnaDTO>();
+		try {
+			con=getConnection();
+			String sql="select * from (select rownum rn, temp.* from (select QNA_NO, QNA_MEMBER_NO,QNA_PRODUCT_NO,QNA_TITLE,QNA_CONTENT,QNA_DATE,QNA_ANSWER,QNA_ANSDATE,QNA_STATUS from qna where QNA_PRODUCT_NO=? ";
+			if (secretCheck == 1) {
+				sql += " AND QNA_STATUS = 1";
+			}
+			if ("unanswered_answer".equals(replyStatus)) {
+				sql += " AND QNA_ANSWER IS NULL";
+			} else if ("answer_completed".equals(replyStatus)) {
+				sql += " AND QNA_ANSWER IS NOT NULL";
+			}else {
+				sql += "";
+			}
+			if (memberNum != 0) {
+				sql += " AND QNA_MEMBER_NO = ? ";
+				sql	+= " order by QNA_NO desc ) temp) where rn between ? and ?";
+			}else {
+				sql	+= " order by QNA_NO desc ) temp) where rn between ? and ?";
+			}
+				
+			pstmt = con.prepareStatement(sql);	
+			pstmt.setInt(1, productNo);
+			if (memberNum != 0) {
+				pstmt.setInt(2, memberNum);
+				pstmt.setInt(3, startRow);
+				pstmt.setInt(4, endRow);	
+			}else {
+				pstmt.setInt(2, startRow);	
+				pstmt.setInt(3, endRow);				
+			}
+	
+			
+			rs=pstmt.executeQuery();
+			
+			while(rs.next()) {
+				QnaDTO qna=new QnaDTO();
+				qna.setQnaNo(rs.getInt("QNA_NO"));
+				qna.setQnaMemberNo(rs.getInt("QNA_MEMBER_NO"));
+				qna.setQnaProductNo(rs.getInt("QNA_PRODUCT_NO"));
+				qna.setQnaTitle(rs.getString("QNA_TITLE"));
+				qna.setQnaContent(rs.getString("QNA_CONTENT"));
+				qna.setQnaDate(rs.getDate("QNA_DATE"));
+				qna.setQnaAnswer(rs.getString("QNA_ANSWER"));
+				qna.setQnaAnsDate(rs.getDate("QNA_ANSDATE"));
+				qna.setQnaStatus(rs.getInt("QNA_STATUS"));
+		
+				qnaList.add(qna);
+			}
+		} catch (SQLException e) {
+			System.out.println("[에러]selectQnaList() 메소드의 SQL 오류 = "+e.getMessage());
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return qnaList;
 	}
 }
