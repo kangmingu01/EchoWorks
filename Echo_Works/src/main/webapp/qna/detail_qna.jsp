@@ -785,7 +785,7 @@
 	    html += '<div class="col-6">';
 	    html += '<span><a class="text-decoration-none text-black" data-bs-toggle="collapse" href="#collapseQnA' 
 	        + qna.qnaNo + '" role="button" aria-controls="collapseQnA' + qna.qnaNo + '">' 
-	        + (qna.qnaStatus == 1 ? qna.qnaTitle : qna.qnaMemberNo == loginMemberNum ? qna.qnaTitle : '<span onclick="alert(\'비공개 문의내역은 작성자 본인만 확인하실 수 있습니다.\')">비밀글입니다. ' 
+	        + (qna.qnaStatus == 1 ? qna.qnaTitle : qna.qnaMemberNo == loginMemberNum ? qna.qnaTitle : loginMemberAuth == 9 ? qna.qnaTitle : '<span onclick="alert(\'비공개 문의내역은 작성자 본인만 확인하실 수 있습니다.\')">비밀글입니다. ' 
 	            + '<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" viewBox="0 0 48 48"><path fill="#424242" d="M24,4c-5.5,0-10,4.5-10,10v4h4v-4c0-3.3,2.7-6,6-6s6,2.7,6,6v4h4v-4C34,8.5,29.5,4,24,4z"></path><path fill="#FB8C00" d="M36,44H12c-2.2,0-4-1.8-4-4V22c0-2.2,1.8-4,4-4h24c2.2,0,4,1.8,4,4v18C40,42.2,38.2,44,36,44z"></path><path fill="#C76E00" d="M24 28A3 3 0 1 0 24 34A3 3 0 1 0 24 28Z"></path></svg></span>') + '</a></span>';
 	    html += '</div>';
 	    html += '<div class="text-center col-2"><span>' + qna.qnaMemberId.substring(0, 3) + "***" + '</span></div>';
@@ -801,20 +801,46 @@
 	        html += '<p id="qnaTitle' + qna.qnaNo + '">' + qna.qnaTitle + '</p>';
 	        html += '<hr class=mt-1 mb-1>'
 	        html += '<p id="qnaContent' + qna.qnaNo + '">' + qna.qnaContent + '</p>';
+	        if(qna.qnaAnswer!=""){
+	        html += '<p id="adminAnswer' + qna.qnaNo + '">┖ 답변 <관리자> : ' + qna.qnaAnswer + '</p>';
+	        }
+	        if(qna.qnaAnswer==""){
 	        html += '<div id="qnaActions' + qna.qnaNo + '">';
-	        if(qna.qnaMemberNo == loginMemberNum || loginMemberAuth == 9) {
-	        	html += '<button type="button" class="btn btn-link text-decoration-none fs-6 text-black-50" onclick="editQna(' + qna.qnaNo + ', ' + isAdmin + ')">수정</button>';
-	            html += '<button type="button" class="btn btn-link text-decoration-none fs-6 text-black-50 ps-2" onclick="removeQnA(' + qna.qnaNo + ')">삭제</button>';
+	       	 if(qna.qnaMemberNo == loginMemberNum || loginMemberAuth == 9) {
+	        		html += '<button type="button" class="btn btn-link text-decoration-none fs-6 text-black-50" onclick="editQna(' + qna.qnaNo + ', ' + isAdmin + ')">수정</button>';
+	          	  html += '<button type="button" class="btn btn-link text-decoration-none fs-6 text-black-50 ps-2" onclick="removeQnA(' + qna.qnaNo + ')">삭제</button>';
 	            
-	        }
-	        if (isAdmin) {
-	            html += '<a href="" class="text-decoration-none fs-6 text-black-50 ps-2">답변(관리자)</a>';
-	        }
+	      	  }
+	       	 if (isAdmin) {
+	       	     html += '<a class="text-decoration-none fs-6 text-black-50 ps-2"  data-bs-toggle="collapse" href="#collapseAnswer' + qna.qnaNo + '" role="button" aria-expanded="false" aria-controls="collapseAnswer' + qna.qnaNo + '" >답변(관리자)</a>';
+	      	  }
+	        html += '</div>';
+	   		}	        	        
 	        html += '</div>';
 	        html += '</div>';
 	        html += '</div>';
 	        html += '</div>'; 
 	        html += '</div>';
+//========================================================관리자 답변 ========================================	        
+	        
+	        	html += '<div class="collapse" id="collapseAnswer' + qna.qnaNo + '">';
+	 	        html += '<div class="">';
+	 	        html += '<div class="d-flex pt-2 pb-2 border-bottom">';
+	 	        html += '<div class="text-center col-2"></div>';
+	 	        html += '<div class="col-10">';
+	 	        html += '<input type="text" id="answerContent' + qna.qnaNo + '"  class="form-control">';
+				html += '<button type="button" class="btn btn-link text-decoration-none fs-6 text-black-50" onclick="answerInsert(' + qna.qnaNo + ')">답변	</button>';
+	 	        html += '</div>';
+		        html += '</div>';
+		        html += '</div>';
+		        html += '</div>'; 
+		        html += '</div>';
+	 	        
+	        	
+	        	
+	        
+	        
+	        
 	    }
 	
 	    return html;
@@ -974,4 +1000,36 @@
 			}
 		})
 	}
+	
+	 function answerInsert(qnaNo){
+		var qnaNo = qnaNo;
+		var answerContent = $('#answerContent' + qnaNo).val();
+
+	    if (answerContent == "") {
+	        alert("답글을 입력해주세요");
+	        $('#answerContent' + qnaNo).focus();
+	        return;
+	    }
+	    
+	    
+		$.ajax({
+			type: "get",
+			url: "<%=request.getContextPath() %>/qna/detail_qna_adinsert.jsp",
+			data: {"qnaNo": qnaNo, "answerContent":answerContent },
+			dataType: "json",
+			success: function(result) {
+				if(result.code == "success") {
+					displayQnaList()//댓글목록 출력
+				} else {
+					alert("관리자 답글작성을 실패했습니다");
+				}
+			},
+			error: function(xhr) {
+				alert("에러코드 = "+xhr.status);
+			}
+		});
+	} 
+	
+	
+	
 </script>
