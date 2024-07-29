@@ -294,6 +294,8 @@ public class QnaDAO extends JdbcDAO {
 
 			if (secretCheck == 1) {
 				sql += " AND QNA_STATUS = 1";
+			}else {
+				sql += " AND QNA_STATUS between 1 and 2 ";
 			}
 			if ("unanswered_answer".equals(replyStatus)) {
 				sql += " AND QNA_ANSWER IS NULL";
@@ -402,7 +404,7 @@ public class QnaDAO extends JdbcDAO {
 		try {
 			con = getConnection();
 
-			String sql = "delete from qna where QNA_NO = ?";
+			String sql = "update qna set QNA_STATUS=0 where QNA_NO = ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, qnaNo);
 
@@ -469,6 +471,8 @@ public class QnaDAO extends JdbcDAO {
 			String sql = "select * from (select rownum rn, temp.* from (select QNA_NO, QNA_MEMBER_NO,QNA_PRODUCT_NO,QNA_TITLE,QNA_CONTENT,QNA_DATE,QNA_ANSWER,QNA_ANSDATE,QNA_STATUS from qna where QNA_PRODUCT_NO=? ";
 			if (secretCheck == 1) {
 				sql += " AND QNA_STATUS = 1";
+			}else {
+				sql += " and QNA_STATUS between 1and 2 ";
 			}
 			if ("unanswered_answer".equals(replyStatus)) {
 				sql += " AND QNA_ANSWER IS NULL";
@@ -518,4 +522,25 @@ public class QnaDAO extends JdbcDAO {
 		}
 		return qnaList;
 	}
+	
+	// QNA 관리자 답글 
+		public int insertAdminAnswer(QnaDTO qna) {
+			Connection con = null;
+			PreparedStatement pstmt = null;
+			int rows = 0;
+			try {
+				con = getConnection();
+				String sql = "update qna set qna_answer=? ,QNA_ANSDATE=sysdate where qna_no=?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, qna.getQnaAnswer());
+				pstmt.setInt(2, qna.getQnaNo());
+				
+				rows = pstmt.executeUpdate();
+			} catch (SQLException e) {
+				System.out.println("[에러] insertAdminAnswer() 메서드의 SQL 오류 = " + e.getMessage());
+			} finally {
+				close(con, pstmt);
+			}
+			return rows;
+		}
 }
