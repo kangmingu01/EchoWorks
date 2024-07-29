@@ -20,7 +20,8 @@
 			, "writer":"<%=ReviewDAO.getDAO().selectMember(reviewList.get(i).getReview_pyNo()) %>"
 			, "content":"<%=Utility.toJSON(reviewList.get(i).getReview_Content()) %>"
 			, "regdate":"<%=reviewList.get(i).getReview_Date() %>"
-			, "state":"<%=reviewList.get(i).getReview_state() %>"}
+			, "state":"<%=reviewList.get(i).getReview_state() %>"
+			, "product_no":"<%=ReviewDAO.getDAO().selectPreductNo(reviewList.get(i).getReview_pyNo()) %>"}
 	<% } %>	
 	]
 }

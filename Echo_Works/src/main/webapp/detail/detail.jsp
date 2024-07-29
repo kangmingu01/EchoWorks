@@ -1,3 +1,7 @@
+<%@page import="echoworks.dto.PaymentDTO"%>
+<%@page import="echoworks.dao.PaymentDAO"%>
+<%@page import="echoworks.dao.ReviewDAO"%>
+<%@page import="echoworks.dto.ReviewDTO"%>
 <%@page import="java.net.URLEncoder"%>
 <%@page import="echoworks.dto.CartDTO"%>
 <%@page import="echoworks.dto.MemberDTO"%>
@@ -314,6 +318,7 @@ input[type="number"]::-webkit-inner-spin-button {
 				                		<small>상품을 구매하신 분들이 작성한 리뷰입니다.</small>
 				              		</li>
 				            	</ul>
+				            	<%if(loginMember != null) {%>
 				            	<div id="review_add">
 									<table class="review_table">
 										<tr>
@@ -330,6 +335,7 @@ input[type="number"]::-webkit-inner-spin-button {
 									</table>
 									<div id="add_message">&nbsp;</div>
 								</div>
+								<%} %>
 								<%-- 댓글목록태그 --%>
 								<div id="review_list"></div>
 							
@@ -379,14 +385,17 @@ input[type="number"]::-webkit-inner-spin-button {
 											if(result.code == "success") {//검색된 댓글정보가 있는 경우
 												//Array 객체를 일괄처리하기 위해 each() 멤버함수 호출
 												$(result.data).each(function() {
-													if(this.state == 1) {
+													
+													if(this.state == 1 && this.product_no == <%=product.getPRODUCT_NO()%>) {
 														//Array 객체의 요소값(Object 객체 - 댓글정보)를 HTML 태그로 변환
 														var html="<div class='review' id='review_"+this.num+"'>";//댓글태그
 														html+="<b>["+this.writer+"]</b><br>";//댓글태그에 작성자 포함
 														html+=this.content.replace(/\n/g,"<br>")+"<br>";//댓글태그에 댓글내용 포함
 														html+="("+this.regdate+")<br>";//댓글태그에 작성날짜 포함
+														<%if(loginMember != null) {%>
 														html+="<button type='button' onclick='modifyreview("+this.num+");'>댓글변경</button>&nbsp;";//댓글태그에 댓글변경버튼 포함
 														html+="<button type='button' onclick='removereview("+this.num+");'>댓글삭제</button>&nbsp;";//댓글태그에 댓글삭제버튼 포함
+														<%}%>
 														html+="</div>";
 														
 														//댓글목록태그에 댓글태그를 마지막 자식태그로 추가하여 출력 처리 
@@ -408,6 +417,20 @@ input[type="number"]::-webkit-inner-spin-button {
 								// => 입력값(작성자와 내용)을 [review_add.jsp] 문서를 요청시 전달
 								$("#add_btn").click(function() {
 									var pyNo=194;
+									<%if(loginMember == null){%>
+									checkLogin();
+									<%}else {%>	
+										<%List<PaymentDTO> paymentList =PaymentDAO.getDAO().selectPaymentByMemberNo(loginMember.getMemberNum());%>
+										
+										<%for(int i=0;i<paymentList.size();i++) {%>
+											alert(<%=ReviewDAO.getDAO().selectPaymentNo(paymentList.get(i)) %>);
+											<%if(ReviewDAO.getDAO().selectPaymentNo(paymentList.get(i)) == 0) {%> 
+											pyNo =<%=paymentList.get(i).getPaymentNo()%>;
+											alert("pyNo " + pyNo);
+											<%}%>
+										<%}%>
+									
+									
 									
 									var content=$("#add_content").val();
 									if(content == "") {
@@ -435,6 +458,7 @@ input[type="number"]::-webkit-inner-spin-button {
 											alert("에러코드 = "+xhr.status);
 										}
 									});
+									<%}%>
 								});
 
 								//댓글변경태그와 댓글삭제태그를 초기화 처리하기 위한 함수

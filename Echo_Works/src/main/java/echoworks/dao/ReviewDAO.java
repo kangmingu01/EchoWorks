@@ -135,19 +135,21 @@ public class ReviewDAO extends JdbcDAO {
 		List<ReviewDTO> reviewList=new ArrayList<ReviewDTO>();
 		try {
 			con=getConnection();
-			
+			System.out.println(1);
 			String sql="select review_no,review_pyno,review_content,review_date,review_state from review order by review_no desc";
 			pstmt=con.prepareStatement(sql);
-			
+			System.out.println(2);
 			rs=pstmt.executeQuery();
-			
+			System.out.println(3);
 			while(rs.next()) {
 				ReviewDTO review=new ReviewDTO();
 				review.setReview_No(rs.getInt("review_no"));
 				review.setReview_pyNo(rs.getInt("review_pyno"));
 				review.setReview_Content(rs.getString("review_content"));
 				review.setReview_Date(rs.getString("review_date"));
+				System.out.println(4);
 				review.setReview_state(rs.getInt("review_state"));
+				System.out.println(5);
 				reviewList.add(review);
 			}
 		} catch (SQLException e) {
@@ -180,5 +182,51 @@ public class ReviewDAO extends JdbcDAO {
 			close(con, pstmt, rs);
 		}
 		return "";
+	}
+	
+	public int selectPreductNo(int pyNo) {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		try {
+			con=getConnection();
+			
+			String sql="select product_stock_pno from product_stock where product_stock_no=(select payment_psno from payment where payment_no=?)";
+			pstmt=con.prepareStatement(sql);
+			pstmt.setInt(1, pyNo);
+			rs=pstmt.executeQuery();
+			if(rs.next()) {
+				return rs.getInt("product_stock_pno");
+			}
+		} catch (SQLException e) {
+			System.out.println("[에러]selectPreductNo() 메소드의 SQL 오류 = "+e.getMessage());
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return 0;
+	}
+	
+	//구매 목록 중 리뷰 달지 않은 목록 확인
+	public int selectPaymentNo(PaymentDTO py) {
+
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		try {
+			con=getConnection();
+			
+			String sql="select count(*) from review where review_pyno=?";
+			pstmt=con.prepareStatement(sql);
+			pstmt.setInt(1, py.getPaymentNo());
+			rs=pstmt.executeQuery();
+			if(rs.next()) {
+				return rs.getInt("count(*)");
+			}
+		} catch (SQLException e) {
+			System.out.println("[에러]selectPreductNo() 메소드의 SQL 오류 = "+e.getMessage());
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return 0;
 	}
 }
