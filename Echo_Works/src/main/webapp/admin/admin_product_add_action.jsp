@@ -35,13 +35,14 @@
         product.setPRODUCT_CATEGORY_SUB(productCategorySub);
         product.setPRODUCT_VIDEO_URL(productVideoUrl);
 
-        int productId = productDAO.insertProduct(product); // 상품 삽입 후 ID 반환
+        productDAO.insertProduct(product); // 상품 삽입 후 ID 반환
 
+        ProductDTO pprodut=ProductDAO.getDAO().selectProductByName(productName);
         // 2. 옵션 및 재고 정보 삽입
         if (options != null && options.length > 0) {
             for (int i = 0; i < options.length; i++) {
                 ProductStockDTO stock = new ProductStockDTO();
-                stock.setpS_pNo(productId); // 새로 생성된 상품 ID 사용
+                stock.setpS_pNo(pprodut.getPRODUCT_NO()); // 새로 생성된 상품 ID 사용
                 stock.setpS_Option(options[i]);
                 stock.setpS_Stock(Integer.parseInt(stocks[i]));
                 stock.setpS_price(Integer.parseInt(prices[i]));

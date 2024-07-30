@@ -50,7 +50,7 @@
 </head>
 <body>
     <h1 style="text-align: center;">회원 목록</h1>
-     <button class="button" onclick="window.location.href='<%=request.getContextPath() %>/index.jsp?workgroup=admin&work=admin_main'">뒤로가기</button>
+     <button class="button" onclick="window.location.href='<%=request.getContextPath() %>/admin/admin_main.jsp'">뒤로가기</button>
     <table>
         <thead>
             <tr>

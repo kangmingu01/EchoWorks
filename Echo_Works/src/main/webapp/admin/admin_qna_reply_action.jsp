@@ -43,25 +43,19 @@
         <h4>답변 처리 완료</h4>
 
         <% 
-            String qnaNoStr = request.getParameter("qnaNo");
-            String answer = request.getParameter("qnaAnswer");
-
-            if (qnaNoStr != null && !qnaNoStr.isEmpty() && answer != "") {
-                int qnaNo = Integer.parseInt(qnaNoStr);
-                
-                QnaDTO qna = QnaDAO.getDAO().selectQnaByNo(qnaNo);
-                if (qna != null) {
-                    qna.setQnaAnswer(answer);
-                    qna.setQnaStatus(1); 
-                    QnaDAO.getDAO().updateQna(qna);
-                    
-                    out.println("<p>답변이 성공적으로 등록되었습니다.</p>");
-                } else {
-                    out.println("<p>Q&A를 찾을 수 없습니다.</p>");
-                }
-            } else {
-                out.println("<p>잘못된 요청입니다.</p>");
-            }
+        
+        	request.setCharacterEncoding("utf-8");
+            int qnaNoStr =Integer.parseInt(request.getParameter("qnaNo"));
+            String answer = request.getParameter("answer");
+			QnaDTO qna=new QnaDTO();
+			qna.setQnaAnswer(answer);
+			qna.setQnaNo(qnaNoStr);
+			QnaDAO.getDAO().insertAdminAnswer(qna);
+			
+             
+            out.println("<p>답변이 성공적으로 등록되었습니다.</p>");
+ 
+        
         %>
 
         <!-- 뒤로가기 버튼 -->

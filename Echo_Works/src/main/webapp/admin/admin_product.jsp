@@ -76,7 +76,6 @@
                 <th>이미지</th>
                 <th>상세이미지</th>
                 <th>가격</th>
-                <th>재고</th>
                 <th>메인 카테고리</th>
                 <th>서브 카테고리</th>
                 <th>옵션</th>
@@ -87,31 +86,29 @@
         <tbody>
             <% if (productList.isEmpty()) { %>
                 <tr>
-                    <td colspan="11">상품이 없습니다.</td>
+                    <td colspan="10">상품이 없습니다.</td>
                 </tr>
             <% } else { %>
                 <% for (ProductDTO product : productList) {
                     List<ProductStockDTO> stockList = ProductStockDAO.getDAO().selectProductStockList(product.getPRODUCT_NO());
                     StringBuilder options = new StringBuilder();
-                    int totalStock = 0;
                     for (ProductStockDTO stock : stockList) {
                         if (stock.getpS_pNo() == product.getPRODUCT_NO()) {
                             if (options.length() > 0) {
                                 options.append("<br>"); // 줄바꿈을 추가하여 옵션을 구분
                             }
                             options.append(stock.getpS_Option()); // 옵션 추가
-                            options.append(" - ");
-                            options.append(stock.getpS_price()+"원");
-                            
-                            totalStock += stock.getpS_Stock();
+                            options.append(" - "); // 옵션 추가
+                            options.append(stock.getpS_price()); // 옵션 추가
+                        }
+                    }
                 %>
                     <tr>
                         <td><%= product.getPRODUCT_NO() %></td>
                         <td><%= product.getPRODUCT_NAME() %></td>
-                        <td><img src="<%= product.getPRODUCT_IMG() %>" alt="Product Image"></td>
-                        <td><img src="<%= product.getPRODUCT_IMG_DETAIL() %>" alt="Product Detail Image"></td>
+                        <td><img src="<%=request.getContextPath()%>/assets/img/<%=product.getPRODUCT_IMG()%>.jpg" alt="Product Image"></td>
+                        <td><img src="<%=request.getContextPath()%>/assets/img/detatil/product_detail<%=product.getPRODUCT_IMG_DETAIL()%>.jpg" alt="Product Image"></td>
                         <td><%= product.getPRODUCT_PRICE() %></td>
-                         <td><%= totalStock %>개</td>
                         <td><%= product.getPRODUCT_CATEGORY_MAIN() %></td>
                         <td><%= product.getPRODUCT_CATEGORY_SUB() %></td>
                         <td><%= options.toString() %></td> 
@@ -121,9 +118,7 @@
                         </td>
                     </tr>
                 <% } %>
-           <% } %>
             <% } %>
-          <% }%>
         </tbody>
     </table>
 

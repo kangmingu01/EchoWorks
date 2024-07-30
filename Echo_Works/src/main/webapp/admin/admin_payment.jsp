@@ -1,140 +1,137 @@
-<%@page import="echoworks.dao.PaymentDAO"%>
-<%@page import="echoworks.dto.PaymentDTO"%>
-<%@page import="echoworks.dto.MemberDTO"%>
-<%@page import="echoworks.dto.ProductDTO"%>
-<%@page import="echoworks.dao.MemberDAO"%>
-<%@page import="echoworks.dao.ProductDAO"%>
+<%@page import="echoworks.dao.ProductStockDAO"%>
+<%@page import="echoworks.dto.ProductStockDTO"%>
 <%@page import="java.util.List"%>
+<%@page import="echoworks.dto.ProductDTO"%>
+<%@page import="echoworks.dao.ProductDAO"%>
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@include file="/security/admin_check.jspf" %>
+<%
+    // 모든 상품정보 불러오기
+    List<ProductDTO> productList = ProductDAO.getDAO().selectProductAll();
+%>
 
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>주문 내역 관리</title>
+    <title>상품 관리</title>
     <style>
+        body {
+            font-family: 'Noto Sans KR', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
         }
         th, td {
-            border: 1px solid #ddd;
             padding: 8px;
-            text-align: center;
+            text-align: left;
+            vertical-align: middle; /* 세로 정렬을 중앙으로 설정 */
         }
         th {
             background-color: #f2f2f2;
         }
-        tbody tr:nth-child(even) {
-            background-color: #f9f9f9;
+        img {
+            max-width: 100px; /* 이미지의 최대 너비를 설정 */
+            max-height: 100px; /* 이미지의 최대 높이를 설정 */
+            width: auto; /* 너비를 자동으로 조정 */
+            height: auto; /* 높이를 자동으로 조정 */
         }
-        tbody tr:hover {
-            background-color: #f1f1f1;
+        .hidden { display: none; }
+        .edit-form {
+            margin-top: 20px;
         }
         .button {
-            background-color: #4CAF50;
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
             display: inline-block;
+            padding: 10px 20px;
             font-size: 16px;
-            margin: 10px 2px;
-            cursor: pointer;
+            color: #ffffff;
+            background-color: #3498db;
+            border: none;
             border-radius: 4px;
+            text-decoration: none;
+            text-align: center;
             transition: background-color 0.3s;
         }
         .button:hover {
-            background-color: #45a049;
-        }
-        .back-button {
-            background-color: #007bff;
-        }
-        .back-button:hover {
-            background-color: #0056b3;
+            background-color: #2980b9;
         }
     </style>
-    <script>
-    function confirmCancel(memberId) {
-        return confirm(memberId+'님의 주문을 취소하시겠습니까?');
-    }
-    </script>
 </head>
 <body>
-    <div id="admin-payment" class="content-section">
-        <h1 style="text-align: center;">주문 내역</h1>
-
-        <!-- 뒤로가기 버튼 -->
-        <a href="<%=request.getContextPath() %>/admin/admin_main.jsp" class="button back-button">뒤로가기</a>
-
-        <table>
-            <thead>
+    <h1 style="text-align: center;">상품 목록</h1>
+    <button class="button" onclick="window.location.href='<%=request.getContextPath() %>/index.jsp?workgroup=admin&work=admin_main'">뒤로가기</button>
+    <button class="button" onclick="window.location.href='<%=request.getContextPath() %>/admin/admin_product_add.jsp'">상품 추가</button>
+    <hr>
+    <table>
+        <thead>
+            <tr>
+                <th>상품번호</th>
+                <th>상품명</th>
+                <th>이미지</th>
+                <th>상세이미지</th>
+                <th>가격</th>
+                <th>재고</th>
+                <th>메인 카테고리</th>
+                <th>서브 카테고리</th>
+                <th>옵션</th>
+                <th>비디오 URL</th>
+                <th>관리</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (productList.isEmpty()) { %>
                 <tr>
-                    <th>결제번호</th>
-                    <th>결제날짜</th>
-                    <th>주문자아이디</th>
-                    <th>상품</th>
-                    <th>결제상태</th>
-                    <th>결제총액</th>
-                    <th>결제수량</th>
-                    <th>배송지이름</th>
-                    <th>주문자전화번호</th>
-                    <th>배송지주소</th>
-                    <th>배송 메시지</th>
-                    <th>관리</th>
+                    <td colspan="11">상품이 없습니다.</td>
                 </tr>
-            </thead>
-            <tbody>
-                <% 
-                    List<PaymentDTO> paymentList = PaymentDAO.getDAO().selectAllPayments();
-                    
-                    if (paymentList.isEmpty()) { 
+            <% } else { %>
+                <% for (ProductDTO product : productList) {
+                    List<ProductStockDTO> stockList = ProductStockDAO.getDAO().selectProductStockList(product.getPRODUCT_NO());
+                    StringBuilder options = new StringBuilder();
+                    int totalStock = 0;
+
+                    for (ProductStockDTO stock : stockList) {
+                        if (stock.getpS_pNo() == product.getPRODUCT_NO()) {
+                            if (options.length() > 0) {
+                                options.append("<br>"); // 줄바꿈을 추가하여 옵션을 구분
+                            }
+                            options.append(stock.getpS_Option()); // 옵션 추가
+                            options.append(" - ");
+                            options.append(stock.getpS_price()+"원");
+
+                            totalStock += stock.getpS_Stock();
+                        }
+                    }
+
+                    // 재고 및 옵션이 없을 경우 기본값 설정
+                    if (stockList.isEmpty()) {
+                        totalStock = 0;
+                        options.append("옵션 없음");
+                    }
                 %>
                     <tr>
-                        <td colspan="12">결제 내역이 없습니다.</td>
-                    </tr>
-                <% 
-                    } else { 
-                        for (PaymentDTO payment : paymentList) { 
-                            int memberNum = payment.getPaymentHno();
-                            MemberDTO member = MemberDAO.getDAO().selectMemberByNum(memberNum);
-                            ProductDTO product = ProductDAO.getDAO().selectProductByNo(payment.getPaymentPsno());
-                %>
-                    <tr>
-                        <td><%= payment.getPaymentNo() %></td>
-                        <td><%= payment.getPaymentDate() %></td>
-                        <td><%= member.getMemberId() %></td>
+                        <td><%= product.getPRODUCT_NO() %></td>
                         <td><%= product.getPRODUCT_NAME() %></td>
-                        <% if(payment.getPaymentStatus() == 0) { %>
-                                    <td>결제취소</td>
-                                    <% } else if(payment.getPaymentStatus() == 1) { %>
-                                    <td>결제완료</td>
-                                   <% } else if(payment.getPaymentStatus() == 2) { %>
-                                    <td>배송중</td>
-                                    <% } else if(payment.getPaymentStatus() == 3) { %>
-                                    <td>배송완료</td>
-                                    <%} %>
-                        <td><%= payment.getPaymentTotal() %></td>
-                        <td><%= payment.getPaymentNum() %></td>
-                        <td><%= payment.getPaymentJname() %></td>
-                        <td><%= payment.getPaymentPhone() %></td>
-                        <td><%= payment.getPaymentAddress1() %> <%= payment.getPaymentAddress2() %></td>
-                        <td><%= payment.getPaymentOmesg() %></td>
+                        <td><img src="<%= product.getPRODUCT_IMG() %>" alt="Product Image"></td>
+                        <td><img src="<%= product.getPRODUCT_IMG_DETAIL() %>" alt="Product Detail Image"></td>
+                        <td><%= product.getPRODUCT_PRICE() %>원</td>
+                        <td><%= totalStock %>개</td>
+                        <td><%= product.getPRODUCT_CATEGORY_MAIN() %></td>
+                        <td><%= product.getPRODUCT_CATEGORY_SUB() %></td>
+                        <td><%= options.toString() %></td>
+                        <td><%= product.getPRODUCT_VIDEO_URL() %></td>
                         <td>
-                            <form action="<%=request.getContextPath() %>/admin/admin_adminpage_payment_cancel_action.jsp" method="post" onsubmit="return confirmCancel('<%= member.getMemberId() %>');">
-                                <input type="hidden" name="paymentNo" value="<%= payment.getPaymentNo() %>" />
-                                <button type="submit" class="button">결제취소</button>
-                            </form>
+                            <a href="<%=request.getContextPath() %>/admin/admin_product_modify.jsp?productNo=<%= product.getPRODUCT_NO() %>">수정</a>
                         </td>
                     </tr>
-                <% 
-                        } 
-                    } 
-                %>
-            </tbody>
-        </table>
-    </div>
+                <% } %>
+            <% } %>
+        </tbody>
+    </table>
 </body>
 </html>
