@@ -135,21 +135,16 @@ public class ReviewDAO extends JdbcDAO {
 		List<ReviewDTO> reviewList=new ArrayList<ReviewDTO>();
 		try {
 			con=getConnection();
-			System.out.println(1);
 			String sql="select review_no,review_pyno,review_content,review_date,review_state from review order by review_no desc";
 			pstmt=con.prepareStatement(sql);
-			System.out.println(2);
 			rs=pstmt.executeQuery();
-			System.out.println(3);
 			while(rs.next()) {
 				ReviewDTO review=new ReviewDTO();
 				review.setReview_No(rs.getInt("review_no"));
 				review.setReview_pyNo(rs.getInt("review_pyno"));
 				review.setReview_Content(rs.getString("review_content"));
 				review.setReview_Date(rs.getString("review_date"));
-				System.out.println(4);
 				review.setReview_state(rs.getInt("review_state"));
-				System.out.println(5);
 				reviewList.add(review);
 			}
 		} catch (SQLException e) {
