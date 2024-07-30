@@ -5,7 +5,7 @@
     pageEncoding="UTF-8"%>
 <%-- 댓글번호를 전달받아 AJAX_COMMENT 테이블에서 댓글번호의 행을 검색하여 JSON으로 응답하는 JSP 문서 --%>    
 <%
-	if(request.getParameter("num") == null) {
+	if(request.getParameter("no") == null) {
 		response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 		return;
 	}

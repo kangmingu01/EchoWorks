@@ -6,6 +6,7 @@
 <%-- 댓글정보(작성자와 내용)를 전달받아 AJAX_COMMENT 테이블에 저장된 행을 변경하고 실행결과를
 JSON으로 응답하는 JSP 문서  --%>    
 <%
+
 	if(request.getMethod().equals("GET")) {
 		response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
 		return;
@@ -14,12 +15,9 @@ JSON으로 응답하는 JSP 문서  --%>
 	request.setCharacterEncoding("utf-8");
 	
 	int no=Integer.parseInt(request.getParameter("no"));
-	int pyNo=Integer.parseInt(request.getParameter("pyNo"));
 	String content=Utility.escapeTag(request.getParameter("content"));
 
-	ReviewDTO review=new ReviewDTO();
-	review.setReview_No(no);
-	review.setReview_pyNo(pyNo);
+	ReviewDTO review=ReviewDAO.getDAO().selectReview(no);
 	review.setReview_Content(content);
 	
 	int rows=ReviewDAO.getDAO().updateReview(review);

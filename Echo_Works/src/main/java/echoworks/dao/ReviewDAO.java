@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import echoworks.dto.MemberDTO;
+import echoworks.dto.PaymentDTO;
 import echoworks.dto.ReviewDTO;
 
 public class ReviewDAO extends JdbcDAO {
@@ -33,7 +35,7 @@ public class ReviewDAO extends JdbcDAO {
 		try {
 			con=getConnection();
 			
-			String sql="insert into review values(review_seq.nextval,?,?,sysdate,'','')";
+			String sql="insert into review values(review_seq.nextval,?,?,sysdate,1)";
 			pstmt=con.prepareStatement(sql);
 			pstmt.setInt(1, review.getReview_pyNo());
 			pstmt.setString(2, review.getReview_Content());
@@ -55,8 +57,8 @@ public class ReviewDAO extends JdbcDAO {
 		int rows=0;
 		try {
 			con=getConnection();
-			
-			String sql="update review set review_pyno=?,reveiw_content=?,review_date=sysdate where review_no=?";
+			System.out.println(review.getReview_pyNo() + "  " + review.getReview_Content() + "   " + review.getReview_No());
+			String sql="update review set review_pyno=?,review_content=?,review_date=sysdate where review_no=?";
 			pstmt=con.prepareStatement(sql);
 			pstmt.setInt(1, review.getReview_pyNo());
 			pstmt.setString(2, review.getReview_Content());
@@ -80,7 +82,7 @@ public class ReviewDAO extends JdbcDAO {
 		try {
 			con=getConnection();
 			
-			String sql="delete from review where review_no=?";
+			String sql="update review set review_state=0 where review_no=?";
 			pstmt=con.prepareStatement(sql);
 			pstmt.setInt(1, no);
 			
@@ -99,29 +101,30 @@ public class ReviewDAO extends JdbcDAO {
 		Connection con=null;
 		PreparedStatement pstmt=null;
 		ResultSet rs=null;
-		ReviewDTO ajaxComment=null;
+		ReviewDTO review=null;
 		try {
 			con=getConnection();
 			
-			String sql="select review_no,review_pyno,review_content,review_date from review where review_no=?";
+			String sql="select review_no,review_pyno,review_content,review_date,review_state from review where review_no=?";
 			pstmt=con.prepareStatement(sql);
 			pstmt.setInt(1, no);
 			
 			rs=pstmt.executeQuery();
 			
 			if(rs.next()) {
-				ajaxComment=new ReviewDTO();
-				ajaxComment.setReview_No(rs.getInt("review_no"));
-				ajaxComment.setReview_pyNo(rs.getInt("review_pyno"));
-				ajaxComment.setReview_Content(rs.getString("review_content"));
-				ajaxComment.setReview_Date(rs.getString("review_date"));
+				review=new ReviewDTO();
+				review.setReview_No(rs.getInt("review_no"));
+				review.setReview_pyNo(rs.getInt("review_pyno"));
+				review.setReview_Content(rs.getString("review_content"));
+				review.setReview_Date(rs.getString("review_date"));
+				review.setReview_state(rs.getInt("review_state"));
 			}
 		} catch (SQLException e) {
 			System.out.println("[에러]selectReview() 메소드의 SQL 오류 = "+e.getMessage());
 		} finally {
 			close(con, pstmt, rs);
 		}
-		return ajaxComment;
+		return review;
 	}
 	
 	//AJAX_COMMENT 테이블에 저장된 모든 행을 검색하여 댓글목록(List 객체)를 반환하는 메소드
@@ -132,18 +135,16 @@ public class ReviewDAO extends JdbcDAO {
 		List<ReviewDTO> reviewList=new ArrayList<ReviewDTO>();
 		try {
 			con=getConnection();
-			
-			String sql="select review_no,review_pyno,review_content,review_date from review order by review_no desc";
+			String sql="select review_no,review_pyno,review_content,review_date,review_state from review order by review_no desc";
 			pstmt=con.prepareStatement(sql);
-			
 			rs=pstmt.executeQuery();
-			
 			while(rs.next()) {
 				ReviewDTO review=new ReviewDTO();
 				review.setReview_No(rs.getInt("review_no"));
 				review.setReview_pyNo(rs.getInt("review_pyno"));
 				review.setReview_Content(rs.getString("review_content"));
 				review.setReview_Date(rs.getString("review_date"));
+				review.setReview_state(rs.getInt("review_state"));
 				reviewList.add(review);
 			}
 		} catch (SQLException e) {
@@ -152,5 +153,75 @@ public class ReviewDAO extends JdbcDAO {
 			close(con, pstmt, rs);
 		}
 		return reviewList;
+	}
+	
+	public String selectMember(int pyNo) {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		try {
+			con=getConnection();
+			
+			String sql="select payment_hno from payment where payment_no=?";
+			pstmt=con.prepareStatement(sql);
+			pstmt.setInt(1, pyNo);
+			
+			rs=pstmt.executeQuery();
+			
+			if(rs.next()) {
+				return MemberDAO.getDAO().selectMemberByNum(rs.getInt("payment_hno")).getMemberName();
+			}
+		} catch (SQLException e) {
+			System.out.println("[에러]selectReview() 메소드의 SQL 오류 = "+e.getMessage());
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return "";
+	}
+	
+	public int selectPreductNo(int pyNo) {
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		try {
+			con=getConnection();
+			
+			String sql="select product_stock_pno from product_stock where product_stock_no=(select payment_psno from payment where payment_no=?)";
+			pstmt=con.prepareStatement(sql);
+			pstmt.setInt(1, pyNo);
+			rs=pstmt.executeQuery();
+			if(rs.next()) {
+				return rs.getInt("product_stock_pno");
+			}
+		} catch (SQLException e) {
+			System.out.println("[에러]selectPreductNo() 메소드의 SQL 오류 = "+e.getMessage());
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return 0;
+	}
+	
+	//구매 목록 중 리뷰 달지 않은 목록 확인
+	public int selectReviewCount(int pyno) {
+
+		Connection con=null;
+		PreparedStatement pstmt=null;
+		ResultSet rs=null;
+		try {
+			con=getConnection();
+			
+			String sql="select count(*) from review where review_pyno=?";
+			pstmt=con.prepareStatement(sql);
+			pstmt.setInt(1, pyno);
+			rs=pstmt.executeQuery();
+			if(rs.next()) {
+				return rs.getInt("count(*)");
+			}
+		} catch (SQLException e) {
+			System.out.println("[에러]selectPreductNo() 메소드의 SQL 오류 = "+e.getMessage());
+		} finally {
+			close(con, pstmt, rs);
+		}
+		return 0;
 	}
 }

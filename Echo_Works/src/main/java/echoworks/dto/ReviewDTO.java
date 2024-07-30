@@ -12,22 +12,19 @@ public class ReviewDTO {
 	private int review_pyNo;
 	private String review_Content;
 	private String review_Date;
-	private String review_answer;
-	private String review_ansDate;
+	private int review_state;
 	
 	public ReviewDTO() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ReviewDTO(int review_No, int review_pyNo, String review_Content, String review_Date, String review_answer,
-			String review_ansDate) {
+	public ReviewDTO(int review_No, int review_pyNo, String review_Content, String review_Date, int review_state) {
 		super();
 		this.review_No = review_No;
 		this.review_pyNo = review_pyNo;
 		this.review_Content = review_Content;
 		this.review_Date = review_Date;
-		this.review_answer = review_answer;
-		this.review_ansDate = review_ansDate;
+		this.review_state = review_state;
 	}
 
 	public int getReview_No() {
@@ -62,19 +59,11 @@ public class ReviewDTO {
 		this.review_Date = review_Date;
 	}
 
-	public String getReview_answer() {
-		return review_answer;
+	public int getReview_state() {
+		return review_state;
 	}
 
-	public void setReview_answer(String review_answer) {
-		this.review_answer = review_answer;
-	}
-
-	public String getReview_ansDate() {
-		return review_ansDate;
-	}
-
-	public void setReview_ansDate(String review_ansDate) {
-		this.review_ansDate = review_ansDate;
+	public void setReview_state(int review_state) {
+		this.review_state = review_state;
 	}
 }
