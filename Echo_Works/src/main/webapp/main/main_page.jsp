@@ -272,29 +272,22 @@ small {
 	</div>
 	<div class="carousel-inner">
 		<div class="carousel-item active carousel-item c-item"
-			data-bs-interval="5000"
+			data-bs-interval="3000"
 		>
-			<img src="assets/Carousel/keyboard_image1.jpg"
+			<img src="assets/Carousel/keyboard_image2.jpg"
 				class="d-block w-100 c-img" alt="..."
 			/>
 			<div class="carousel-caption d-none d-md-block">
-				<h1 class="fs-1">The New SixtyFive</h1>
+				<h1 class="fs-1">NEO Ergo</h1>
 				<p class="btn fs-5 ps-3 mt-1 details">자세히 보기 ></p>
 			</div>
 		</div>
 		<div class="carousel-item c-item" data-bs-interval="5000">
-			<img src="assets/Carousel/keyboard_image2.jpg"
-				class="d-block w-100 c-img" alt="..."
-			/>
-			<div class="carousel-caption d-none d-md-block"></div>
-		</div>
-		<div class="carousel-item c-item" data-bs-interval="5000">
-			<img src="assets/Carousel/keyboard_image3.jpg"
+			<img src="assets/Carousel/keyboard_image6.png"
 				class="d-block w-100 c-img" alt="..."
 			/>
 			<div class="carousel-caption d-none d-md-block">
-				<h1 class="fs-1">Bridge75</h1>
-				<p class="btn fs-5 ps-3 mt-1 details">자세히 보기 ></p>
+				<h1 class="fs-1">FoxLab Time65</h1>
 			</div>
 		</div>
 		<div class="carousel-item c-item" data-bs-interval="5000">
@@ -304,6 +297,15 @@ small {
 			<div class="carousel-caption d-none d-md-block">
 				<h1 class="fs-1">Matrix MrTaxi</h1>
 				<h1 class="fs-1">Coming soon...</h1>
+			</div>
+		</div>
+		<div class="carousel-item c-item" data-bs-interval="5000">
+			<img src="assets/Carousel/keyboard_image3.jpg"
+				class="d-block w-100 c-img" alt="..."
+			/>
+			<div class="carousel-caption d-none d-md-block">
+				<h1 class="fs-1">Bridge75</h1>
+				<p class="btn fs-5 ps-3 mt-1 details">자세히 보기 ></p>
 			</div>
 		</div>
 	</div>
@@ -369,7 +371,7 @@ small {
 						<div class="card shadow-sm">
 							<img class="" src="assets/img/Vento80.jpg" alt="베스트 키보드1" />
 							<div class="card-body">
-								<h5 class="card-title">Owlab Vento 80</h5>
+								<h5 class="card-title">Owlab Vento 80 Barebone Kit</h5>
 								<p class="card-text"> Vento 80은 Jelly Evolv의 구조에서 더욱 업그레이드되어,
 분해와 결합에 더욱 최적화되었습니다.</p>
 								<div class="d-flex justify-content-between">
@@ -415,8 +417,8 @@ small {
 			data-aos-delay="100"
 		>
 			<div class="col-8">
-				<div class="d-flex justify-content-between align-items-center">
-                    <div class="col-7">
+				<div class="d-flex flex-sm-column flex-md-row  justify-content-between align-items-center">
+                    <div class="col-sm-10 col-md-7">
                         <h3>ECHOWORKS</h3>
                         <p>ECHOWORKS는 국내 커스텀 키보드 <br/> 시장의 유통사로서 독보적인 존재가 되어가고 있습니다</p>
                     </div>
