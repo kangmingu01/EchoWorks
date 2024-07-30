@@ -257,8 +257,9 @@ input[type="number"]::-webkit-inner-spin-button {
 				<div class="col-md-7">
 					<div>
 						<div>
-							<h3><%=product.getPRODUCT_NAME() %></h3>
-							<h5 class="pt-3 pb-3 border-top" style="display:inline-block; font-size:32px; color: #333; font-weight: bold; font-family:'Tahoma', sans-serif; vertical-align: middle; padding-right:8px;"><%=String.format("%,d", product.getPRODUCT_PRICE()) %>원</h5>
+							<h3 class="mt-sm-3 mt-md-0"><%=product.getPRODUCT_NAME() %></h3>
+							<hr>
+							<h5 class="pb-3" style="display:inline-block; font-size:32px; color: #333; font-weight: bold; vertical-align: middle; padding-right:8px;"><%=String.format("%,d", product.getPRODUCT_PRICE()) %>원</h5>
 							
 							<div>
 								
@@ -298,7 +299,7 @@ input[type="number"]::-webkit-inner-spin-button {
 									
 								</div>
 							</div>
-							<div class="d-flex justify-content-between align-items-center">
+							<div class="d-flex justify-content-between align-items-center mb-sm-3 mb-md-0">
 								<div class="col-6 d-grid p-1">
 									<button type="button" class="btn_cart btn btn-lg" style="font-size:18px; font-weight:500; background:#fff; border:1px solid #666; color:#666; cursor:pointer;">장바구니담기</button>
 								</div>
@@ -375,7 +376,7 @@ input[type="number"]::-webkit-inner-spin-button {
 						
 						<!-- 댓글 -->
 						<!-- 댓글 영역 -->
-<div id="order_reviews_area">
+<div id="order_reviews_area" class="container mt-3">
     <div>
         <span class="fw-normal fs-5">구매후기
             <span class="text-danger fs-6 ms-1"></span>

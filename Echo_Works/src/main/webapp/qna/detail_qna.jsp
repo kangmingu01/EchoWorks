@@ -140,7 +140,7 @@
         </style>
        <!-- 리뷰 -->
         <section>
-          <div class="container col-md-10 mt-3">
+          <div class="container mt-3">
             <span class="fw-normal fs-5">
               상품문의<span class="text-danger fs-6 ms-1 arrLength"></span>
             </span>
@@ -311,71 +311,6 @@
             </div>
             
             <div id="add_message" class="text-center fs-4"></div>
-            
-            <!-- 딸깍이 테스트 -->
-            <p>
-			  <a class="" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-			    제목 답변을 누르면
-			  </a>
-			</p>
-			<div class="collapse" id="collapseExample">
-			  <div class="card card-body">
-				<div class="d-flex pt-2 pb-2 border-bottom collapse" id="collapseExample"	>
-	              <div style="width: 17%" class="text-center">
-	                <span>미답변</span>
-	              </div>
-	              <div style="width: 66%">
-	                <span
-	                  ><a href="" class="text-decoration-none text-black"
-	                    >ddd</a
-	                  ></span
-	                >
-	              </div>
-	              <div style="width: 8.5%" class="text-center">
-	                <span>121</span>
-	              </div>
-	              <div style="width: 8.5%" class="text-center">
-	                <span>2024-07-26</span>
-	              </div>
-	            </div>
-			  </div>
-			</div>
-			
-			
-			<p>
-			  <a class="" data-bs-toggle="collapse" href="#collapseExample1" role="button" aria-controls="collapseExample1">
-			    제목 답변2 누르면
-			  </a>
-			</p>
-			<div class="collapse" id="collapseExample1">
-			  <div class="card card-body">
-				<div class="d-flex pt-2 pb-2 border-bottom">
-                    <!-- Q&A 제목 누르면 바로 밑에 뜰 수 있게  -->
-                    <div style="width: 15%" class="text-center"></div>
-                    <div style="width: 85%">
-                      <p class="border-bottom"> title 상품에 하자가 있어요</p>
-                      <p>상품에 하자가 있어요</p>
-                      <div>
-                        <a
-                          href=""
-                          class="text-decoration-none fs-6 text-black-50"
-                          >수정</a>
-                        <a
-                          href=""
-                          class="text-decoration-none fs-6 text-black-50 ps-2"
-                          >삭제</a>
-                        <a
-                          href=""
-                          class="text-decoration-none fs-6 text-black-50 ps-2"
-                          >답변(관리자)</a>
-                      </div>
-                    </div>
-                  </div>
-			  </div>
-			</div>
-			
-			
-            
             
             <!-- 테이블 -->
             <div class="mt-4 mb-5">
