@@ -13,5 +13,5 @@
     QnaDAO.getDAO().deleteQna(num);
     
     // 페이지 이동
-    response.sendRedirect(request.getContextPath() + "/index.jsp?workgroup=admin&work=admin_adminpage#admin_qna");
+    response.sendRedirect(request.getContextPath() + "/admin/admin_qna.jsp");
 %>

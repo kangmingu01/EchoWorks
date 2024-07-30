@@ -73,7 +73,8 @@ public class PaymentDAO extends JdbcDAO {
                        + "p.payment_address1, p.payment_address2, p.payment_omesg, m.member_name "
                        + "from payment p "
                        + "join member m on p.payment_hno = m.member_num "
-                       + "where p.payment_hno = ?";
+                       + "where p.payment_hno = ?"
+                       + " order by payment_no desc";
             pstmt = con.prepareStatement(sql);
             pstmt.setInt(1, memberNo);
             rs = pstmt.executeQuery();
