@@ -54,7 +54,7 @@ public class QnaDAO extends JdbcDAO {
 			con = getConnection();
 			String sql = "select q.qna_no, q.qna_member_no, q.qna_product_no, q.qna_title, q.qna_content, "
 					+ "q.qna_date, q.qna_answer, q.qna_ansdate, m.member_name, p.product_name, q.qna_status "
-					+ "from qna q " + "join member m on q.qna_member_no = m.member_no "
+					+ "from qna q " + "join member m on q.qna_member_no = m.member_num "
 					+ "join product p on q.qna_product_no = p.product_no " + "where q.qna_no = ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, qnaNo);

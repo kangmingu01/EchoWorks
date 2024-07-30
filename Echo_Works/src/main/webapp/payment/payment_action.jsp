@@ -110,7 +110,11 @@
                     selectedCartNos[i] = Integer.parseInt(selectedCartNosStr[i]);
                 }
 
+
+                cartDAO.deleteSelectedCartItems(selectedCartNos);
+
                 cartDAO.deleteSelectedCartItems(selectedCartNos); // 선택된 장바구니 항목 삭제
+
             }
 
             // 결제 완료 후 결제 완료 페이지로 리다이렉트

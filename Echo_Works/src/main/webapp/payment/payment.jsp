@@ -19,6 +19,26 @@
         return; // 로그인 페이지로 리다이렉트
     }
 
+
+    String[] selectedCartNos = request.getParameterValues("cart_no");
+    List<CartDTO> selectedCartList = new ArrayList<>();
+
+    if (selectedCartNos != null) {
+        for (String cartNo : selectedCartNos) {
+            int cartNoInt = Integer.parseInt(cartNo);
+            CartDTO cart = CartDAO.getDao().getCartByNo(cartNoInt);
+            selectedCartList.add(cart);
+        }
+    } else if (session.getAttribute("cartList") != null) {
+        selectedCartList = (List<CartDTO>) session.getAttribute("cartList");
+        session.removeAttribute("cartList");
+    } else {
+        out.println("<script>alert('선택한 상품이 없습니다.');location.href='cart.jsp';</script>");
+        return;
+    }
+
+    int totalProductPrice = 0;
+
     String[] selectedCartNos = request.getParameterValues("cart_no"); // 선택된 장바구니 항목 번호들 가져오기
     List<CartDTO> selectedCartList = new ArrayList<>(); // 선택된 장바구니 항목을 저장할 리스트
 
@@ -38,6 +58,7 @@
 
     int totalProductPrice = 0; // 총 상품 가격
     int shippingCost = 2500; // 고정 배송비 설정
+
 %>
 
 <!DOCTYPE html>
@@ -110,7 +131,11 @@
                             if (stock != null) {
                                 int unitPrice = stock.getpS_price(); // product_stock 테이블에서 가격 가져오기
                                 int totalPrice = unitPrice * cart.getCart_num();
+
+                                totalProductPrice += totalPrice;
+
                                 totalProductPrice += totalPrice; // 총 상품 가격에 더하기
+
                         %>
                         <div class="d-flex align-items-center">
                             <img src="assets/img/<%= ProductDAO.getDAO().selectProductByNo(stock.getpS_pNo()).getPRODUCT_IMG() %>.jpg" alt="상품 이미지" style="width: 100px; height: 100px; margin-right: 20px;">
@@ -360,11 +385,19 @@
 
     // 키보드 입력 방지 설정
     document.getElementById('postcode').addEventListener('keydown', function(event) {
+
+        event.preventDefault();
+    });
+
+    document.getElementById('address').addEventListener('keydown', function(event) {
+        event.preventDefault();
+
         event.preventDefault(); // 키보드 입력을 막음
     });
 
     document.getElementById('address').addEventListener('keydown', function(event) {
         event.preventDefault(); // 키보드 입력을 막음
+
     });
 
     document.getElementById('payButton').addEventListener('click', function(event) {
