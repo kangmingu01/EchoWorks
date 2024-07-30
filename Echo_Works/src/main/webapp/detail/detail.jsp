@@ -1,3 +1,8 @@
+<%@page import="echoworks.dao.MemberDAO"%>
+<%@page import="echoworks.dto.PaymentDTO"%>
+<%@page import="echoworks.dao.PaymentDAO"%>
+<%@page import="echoworks.dao.ReviewDAO"%>
+<%@page import="echoworks.dto.ReviewDTO"%>
 <%@page import="java.net.URLEncoder"%>
 <%@page import="echoworks.dto.CartDTO"%>
 <%@page import="echoworks.dto.MemberDTO"%>
@@ -17,6 +22,7 @@
 <%
 
 	MemberDTO loginMember=(MemberDTO)session.getAttribute("loginMember");
+	
 	String requestURI=request.getRequestURI();
 	
 	String queryString=request.getQueryString();		
@@ -60,6 +66,16 @@ List<ProductOption> optionList=new ArrayList<ProductOption>();
     
     
 <style>
+/* 공통 버튼 스타일 */
+button {
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 10px 20px;
+}
+
+/* 기존 스타일 */
 .itemInfo_td .itemInfo_td_div_area .itemOption_btn{width:100%; position:relative; padding:30px 0 0;}
 .itemInfo_td.fixed .itemInfo_td_div_area .itemOption_btn{width:auto; position:absolute; top:0; right:0; padding:40px 0 0;}
 .itemInfo_td .itemInfo_td_div_area .itemOption_btn .itemOption_cart_btn_area{display:inline-block; padding:0 3px 0 0;}
@@ -68,7 +84,7 @@ List<ProductOption> optionList=new ArrayList<ProductOption>();
 .itemInfo_td .itemInfo_td_div_area .itemOption_btn table{width:100%; border-collapse:collapse;}
 .itemInfo_td .itemInfo_td_div_area .itemOption_btn .itemOptionJjim{display:inline-block; padding-left:4px; position:relative;}
 
-
+/* 탭 스타일 */
 .itemMenu_tap_area:after{content:''; display:block; clear:both;}
 .itemMenu_tap_area{margin:0px 0 40px 0;}
 .itemMenu_tap_area li{float:left; width:100%; list-style-type: none; }
@@ -80,8 +96,7 @@ List<ProductOption> optionList=new ArrayList<ProductOption>();
 #itemContent_wrap #item_info{max-height:auto; overflow:hidden;}
 #itemContent_wrap #item_info.tabcnt_detail0.expand{max-height:inherit;}
 
-
-/* op box(옵션) */
+/* 옵션 박스 스타일 */
 .shop_item_select_box {max-height:240px; overflow-y:auto;}
 .shop_item_select_box .shop_item_select:first-child{margin:0;}
 .shop_item_select_box .shop_item_select{background:#F8F8F8; padding:20px 24px; border-radius:5px; margin:10px 0 0; position:relative;}
@@ -97,84 +112,140 @@ input[type="number"]::-webkit-inner-spin-button {
     margin: 0;
 }
 
-
-
-
-
-.review_table {
-	width: 500px;
-	margin: 0 auto;
-	border: 2px solid #cccccc;
-	border-collapse: collapse;
-}
-
-.title {
-	width: 100px;
-	padding: 5px 10px;
-	text-align: center;
-	border: 1px solid #cccccc;
-}
-
-.input {
-	width: 400px;
-	padding: 5px 10px;
-	border: 1px solid #cccccc;
-}
-
-.btn {
-	text-align: center;
-	border: 1px solid #cccccc;
-}
-
-#review_add {
-	margin-bottom: 5px;
-}
-
-#review_modify, #review_remove {
-	margin: 10px;
-	display: none;
-}
-
-#add_message, #modify_message {
-	width: 500px;
-	margin: 0 auto;
-	margin-bottom: 20px;
-	text-align: center;
-	color: red;
-}
-
-#remove_message {
-	padding: 3px;
-	text-align: center;
-	border: 1px solid #cccccc;
+/* 리뷰 목록 스타일 */
+.review-list {
+    margin-top: 20px;
 }
 
 .review {
-	width: 550px;
-	margin: 0 auto;
-	margin-bottom: 5px;
-	padding: 3px;
-	border: 1px solid #cccccc;
+    padding: 15px;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    background-color: #f8f9fa;
 }
 
-.no_review {
-	width: 550px;
-	margin: 0 auto;
-	margin-bottom: 5px;
-	border: 2px solid #cccccc;
-	text-align: center;
+.review b {
+    display: block;
+    margin-bottom: 5px;
+    color: #343a40;
+}
+
+/* 버튼 스타일 변경 */
+.review button, .review-form .btn-submit, .review-form .btn-cancel, .review-remove .btn-submit, .review-remove .btn-cancel {
+    padding: 5px 10px;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* 댓글 등록, 댓글 변경, 댓글 삭제 버튼 스타일 구분 */
+.review button, .review-form .btn-submit, .review-remove .btn-submit {
+    background-color: #666;
+    color: #fff;
+    border: none;
+}
+
+.review-form .btn-cancel {
+    background-color: #fff;
+    color: #666;
+    border: 1px solid #666;
+}
+
+.review-remove .btn-cancel {
+    background-color: #fff;
+    color: #666;
+    border: 1px solid #666;
+}
+
+.review button:hover, .review-form .btn-submit:hover, .review-form .btn-cancel:hover, .review-remove .btn-submit:hover, .review-remove .btn-cancel:hover {
+    background-color: #555;
+    border-color: #555;
+    color: #fff;
+}
+
+/* 리뷰 폼 스타일 */
+.review-form {
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+}
+
+.review-form .form-header {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.review-form textarea {
+    width: 100%;
+    height: 80px;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    resize: none;
+}
+
+.review-form .message {
+    margin-top: 10px;
+    color: #e74c3c;
+    font-size: 14px;
+    min-height: 20px; /* 최소 높이 설정 */
+    display: flex; /* 수직 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
 }
 
 
+/* 리뷰 제거 스타일 */
+.review-remove {
+    display: none;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+}
 
+.review-remove .message {
+    font-size: 14px;
+    color: #000;
+}
 
+/* 페이징 버튼 스타일 */
+.pagination button {
+    padding: 10px 15px;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 5px;
+    margin: 5px;
+    cursor: pointer;
+    background-color: #fff; /* 기본 배경색 */
+    border: 1px solid #666;
+    color: #666;
+}
 
+.pagination button:hover {
+    background-color: #e6e6e6; /* 호버 시 배경색 */
+}
 
+.pagination button.active {
+    background-color: #666; /* 현재 페이지 배경색 */
+    color: #fff; /* 현재 페이지 글자색 */
+    border-color: #666;
+}
+
+.pagination button:disabled {
+    background-color: #f8f8f8; /* 비활성화 버튼 배경색 */
+    color: #ccc;
+    cursor: not-allowed;
+}
 
 
 
 </style>
-	<div class="container">
+	<div class="container mt-4">
 		<div>
 			<div class="row">
 				<div class="col-md-5">
@@ -252,12 +323,12 @@ input[type="number"]::-webkit-inner-spin-button {
 						</li>
 						<li>
 							<a href="#order_reviews_area">구매후기
-								<span id="order_reviews">1</span>
+								<span id="order_reviews"></span>
 							</a>
 						</li>
 						<li>
 							<a href="#order_inquiry_area">상품문의
-								<span id="order_inquiry">2</span>
+								<span class="arrLength_tab" id="order_inquiry"></span>
 							</a>
 						</li>
 					</ul>
@@ -303,292 +374,254 @@ input[type="number"]::-webkit-inner-spin-button {
 						</div>
 						
 						<!-- 댓글 -->
-						<div id="order_reviews_area">
-							<div>
-								<span class="fw-normal fs-5">구매후기
-									<span class="text-danger fs-6 ms-1 arrLength"></span>
-								</span>
-				            	<hr />
-				            	<ul>
-				              		<li>
-				                		<small>상품을 구매하신 분들이 작성한 리뷰입니다.</small>
-				              		</li>
-				            	</ul>
-				            	<div id="review_add">
-									<table class="review_table">
-										<tr>
-											<td class="title">내용</td>
-											<td class="input">
-												<textarea rows="3" cols="50" id="add_content"></textarea>
-											</td>
-										</tr>
-										<tr>
-											<td class="btn" colspan="2">
-												<button type="button" id="add_btn">댓글등록</button>
-											</td>
-										</tr>
-									</table>
-									<div id="add_message">&nbsp;</div>
-								</div>
-								<%-- 댓글목록태그 --%>
-								<div id="review_list"></div>
-							
-								<%-- 댓글변경태그 --%>
-								<div id="review_modify">
-									<input type="hidden" id="modify_num">
-									<table class="review_table">
-										<tr>
-											<td class="title">작성자</td>
-											<td class="input"><input type="text" id="modify_writer"></td>
-										</tr>
-										<tr>
-											<td class="title">내용</td>
-											<td class="input">
-												<textarea rows="3" cols="50" id="modify_content"></textarea>
-											</td>
-										</tr>
-										<tr>
-											<td class="btn" colspan="2">
-												<button type="button" id="modify_btn">변경</button>
-												<button type="button" id="modify_cancel_btn">취소</button>
-											</td>
-										</tr>
-									</table>
-									<div id="modify_message">&nbsp;</div>
-								</div>
-							
-								<%-- 댓글삭제태그 --%>
-								<div id="review_remove">
-									<input type="hidden" id="remove_num">
-									<div id="remove_message">
-										<b>정말로 삭제 하시겠습니까?</b>
-										<button type="button" id="remove_btn">삭제</button>
-										<button type="button" id="remove_cancel_btn">취소</button>
-									</div>
-								</div>
-								<script type="text/javascript">
-								displayreview();
-								
-								//Ajax 엔진으로 [review_list.jsp] 문서를 요청하여 실행결과(댓글목록)를 JSON으로 제공받아
-								//HTML 태그로 변환하여 댓글목록태그의 태그내용을 변경하는 함수
-								function displayreview() {
-									$.ajax({
-										type: "get",
-										url: "<%=request.getContextPath()%>/review/review_list.jsp",
-										dataType: "json",
-										success: function(result) {
-											//댓글목록태그의 자식태그(댓글)를 삭제 처리 - 기존 댓글 삭제
-											$("#review_list").children().remove();
-											
-											if(result.code == "success") {//검색된 댓글정보가 있는 경우
-												//Array 객체를 일괄처리하기 위해 each() 멤버함수 호출
-												$(result.data).each(function() {
-													//Array 객체의 요소값(Object 객체 - 댓글정보)를 HTML 태그로 변환
-													var html="<div class='review' id='review_"+this.num+"'>";//댓글태그
-													html+="<b>["+this.writer+"]</b><br>";//댓글태그에 작성자 포함
-													html+=this.content.replace(/\n/g,"<br>")+"<br>";//댓글태그에 댓글내용 포함
-													html+="("+this.regdate+")<br>";//댓글태그에 작성날짜 포함
-													html+="<button type='button' onclick='modifyreview("+this.num+");'>댓글변경</button>&nbsp;";//댓글태그에 댓글변경버튼 포함
-													html+="<button type='button' onclick='removereview("+this.num+");'>댓글삭제</button>&nbsp;";//댓글태그에 댓글삭제버튼 포함
-													html+="</div>";
-													
-													//댓글목록태그에 댓글태그를 마지막 자식태그로 추가하여 출력 처리 
-													$("#review_list").append(html);
-												});
-											} else {//검색된 댓글정보가 없는 경우
-												$("#review_list").html("<div class='no_review'>"+result.message+"</div>");
-											}
-										}, 
-										error: function(xhr) {
-											alert("에러코드 = "+xhr.status);
-										}
-									});	
-								}
+						<!-- 댓글 영역 -->
+<div id="order_reviews_area">
+    <div>
+        <span class="fw-normal fs-5">구매후기
+            <span class="text-danger fs-6 ms-1"></span>
+        </span>
+        <hr />
+        <ul>
+            <li>
+                <small>상품을 구매하신 분들이 작성한 리뷰입니다.</small>
+            </li>
+        </ul>
+        <hr>
+        <% if (loginMember != null) { %>
+        <div id="review_add" class="review-form">
+            <div class="form-header">리뷰 작성</div>
+            <textarea id="add_content" placeholder="리뷰를 입력하세요."></textarea>
+            <div>
+                <button type="button" id="add_btn" class="btn-submit">댓글등록</button>
+                <div id="add_message" class="message">&nbsp;</div>
+            </div>
+        </div>
+        <% } %>
+        <div id="review_list" class="review-list"></div>
+        <div id="pagination" class="pagination"></div>
+        <div id="review_modify" class="review-form" style="display:none;">
+            <input type="hidden" id="modify_num">
+            <div class="form-header">리뷰 수정</div>
+            <textarea id="modify_content" placeholder="리뷰를 수정하세요."></textarea>
+            <div>
+                <button type="button" id="modify_btn" class="btn-submit">변경</button>
+                <button type="button" id="modify_cancel_btn" class="btn-cancel">취소</button>
+                <div id="modify_message" class="message">&nbsp;</div>
+            </div>
+        </div>
+        <div id="review_remove" class="review-remove" style="display:none;">
+            <input type="hidden" id="remove_num">
+            <div id="remove_message" class="message">
+                <b>정말로 삭제 하시겠습니까?</b>
+                <button type="button" id="remove_btn" class="btn-submit">삭제</button>
+                <button type="button" id="remove_cancel_btn" class="btn-cancel">취소</button>
+            </div>
+        </div>
+						        <script type="text/javascript">
+						        var currentPage = 1;
+						        var itemsPerPage = 5; // 페이지당 리뷰 수 설정
 
-								//[댓글등록] 태그를 클릭한 경우 호출될 이벤트 처리 함수 등록
-								// => Ajax 엔진으로 [review_add.jsp] 문서를 요청하여 실행결과를 JSON으로 제공받아 처리
-								// => 입력값(작성자와 내용)을 [review_add.jsp] 문서를 요청시 전달
-								$("#add_btn").click(function() {
-									var pyNo=1;
-									
-									var content=$("#add_content").val();
-									if(content == "") {
-										$("#add_message").html("내용을 입력해 주세요.");
-										$("#add_content").focus();
-										return;
-									}
-									
-									$("#add_content").val("");
-									$("#add_message").html("");
-									
-									$.ajax({
-										type: "post",
-										url: "<%=request.getContextPath()%>/review/review_add.jsp",
-										data: {"pyNo":pyNo, "content":content},
-										dataType: "json",
-										success: function(result) {
-											if(result.code == "success") {
-												displayreview();//댓글목록 출력
-											} else {
-												alert("댓글 삽입 실패");
-											}
-										},
-										error: function(xhr) {
-											alert("에러코드 = "+xhr.status);
-										}
-									});
-								});
+						        function displayReview(page = 1) {
+						            currentPage = page; // 현재 페이지를 업데이트
+						            $.ajax({
+						                type: "get",
+						                url: "<%=request.getContextPath()%>/review/review_list.jsp",
+						                data: { page: page, itemsPerPage: itemsPerPage, productNo:<%=product.getPRODUCT_NO()%> },
+						                dataType: "json",
+						                success: function(result) {
+						                    $("#review_list").empty();
+						                    $("#pagination").empty();
 
-								//댓글변경태그와 댓글삭제태그를 초기화 처리하기 위한 함수
-								function init() {
-									//댓글변경태그를 숨김 처리하고 document 객체의 자식태그로 이동 처리
-									$("#review_modify").hide().appendTo(document.documentElement);
-									//댓글변경태그의 입력태그 및 메세지태그 초기화
-									$("#modify_num").val("");
-									$("#modify_content").val("");
-									$("#modify_message").html("");
+						                    if (result.code == "success") {
+												var product_count=0;
+						                        $(result.data).each(function() {
+						                            
+						                                var html = "<div class='review' id='review_" + this.num + "'>";
+						                                html += "<b>[" + this.writer + "]</b><br>";
+						                                html += this.content.replace(/\n/g, "<br>") + "<br>";
+						                                html += "(" + this.regdate + ")<br>";
+						                                <% if (loginMember != null) { %>
+						                                var mb = "<%=loginMember.getMemberName()%>";
+						                                if (this.writer == mb) {
+						                                    html += "<button type='button' class='btn-submit' onclick='modifyreview(" + this.num + ");'>댓글변경</button>&nbsp;";
+						                                    html += "<button type='button' class='btn-cancel' onclick='removereview(" + this.num + ");'>댓글삭제</button>&nbsp;";
+						                                }
+						                                <% } %>
+						                                html += "</div>";
 
-									//댓글삭제태그를 숨김 처리하고 document 객체의 자식태그로 이동 처리
-									$("#review_remove").hide().appendTo(document.documentElement);
-									//댓글변경태그의 입력태그 초기화
-									$("#remove_num").val("");
-								}
+						                                $("#review_list").append(html);
+						                                product_count++;
+						                            //}
+						                        });
+						                        $("#review_count").text(product_count);
+						                        setupPagination(result.totalPages, result.currentPage);
+						                    } else {
+						                        $("#review_list").html("<div class='no_review'>" + result.message + "</div>");
+						                    }
+						                },
+						                error: function(xhr) {
+						                    alert("에러코드 = " + xhr.status);
+						                }
+						            });
+						        }
 
-								//댓글태그의 [댓글변경] 태그를 클릭한 경우 호출되는 이벤트 처리 함수
-								// => 댓글변경태그를 댓글태그의 자식태그로 이동하여 출력하고 Ajax 엔진으로 [commant_get.jsp]
-								//문서를 요청해 실행결과(댓글정보)를 JSON으로 응답받아 입력태그의 입력값으로 출력 처리 - 댓글번호 전달
-								function modifyreview(num) {
-									//alert(num);
-									
-									init();
-									
-									//댓글변경태그를 출력 처리하고 댓글태그의 마지막 자식태그로 이동 처리 
-									$("#review_modify").show().appendTo("#review_"+num);
-									
-									$.ajax({
-										type: "get",
-										url: "<%=request.getContextPath()%>/review/review_get.jsp",
-										data: {"no":num},
-										dataType: "json",
-										success: function(result) {
-											if(result.code == "success") {
-												$("#modify_num").val(result.data.num);
-												$("#modify_content").val(result.data.content);
-											} else {
-												init();
-											}
-										},
-										error: function(xhr) {
-											alert("에러코드 = "+xhr.status);
-										}
-									});
-								}
+						        function setupPagination(totalPages, currentPage) {
+						            var paginationHtml = '';
 
-								//댓글변경태그의 [변경] 태그를 클릭한 경우 호출될 이벤트 처리 함수 등록
-								// => Ajax 엔진으로 [review_modify.jsp] 문서를 요청하여 실행결과를 JSON으로 제공받아 
-								//처리 - 입력태그의 입력값을 전달
-								$("#modify_btn").click(function() {
-									var num=$("#modify_num").val();
+						            if (totalPages > 1) {
+						                if (currentPage > 1) {
+						                    paginationHtml += '<button onclick="displayReview(' + (currentPage - 1) + ')" class="btn_page">이전</button>';
+						                } else {
+						                    paginationHtml += '<button class="btn_page" disabled>이전</button>';
+						                }
 
-									if(writer == "") {
-										$("#modify_message").html("작성자를 입력해 주세요.");
-										$("#modify_writer").focus();
-										return;
-									}
-									
-									var content=$("#modify_content").val();
-									if(content == "") {
-										$("#modify_message").html("내용을 입력해 주세요.");
-										$("#modify_content").focus();
-										return;
-									}
-									
-									$.ajax({
-										type: "post",
-										url: "<%=request.getContextPath()%>/review/review_modify.jsp",
-										data: {"no":num, "content":content},
-										dataType: "json",
-										success: function(result) {
-											if(result.code == "success") {
-												init();
-												displayreview();//댓글목록 출력
-											} else {
-												alert("댓글 변경 실패");
-											}
-										},
-										error: function(xhr) {
-											alert("에러코드 = "+xhr.status);
-										}
-									});
-								});
+						                for (var i = 1; i <= totalPages; i++) {
+						                    paginationHtml += '<button onclick="displayReview(' + i + ')" class="btn_page' + (i === currentPage ? ' active' : '') + '">' + i + '</button>';
+						                }
 
-								//댓글변경태그의 [취소] 태그를 클릭한 경우 호출될 이벤트 처리 함수 등록
-								$("#modify_cancel_btn").click(init);
+						                if (currentPage < totalPages) {
+						                    paginationHtml += '<button onclick="displayReview(' + (currentPage + 1) + ')" class="btn_page">다음</button>';
+						                } else {
+						                    paginationHtml += '<button class="btn_page" disabled>다음</button>';
+						                }
+						            }
 
-								//댓글태그의 [댓글삭제] 태그를 클릭한 경우 호출될 이벤트 처리 함수
-								// => 댓글삭제태그를 댓글태그의 자식태그로 이동하여 출력하고 입력태그의 입력값 변경 처리
-								function removereview(num) {
-									init();
-									$("#review_remove").show().appendTo("#review_"+num);
-									$("#remove_num").val(num);
-								}
+						            $('#pagination').html(paginationHtml);
+						        }
 
-								//댓글삭제태그의 [삭제] 태그를 클릭한 경우 호출될 이벤트 처리 함수 등록
-								// => Ajax 엔진으로 [review_remove.jsp] 문서를 요청하여 실행결과를 JSON으로 제공받아 
-								//처리 - 입력태그의 입력값을 전달
-								$("#remove_btn").click(function() {
-									var num=$("#remove_num").val();	
-									
-									$.ajax({
-										type: "get",
-										url: "<%=request.getContextPath()%>/review/review_remove.jsp",
-										data: {"no":num},
-										dataType: "json",
-										success: function(result) {
-											if(result.code == "success") {
-												init();
-												displayreview();//댓글목록 출력
-											} else {
-												alert("댓글 삭제 실패");
-											}
-										},
-										error: function(xhr) {
-											alert("에러코드 = "+xhr.status);
-										}
-									});
-								});
+						        $(document).ready(function() {
+						            displayReview(currentPage);
+						        });
+						            
+						            $("#add_btn").click(function() {
+						                var pyNo = 0;
+						                var content = $("#add_content").val();
+						                if (content == "") {
+						                    $("#add_message").html("내용을 입력해 주세요.");
+						                    $("#add_content").focus();
+						                    return;
+						                }
+						                $("#add_content").val("");
+						                $("#add_message").html("");
+						                $.ajax({
+						                    type: "post",
+						                    url: "<%=request.getContextPath()%>/review/review_add.jsp",
+						                    data: {"content": content},
+						                    dataType: "json",
+						                    success: function(result) {
+						                        if (result.code == "success") {
+						                            displayReview();
+						                        } else {
+						                            alert("구매평 작성이 가능한 주문이 존재하지 않습니다.\n구매평은 주문당 품목별로 1번만 작성이 가능하며, 삭제 후 재작성은 불가합니다.");
+						                        }
+						                    },
+						                    error: function(xhr) {
+						                        alert("에러코드 = " + xhr.status);
+						                    }
+						                });
+						            });
+						
+						            function resetForms() {
+						                $("#review_modify").hide().appendTo(document.documentElement);
+						                $("#modify_num").val("");
+						                $("#modify_content").val("");
+						                $("#modify_message").html("&nbsp;");
+						                $("#review_remove").hide().appendTo(document.documentElement);
+						                $("#remove_num").val("");
+						            }
+						
+						            function modifyreview(num) {
+						                resetForms();
+						                $("#review_modify").show().appendTo("#review_" + num);
+						                $.ajax({
+						                    type: "get",
+						                    url: "<%=request.getContextPath()%>/review/review_get.jsp",
+						                    data: {"no": num},
+						                    dataType: "json",
+						                    success: function(result) {
+						                        if (result.code == "success") {
+						                            $("#modify_num").val(result.data.num);
+						                            $("#modify_content").val(result.data.content);
+						                        } else {
+						                            resetForms();
+						                        }
+						                    },
+						                    error: function(xhr) {
+						                        alert("에러코드 = " + xhr.status);
+						                    }
+						                });
+						            }
+						            
+						            $("#modify_btn").click(function() {
+						                var num = $("#modify_num").val();
+						                var content = $("#modify_content").val();
+						                if (content == "") {
+						                    $("#modify_message").html("내용을 입력해 주세요.");
+						                    $("#modify_content").focus();
+						                    return;
+						                }
+						                $.ajax({
+						                    type: "post",
+						                    url: "<%=request.getContextPath()%>/review/review_modify.jsp",
+						                    data: {"no": num, "content": content},
+						                    dataType: "json",
+						                    success: function(result) {
+						                        if (result.code == "success") {
+						                            resetForms();
+						                            displayReview();
+						                        } else {
+						                            alert("댓글 변경 실패");
+						                        }
+						                    },
+						                    error: function(xhr) {
+						                        alert("에러코드 = " + xhr.status);
+						                    }
+						                });
+						            });
+						            
+						            $("#modify_cancel_btn").click(resetForms);
+						            
+						            function removereview(num) {
+						                resetForms();
+						                $("#review_remove").show().appendTo("#review_" + num);
+						                $("#remove_num").val(num);
+						            }
+						            
+						            $("#remove_btn").click(function() {
+						                var num = $("#remove_num").val();
+						                $.ajax({
+						                    type: "get",
+						                    url: "<%=request.getContextPath()%>/review/review_remove.jsp",
+						                    data: {"no": num},
+						                    dataType: "json",
+						                    success: function(result) {
+						                        if (result.code == "success") {
+						                            resetForms();
+						                            displayReview();
+						                        } else {
+						                            alert("댓글 삭제 실패");
+						                        }
+						                    },
+						                    error: function(xhr) {
+						                        alert("에러코드 = " + xhr.status);
+						                    }
+						                });
+						            });
+						            
+						            $("#remove_cancel_btn").click(resetForms);
+						
+						            $(document).ready(function() {
+						                displayReview();
+						            });
+						        </script>
+						    </div>
+						</div>
 
-								//댓글삭제태그의 [취소] 태그를 클릭한 경우 호출될 이벤트 처리 함수 등록
-								$("#remove_cancel_btn").click(init);
 
-								</script>
-							</div>
-						</div><!-- /리뷰 -->
+
 						<!-- 상품문의 -->
 						<div id="order_inquiry_area">
-							<div>
-								<span class="fw-normal fs-5">상품문의
-									<span class="text-danger fs-6 ms-1 arrLength"></span>
-								</span>
-				            	<hr />
-				            	<ul>
-				              		<li>
-				                		<small>상품문의에서는 상품과 무관한 요청은 처리되지 않습니다.</small>
-				              		</li>
-				              		<li>
-				                		<small>
-				                  			배송문의·취소·환불 등은 1:1상담게시판을 통해 문의남겨주시기
-				                  			바랍니다.
-				                  		</small>
-				              		</li>
-				              		<li>
-					                	<small>
-					                  미구매,비방이나 양도 광고성, 욕설, 도배글, 개인정보가 포함된
-					                  글은 예고없이 삭제되거나 노출이 제한될 수 있습니다.
-					                  	</small>
-				              		</li>
-				            	</ul>
-							</div>
+							<jsp:include page="/qna/detail_qna.jsp" />
 						</div>
 					</div>
 				</div>

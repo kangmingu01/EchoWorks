@@ -39,7 +39,7 @@
 	//System.out.println("request.getContextPath() = "+ request.getContextPath());
 	
 	// 상품 번호 들고오기
-	String productNoStr = request.getParameter("productNo");
+	String productNoStr = request.getParameter("product_no");
 	int productNo = productNoStr != null ? Integer.parseInt(productNoStr) : 1; // 1임시값
 	
 	// 로그인 사용자인지 아닌지 검증
@@ -781,6 +781,7 @@
 		        	});
 					 
 	                // 상품 문의 갯수를 출력
+	                $(".arrLength_tab").text(arrLength);
 	                $(".arrLength").text("( " + arrLength + " )");
 	            } else { // 검색된 댓글 정보가 없는 경우
 	                $("#qnaRows").html("<div>" + result.message + "</div>");
