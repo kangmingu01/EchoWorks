@@ -15,6 +15,37 @@ small {
 	margin: 0px 1px;
 }
 
+.keyup {
+	max-width: 690px;
+}
+
+#countdown {
+    display: flex;
+    gap: 10px;
+    font-size: 2.5em;
+    color: #fff;
+    background: linear-gradient(45deg, #ff6b6b, #f06595);
+    padding: 10px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+#countdown div {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 10px;
+    border-radius: 5px;
+    min-width: 60px;
+    text-align: center;
+    font-weight: bold;
+}
+
+#countdown span {
+    display: block;
+    font-size: 0.5em;
+    margin-top: 5px;
+    color: #f8f9fa;
+}
+
 /* 카르셀 */
 .carousel-caption {
 	top: 60%;
@@ -236,9 +267,10 @@ small {
 </div>
 
 <!-- 키보드 공중에 띄우기 -->
-<section class="mt-5 mb-5">
+<section class="keyup mt-5 mb-5 d-flex flex-column justify-content-center mx-auto">
 	<h3 class="text-center fs-2 fw-bold ">08.01 Cycle8 Open</h3>
-	<div class="mt-5 d-flex align-items-center justify-content-center mt-3 mb-3">
+	<div class="text-center fs-3 d-flex justify-content-center fw-bold mb-2 mt-2" id="countdown"></div>
+	<div class="mt-2 d-flex align-items-center justify-content-center mt-3 mb-3">
 		<div id="frame" >
 			<a href="https://www.youtube.com/embed/qZ-n6h4zpfY?si=QuttSCa5tDJ5qLrf" target="_blank">
 				<div id="specialCard">
@@ -250,7 +282,7 @@ small {
 </section>
 <!-- Best Selling Keyboards -->
 <div class="container mt-5">
-	<h2 class="text-center mb-4">BEST SELLING KEYBOARDS!</h2>
+	<h2 class="text-center mb-2">BEST SELLING KEYBOARDS!</h2>
 	<div class="album py-5">
 		<div class="container">
 			<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
@@ -308,7 +340,7 @@ small {
 				<div class="col">
 					<a href="#FROG_MINI" class="text-decoration-none">
 						<div class="card shadow-sm">
-							<img src="assets/img/best4.jpg" alt="베스트 키보드1" />
+							<img class="" src="assets/img/best4.jpg" alt="베스트 키보드1" />
 							<div class="card-body">
 								<h5 class="card-title">FROG MINI Barebone Kit</h5>
 								<p class="card-text">설명글</p>
@@ -408,4 +440,36 @@ window.addEventListener('resize', () => {
     width = dimensions.width;
     height = dimensions.height;
 });
+
+//카운트다운 타겟 날짜 설정 (2024년 8월 2일 18시)
+var targetDate = new Date("August 2, 2024 18:00:00").getTime();
+
+// 카운트다운 업데이트 함수
+function updateCountdown() {
+    var now = new Date().getTime();
+    var timeRemaining = targetDate - now;
+
+    if (timeRemaining < 0) {
+        document.getElementById("countdown").innerHTML = "선착순 100대 지금 시작합니다!";
+        return;
+    }
+
+    var hours = Math.floor(timeRemaining / (1000 * 60 * 60));
+    var minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+    hours = String(hours).padStart(2, '0');
+    minutes = String(minutes).padStart(2, '0');
+    seconds = String(seconds).padStart(2, '0');
+    
+    document.getElementById("countdown").innerHTML = 
+       hours + ":" + minutes + ":" + seconds ;
+
+    // 1초마다 업데이트
+    setTimeout(updateCountdown, 1000);
+}
+
+// 초기 카운트다운 업데이트 호출
+updateCountdown();
+
 </script>
