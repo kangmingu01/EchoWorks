@@ -710,17 +710,18 @@
 					hhtml +="<nav aria-label='Page navigation' class='mt-4'>";
 					hhtml += "<ul class='pagination justify-content-center'>";
 					if(result.startPage>result.blockSize){
-						 hhtml +='<li class="page-item'+(result.startPage > result.blockSize) ? '' : 'disabled'+'" >';
-						 hhtml += '<a class="page-link" id="prev_page" href="#" data-info="' + (startPage - 1) + '" tabindex="-1">[이전]</a>';
+						 hhtml +='<li class="page-item" >';
+						 hhtml += '<a class="page-link" id="prev_page" href="#" data-info="' + (startPage - 1) + '" tabindex="-1">이전</a>';
 						 hhtml +="</li>";
 					}else{
+						 hhtml +='<li class="page-item disabled" >';
 						hhtml+="<a></a>";
+						 hhtml +="</li>";
 					}
 					for(var i=result.startPage;i<=result.endPage;i++){
 					 	if(pageNum!=i){ 
 						hhtml += "<li class='page-item active' >";
 						 hhtml += "<a id='page_" + i + "' href='#' data-info='"+i+"' class='page-link text-dark bg-white'>" + i + "</a>";
-						 /* hhtml += '<a id="page_' + i + '" class="page-link '+(pageNum == i) ? 'text-white bg-dark'  : 'text-dark bg-white'  +'" href="#" data-info="'+i+'">' + i + '</a>';			 */		 		
 						 hhtml +="</li>";
 						 }else{
 							hhtml += "<li class='page-item'>";
@@ -728,14 +729,15 @@
 						 hhtml +="</li>";
 						} 
 					}
-					if(result.endPage!=result.totalPage){
-						/* hhtml += "<a id='next_page' href='#' data-info='" + (endPage + 1) + " '>[다음]</a>"; */
-						hhtml +='<li class="page-item'+(result.startPage > result.blockSize) ? '' : 'disabled'+'" >';
-						hhtml += "<a class='page-link' id='next_page' href='#' data-info='" + (endPage + 1) + ">[다음]</a>";
+					 if(result.endPage!=result.totalPage){
+						hhtml +='<li class="page-item" >';
+						hhtml += "<a class='page-link' id='next_page' href='#' data-info='" + (endPage + 1) + "'>다음</a>";
 						hhtml +="</li>";
-					}else{
+					 }else{
+						hhtml +='<li class="page-item disabled" >';
 					hhtml+="<a></a>";
-					}
+						hhtml +="</li>";
+					} 
 					hhtml +="</ul>";
 					hhtml +="</nav>";
 					// 페이징 처리
