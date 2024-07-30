@@ -781,6 +781,7 @@
 		        	});
 					 
 	                // 상품 문의 갯수를 출력
+	                $(".arrLength_tab").text(arrLength);
 	                $(".arrLength").text("( " + arrLength + " )");
 	            } else { // 검색된 댓글 정보가 없는 경우
 	                $("#qnaRows").html("<div>" + result.message + "</div>");

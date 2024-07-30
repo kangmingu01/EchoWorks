@@ -66,6 +66,16 @@ List<ProductOption> optionList=new ArrayList<ProductOption>();
     
     
 <style>
+/* 공통 버튼 스타일 */
+button {
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 10px 20px;
+}
+
+/* 기존 스타일 */
 .itemInfo_td .itemInfo_td_div_area .itemOption_btn{width:100%; position:relative; padding:30px 0 0;}
 .itemInfo_td.fixed .itemInfo_td_div_area .itemOption_btn{width:auto; position:absolute; top:0; right:0; padding:40px 0 0;}
 .itemInfo_td .itemInfo_td_div_area .itemOption_btn .itemOption_cart_btn_area{display:inline-block; padding:0 3px 0 0;}
@@ -74,7 +84,7 @@ List<ProductOption> optionList=new ArrayList<ProductOption>();
 .itemInfo_td .itemInfo_td_div_area .itemOption_btn table{width:100%; border-collapse:collapse;}
 .itemInfo_td .itemInfo_td_div_area .itemOption_btn .itemOptionJjim{display:inline-block; padding-left:4px; position:relative;}
 
-
+/* 탭 스타일 */
 .itemMenu_tap_area:after{content:''; display:block; clear:both;}
 .itemMenu_tap_area{margin:0px 0 40px 0;}
 .itemMenu_tap_area li{float:left; width:100%; list-style-type: none; }
@@ -86,8 +96,7 @@ List<ProductOption> optionList=new ArrayList<ProductOption>();
 #itemContent_wrap #item_info{max-height:auto; overflow:hidden;}
 #itemContent_wrap #item_info.tabcnt_detail0.expand{max-height:inherit;}
 
-
-/* op box(옵션) */
+/* 옵션 박스 스타일 */
 .shop_item_select_box {max-height:240px; overflow-y:auto;}
 .shop_item_select_box .shop_item_select:first-child{margin:0;}
 .shop_item_select_box .shop_item_select{background:#F8F8F8; padding:20px 24px; border-radius:5px; margin:10px 0 0; position:relative;}
@@ -122,26 +131,38 @@ input[type="number"]::-webkit-inner-spin-button {
     color: #343a40;
 }
 
-.review button {
-    margin-top: 10px;
+/* 버튼 스타일 변경 */
+.review button, .review-form .btn-submit, .review-form .btn-cancel, .review-remove .btn-submit, .review-remove .btn-cancel {
     padding: 5px 10px;
-    background-color: #6c757d;
-    border: none;
-    color: #fff;
-    border-radius: 3px;
+    font-size: 18px;
+    font-weight: 500;
     cursor: pointer;
+    border-radius: 5px;
 }
 
-.review button:hover {
-    background-color: #5a6268;
+/* 댓글 등록, 댓글 변경, 댓글 삭제 버튼 스타일 구분 */
+.review button, .review-form .btn-submit, .review-remove .btn-submit {
+    background-color: #666;
+    color: #fff;
+    border: none;
 }
 
-.review .btn-submit {
-    background-color: #007bff;
+.review-form .btn-cancel {
+    background-color: #fff;
+    color: #666;
+    border: 1px solid #666;
 }
 
-.review .btn-cancel {
-    background-color: #6c757d;
+.review-remove .btn-cancel {
+    background-color: #fff;
+    color: #666;
+    border: 1px solid #666;
+}
+
+.review button:hover, .review-form .btn-submit:hover, .review-form .btn-cancel:hover, .review-remove .btn-submit:hover, .review-remove .btn-cancel:hover {
+    background-color: #555;
+    border-color: #555;
+    color: #fff;
 }
 
 /* 리뷰 폼 스타일 */
@@ -168,38 +189,17 @@ input[type="number"]::-webkit-inner-spin-button {
     resize: none;
 }
 
-.review-form .btn-submit {
-    padding: 5px 10px;
-    background-color: #007bff;
-    border: none;
-    color: #fff;
-    border-radius: 3px;
-    cursor: pointer;
-}
-
-.review-form .btn-submit:hover {
-    background-color: #0056b3;
-}
-
-.review-form .btn-cancel {
-    padding: 5px 10px;
-    background-color: #6c757d;
-    border: none;
-    color: #fff;
-    border-radius: 3px;
-    cursor: pointer;
-}
-
-.review-form .btn-cancel:hover {
-    background-color: #5a6268;
-}
-
 .review-form .message {
     margin-top: 10px;
     color: #e74c3c;
     font-size: 14px;
+    min-height: 20px; /* 최소 높이 설정 */
+    display: flex; /* 수직 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
 }
 
+
+/* 리뷰 제거 스타일 */
 .review-remove {
     display: none;
     padding: 15px;
@@ -213,52 +213,35 @@ input[type="number"]::-webkit-inner-spin-button {
     color: #000;
 }
 
-.review-remove .btn-submit {
-    padding: 5px 10px;
-    background-color: #dc3545;
-    border: none;
-    color: #fff;
-    border-radius: 3px;
-    cursor: pointer;
-}
-
-.review-remove .btn-submit:hover {
-    background-color: #c82333;
-}
-
-.review-remove .btn-cancel {
-    padding: 5px 10px;
-    background-color: #6c757d;
-    border: none;
-    color: #fff;
-    border-radius: 3px;
-    cursor: pointer;
-}
-
-.review-remove .btn-cancel:hover {
-    background-color: #5a6268;
-}
-
-/* 공통 버튼 스타일 */
-button {
-    display: inline-block;
-    font-size: 14px;
+/* 페이징 버튼 스타일 */
+.pagination button {
+    padding: 10px 15px;
+    font-size: 16px;
+    font-weight: 500;
     border-radius: 5px;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
+    margin: 5px;
+    cursor: pointer;
+    background-color: #fff; /* 기본 배경색 */
+    border: 1px solid #666;
+    color: #666;
 }
 
-button:hover {
-    background-color: #555;
-    color: #fff;
+.pagination button:hover {
+    background-color: #e6e6e6; /* 호버 시 배경색 */
 }
 
-button[disabled] {
+.pagination button.active {
+    background-color: #666; /* 현재 페이지 배경색 */
+    color: #fff; /* 현재 페이지 글자색 */
+    border-color: #666;
+}
+
+.pagination button:disabled {
+    background-color: #f8f8f8; /* 비활성화 버튼 배경색 */
+    color: #ccc;
     cursor: not-allowed;
-    opacity: 0.6;
 }
+
 
 
 </style>
@@ -340,12 +323,12 @@ button[disabled] {
 						</li>
 						<li>
 							<a href="#order_reviews_area">구매후기
-								<span id="order_reviews">1</span>
+								<span id="order_reviews"></span>
 							</a>
 						</li>
 						<li>
 							<a href="#order_inquiry_area">상품문의
-								<span id="order_inquiry">2</span>
+								<span class="arrLength_tab" id="order_inquiry"></span>
 							</a>
 						</li>
 					</ul>
@@ -391,83 +374,124 @@ button[disabled] {
 						</div>
 						
 						<!-- 댓글 -->
-						<div id="order_reviews_area">
-						    <div>
-						        <span class="fw-normal fs-5">구매후기
-						            <span class="text-danger fs-6 ms-1 arrLength"></span>
-						        </span>
-						        <hr />
-						        <ul>
-						            <li>
-						                <small>상품을 구매하신 분들이 작성한 리뷰입니다.</small>
-						            </li>
-						        </ul>
-						        <hr>
-						        <% if (loginMember != null) { %>
-						        <div id="review_add" class="review-form">
-						            <div class="form-header">리뷰 작성</div>
-						            <textarea id="add_content" placeholder="리뷰를 입력하세요."></textarea>
-						            <div>
-						                <button type="button" id="add_btn" class="btn-submit">댓글등록</button>
-						                <div id="add_message" class="message">&nbsp;</div>
-						            </div>
-						        </div>
-						        <% } %>
-						        <div id="review_list" class="review-list"></div>
-						        <div id="review_modify" class="review-form" style="display:none;">
-						            <input type="hidden" id="modify_num">
-						            <div class="form-header">리뷰 수정</div>
-						            <textarea id="modify_content" placeholder="리뷰를 수정하세요."></textarea>
-						            <div>
-						                <button type="button" id="modify_btn" class="btn-submit">변경</button>
-						                <button type="button" id="modify_cancel_btn" class="btn-cancel">취소</button>
-						                <div id="modify_message" class="message">&nbsp;</div>
-						            </div>
-						        </div>
-						        <div id="review_remove" class="review-remove" style="display:none;">
-						            <input type="hidden" id="remove_num">
-						            <div id="remove_message" class="message">
-						                <b>정말로 삭제 하시겠습니까?</b>
-						                <button type="button" id="remove_btn" class="btn-submit">삭제</button>
-						                <button type="button" id="remove_cancel_btn" class="btn-cancel">취소</button>
-						            </div>
-						        </div>
+						<!-- 댓글 영역 -->
+<div id="order_reviews_area">
+    <div>
+        <span class="fw-normal fs-5">구매후기
+            <span class="text-danger fs-6 ms-1"></span>
+        </span>
+        <hr />
+        <ul>
+            <li>
+                <small>상품을 구매하신 분들이 작성한 리뷰입니다.</small>
+            </li>
+        </ul>
+        <hr>
+        <% if (loginMember != null) { %>
+        <div id="review_add" class="review-form">
+            <div class="form-header">리뷰 작성</div>
+            <textarea id="add_content" placeholder="리뷰를 입력하세요."></textarea>
+            <div>
+                <button type="button" id="add_btn" class="btn-submit">댓글등록</button>
+                <div id="add_message" class="message">&nbsp;</div>
+            </div>
+        </div>
+        <% } %>
+        <div id="review_list" class="review-list"></div>
+        <div id="pagination" class="pagination"></div>
+        <div id="review_modify" class="review-form" style="display:none;">
+            <input type="hidden" id="modify_num">
+            <div class="form-header">리뷰 수정</div>
+            <textarea id="modify_content" placeholder="리뷰를 수정하세요."></textarea>
+            <div>
+                <button type="button" id="modify_btn" class="btn-submit">변경</button>
+                <button type="button" id="modify_cancel_btn" class="btn-cancel">취소</button>
+                <div id="modify_message" class="message">&nbsp;</div>
+            </div>
+        </div>
+        <div id="review_remove" class="review-remove" style="display:none;">
+            <input type="hidden" id="remove_num">
+            <div id="remove_message" class="message">
+                <b>정말로 삭제 하시겠습니까?</b>
+                <button type="button" id="remove_btn" class="btn-submit">삭제</button>
+                <button type="button" id="remove_cancel_btn" class="btn-cancel">취소</button>
+            </div>
+        </div>
 						        <script type="text/javascript">
-						            function displayReview() {
-						                $.ajax({
-						                    type: "get",
-						                    url: "<%=request.getContextPath()%>/review/review_list.jsp",
-						                    dataType: "json",
-						                    success: function(result) {
-						                        $("#review_list").empty();
-						                        
-						                        if (result.code == "success") {
-						                            $(result.data).each(function() {
-						                                if (this.state == 1 && this.product_no == <%=product.getPRODUCT_NO()%>) {
-						                                    var html = "<div class='review' id='review_" + this.num + "'>";
-						                                    html += "<b>[" + this.writer + "]</b><br>";
-						                                    html += this.content.replace(/\n/g, "<br>") + "<br>";
-						                                    html += "(" + this.regdate + ")<br>";
-						                                    <% if (loginMember != null) { %>
-						                                    var mb = "<%=loginMember.getMemberName()%>";
-						                                    if (this.writer == mb) {
-						                                        html += "<button type='button' class='btn-submit' onclick='modifyreview(" + this.num + ");'>댓글변경</button>&nbsp;";
-						                                        html += "<button type='button' class='btn-cancel' onclick='removereview(" + this.num + ");'>댓글삭제</button>&nbsp;";
-						                                    }
-						                                    <% } %>
-						                                    html += "</div>";
-						                                    $("#review_list").append(html);
+						        var currentPage = 1;
+						        var itemsPerPage = 5; // 페이지당 리뷰 수 설정
+
+						        function displayReview(page = 1) {
+						            currentPage = page; // 현재 페이지를 업데이트
+						            $.ajax({
+						                type: "get",
+						                url: "<%=request.getContextPath()%>/review/review_list.jsp",
+						                data: { page: page, itemsPerPage: itemsPerPage, productNo:<%=product.getPRODUCT_NO()%> },
+						                dataType: "json",
+						                success: function(result) {
+						                    $("#review_list").empty();
+						                    $("#pagination").empty();
+
+						                    if (result.code == "success") {
+												var product_count=0;
+						                        $(result.data).each(function() {
+						                            
+						                                var html = "<div class='review' id='review_" + this.num + "'>";
+						                                html += "<b>[" + this.writer + "]</b><br>";
+						                                html += this.content.replace(/\n/g, "<br>") + "<br>";
+						                                html += "(" + this.regdate + ")<br>";
+						                                <% if (loginMember != null) { %>
+						                                var mb = "<%=loginMember.getMemberName()%>";
+						                                if (this.writer == mb) {
+						                                    html += "<button type='button' class='btn-submit' onclick='modifyreview(" + this.num + ");'>댓글변경</button>&nbsp;";
+						                                    html += "<button type='button' class='btn-cancel' onclick='removereview(" + this.num + ");'>댓글삭제</button>&nbsp;";
 						                                }
-						                            });
-						                        } else {
-						                            $("#review_list").html("<div class='no_review'>" + result.message + "</div>");
-						                        }
-						                    },
-						                    error: function(xhr) {
-						                        alert("에러코드 = " + xhr.status);
+						                                <% } %>
+						                                html += "</div>";
+
+						                                $("#review_list").append(html);
+						                                product_count++;
+						                            //}
+						                        });
+						                        $("#review_count").text(product_count);
+						                        setupPagination(result.totalPages, result.currentPage);
+						                    } else {
+						                        $("#review_list").html("<div class='no_review'>" + result.message + "</div>");
 						                    }
-						                });
+						                },
+						                error: function(xhr) {
+						                    alert("에러코드 = " + xhr.status);
+						                }
+						            });
+						        }
+
+						        function setupPagination(totalPages, currentPage) {
+						            var paginationHtml = '';
+
+						            if (totalPages > 1) {
+						                if (currentPage > 1) {
+						                    paginationHtml += '<button onclick="displayReview(' + (currentPage - 1) + ')" class="btn_page">이전</button>';
+						                } else {
+						                    paginationHtml += '<button class="btn_page" disabled>이전</button>';
+						                }
+
+						                for (var i = 1; i <= totalPages; i++) {
+						                    paginationHtml += '<button onclick="displayReview(' + i + ')" class="btn_page' + (i === currentPage ? ' active' : '') + '">' + i + '</button>';
+						                }
+
+						                if (currentPage < totalPages) {
+						                    paginationHtml += '<button onclick="displayReview(' + (currentPage + 1) + ')" class="btn_page">다음</button>';
+						                } else {
+						                    paginationHtml += '<button class="btn_page" disabled>다음</button>';
+						                }
 						            }
+
+						            $('#pagination').html(paginationHtml);
+						        }
+
+						        $(document).ready(function() {
+						            displayReview(currentPage);
+						        });
 						            
 						            $("#add_btn").click(function() {
 						                var pyNo = 0;
@@ -498,13 +522,12 @@ button[disabled] {
 						            });
 						
 						            function resetForms() {
-						                $("#review_modify").hide();
+						                $("#review_modify").hide().appendTo(document.documentElement);
 						                $("#modify_num").val("");
 						                $("#modify_content").val("");
 						                $("#modify_message").html("&nbsp;");
-						                $("#review_remove").hide();
+						                $("#review_remove").hide().appendTo(document.documentElement);
 						                $("#remove_num").val("");
-						                $("#remove_message").html("&nbsp;");
 						            }
 						
 						            function modifyreview(num) {
