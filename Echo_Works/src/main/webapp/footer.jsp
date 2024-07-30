@@ -82,16 +82,16 @@
               <!-- Links: 나중에 여기에 상품 링크 걸면 될 듯 -->
               <ul class="list-unstyled mb-7 mb-sm-0">
                 <li>
-                  <a class="text-gray-300" href="#">Keyboards</a>
+                  <a class="text-gray-300" href="index.jsp?workgroup=product&work=product&cateOne=keyboards">Keyboards</a>
                 </li>
                 <li>
-                  <a class="text-gray-300" href="#">Switches</a>
+                  <a class="text-gray-300" href="index.jsp?workgroup=product&work=product&cateOne=switches">Switches</a>
                 </li>
                 <li>
-                  <a class="text-gray-300" href="#">Keycaps</a>
+                  <a class="text-gray-300" href="index.jsp?workgroup=product&work=product&cateOne=keycaps">Keycaps</a>
                 </li>
                 <li>
-                  <a class="text-gray-300" href="#">Deskpads</a>
+                  <a class="text-gray-300" href="index.jsp?workgroup=product&work=product&cateOne=switches">Deskpads</a>
                 </li>
               </ul>
             </div>

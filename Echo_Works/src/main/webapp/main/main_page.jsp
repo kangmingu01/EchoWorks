@@ -15,6 +15,37 @@ small {
 	margin: 0px 1px;
 }
 
+.keyup {
+	max-width: 690px;
+}
+
+#countdown {
+    display: flex;
+    gap: 10px;
+    font-size: 2.5em;
+    color: #fff;
+    background: linear-gradient(45deg, #ff6b6b, #f06595);
+    padding: 10px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+#countdown div {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 10px;
+    border-radius: 5px;
+    min-width: 60px;
+    text-align: center;
+    font-weight: bold;
+}
+
+#countdown span {
+    display: block;
+    font-size: 0.5em;
+    margin-top: 5px;
+    color: #f8f9fa;
+}
+
 /* 카르셀 */
 .carousel-caption {
 	top: 60%;
@@ -53,9 +84,11 @@ small {
 
 /* 스크롤 내릴때 사진내려가게 설계 */
 .call-to-action {
-	padding: 150px 0;
+	padding: 100px 0;
 	position: relative;
 	clip-path: inset(0);
+	opacity: 0;
+    transition: opacity 1s ease-in-out;
 }
 
 .call-to-action img {
@@ -94,6 +127,10 @@ small {
 	color: white;
 }
 
+#call-to-action.visible {
+    opacity: 1;
+}
+
 .call-to-action .cta-btn {
 	font-weight: 500;
 	font-size: 16px;
@@ -106,6 +143,113 @@ small {
 	border: 2px solid white;
 	color: white;
 }
+#frame {
+	width: 690px;
+	height: 338px;
+	transition: transform 200ms;
+}
+
+#frame:hover {
+	transform: scale3d(1.05, 1.05, 1.05);
+}
+
+#specialCard {
+	width: 100%;
+	height: 100%;
+	border-radius: 9px;
+	background-image: url("assets/img/cycle1.jpg");
+	background-position: center;
+	background-repeat: no-repeat;
+	box-shadow: 0 0 10px 2px rgba(0,0,0,0.1);
+	position: relative;
+	transition-duration: 200ms;
+	transition-property: transform, box-shadow;
+	transition-timing-function: ease-out;
+}
+
+#light {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	border-radius: 9px;
+}
+
+/* 반응형 디자인: 작은 화면에서 크기 조정 */
+@media (max-width: 768px) {
+	#frame {
+		width: 90%;
+		height: auto;
+	}
+
+	#specialCard {
+		width: 100%;
+		height: 0; /* 높이를 0으로 설정하여 요소가 사라지지 않도록 함 */
+		padding-bottom: 48.9%; /* 원래 비율을 유지하기 위해 padding-bottom 사용 */
+		background-size: cover;
+	}
+
+	#light {
+		width: 100%;
+		height: 100%;
+	}
+}
+
+@media (max-width: 576px) {
+	#frame {
+		width: 100%;
+		height: auto;
+	}
+
+	#specialCard {
+		width: 100%;
+		height: 0; /* 높이를 0으로 설정하여 요소가 사라지지 않도록 함 */
+		padding-bottom: 48.9%; /* 원래 비율을 유지하기 위해 padding-bottom 사용 */
+		background-size: cover;
+	}
+
+	#light {
+		width: 100%;
+		height: 100%;
+	}
+}
+
+.rounded-button {
+    width: 100%;
+    height: 0;
+    padding-bottom: 100%; /* This makes the button a perfect square */
+    border-radius: 50%; /* This makes the button a circle */
+    border: 2px solid white; /* White border */
+    background-color: transparent; /* Transparent background */
+    color: white; /* White text */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    position: relative;
+}
+
+.rounded-button span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.rounded-button:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Slightly white background on hover */
+}
+
+.card-text {
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* Number of lines to show */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
 </style>
 <!-- Carousel -->
 <div id="hero-carousel" class="carousel slide z-2"
@@ -128,29 +272,22 @@ small {
 	</div>
 	<div class="carousel-inner">
 		<div class="carousel-item active carousel-item c-item"
-			data-bs-interval="5000"
+			data-bs-interval="3000"
 		>
-			<img src="assets/Carousel/keyboard_image1.jpg"
+			<img src="assets/Carousel/keyboard_image2.jpg"
 				class="d-block w-100 c-img" alt="..."
 			/>
 			<div class="carousel-caption d-none d-md-block">
-				<h1 class="fs-1">The New SixtyFive</h1>
+				<h1 class="fs-1">NEO Ergo</h1>
 				<p class="btn fs-5 ps-3 mt-1 details">자세히 보기 ></p>
 			</div>
 		</div>
 		<div class="carousel-item c-item" data-bs-interval="5000">
-			<img src="assets/Carousel/keyboard_image2.jpg"
-				class="d-block w-100 c-img" alt="..."
-			/>
-			<div class="carousel-caption d-none d-md-block"></div>
-		</div>
-		<div class="carousel-item c-item" data-bs-interval="5000">
-			<img src="assets/Carousel/keyboard_image3.jpg"
+			<img src="assets/Carousel/keyboard_image6.png"
 				class="d-block w-100 c-img" alt="..."
 			/>
 			<div class="carousel-caption d-none d-md-block">
-				<h1 class="fs-1">Bridge75</h1>
-				<p class="btn fs-5 ps-3 mt-1 details">자세히 보기 ></p>
+				<h1 class="fs-1">FoxLab Time65</h1>
 			</div>
 		</div>
 		<div class="carousel-item c-item" data-bs-interval="5000">
@@ -162,12 +299,35 @@ small {
 				<h1 class="fs-1">Coming soon...</h1>
 			</div>
 		</div>
+		<div class="carousel-item c-item" data-bs-interval="5000">
+			<img src="assets/Carousel/keyboard_image3.jpg"
+				class="d-block w-100 c-img" alt="..."
+			/>
+			<div class="carousel-caption d-none d-md-block">
+				<h1 class="fs-1">Bridge75</h1>
+				<p class="btn fs-5 ps-3 mt-1 details">자세히 보기 ></p>
+			</div>
+		</div>
 	</div>
 </div>
 
+<!-- 키보드 공중에 띄우기 -->
+<section class="keyup mt-5 mb-5 d-flex flex-column justify-content-center mx-auto">
+	<h3 class="text-center fs-2 fw-bold ">08.01 Cycle8 Open</h3>
+	<div class="text-center fs-3 d-flex justify-content-center fw-bold mb-2 mt-2" id="countdown"></div>
+	<div class="mt-2 d-flex align-items-center justify-content-center mt-3 mb-3">
+		<div id="frame" >
+			<a href="https://www.youtube.com/embed/qZ-n6h4zpfY?si=QuttSCa5tDJ5qLrf" target="_blank">
+				<div id="specialCard">
+				<div id="light"></div>
+			</div>
+			</a>
+		</div>
+	</div>
+</section>
 <!-- Best Selling Keyboards -->
 <div class="container mt-5">
-	<h2 class="text-center mb-4">BEST SELLING KEYBOARDS!</h2>
+	<h2 class="text-center mb-2">BEST SELLING KEYBOARDS!</h2>
 	<div class="album py-5">
 		<div class="container">
 			<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
@@ -177,10 +337,10 @@ small {
 							<img src="assets/img/best1.jpg" alt="베스트 키보드1" />
 							<div class="card-body">
 								<h5 class="card-title">FROG MINI Barebone Kit</h5>
-								<p class="card-text">설명글</p>
+								<p class="card-text">완벽한 미니멀리즘을 추구하는 레이아웃으로 방향키를 포함하지 않은 간결하고 깔끔한 디자인의 키보드입니다.</p>
 								<div class="d-flex justify-content-between">
 									<div>
-										<small>평점 5.0</small> <small>리뷰 47</small>
+										<small>평점 4.98</small> <small>리뷰 423</small>
 									</div>
 									<span class="best_price">310,000원</span>
 								</div>
@@ -191,15 +351,16 @@ small {
 				<div class="col">
 					<a href="#FROG_MINI" class="text-decoration-none">
 						<div class="card shadow-sm">
-							<img src="assets/img/best2.jpg" alt="베스트 키보드1" />
+							<img src="assets/img/NEO_Ergo.jpg" alt="베스트 키보드1" />
 							<div class="card-body">
-								<h5 class="card-title">FROG MINI Barebone Kit</h5>
-								<p class="card-text">설명글</p>
+								<h5 class="card-title">Qwertykeys NEO Ergo</h5>
+								<p class="card-text">NEO Studio는 많은 오픈 소스 인체 공학 프로젝트를 연구하였으며,
+마침내 그 정제된 결과물인 NEO Ergo를 선보입니다.</p>
 								<div class="d-flex justify-content-between">
 									<div>
-										<small>평점 5.0</small> <small>리뷰 47</small>
+										<small>평점 4.94</small> <small>리뷰 157</small>
 									</div>
-									<span class="best_price">310,000원</span>
+									<span class="best_price">354,000원</span>
 								</div>
 							</div>
 						</div>
@@ -208,15 +369,16 @@ small {
 				<div class="col">
 					<a href="#FROG_MINI" class="text-decoration-none">
 						<div class="card shadow-sm">
-							<img src="assets/img/best3.jpg" alt="베스트 키보드1" />
+							<img class="" src="assets/img/Vento80.jpg" alt="베스트 키보드1" />
 							<div class="card-body">
-								<h5 class="card-title">FROG MINI Barebone Kit</h5>
-								<p class="card-text">설명글</p>
+								<h5 class="card-title">Owlab Vento 80 Barebone Kit</h5>
+								<p class="card-text"> Vento 80은 Jelly Evolv의 구조에서 더욱 업그레이드되어,
+분해와 결합에 더욱 최적화되었습니다.</p>
 								<div class="d-flex justify-content-between">
 									<div>
-										<small>평점 5.0</small> <small>리뷰 47</small>
+										<small>평점 4.93</small> <small>리뷰 77</small>
 									</div>
-									<span class="best_price">310,000원</span>
+									<span class="best_price">659,000원</span>
 								</div>
 							</div>
 						</div>
@@ -225,24 +387,27 @@ small {
 				<div class="col">
 					<a href="#FROG_MINI" class="text-decoration-none">
 						<div class="card shadow-sm">
-							<img src="assets/img/best4.jpg" alt="베스트 키보드1" />
+							<img src="assets/img/qk65_V2.jpg" alt="베스트 키보드3" />
 							<div class="card-body">
-								<h5 class="card-title">FROG MINI Barebone Kit</h5>
-								<p class="card-text">설명글</p>
+								<h5 class="card-title">Qwertykeys QK65v2</h5>
+								<p class="card-text">기존의 미니멀한 디자인이었던 QK65에서 나아가, 더욱 특색있는 디자인으로 완성되었으며
+사용자의 개성을 더 쉽게 표현할 수 있는 Mini Screen이 탑재되었습니다.</p>
 								<div class="d-flex justify-content-between">
 									<div>
-										<small>평점 5.0</small> <small>리뷰 47</small>
+										<small>평점 4.96</small> <small>리뷰 85</small>
 									</div>
-									<span class="best_price">310,000원</span>
+									<span class="best_price">170,000원</span>
 								</div>
 							</div>
 						</div>
 					</a>
 				</div>
+				
 			</div>
 		</div>
 	</div>
 </div>
+
 <section id="call-to-action"
 	class="call-to-action section dark-background"
 >
@@ -252,18 +417,126 @@ small {
 			data-aos-delay="100"
 		>
 			<div class="col-8">
-				<div class="text-center">
-					<h3>ECHOWORKS</h3>
-					<p class="mt-3 fs-5">맞춤형 키보드에 관한 모든 것을 제공하는 ECHOWORKS에 오신 것을 환영합니다. 최고의 유통업체로서 당사는 다양한 키보드를 제공하며 최신 키보드 혁신을 제공하기 위해 항상 흥미로운 그룹 구매(GB)를 진행하고 있습니다.
-					</p>
-					<p class="mt-3 fs-5">
-독특한 맞춤형 스위치로 유명한 제조업체인 ITI와의 파트너십을 통해 우리는 진정으로 특별한 제품을 제공할 수 있습니다. 맞춤형 키보드를 처음 사용하는 분이든 오랜 열성팬이든 관계없이 우리는 당신을 위한 무언가를 준비했습니다.
-</p>
-<p class="mt-3 fs-5">
-ECHOWORKS는 단순한 매장 그 이상입니다. 최고의 타이핑 경험을 선사하기 위해 헌신하는 키보드 팬 커뮤니티입니다. 우리와 함께 맞춤형 키보드의 세계를 탐험해보세요.</p>
-</p>
-				</div>
+				<div class="d-flex flex-sm-column flex-md-row  justify-content-between align-items-center">
+                    <div class="col-sm-10 col-md-7">
+                        <h3>ECHOWORKS</h3>
+                        <p>ECHOWORKS는 국내 커스텀 키보드 <br/> 시장의 유통사로서 독보적인 존재가 되어가고 있습니다</p>
+                    </div>
+                    <div class="col-4" style="max-width:180px;">
+					    <a href="<%=request.getContextPath()%>/index.jsp?workgroup=company&work=company#company" class="rounded-button text-center text-nowrap">
+					        <span>자세히 보기</span>
+					    </a>
+					</div>
+                </div>
 			</div>
 		</div>
 	</div>
 </section>
+
+
+<script type="text/javascript">
+const frame = document.getElementById('frame');
+const card = document.getElementById('specialCard');
+const light = document.getElementById('light');
+
+function updateDimensions() {
+    const rect = frame.getBoundingClientRect();
+    return {
+        x: rect.x,
+        y: rect.y,
+        width: rect.width,
+        height: rect.height
+    };
+}
+
+let { x, y, width, height } = updateDimensions();
+
+function mouseMove(e) {
+    const left = e.clientX - x;
+    const top = e.clientY - y;
+    const centerX = left - width / 2;
+    const centerY = top - height / 2;
+    const d = Math.sqrt(centerX ** 2 + centerY ** 2);
+
+    card.style.transition = "box-shadow 200ms ease-out, transform 200ms ease-out";
+    card.style.boxShadow = 
+        (-centerX / 15) + "px " + (-centerY / 15) + "px 20px rgba(0, 0, 0, 0.5)";
+    card.style.transform = 
+        "rotate3d(" + (-centerY / 100) + ", " + (centerX / 100) + ", 0, " + (d / 80) + "deg)";
+
+    light.style.backgroundImage = 
+        "radial-gradient(circle at " + left + "px " + top + "px, " +
+        "rgba(255, 0, 0, 0.1), rgba(255, 127, 0, 0.1), rgba(255, 255, 0, 0.1), " +
+        "rgba(0, 255, 0, 0.1), rgba(0, 0, 255, 0.1), rgba(75, 0, 130, 0.1), rgba(139, 0, 255, 0.1))";
+}
+
+frame.addEventListener('mouseenter', () => {
+    frame.addEventListener('mousemove', mouseMove);
+});
+
+frame.addEventListener('mouseleave', () => {
+    frame.removeEventListener('mousemove', mouseMove);
+    card.style.transition = "box-shadow 200ms ease-out, transform 200ms ease-out";
+    card.style.boxShadow = '';
+    card.style.transform = '';
+    light.style.backgroundImage = '';
+});
+
+window.addEventListener('resize', () => {
+    const dimensions = updateDimensions();
+    x = dimensions.x;
+    y = dimensions.y;
+    width = dimensions.width;
+    height = dimensions.height;
+});
+
+//카운트다운 타겟 날짜 설정 (2024년 8월 2일 18시)
+var targetDate = new Date("August 2, 2024 18:00:00").getTime();
+
+// 카운트다운 업데이트 함수
+function updateCountdown() {
+    var now = new Date().getTime();
+    var timeRemaining = targetDate - now;
+
+    if (timeRemaining < 0) {
+        document.getElementById("countdown").innerHTML = "선착순 100대 지금 시작합니다!";
+        return;
+    }
+
+    var hours = Math.floor(timeRemaining / (1000 * 60 * 60));
+    var minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+    hours = String(hours).padStart(2, '0');
+    minutes = String(minutes).padStart(2, '0');
+    seconds = String(seconds).padStart(2, '0');
+    
+    document.getElementById("countdown").innerHTML = 
+       hours + ":" + minutes + ":" + seconds ;
+
+    // 1초마다 업데이트
+    setTimeout(updateCountdown, 1000);
+}
+
+// 초기 카운트다운 업데이트 호출
+updateCountdown();
+
+// 회사 설명
+const targetElement = document.getElementById('call-to-action');
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        } else {
+            entry.target.classList.remove('visible');
+        }
+    });
+}, {
+    threshold: 0.1
+});
+
+observer.observe(targetElement);
+
+
+</script>
