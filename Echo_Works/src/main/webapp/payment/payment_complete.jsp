@@ -1,4 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="echoworks.dto.MemberDTO" %>
+<%
+    // 현재 세션에서 로그인된 사용자 정보 가져오기
+    HttpSession currentSession = request.getSession();
+    MemberDTO loginMember = (MemberDTO) currentSession.getAttribute("loginMember");
+
+    // 로그인되지 않은 경우 로그인 페이지로 리디렉션
+    if (loginMember == null) {
+        out.println("<script>alert('로그인이 필요합니다.');location.href='" + request.getContextPath() + "/index.jsp?workgroup=member&work=member_login';</script>");
+        return;
+    }
+
+    // 로그인된 사용자인 경우, 결제 완료 페이지로 이동
+    response.sendRedirect(request.getContextPath() + "/index.jsp?workgroup=payment&work=payment_complete");
+%>
 
 <!DOCTYPE html>
 <html lang="ko">
