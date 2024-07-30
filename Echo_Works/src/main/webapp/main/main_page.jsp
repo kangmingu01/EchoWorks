@@ -279,7 +279,7 @@ small {
 			/>
 			<div class="carousel-caption d-none d-md-block">
 				<h1 class="fs-1">NEO Ergo</h1>
-				<p class="btn fs-5 ps-3 mt-1 details">자세히 보기 ></p>
+				<a href="<%=request.getContextPath()%>/index.jsp?workgroup=detail&work=detail&product_no=19" class="btn fs-5 ps-3 mt-1 details">자세히 보기 ></a>
 			</div>
 		</div>
 		<div class="carousel-item c-item" data-bs-interval="5000">
@@ -305,7 +305,7 @@ small {
 			/>
 			<div class="carousel-caption d-none d-md-block">
 				<h1 class="fs-1">Bridge75</h1>
-				<p class="btn fs-5 ps-3 mt-1 details">자세히 보기 ></p>
+				<a href="<%=request.getContextPath()%>/index.jsp?workgroup=detail&work=detail&product_no=5" class="btn fs-5 ps-3 mt-1 details">자세히 보기 ></a>
 			</div>
 		</div>
 	</div>
@@ -332,7 +332,7 @@ small {
 		<div class="container">
 			<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
 				<div class="col">
-					<a href="#FROG_MINI" class="text-decoration-none">
+					<a href="<%=request.getContextPath()%>/index.jsp?workgroup=detail&work=detail&product_no=10" class="text-decoration-none">
 						<div class="card shadow-sm">
 							<img src="assets/img/best1.jpg" alt="베스트 키보드1" />
 							<div class="card-body">
@@ -349,7 +349,7 @@ small {
 					</a>
 				</div>
 				<div class="col">
-					<a href="#FROG_MINI" class="text-decoration-none">
+					<a href="<%=request.getContextPath()%>/index.jsp?workgroup=detail&work=detail&product_no=19" class="text-decoration-none">
 						<div class="card shadow-sm">
 							<img src="assets/img/NEO_Ergo.jpg" alt="베스트 키보드1" />
 							<div class="card-body">
@@ -367,7 +367,7 @@ small {
 					</a>
 				</div>
 				<div class="col">
-					<a href="#FROG_MINI" class="text-decoration-none">
+					<a href="<%=request.getContextPath()%>/index.jsp?workgroup=detail&work=detail&product_no=8" class="text-decoration-none">
 						<div class="card shadow-sm">
 							<img class="" src="assets/img/Vento80.jpg" alt="베스트 키보드1" />
 							<div class="card-body">
@@ -385,7 +385,7 @@ small {
 					</a>
 				</div>
 				<div class="col">
-					<a href="#FROG_MINI" class="text-decoration-none">
+					<a href="<%=request.getContextPath()%>/index.jsp?workgroup=detail&work=detail&product_no=9" class="text-decoration-none">
 						<div class="card shadow-sm">
 							<img src="assets/img/qk65_V2.jpg" alt="베스트 키보드3" />
 							<div class="card-body">
