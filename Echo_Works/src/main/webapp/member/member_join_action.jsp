@@ -1,8 +1,7 @@
 <%@page import="echoworks.util.Utility"%>
 <%@page import="echoworks.dao.MemberDAO"%>
 <%@page import="echoworks.dto.MemberDTO"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%-- 회원정보를 전달받아 MEMBER 테이블의 행으로 삽입하고 [/member/member_login.jsp] 문서를 
 요청할 수 있는 URL 주소로 응답하는 JSP 문서 --%>    
 <%
