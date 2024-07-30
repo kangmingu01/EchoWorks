@@ -241,6 +241,15 @@ small {
 .rounded-button:hover {
     background-color: rgba(255, 255, 255, 0.1); /* Slightly white background on hover */
 }
+
+.card-text {
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* Number of lines to show */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
 </style>
 <!-- Carousel -->
 <div id="hero-carousel" class="carousel slide z-2"
@@ -326,10 +335,10 @@ small {
 							<img src="assets/img/best1.jpg" alt="베스트 키보드1" />
 							<div class="card-body">
 								<h5 class="card-title">FROG MINI Barebone Kit</h5>
-								<p class="card-text">설명글</p>
+								<p class="card-text">완벽한 미니멀리즘을 추구하는 레이아웃으로 방향키를 포함하지 않은 간결하고 깔끔한 디자인의 키보드입니다.</p>
 								<div class="d-flex justify-content-between">
 									<div>
-										<small>평점 5.0</small> <small>리뷰 47</small>
+										<small>평점 4.98</small> <small>리뷰 423</small>
 									</div>
 									<span class="best_price">310,000원</span>
 								</div>
@@ -340,15 +349,16 @@ small {
 				<div class="col">
 					<a href="#FROG_MINI" class="text-decoration-none">
 						<div class="card shadow-sm">
-							<img src="assets/img/best2.jpg" alt="베스트 키보드1" />
+							<img src="assets/img/NEO_Ergo.jpg" alt="베스트 키보드1" />
 							<div class="card-body">
-								<h5 class="card-title">FROG MINI Barebone Kit</h5>
-								<p class="card-text">설명글</p>
+								<h5 class="card-title">Qwertykeys NEO Ergo</h5>
+								<p class="card-text">NEO Studio는 많은 오픈 소스 인체 공학 프로젝트를 연구하였으며,
+마침내 그 정제된 결과물인 NEO Ergo를 선보입니다.</p>
 								<div class="d-flex justify-content-between">
 									<div>
-										<small>평점 5.0</small> <small>리뷰 47</small>
+										<small>평점 4.94</small> <small>리뷰 157</small>
 									</div>
-									<span class="best_price">310,000원</span>
+									<span class="best_price">354,000원</span>
 								</div>
 							</div>
 						</div>
@@ -357,15 +367,16 @@ small {
 				<div class="col">
 					<a href="#FROG_MINI" class="text-decoration-none">
 						<div class="card shadow-sm">
-							<img src="assets/img/best3.jpg" alt="베스트 키보드1" />
+							<img class="" src="assets/img/Vento80.jpg" alt="베스트 키보드1" />
 							<div class="card-body">
-								<h5 class="card-title">FROG MINI Barebone Kit</h5>
-								<p class="card-text">설명글</p>
+								<h5 class="card-title">Owlab Vento 80</h5>
+								<p class="card-text"> Vento 80은 Jelly Evolv의 구조에서 더욱 업그레이드되어,
+분해와 결합에 더욱 최적화되었습니다.</p>
 								<div class="d-flex justify-content-between">
 									<div>
-										<small>평점 5.0</small> <small>리뷰 47</small>
+										<small>평점 4.93</small> <small>리뷰 77</small>
 									</div>
-									<span class="best_price">310,000원</span>
+									<span class="best_price">659,000원</span>
 								</div>
 							</div>
 						</div>
@@ -374,20 +385,22 @@ small {
 				<div class="col">
 					<a href="#FROG_MINI" class="text-decoration-none">
 						<div class="card shadow-sm">
-							<img class="" src="assets/img/best4.jpg" alt="베스트 키보드1" />
+							<img src="assets/img/qk65_V2.jpg" alt="베스트 키보드3" />
 							<div class="card-body">
-								<h5 class="card-title">FROG MINI Barebone Kit</h5>
-								<p class="card-text">설명글</p>
+								<h5 class="card-title">Qwertykeys QK65v2</h5>
+								<p class="card-text">기존의 미니멀한 디자인이었던 QK65에서 나아가, 더욱 특색있는 디자인으로 완성되었으며
+사용자의 개성을 더 쉽게 표현할 수 있는 Mini Screen이 탑재되었습니다.</p>
 								<div class="d-flex justify-content-between">
 									<div>
-										<small>평점 5.0</small> <small>리뷰 47</small>
+										<small>평점 4.96</small> <small>리뷰 85</small>
 									</div>
-									<span class="best_price">310,000원</span>
+									<span class="best_price">170,000원</span>
 								</div>
 							</div>
 						</div>
 					</a>
 				</div>
+				
 			</div>
 		</div>
 	</div>
@@ -408,8 +421,10 @@ small {
                         <p>ECHOWORKS는 국내 커스텀 키보드 <br/> 시장의 유통사로서 독보적인 존재가 되어가고 있습니다</p>
                     </div>
                     <div class="col-4" style="max-width:180px;">
-                        <a href="<%=request.getContextPath()%>/index.jsp?workgroup=company&work=company" class="rounded-button text-center text-nowrap"><span>자세히 보기</span></a>
-                    </div>
+					    <a href="<%=request.getContextPath()%>/index.jsp?workgroup=company&work=company#company" class="rounded-button text-center text-nowrap">
+					        <span>자세히 보기</span>
+					    </a>
+					</div>
                 </div>
 			</div>
 		</div>

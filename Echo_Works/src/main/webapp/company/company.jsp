@@ -1,11 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
  
-
-<style>
- 		.site-wrap {
+    <style>
+        .site-wrap {
             background-color: black;
-            /* height: 6000px; */
         }
         section {
             height: 100vh; /* Full screen height */
@@ -52,7 +50,7 @@
             background-color: #f0f0f0;
         }
     </style>
-<div class="site-wrap">
+	<div class="site-wrap">
         <section id="company" class="d-flex justify-content-center align-items-center bg-black">
             <div class="text-center w-50">
                 <span id="myElement">Echo Works<br/>Next 버튼을 눌러주세요</span>
@@ -86,81 +84,99 @@
                 <p class="fs-4">에코웍스는 고객의 목소리에 귀 기울이며, 이를 제품과 서비스에 반영하고 있습니다. 에코웍스는 고객 지원 팀을 통해 신속하고 정확한 서비스를 제공하며, 고객 만족을 최우선으로 생각합니다.</p>
             </div>
         </section>
-        <section>
+        <section id="vision">
             <div class="col-6">
                 <p class="fs-2" id="title-5">에코웍스의 비전</p>
                 <hr class="border border-3 white-hr">
                 <p class="fs-4">미래의 타이핑 경험을 혁신하는 것, 이것이 에코웍스의 비전입니다. 에코웍스는 항상 더 나은 제품을 제공하기 위해 노력하며, 전 세계의 타이핑 애호가들에게 사랑받는 브랜드로 성장해 나가고자 합니다.</p>
             </div>
         </section>
+
         <div class="nav-buttons">
             <button class="nav-button" id="backButton" style="display: none;">Back</button>
             <button class="nav-button" id="nextButton">Next</button>
+            <button class="nav-button" id="topButton" style="display: none;">Top</button>
         </div>
-</div>
-        <script type="text/javascript">
-            document.addEventListener('DOMContentLoaded', function() {
-                new TypeIt("#myElement")
-                    .pause(1000)
-                    .go();
-            });
+    </div>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+            new TypeIt("#myElement")
+                .pause(1000)
+                .go();
+        });
 
-            let observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        let title = entry.target.querySelector("[id^='title']");
-                        if (title) {
-                            new TypeIt(title, {
-                                speed: 50,
-                                cursor: false
-                            }).go();
-                        }
+        let observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    let title = entry.target.querySelector("[id^='title']");
+                    if (title) {
+                        new TypeIt(title, {
+                            speed: 100,
+                            cursor: false
+                        }).go();
+                    }
+                    // Check if the section is the vision section
+                    if (entry.target.id === "vision") {
+                        backButton.style.display = 'none';
+                        nextButton.style.display = 'none';
+                        topButton.style.display = 'block';
                     } else {
-                        entry.target.classList.remove('visible');
+                        topButton.style.display = 'none';
                     }
-                });
-            }, {
-                threshold: 0.1 // Trigger when 10% of the section is visible
-            });
-
-            let sections = document.querySelectorAll('section');
-            sections.forEach((section) => {
-                observer.observe(section);
-            });
-
-            // Next and Back button functionality
-            const nextButton = document.getElementById('nextButton');
-            const backButton = document.getElementById('backButton');
-
-            nextButton.addEventListener('click', function() {
-                let currentSection = document.querySelector('section.visible');
-                let nextSection = currentSection.nextElementSibling;
-
-                if (nextSection) {
-                    nextSection.scrollIntoView({ behavior: 'smooth' });
-                    backButton.style.display = 'block'; // Show back button when next is clicked
-                    if (!nextSection.nextElementSibling) {
-                        nextButton.style.display = 'none'; // Hide next button on the last section
-                    }
+                } else {
+                    entry.target.classList.remove('visible');
                 }
             });
+        }, {
+            threshold: 0.1
+        });
 
-            backButton.addEventListener('click', function() {
-                let currentSection = document.querySelector('section.visible');
-                let previousSection = currentSection.previousElementSibling;
+        let sections = document.querySelectorAll('section');
+        sections.forEach((section) => {
+            observer.observe(section);
+        });
 
-                if (previousSection) {
-                    previousSection.scrollIntoView({ behavior: 'smooth' });
-                    nextButton.style.display = 'block'; // Show next button when back is clicked
-                    if (!previousSection.previousElementSibling) {
-                        backButton.style.display = 'none'; // Hide back button when at the first section
-                    }
+        const nextButton = document.getElementById('nextButton');
+        const backButton = document.getElementById('backButton');
+        const topButton = document.getElementById('topButton');
+
+        nextButton.addEventListener('click', function() {
+            let currentSection = document.querySelector('section.visible');
+            let nextSection = currentSection.nextElementSibling;
+
+            if (nextSection) {
+                nextSection.scrollIntoView({ behavior: 'smooth' });
+                backButton.style.display = 'block';
+                if (!nextSection.nextElementSibling) {
+                    nextButton.style.display = 'none';
+                    topButton.style.display = 'block';
                 }
-            });
-
-            // Hide back button initially
-            if (document.querySelector('section') === document.querySelector('section.visible')) {
-                backButton.style.display = 'none';
             }
-        </script>
+        });
+
+        backButton.addEventListener('click', function() {
+            let currentSection = document.querySelector('section.visible');
+            let previousSection = currentSection.previousElementSibling;
+
+            if (previousSection) {
+                previousSection.scrollIntoView({ behavior: 'smooth' });
+                nextButton.style.display = 'block';
+                topButton.style.display = 'none';
+                if (!previousSection.previousElementSibling) {
+                    backButton.style.display = 'none';
+                }
+            }
+        });
+
+        topButton.addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            nextButton.style.display = 'block';
+            backButton.style.display = 'none';
+            topButton.style.display = 'none';
+        });
+
+        if (document.querySelector('section') === document.querySelector('section.visible')) {
+            backButton.style.display = 'none';
+        }
+    </script>
