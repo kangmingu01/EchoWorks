@@ -15,7 +15,7 @@
 	.nav-item.dropdown:hover .dropdown-menu {
 		display: block;
 	}
-	.nav_box { 
+	.nav_box {
 		width: 168px;
 	}
 	.nav-link::before {
@@ -259,11 +259,7 @@ MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 						<%
 						} else {
 						%>
-<<<<<<< HEAD
 						<a href="<%=request.getContextPath()%>/index.jsp?workgroup=member&work=member_mypage_main" class="text-decoration-none text-white fs-5">
-=======
-						<a href="<%=request.getContextPath()%>/index.jsp?workgroup=member&work=member_mypage" class="text-decoration-none text-white fs-5">
->>>>>>> branch 'main' of https://github.com/kangmingu01/EchoWorks.git
 							<!-- <i class="fa-regular fa-circle-user" style="color: #ffffff"></i> -->
 							My
 						</a> <a href="<%=request.getContextPath()%>/index.jsp?workgroup=cart&work=cart" class="text-decoration-none text-white fs-5">
