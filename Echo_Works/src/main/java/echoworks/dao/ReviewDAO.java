@@ -207,7 +207,7 @@ public class ReviewDAO extends JdbcDAO {
 	}
 	
 	//구매 목록 중 리뷰 달지 않은 목록 확인
-	public int selectPaymentNo(PaymentDTO py) {
+	public int selectReviewCount(int pyno) {
 
 		Connection con=null;
 		PreparedStatement pstmt=null;
@@ -217,7 +217,7 @@ public class ReviewDAO extends JdbcDAO {
 			
 			String sql="select count(*) from review where review_pyno=?";
 			pstmt=con.prepareStatement(sql);
-			pstmt.setInt(1, py.getPaymentNo());
+			pstmt.setInt(1, pyno);
 			rs=pstmt.executeQuery();
 			if(rs.next()) {
 				return rs.getInt("count(*)");
