@@ -241,7 +241,7 @@
 	//취소 버튼을 클릭했을 경우 메인페이지로 이동
   document.querySelector('.btn-cancel').addEventListener('click', function() {
     window.location.href = '<%=request.getContextPath()%>/index.jsp'; // 메인 페이지로 이동
-	});
+	});  
 	
 	//전체동의 체크박스 클릭시 모든 체크박스 선택
   document.getElementById('agreeAll').addEventListener('change', function() {
