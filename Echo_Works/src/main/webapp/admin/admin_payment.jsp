@@ -66,7 +66,7 @@
 <body>
     <h1 style="text-align: center;">상품 목록</h1>
     <button class="button" onclick="window.location.href='<%=request.getContextPath() %>/index.jsp?workgroup=admin&work=admin_main'">뒤로가기</button>
-     <button class="button" onclick="window.location.href='<%=request.getContextPath() %>/admin/admin_product_add.jsp'">상품 추가</button>
+    <button class="button" onclick="window.location.href='<%=request.getContextPath() %>/admin/admin_product_add.jsp'">상품 추가</button>
     <hr>
     <table>
         <thead>
@@ -76,6 +76,7 @@
                 <th>이미지</th>
                 <th>상세이미지</th>
                 <th>가격</th>
+                <th>재고</th>
                 <th>메인 카테고리</th>
                 <th>서브 카테고리</th>
                 <th>옵션</th>
@@ -86,32 +87,43 @@
         <tbody>
             <% if (productList.isEmpty()) { %>
                 <tr>
-                    <td colspan="10">상품이 없습니다.</td>
+                    <td colspan="11">상품이 없습니다.</td>
                 </tr>
             <% } else { %>
                 <% for (ProductDTO product : productList) {
                     List<ProductStockDTO> stockList = ProductStockDAO.getDAO().selectProductStockList(product.getPRODUCT_NO());
                     StringBuilder options = new StringBuilder();
+                    int totalStock = 0;
+
                     for (ProductStockDTO stock : stockList) {
                         if (stock.getpS_pNo() == product.getPRODUCT_NO()) {
                             if (options.length() > 0) {
                                 options.append("<br>"); // 줄바꿈을 추가하여 옵션을 구분
                             }
                             options.append(stock.getpS_Option()); // 옵션 추가
-                            options.append(" - "); // 옵션 추가
-                            options.append(stock.getpS_price()); // 옵션 추가
+                            options.append(" - ");
+                            options.append(stock.getpS_price()+"원");
+
+                            totalStock += stock.getpS_Stock();
                         }
+                    }
+
+                    // 재고 및 옵션이 없을 경우 기본값 설정
+                    if (stockList.isEmpty()) {
+                        totalStock = 0;
+                        options.append("옵션 없음");
                     }
                 %>
                     <tr>
                         <td><%= product.getPRODUCT_NO() %></td>
                         <td><%= product.getPRODUCT_NAME() %></td>
-                        <td><img src="<%=request.getContextPath()%>/assets/img/<%=product.getPRODUCT_IMG()%>.jpg" alt="Product Image"></td>
-                        <td><img src="<%=request.getContextPath()%>/assets/img/detatil/product_detail<%=product.getPRODUCT_IMG_DETAIL()%>.jpg" alt="Product Image"></td>
-                        <td><%= product.getPRODUCT_PRICE() %></td>
+                        <td><img src="<%= product.getPRODUCT_IMG() %>" alt="Product Image"></td>
+                        <td><img src="<%= product.getPRODUCT_IMG_DETAIL() %>" alt="Product Detail Image"></td>
+                        <td><%= product.getPRODUCT_PRICE() %>원</td>
+                        <td><%= totalStock %>개</td>
                         <td><%= product.getPRODUCT_CATEGORY_MAIN() %></td>
                         <td><%= product.getPRODUCT_CATEGORY_SUB() %></td>
-                        <td><%= options.toString() %></td> 
+                        <td><%= options.toString() %></td>
                         <td><%= product.getPRODUCT_VIDEO_URL() %></td>
                         <td>
                             <a href="<%=request.getContextPath() %>/admin/admin_product_modify.jsp?productNo=<%= product.getPRODUCT_NO() %>">수정</a>
@@ -121,7 +133,5 @@
             <% } %>
         </tbody>
     </table>
-
-    
 </body>
 </html>
