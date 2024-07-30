@@ -1,3 +1,5 @@
+<%@page import="echoworks.dao.ProductStockDAO"%>
+<%@page import="echoworks.dto.ProductStockDTO"%>
 <%@page import="echoworks.dao.PaymentDAO"%>
 <%@page import="echoworks.dto.PaymentDTO"%>
 <%@page import="echoworks.dto.MemberDTO"%>
