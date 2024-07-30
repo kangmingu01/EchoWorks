@@ -3,27 +3,26 @@
 <%-- 사용자로부터 인증정보(아이디와 비밀번호)를 입력받기 위한 JSP 문서 --%>
 <%-- => [로그인] 태그를 클릭한 경우 [/member/member_login_action.jsp] 문서를 요청하여 페이지 이동 - 입력값 전달 --%>
 <%
-    // 전달된 URL 주소를 받아 저장합니다.
-    String url = request.getParameter("url");
-    if (url == null) {
-        url = "";
+    //전달값(URL 주소)을 반환받아 저장
+    String url=request.getParameter("url");
+    if(url == null) {
+        url="";
     }
 
-    // 세션에서 메시지를 가져와 저장합니다. 메시지가 있는 경우 세션에서 제거합니다.
-    String message = (String) session.getAttribute("message");
-    if (message == null) {
-        message = "";
+    String message=(String)session.getAttribute("message");
+    if(message == null) {
+        message="";
     } else {
         session.removeAttribute("message");
     }
 
-    // 세션에서 아이디를 가져와 저장합니다. 아이디가 있는 경우 세션에서 제거합니다.
-    String id = (String) session.getAttribute("id");
-    if (id == null) {
-        id = "";
+    String id=(String)session.getAttribute("id");
+    if(id == null) {
+        id="";
     } else {
         session.removeAttribute("id");
     }
+
 %>
 <!doctype html>
 <html lang="ko" data-bs-theme="auto">
@@ -32,7 +31,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Login Form</title>
     <style>
-        /* 폼 컨테이너 스타일 */
         .form-container {
             width: 100%;
             max-width: 450px;
@@ -43,7 +41,6 @@
             margin: 100px auto;
         }
 
-        /* 기본 버튼 스타일 */
         .btn-primary {
             width: 100%;
             border: none;
@@ -52,13 +49,11 @@
             transition: transform 0.3s ease;
         }
 
-        /* 버튼 호버 효과 */
         .btn-primary:hover {
             transform: scale(1.05);
             background-color: black;
         }
 
-        /* 폼 컨트롤 스타일 */
         .form-control {
             color: black;
             border-bottom-color: rgba(0, 0, 0, .42);
@@ -68,40 +63,34 @@
             border-radius: 4px 4px 0 0;
         }
 
-        /* 로그인 제목 스타일 */
-        .logintitle {
+       .logintitle {
             font-size: 2rem;
             font-weight: 700;
             text-align: center;
             margin-bottom: 20px;
         }
 
-        /* 링크 스타일 */
         .form-text a {
             color: black;
             text-decoration: none;
         }
 
-        /* 링크 호버 효과 */
         .form-text a:hover {
             color: black;
             text-decoration: underline;
         }
 
-        /* 오류 메시지 스타일 */
         .error {
             color: red;
             font-size: 0.875rem;
             margin-top: 0.5rem;
         }
 
-        /* 잘못된 입력 스타일 */
         .form-control.is-invalid {
             border-color: red;
             animation: shake 0.5s;
         }
 
-        /* 입력 오류 시 흔들림 효과 */
         @keyframes shake {
             0% { transform: translateX(0); }
             25% { transform: translateX(-5px); }
@@ -110,7 +99,6 @@
             100% { transform: translateX(0); }
         }
 
-        /* 결과 메시지 스타일 */
         .result-message {
             background-color: #d4edda;
             color: #155724;
@@ -124,7 +112,6 @@
 </head>
 <body>
 <div class="form-container">
-    <!-- 로그인 폼 시작 -->
     <form id="loginForm" name="loginForm" method="post" action="<%=request.getContextPath() %>/index.jsp?workgroup=member&work=member_login_action">
         <input type="hidden" name="url" value="<%=url%>">
         <h4 class="logintitle">로그인</h4>
@@ -152,14 +139,11 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {
-        // 페이지 로드 시 아이디 입력란에 포커스 설정
         $("#exampleInputId").focus();
 
-        // 폼 유효성 검사 함수
         function validateForm() {
             var isValid = true;
 
-            // 아이디 입력 유효성 검사
             if($("#exampleInputId").val().trim() == "") {
                 $("#exampleInputId").addClass("is-invalid");
                 $("#idError").text("아이디를 입력해 주세요.");
@@ -169,7 +153,6 @@
                 $("#idError").text("");
             }
             
-            // 비밀번호 입력 유효성 검사
             if($("#exampleInputPassword1").val().trim() == "") {
                 $("#exampleInputPassword1").addClass("is-invalid");
                 $("#passwordError").text("비밀번호를 입력해 주세요.");
@@ -182,16 +165,15 @@
             return isValid;
         }
 
-        // 로그인 버튼 클릭 시 유효성 검사 후 폼 제출
         $("#login_btn").click(function() {
             if(validateForm()) {
                 $("#loginForm").submit();
             }
         });
 
-        // Enter 키 입력 시 폼 제출 이벤트 추가
+        // Enter key 이벤트 추가
         $("#loginForm").keypress(function(event) {
-            if (event.keyCode === 13) { // Enter 키의 keyCode는 13입니다.
+            if (event.keyCode === 13) { // Enter key의 keyCode는 13입니다.
                 if(validateForm()) {
                     $("#loginForm").submit();
                 }
