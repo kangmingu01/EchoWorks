@@ -344,7 +344,7 @@ input[type="number"]::-webkit-inner-spin-button {
 							
 							<% if(product.getPRODUCT_VIDEO_URL() != null) { //상품 영상 %>
 							<div class="ratio ratio-16x9 w-75 mx-auto mt-5 mb-3">
- 								<iframe src="https://www.youtube.com/embed/yiP6aLpHYfg?si=CF3zWx0-2Xyx5qPA" title="YouTube video" allowfullscreen></iframe>
+ 								<iframe src=<%=product.getPRODUCT_VIDEO_URL() %> title="YouTube video" allowfullscreen></iframe>
 							</div>
 							<% } %>
 						
