@@ -129,9 +129,10 @@ MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 						<%
 						} else {
 						%>
-						<a href="#마이페이지" class="text-decoration-none text-black fs-5">
+						<a href="<%=request.getContextPath()%>/index.jsp?workgroup=member&work=member_mypage" class="text-decoration-none text-black fs-5">
 							<i class="fa-regular fa-circle-user"></i>
-						</a> <a href="<%=request.getContextPath()%>/index.jsp?workgroup=cart&work=cart" class="text-decoration-none text-black fs-5">
+						</a> 
+						<a href="<%=request.getContextPath()%>/index.jsp?workgroup=cart&work=cart" class="text-decoration-none text-black fs-5">
 							<i class="fa-solid fa-cart-shopping"></i>
 						</a>
 						<%
@@ -240,7 +241,7 @@ MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 						if (loginMember.getMemberAuth() == 9) {
 						%>
 						<!-- 관리자 -->
-						<a href="<%=request.getContextPath()%>/index.jsp?workgroup=admin&work=admin_main" class="text-decoration-none text-black fs-5">ADMIN</a>
+						<a href="<%=request.getContextPath()%>/index.jsp?workgroup=admin&work=admin_main" class="text-decoration-none text-black fs-5">DB</a>
 						<%
 						} else {
 						%>
@@ -275,7 +276,6 @@ MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 			event.preventDefault();
 			//window.location.href = `product.html#${category}`;
 			location.href="<%=request.getContextPath()%>/index.jsp?workgroup=product&work=product&cateOne="+category;
-
 		}
 	}
 </script>
