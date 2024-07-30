@@ -75,7 +75,8 @@
 <body>
     <div class="message-box">
         <div class="message"><%= message %></div>
-        <a href="<%= request.getContextPath() %>/index.jsp?workgroup=admin&work=admin_adminpage#admin_product" class="button">돌아가기</a>
+        <a href="<%= request.getContextPath() %>/index.jsp?workgroup=admin&work=admin_product" class="button">돌아가기</a>
+        
     </div>
 </body>
 </html>

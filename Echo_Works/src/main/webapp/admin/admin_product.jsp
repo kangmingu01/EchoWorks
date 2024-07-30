@@ -1,3 +1,5 @@
+<%@page import="echoworks.dao.ProductStockDAO"%>
+<%@page import="echoworks.dto.ProductStockDTO"%>
 <%@page import="java.util.List"%>
 <%@page import="echoworks.dto.ProductDTO"%>
 <%@page import="echoworks.dao.ProductDAO"%>
@@ -14,18 +16,58 @@
     <meta charset="UTF-8">
     <title>상품 관리</title>
     <style>
-        
-        .hidden { display: none; }
-    </style>
-    <script>
-        function showEditForm(productNo) {
-            document.querySelectorAll('.edit-form').forEach(form => form.classList.add('hidden'));
-            document.getElementById('edit-form-' + productNo).classList.remove('hidden');
+        body {
+            font-family: 'Noto Sans KR', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
         }
-    </script>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            vertical-align: middle; /* 세로 정렬을 중앙으로 설정 */
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        img {
+            max-width: 100px; /* 이미지의 최대 너비를 설정 */
+            max-height: 100px; /* 이미지의 최대 높이를 설정 */
+            width: auto; /* 너비를 자동으로 조정 */
+            height: auto; /* 높이를 자동으로 조정 */
+        }
+        .hidden { display: none; }
+        .edit-form {
+            margin-top: 20px;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #ffffff;
+            background-color: #3498db;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+        .button:hover {
+            background-color: #2980b9;
+        }
+    </style>
 </head>
 <body>
-    <h2>상품 목록</h2>
+    <h1 style="text-align: center;">상품 목록</h1>
+    <button class="button" onclick="window.location.href='<%=request.getContextPath() %>/index.jsp?workgroup=admin&work=admin_main'">뒤로가기</button>
+     <button class="button" onclick="window.location.href='<%=request.getContextPath() %>/admin/admin_product_add.jsp'">상품 추가</button>
+    <hr>
     <table>
         <thead>
             <tr>
@@ -34,8 +76,9 @@
                 <th>이미지</th>
                 <th>상세이미지</th>
                 <th>가격</th>
-                <th>대분류</th>
-                <th>소분류</th>
+                <th>메인 카테고리</th>
+                <th>서브 카테고리</th>
+                <th>옵션</th>
                 <th>비디오 URL</th>
                 <th>관리</th>
             </tr>
@@ -43,37 +86,33 @@
         <tbody>
             <% if (productList.isEmpty()) { %>
                 <tr>
-                    <td colspan="9">상품이 없습니다.</td>
+                    <td colspan="10">상품이 없습니다.</td>
                 </tr>
             <% } else { %>
-                <% for (ProductDTO product : productList) { %>
+                <% for (ProductDTO product : productList) {
+                    List<ProductStockDTO> stockList = ProductStockDAO.getDAO().selectProductStockList(product.getPRODUCT_NO());
+                    StringBuilder options = new StringBuilder();
+                    for (ProductStockDTO stock : stockList) {
+                        if (stock.getpS_pNo() == product.getPRODUCT_NO()) {
+                            if (options.length() > 0) {
+                                options.append("<br>"); // 줄바꿈을 추가하여 옵션을 구분
+                            }
+                            options.append(stock.getpS_Option()); // 옵션 추가
+                        }
+                    }
+                %>
                     <tr>
                         <td><%= product.getPRODUCT_NO() %></td>
                         <td><%= product.getPRODUCT_NAME() %></td>
-                        <td><img src="<%= product.getPRODUCT_IMG() %>" alt="Product Image" style="width:50px;height:50px;"></td>
-                        <td><img src="<%= product.getPRODUCT_IMG_DETAIL() %>" alt="Product Detail Image" style="width:50px;height:50px;"></td>
+                        <td><img src="<%= product.getPRODUCT_IMG() %>" alt="Product Image"></td>
+                        <td><img src="<%= product.getPRODUCT_IMG_DETAIL() %>" alt="Product Detail Image"></td>
                         <td><%= product.getPRODUCT_PRICE() %></td>
                         <td><%= product.getPRODUCT_CATEGORY_MAIN() %></td>
                         <td><%= product.getPRODUCT_CATEGORY_SUB() %></td>
+                        <td><%= options.toString() %></td> 
                         <td><%= product.getPRODUCT_VIDEO_URL() %></td>
                         <td>
-                            <a href="javascript:void(0);" onclick="showEditForm(<%= product.getPRODUCT_NO() %>)">수정</a>
-                            <a href="admin_delete_product.jsp?productNo=<%= product.getPRODUCT_NO() %>" onclick="return confirm('삭제하시겠습니까?');">삭제</a>
-                        </td>
-                    </tr>
-                    <tr class="hidden edit-form" id="edit-form-<%= product.getPRODUCT_NO() %>">
-                        <td colspan="9">
-                            <form action="admin_update_product.jsp" method="post">
-                                <input type="hidden" name="productNo" value="<%= product.getPRODUCT_NO() %>">
-                                <label>상품명: <input type="text" name="productName" value="<%= product.getPRODUCT_NAME() %>" required></label><br>
-                                <label>이미지 URL: <input type="text" name="productImg" value="<%= product.getPRODUCT_IMG() %>" required></label><br>
-                                <label>상세이미지 URL: <input type="text" name="productImgDetail" value="<%= product.getPRODUCT_IMG_DETAIL() %>" required></label><br>
-                                <label>가격: <input type="number" name="productPrice" value="<%= product.getPRODUCT_PRICE() %>" required></label><br>
-                                <label>대분류: <input type="text" name="productCategoryMain" value="<%= product.getPRODUCT_CATEGORY_MAIN() %>" required></label><br>
-                                <label>소분류: <input type="text" name="productCategorySub" value="<%= product.getPRODUCT_CATEGORY_SUB() %>" required></label><br>
-                                <label>비디오 URL: <input type="text" name="productVideoUrl" value="<%= product.getPRODUCT_VIDEO_URL() %>"></label><br>
-                                <button type="submit">수정</button>
-                            </form>
+                            <a href="<%=request.getContextPath() %>/admin/admin_product_modify.jsp?productNo=<%= product.getPRODUCT_NO() %>">수정</a>
                         </td>
                     </tr>
                 <% } %>
@@ -81,8 +120,6 @@
         </tbody>
     </table>
 
-    <h3>상품 추가</h3>
-    <form action="admin_add_product.jsp" method="post">
-        <label>상품명: <input type="text" name="productName" required></label><br>
-        <label>이미지 URL: <input type="text" name="productImg" required></label><br>
-        <label>상세이미지 URL: <input type="text" name="productImgDetail" required></label><
+    
+</body>
+</html>

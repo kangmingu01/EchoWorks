@@ -20,5 +20,5 @@
     PaymentDAO.getDAO().updatePayment(payment);
     
     // 페이지 이동
-    response.sendRedirect(request.getContextPath() + "/index.jsp?workgroup=admin&work=admin_adminpage#admin_payment");
+    response.sendRedirect(request.getContextPath() + "/index.jsp?workgroup=admin&work=admin_payment");
 %>
