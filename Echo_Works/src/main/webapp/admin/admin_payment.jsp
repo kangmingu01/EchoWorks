@@ -91,7 +91,7 @@
             <tbody>
                 <% 
                     List<PaymentDTO> paymentList = PaymentDAO.getDAO().selectAllPayments();
-                    
+                     
                     if (paymentList.isEmpty()) { 
                 %>
                     <tr>
