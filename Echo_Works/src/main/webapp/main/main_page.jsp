@@ -84,9 +84,11 @@ small {
 
 /* 스크롤 내릴때 사진내려가게 설계 */
 .call-to-action {
-	padding: 150px 0;
+	padding: 100px 0;
 	position: relative;
 	clip-path: inset(0);
+	opacity: 0;
+    transition: opacity 1s ease-in-out;
 }
 
 .call-to-action img {
@@ -123,6 +125,10 @@ small {
 .call-to-action p {
 	font-size: 18px;
 	color: white;
+}
+
+#call-to-action.visible {
+    opacity: 1;
 }
 
 .call-to-action .cta-btn {
@@ -207,6 +213,34 @@ small {
 	}
 }
 
+.rounded-button {
+    width: 100%;
+    height: 0;
+    padding-bottom: 100%; /* This makes the button a perfect square */
+    border-radius: 50%; /* This makes the button a circle */
+    border: 2px solid white; /* White border */
+    background-color: transparent; /* Transparent background */
+    color: white; /* White text */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    position: relative;
+}
+
+.rounded-button span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.rounded-button:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Slightly white background on hover */
+}
 </style>
 <!-- Carousel -->
 <div id="hero-carousel" class="carousel slide z-2"
@@ -368,17 +402,15 @@ small {
 			data-aos-delay="100"
 		>
 			<div class="col-8">
-				<div class="text-center">
-					<h3>ECHOWORKS</h3>
-					<p class="mt-3 fs-5">맞춤형 키보드에 관한 모든 것을 제공하는 ECHOWORKS에 오신 것을 환영합니다. 최고의 유통업체로서 당사는 다양한 키보드를 제공하며 최신 키보드 혁신을 제공하기 위해 항상 흥미로운 그룹 구매(GB)를 진행하고 있습니다.
-					</p>
-					<p class="mt-3 fs-5">
-독특한 맞춤형 스위치로 유명한 제조업체인 ITI와의 파트너십을 통해 우리는 진정으로 특별한 제품을 제공할 수 있습니다. 맞춤형 키보드를 처음 사용하는 분이든 오랜 열성팬이든 관계없이 우리는 당신을 위한 무언가를 준비했습니다.
-</p>
-<p class="mt-3 fs-5">
-ECHOWORKS는 단순한 매장 그 이상입니다. 최고의 타이핑 경험을 선사하기 위해 헌신하는 키보드 팬 커뮤니티입니다. 우리와 함께 맞춤형 키보드의 세계를 탐험해보세요.</p>
-</p>
-				</div>
+				<div class="d-flex justify-content-between align-items-center">
+                    <div class="col-7">
+                        <h3>ECHOWORKS</h3>
+                        <p>ECHOWORKS는 국내 커스텀 키보드 <br/> 시장의 유통사로서 독보적인 존재가 되어가고 있습니다</p>
+                    </div>
+                    <div class="col-4" style="max-width:180px;">
+                        <a href="<%=request.getContextPath()%>/index.jsp?workgroup=company&work=company" class="rounded-button text-center text-nowrap"><span>자세히 보기</span></a>
+                    </div>
+                </div>
 			</div>
 		</div>
 	</div>
@@ -471,5 +503,23 @@ function updateCountdown() {
 
 // 초기 카운트다운 업데이트 호출
 updateCountdown();
+
+// 회사 설명
+const targetElement = document.getElementById('call-to-action');
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        } else {
+            entry.target.classList.remove('visible');
+        }
+    });
+}, {
+    threshold: 0.1
+});
+
+observer.observe(targetElement);
+
 
 </script>

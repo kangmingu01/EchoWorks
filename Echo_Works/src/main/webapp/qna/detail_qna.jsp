@@ -117,7 +117,7 @@
 	int displayNum = totalQnA - (pageNum - 1) * pageSize;
  --%>
  
-    <style>
+    	<style>
           .toggle.android {
             border-radius: 30px;
             border: 1px solid gray;
