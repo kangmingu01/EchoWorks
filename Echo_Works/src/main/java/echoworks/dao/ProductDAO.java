@@ -361,5 +361,39 @@ public class ProductDAO extends JdbcDAO{
 				    }
 				    return rows;
 				}
+				
+				
+				
+				// 상품 번호 NO 로 상품 정보 불러오기
+				public ProductDTO selectProductByName(String PRODUCT_NAME){
+					Connection con=null;
+					PreparedStatement pstmt=null;
+					ResultSet rs=null;
+					ProductDTO product=null;
+					try {
+						con=getConnection();
+						String sql="select PRODUCT_NO, PRODUCT_NAME,PRODUCT_IMG,PRODUCT_IMG_DETAIL,PRODUCT_PRICE,PRODUCT_CATEGORY_MAIN,PRODUCT_CATEGORY_SUB,PRODUCT_VIDEO_URL from product where PRODUCT_NAME=?";
+						pstmt=con.prepareStatement(sql);
+						pstmt.setString(1, PRODUCT_NAME);
+						
+						rs=pstmt.executeQuery();
+						if(rs.next()) {
+							product=new ProductDTO();
+							product.setPRODUCT_NO(rs.getInt("PRODUCT_NO"));				
+							product.setPRODUCT_NAME(rs.getString("PRODUCT_NAME"));
+							product.setPRODUCT_IMG(rs.getString("PRODUCT_IMG"));
+							product.setPRODUCT_IMG_DETAIL(rs.getString("PRODUCT_IMG_DETAIL"));
+							product.setPRODUCT_PRICE(rs.getInt("PRODUCT_PRICE"));
+							product.setPRODUCT_CATEGORY_MAIN(rs.getString("PRODUCT_CATEGORY_MAIN"));
+							product.setPRODUCT_CATEGORY_SUB(rs.getString("PRODUCT_CATEGORY_SUB"));	
+							product.setPRODUCT_VIDEO_URL(rs.getString("PRODUCT_VIDEO_URL"));
+						}																				
+					}catch (SQLException e) {
+						System.out.println("[에러]selectProductByNo() 메소드의 SQL 오류 = "+e.getMessage());
+					} finally {
+						close(con, pstmt, rs);
+					}
+					return product;				
+				}
 
 }

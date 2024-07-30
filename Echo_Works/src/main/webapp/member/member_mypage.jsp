@@ -1,3 +1,5 @@
+<%@page import="echoworks.dao.ProductStockDAO"%>
+<%@page import="echoworks.dto.ProductStockDTO"%>
 <%@page import="echoworks.dao.QnaDAO"%>
 <%@page import="echoworks.dto.QnaDTO"%>
 <%@page import="echoworks.dto.PaymentDTO"%>
@@ -56,7 +58,7 @@
         }
         .sidebar ul li a {
             text-decoration: none;
-            color: white;
+        
             display: block;
             padding: 10px;
             border-radius: 4px;
@@ -204,11 +206,19 @@
                                 <tr>
                                     <td><%= payment.getPaymentNo() %></td>
                                     <td><%= payment.getPaymentDate() %></td>
-                                    <td><%= payment.getPaymentTotal() %></td>
+                                    <%ProductStockDTO stock=ProductStockDAO.getDAO().selectProductStock(payment.getPaymentPsno()); %>
+                                  <%--   <td><%= payment.getPaymentTotal() %></td> --%>
+                                  	<% int total=stock.getpS_price(); %>
+                                  	<% int total2=payment.getPaymentNum(); %>
+                                  	<% int total3=total*total2;%>
+                                    <td><%=total3  %></td>
+                                    
+                                    
                                     <td><%= payment.getPaymentNum() %></td>
                                     <td><%= payment.getPaymentJname() %></td>
                                     <td><%= payment.getPaymentPhone() %></td>
                                     <td><%= payment.getPaymentAddress1() %> <%= payment.getPaymentAddress2() %></td>
+                                    <td><%= payment.getPaymentOmesg() %></td>
                                      <% if(payment.getPaymentStatus() == 0) { %>
                                     <td>결제취소</td>
                                     <% } else if(payment.getPaymentStatus() == 1) { %>
@@ -218,7 +228,6 @@
                                     <% } else if(payment.getPaymentStatus() == 3) { %>
                                     <td>배송완료</td>
                                     <%} %>
-                                    <td><%= payment.getPaymentOmesg() %></td>
                                    <td><form action="<%=request.getContextPath() %>/member/member_mypage_payment_cancel_action.jsp" method="post"><button type="submit" name="paymentNo" value="<%=payment.getPaymentNo() %>" id="CantcelBtn">결제취소</button></td></form>
                                   
                                     
