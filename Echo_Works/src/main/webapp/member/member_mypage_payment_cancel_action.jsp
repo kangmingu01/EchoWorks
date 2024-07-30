@@ -14,7 +14,7 @@
     int num = Integer.parseInt(request.getParameter("paymentNo"));
     PaymentDTO payment = new PaymentDTO();
 
-    payment.setPaymentNo(num);
+    payment.setPaymentNo(num); 
     payment.setPaymentStatus(0);
 
     PaymentDAO.getDAO().updatePayment(payment);

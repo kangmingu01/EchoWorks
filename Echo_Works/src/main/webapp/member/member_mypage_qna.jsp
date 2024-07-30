@@ -64,7 +64,7 @@
         margin-left: 20px;
         overflow-y: auto;
     }
-    h2 {
+    h2 { 
         color: #333;
         padding-bottom: 10px;
         margin-bottom: 20px;

@@ -99,7 +99,7 @@
                     <li><a href="<%=request.getContextPath()%>/index.jsp?workgroup=member&work=member_mypage_payment">결제 내역</a></li>
                     <li><a href="<%=request.getContextPath()%>/index.jsp?workgroup=member&work=member_mypage_qna">QnA</a></li>
                 </ul>
-            </nav>
+            </nav> 
         </div>
         <div id="content">
             <h1>마이페이지</h1>

@@ -11,7 +11,7 @@
         response.sendRedirect("member_login.jsp");
         return;
     }
-
+ 
     MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
     List<PaymentDTO> paymentList = PaymentDAO.getDAO().selectPaymentByMemberNo(loginMember.getMemberNum());
 %>

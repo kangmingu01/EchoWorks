@@ -32,7 +32,7 @@
                   </a>
                 </li>
                 <li class="list-inline-item">
-                  <a href="#!" class="text-gray-350">
+                  <a href="https://www.youtube.com/@DBOKEY" target="_blank" class="text-gray-350">
                     <i class="fa-brands fa-youtube fs-5"></i>
                   </a>
                 </li>
@@ -102,7 +102,7 @@
               <!-- Links -->
               <ul class="list-unstyled mb-0">
                 <li>
-                  <a class="text-gray-300" href="./about.html">Our Story</a>
+                  <a class="text-gray-300" href="<%=request.getContextPath()%>/index.jsp?workgroup=company&work=company#company">Our Story</a>
                 </li>
                 <li>
                   <a class="text-gray-300" href="#!">Careers</a>

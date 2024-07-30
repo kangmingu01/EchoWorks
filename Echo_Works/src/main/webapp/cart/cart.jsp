@@ -23,22 +23,12 @@
     int totalProductPrice = 0;
     int shippingCost = 2500; // 고정 배송비
 %>
-
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <title>장바구니</title>
     <style>
         table th, table td {
             text-align: center;
             vertical-align: middle; /* 행의 수직 정렬 추가 */
         }
-        .sijunBody {
-            background-color: #fff;
-            font-size: 13pt;
-            padding: 50px 0;
-        }
+
         .price {
             font-size: 20pt;
             font-weight: bold;
@@ -63,9 +53,8 @@
             width: 80px;
         }
     </style>
-</head>
-<body class="sijunBody">
-    <div class="container">
+
+    <div class="container mt-3 mb-3">
         <form id="cartForm" name="cartForm" method="post" action="<%=request.getContextPath()%>/cart/cart_action.jsp">
             <div class="d-flex justify-content-between align-items-center border-bottom pb-2 mb-4">
                 <span style="font-size: 16pt; font-weight: bold;">장바구니</span>
@@ -121,8 +110,7 @@
                         </tfoot>
                     </table>
                 </div>
-                <button type="button" class="btn btn-default" id="delete-selected">삭제하기</button>
-                <br/><br/>
+                <button type="button" class="btn btn-default mb-3" id="delete-selected">삭제하기</button>
                 <!-- 결제예정금액 테이블 -->
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped">
@@ -142,8 +130,7 @@
                     <button type="submit" class="btn btn-default" name="action" value="checkout" id="checkout-button">선택상품주문</button>
                     <button type="button" class="btn btn-default" id="productClear">쇼핑계속하기</button>
                 </div>
-                <br/><br/>
-                <div class="border p-3 mb-3">
+                <div class="border p-3 mb-3 mt-3">
                     이용안내
                 </div>
                 <div class="border p-3">
@@ -312,5 +299,3 @@
         // 페이지 로드 시 요약 업데이트
         document.addEventListener('DOMContentLoaded', updateSummary);
     </script>
-</body>
-</html>
