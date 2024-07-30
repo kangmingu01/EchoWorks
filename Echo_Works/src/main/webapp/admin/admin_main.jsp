@@ -68,7 +68,6 @@
                     <li><a href="<%=request.getContextPath() %>/admin/admin_payment.jsp">주문 관리</a></li>
                     <li><a href="<%=request.getContextPath() %>/admin/admin_qna.jsp">QnA 관리</a></li>
                     <li><a href="<%=request.getContextPath() %>/admin/admin_product.jsp">상품 관리</a></li>
-                    <li><a href="admin_product_add.jsp">상품 추가</a></li>
                 </ul>
             </nav>
         </div>

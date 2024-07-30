@@ -44,9 +44,9 @@
 
         <% 
             String qnaNoStr = request.getParameter("qnaNo");
-            String answer = request.getParameter("answer");
+            String answer = request.getParameter("qnaAnswer");
 
-            if (qnaNoStr != null && !qnaNoStr.isEmpty() && answer != null) {
+            if (qnaNoStr != null && !qnaNoStr.isEmpty() && answer != "") {
                 int qnaNo = Integer.parseInt(qnaNoStr);
                 
                 QnaDTO qna = QnaDAO.getDAO().selectQnaByNo(qnaNo);
