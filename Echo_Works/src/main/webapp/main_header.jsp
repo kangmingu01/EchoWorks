@@ -132,7 +132,7 @@ MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 						if (loginMember.getMemberAuth() == 9) {
 						%>
 						<!-- 관리자 -->
-						<a href="#DB" class="text-decoration-none text-white fs-5">DB</a>
+						<a href="<%=request.getContextPath()%>/index.jsp?workgroup=admin&work=admin_main" class="text-decoration-none text-white fs-5">DB</a>
 						<%
 						} else {
 						%>
@@ -245,13 +245,6 @@ MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 					<a href="index.jsp?workgroup=member&work=member_login"
 						class="text-decoration-none text-white fs-5"
 					> Login </a>
-					<a href="<%=request.getContextPath()%>/index.jsp?workgroup=qna&work=detail_qna"
-						class="text-decoration-none text-white fs-5"
-				> QnA</a>
-					<a href="<%=request.getContextPath()%>/index.jsp?workgroup=detail&work=detail"
-						class="text-decoration-none text-white fs-5"
-				>상세샘플</a>
-					
 					<%
 					} else {
 					%>
@@ -261,7 +254,7 @@ MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 						if (loginMember.getMemberAuth() == 9) {
 						%>
 						<!-- 관리자 -->
-						<a href="<%=request.getContextPath()%>/admin/admin_main.jsp" class="text-decoration-none text-white fs-5">ADMIN</a>
+						<a href="<%=request.getContextPath()%>/index.jsp?workgroup=admin&work=admin_main" class="text-decoration-none text-white fs-5">DB</a>
 						<%
 						} else {
 						%>
