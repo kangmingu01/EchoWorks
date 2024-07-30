@@ -707,24 +707,39 @@
 					var endPage=parseInt(result.endPage);
 					
 					var hhtml="";
+					hhtml +="<nav aria-label='Page navigation' class='mt-4'>";
+					hhtml += "<ul class='pagination justify-content-center'>";
 					if(result.startPage>result.blockSize){
-						 hhtml += "<a id='prev_page' href='#' data-info='" + (startPage - 1) + "'>[이전]</a>";
+						 hhtml +='<li class="page-item" >';
+						 hhtml += '<a class="page-link" id="prev_page" href="#" data-info="' + (startPage - 1) + '" tabindex="-1">이전</a>';
+						 hhtml +="</li>";
 					}else{
-						hhtml+="<a>[이전]</a>";
+						 hhtml +='<li class="page-item disabled" >';
+						hhtml+="<a></a>";
+						 hhtml +="</li>";
 					}
 					for(var i=result.startPage;i<=result.endPage;i++){
-						if(pageNum!=i){
-						 hhtml += "<a id='page_" + i + "' href='#' data-info='"+i+"'>[" + i + "]</a>";
-						}else{
-						hhtml+=	"<p>["+i+"]</p>" ;
-						}
+					 	if(pageNum!=i){ 
+						hhtml += "<li class='page-item active' >";
+						 hhtml += "<a id='page_" + i + "' href='#' data-info='"+i+"' class='page-link text-dark bg-white'>" + i + "</a>";
+						 hhtml +="</li>";
+						 }else{
+							hhtml += "<li class='page-item'>";
+						hhtml+=	"<p class='page-link text-white bg-dark'>"+i+"</p>" ;
+						 hhtml +="</li>";
+						} 
 					}
-					if(result.endPage!=result.totalPage){
-						hhtml += "<a id='next_page' href='#' data-info='" + (endPage + 1) + " '>[다음]</a>";
-					}else{
-					hhtml+="<a>[다음]</a>";
-					}
-					
+					 if(result.endPage!=result.totalPage){
+						hhtml +='<li class="page-item" >';
+						hhtml += "<a class='page-link' id='next_page' href='#' data-info='" + (endPage + 1) + "'>다음</a>";
+						hhtml +="</li>";
+					 }else{
+						hhtml +='<li class="page-item disabled" >';
+					hhtml+="<a></a>";
+						hhtml +="</li>";
+					} 
+					hhtml +="</ul>";
+					hhtml +="</nav>";
 					// 페이징 처리
 					$("#page_list").append(hhtml); 
 					
@@ -802,7 +817,10 @@
 	        html += '<hr class=mt-1 mb-1>'
 	        html += '<p id="qnaContent' + qna.qnaNo + '">' + qna.qnaContent + '</p>';
 	        if(qna.qnaAnswer!=""){
-	        html += '<p id="adminAnswer' + qna.qnaNo + '">┖ 답변 <관리자> : ' + qna.qnaAnswer + '</p>';
+	        	html += '<div id="adminAnswer' + qna.qnaNo + '">'
+	            + '<p>👑<관리자>👑</p>'
+	            + '<span><i class="fa-regular fa-comment fa-flip-horizontal pe-1 me-2" style="color: #050505;"></i> ' + qna.qnaAnswer + '</span>'  // i 태그와 qna.qnaAnswer 사이에 공백 추가
+	            + '</div>';
 	        }
 	        if(qna.qnaAnswer==""){
 	        html += '<div id="qnaActions' + qna.qnaNo + '">';

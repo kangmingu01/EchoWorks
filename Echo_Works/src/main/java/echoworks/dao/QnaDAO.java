@@ -428,6 +428,8 @@ public class QnaDAO extends JdbcDAO {
 			String sql = "select count(*) from qna where QNA_PRODUCT_NO=? ";
 			if (secretCheck == 1) {
 				sql += " AND QNA_STATUS = 1";
+			}else {
+				sql += " and QNA_STATUS between 1 and 2 ";
 			}
 			if ("unanswered_answer".equals(replyStatus)) {
 				sql += " AND QNA_ANSWER IS NULL";
@@ -472,7 +474,7 @@ public class QnaDAO extends JdbcDAO {
 			if (secretCheck == 1) {
 				sql += " AND QNA_STATUS = 1";
 			}else {
-				sql += " and QNA_STATUS between 1and 2 ";
+				sql += " and QNA_STATUS between 1 and 2 ";
 			}
 			if ("unanswered_answer".equals(replyStatus)) {
 				sql += " AND QNA_ANSWER IS NULL";

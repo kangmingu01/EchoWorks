@@ -42,7 +42,6 @@
 	if(endRow > totalRow) {
 		endRow=totalRow;
 	}
-	
 	int displayNum=totalRow-(pageNum-1)*pageSize;
 	//리스트 받아와서 저장
 	
@@ -55,8 +54,7 @@
 	int endPage=startPage+blockSize-1;
 	if(endPage > totalPage) {
 		endPage=totalPage;
-	}
-    
+	}    
     
     // List<QnaDTO> qnaList = QnaDAO.getDAO().selectQnAList(productNo, secretCheck, replyStatus, memberNum);
     
