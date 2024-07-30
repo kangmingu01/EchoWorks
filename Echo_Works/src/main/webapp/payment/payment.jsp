@@ -11,33 +11,33 @@
 
 <%
     // 로그인된 사용자 정보 가져오기
-    HttpSession currentSession = request.getSession();
-    MemberDTO loginMember = (MemberDTO) currentSession.getAttribute("loginMember");
+    HttpSession currentSession = request.getSession(); // 현재 세션에서 로그인된 사용자 정보 가져오기
+    MemberDTO loginMember = (MemberDTO) currentSession.getAttribute("loginMember"); // 세션에서 로그인된 사용자 객체 가져오기
 
-    if (loginMember == null) {
+    if (loginMember == null) { // 로그인이 되어 있지 않은 경우
         out.println("<script>alert('로그인이 필요합니다.');location.href='index.jsp?workgroup=member&work=member_login';</script>");
-        return;
+        return; // 로그인 페이지로 리다이렉트
     }
 
-    String[] selectedCartNos = request.getParameterValues("cart_no");
-    List<CartDTO> selectedCartList = new ArrayList<>();
+    String[] selectedCartNos = request.getParameterValues("cart_no"); // 선택된 장바구니 항목 번호들 가져오기
+    List<CartDTO> selectedCartList = new ArrayList<>(); // 선택된 장바구니 항목을 저장할 리스트
 
     if (selectedCartNos != null) {
         for (String cartNo : selectedCartNos) {
-            int cartNoInt = Integer.parseInt(cartNo);
-            CartDTO cart = CartDAO.getDao().getCartByNo(cartNoInt);
-            selectedCartList.add(cart);
+            int cartNoInt = Integer.parseInt(cartNo); // 각 장바구니 항목 번호를 정수형으로 변환
+            CartDTO cart = CartDAO.getDao().getCartByNo(cartNoInt); // 장바구니 번호로 해당 항목 가져오기
+            selectedCartList.add(cart); // 리스트에 추가
         }
     } else if (session.getAttribute("cartList") != null) {
-        selectedCartList = (List<CartDTO>) session.getAttribute("cartList");
-        session.removeAttribute("cartList");
+        selectedCartList = (List<CartDTO>) session.getAttribute("cartList"); // 세션에서 장바구니 리스트 가져오기
+        session.removeAttribute("cartList"); // 세션에서 제거
     } else {
         out.println("<script>alert('선택한 상품이 없습니다.');location.href='cart.jsp';</script>");
-        return;
+        return; // 장바구니 페이지로 리다이렉트
     }
 
-    int totalProductPrice = 0;
-    int shippingCost = 2500; // 고정 배송비
+    int totalProductPrice = 0; // 총 상품 가격
+    int shippingCost = 2500; // 고정 배송비 설정
 %>
 
 <!DOCTYPE html>
@@ -47,46 +47,46 @@
     <title>결제하기</title>
     <style>
         .card {
-            margin-bottom: 20px;
+            margin-bottom: 20px; /* 카드 요소 간의 간격을 주기 위한 스타일 */
         }
         .card-header {
-            background-color: #fff;
-            border-bottom: 2px solid #ddd;
+            background-color: #fff; /* 카드 헤더의 배경색을 흰색으로 설정 */
+            border-bottom: 2px solid #ddd; /* 카드 헤더의 하단 경계선을 설정 */
         }
         .card-body {
-            background-color: #fff;
+            background-color: #fff; /* 카드 본문의 배경색을 흰색으로 설정 */
         }
         .section-title {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
+            font-size: 1.5rem; /* 섹션 제목의 폰트 크기 설정 */
+            margin-bottom: 20px; /* 섹션 제목의 하단 여백 설정 */
         }
         .form-check-label {
-            margin-left: 10px;
+            margin-left: 10px; /* 체크박스 라벨의 왼쪽 여백 설정 */
         }
         .form-check-input {
-            margin-left: 10px;
+            margin-left: 10px; /* 체크박스 입력의 왼쪽 여백 설정 */
         }
         .btn-primary {
-            width: 100%;
-            padding: 10px;
-            font-size: 1.2rem;
-            background-color: #000;
-            color: #fff;
-            border: none;
+            width: 100%; /* 버튼의 너비를 100%로 설정 */
+            padding: 10px; /* 버튼의 패딩 설정 */
+            font-size: 1.2rem; /* 버튼의 폰트 크기 설정 */
+            background-color: #000; /* 버튼의 배경색을 검정색으로 설정 */
+            color: #fff; /* 버튼의 텍스트 색상을 흰색으로 설정 */
+            border: none; /* 버튼의 테두리 제거 */
         }
         .btn-primary:hover {
-            background-color: #333;
+            background-color: #333; /* 버튼 호버 시 배경색을 어두운 회색으로 설정 */
         }
         .hidden {
-            display: none;
+            display: none; /* 숨겨진 요소 스타일 */
         }
         .error {
-            color: red;
-            font-size: 0.875rem;
-            margin-left: 10px;
-            display: block;
-            visibility: hidden;
-            height: 1.2em;
+            color: red; /* 오류 메시지의 색상 설정 */
+            font-size: 0.875rem; /* 오류 메시지의 폰트 크기 설정 */
+            margin-left: 10px; /* 오류 메시지의 왼쪽 여백 설정 */
+            display: block; /* 오류 메시지를 블록 요소로 설정 */
+            visibility: hidden; /* 오류 메시지를 기본적으로 숨김 */
+            height: 1.2em; /* 오류 메시지의 높이 설정 */
         }
     </style>
 </head>
@@ -110,7 +110,7 @@
                             if (stock != null) {
                                 int unitPrice = stock.getpS_price(); // product_stock 테이블에서 가격 가져오기
                                 int totalPrice = unitPrice * cart.getCart_num();
-                                totalProductPrice += totalPrice;
+                                totalProductPrice += totalPrice; // 총 상품 가격에 더하기
                         %>
                         <div class="d-flex align-items-center">
                             <img src="assets/img/<%= ProductDAO.getDAO().selectProductByNo(stock.getpS_pNo()).getPRODUCT_IMG() %>.jpg" alt="상품 이미지" style="width: 100px; height: 100px; margin-right: 20px;">
@@ -289,7 +289,7 @@
         event.preventDefault(); // 기본 동작(폼 제출) 방지
         var inputs = document.querySelectorAll('#ordererName, #ordererContact, #ordererEmail');
         inputs.forEach(function(input) {
-            input.disabled = false;
+            input.disabled = false; // 주문자 정보를 수정 가능하도록 설정
         });
     });
 
@@ -306,18 +306,18 @@
     document.getElementById('deliveryMemo').addEventListener('change', function() {
         var deliveryMemoInput = document.getElementById('deliveryMemoInput');
         if (this.value === '직접입력') {
-            deliveryMemoInput.classList.remove('hidden');
+            deliveryMemoInput.classList.remove('hidden'); // 직접입력 선택 시 메모 입력란 보이기
         } else {
-            deliveryMemoInput.classList.add('hidden');
+            deliveryMemoInput.classList.add('hidden'); // 다른 선택 시 메모 입력란 숨기기
         }
     });
 
     document.getElementById('deliveryMemoExisting').addEventListener('change', function() {
         var deliveryMemoInput = document.getElementById('deliveryMemoInputExisting');
         if (this.value === '직접입력') {
-            deliveryMemoInput.classList.remove('hidden');
+            deliveryMemoInput.classList.remove('hidden'); // 직접입력 선택 시 메모 입력란 보이기
         } else {
-            deliveryMemoInput.classList.add('hidden');
+            deliveryMemoInput.classList.add('hidden'); // 다른 선택 시 메모 입력란 숨기기
         }
     });
 
@@ -360,28 +360,28 @@
 
     // 키보드 입력 방지 설정
     document.getElementById('postcode').addEventListener('keydown', function(event) {
-        event.preventDefault();
+        event.preventDefault(); // 키보드 입력을 막음
     });
 
     document.getElementById('address').addEventListener('keydown', function(event) {
-        event.preventDefault();
+        event.preventDefault(); // 키보드 입력을 막음
     });
 
     document.getElementById('payButton').addEventListener('click', function(event) {
-        if (!document.getElementById('agreeTerms').checked) {
+        if (!document.getElementById('agreeTerms').checked) { // 구매조건 동의 체크박스 체크 여부 확인
             alert('구매조건 확인 및 결제진행에 동의해야 합니다.');
             event.preventDefault(); // 페이지 이동 막기
         } else {
             // 버튼 비활성화
-            this.disabled = true;
+            this.disabled = true; // 결제 버튼 비활성화
             // 폼 제출
-            document.getElementById('paymentForm').submit();
+            document.getElementById('paymentForm').submit(); // 폼 제출
         }
     });
 
     // 숫자 포맷 함수
     function formatPrice(price) {
-        return price.toLocaleString();
+        return price.toLocaleString(); // 가격에 천 단위 구분자 추가
     }
 
     // 페이지 로드 시 가격 포맷팅
@@ -398,17 +398,17 @@
     // 전화번호 입력 시 숫자만 입력받도록 설정
     document.querySelectorAll('.phone-input').forEach(function(element) {
         element.addEventListener('input', function(event) {
-            event.target.value = event.target.value.replace(/[^0-9]/g, '');
+            event.target.value = event.target.value.replace(/[^0-9]/g, ''); // 숫자 이외의 문자 제거
         });
 
         element.addEventListener('blur', function(event) {
             var phone = event.target.value;
             var errorMsg = document.getElementById(event.target.id + 'Msg');
             if (phone.length === 10) {
-                event.target.value = phone.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+                event.target.value = phone.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3'); // 10자리 전화번호 형식
                 errorMsg.style.visibility = 'hidden'; // 전화번호가 올바를 경우 오류 메시지 숨기기
             } else if (phone.length === 11) {
-                event.target.value = phone.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+                event.target.value = phone.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3'); // 11자리 전화번호 형식
                 errorMsg.style.visibility = 'hidden'; // 전화번호가 올바를 경우 오류 메시지 숨기기
             } else {
                 errorMsg.style.visibility = 'visible'; // 전화번호가 잘못되었을 경우 오류 메시지 표시
