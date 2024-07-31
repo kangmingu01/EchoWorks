@@ -10,4 +10,4 @@
 	out.println("<script>");
 	out.println("location.href='index.jsp?workgroup=main&work=main_page';");
 	out.println("</script>");
-%> 
+%>  
