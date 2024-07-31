@@ -728,12 +728,12 @@ function item_minus(sid,price){
 }
 
 //선택한 옵션 삭제 
-function option_delete(io_ano,price){
+function option_delete(opId,price){
 
-    $("#ct_qty"+io_ano).val(0);
+    $("#ct_qty"+opId).val(0);
     numberWithCommas(price);
     
-    $("#io_append"+io_ano).remove();
+    $("#io_append"+opId).remove();
 
     $("#select_option").val('basic');//레이어 삭제하면  
 
@@ -742,6 +742,18 @@ function option_delete(io_ano,price){
     }
     
     numberWithCommas();
+}
+
+function option_deleteAll() {
+	
+	<% for(int i=0;i<optionList.size();i++){%>
+		var opId = <%=optionList.get(i).getOpId()%>;//해당 옵션 id
+		var curNum=$("#ct_qty"+opId).val();//해당 옵션의 현재 수량
+		var price=<%=optionList.get(i).getOpPrice()%>;//해당 옵션 가격
+		if(isNaN(curNum) == false) {//해당 옵션이 현재 선택되어 있다면 false
+			option_delete(opId, price);
+		}
+	<%}%>
 }
 
 $(document).ready(function(){
@@ -852,7 +864,9 @@ $(".btn_cart").click(function() {
 		dataType: "json",
 		success: function(result) {
 			if(result.code == "success") {
-				alert("장바구니에 담았습니다.")
+				alert("장바구니에 담았습니다.");
+				option_deleteAll();
+				
 			} else if(result.code == "notOption") {
 				alert("옵션을 선택해 주세요.");
 			} else {
