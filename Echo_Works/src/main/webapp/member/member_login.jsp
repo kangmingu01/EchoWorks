@@ -24,12 +24,6 @@
     }
 
 %>
-<!doctype html>
-<html lang="ko" data-bs-theme="auto">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Login Form</title>
     <style>
         .form-container {
             width: 100%;
@@ -109,8 +103,7 @@
             text-align: center;
         }
     </style>
-</head>
-<body>
+
 <div class="form-container">
     <form id="loginForm" name="loginForm" method="post" action="<%=request.getContextPath() %>/index.jsp?workgroup=member&work=member_login_action">
         <input type="hidden" name="url" value="<%=url%>">
@@ -181,5 +174,3 @@
         });
     });
 </script>
-</body>
-</html>
