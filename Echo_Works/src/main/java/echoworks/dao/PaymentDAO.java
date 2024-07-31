@@ -60,7 +60,6 @@ public class PaymentDAO extends JdbcDAO {
     }
     // 특정 결제 정보 조회(마이페이지 결제내역 조회)
     public List<PaymentDTO> selectPaymentByMemberNo(int memberNo) {
-    	System.out.println("member " + memberNo);
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -101,7 +100,6 @@ public class PaymentDAO extends JdbcDAO {
         } finally {
             close(con, pstmt, rs);
         }
-        System.out.println("야야야 "+paymentList.size());
         return paymentList;
     }
 
