@@ -116,10 +116,10 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>제목</th>
-                            <th>내용</th>
-                            <th>날짜</th>
-                            <th>답변유무</th>
+                            <th style="text-align: center;">제목</th>
+                            <th style="text-align: center;">내용</th>
+                            <th style="text-align: center;">날짜</th>
+                            <th style="text-align: center;">답변유무</th>
                         </tr>
                     </thead>
                     <tbody>

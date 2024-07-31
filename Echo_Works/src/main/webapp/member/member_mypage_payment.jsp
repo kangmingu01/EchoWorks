@@ -1,3 +1,5 @@
+<%@page import="echoworks.dto.ProductDTO"%>
+<%@page import="echoworks.dao.ProductDAO"%>
 <%@page import="java.util.List"%>
 <%@ page import="echoworks.dto.PaymentDTO" %>
 <%@ page import="echoworks.dao.PaymentDAO" %>
@@ -105,6 +107,8 @@
     .button-group a:hover {
         background-color: #0056b3;
     }
+    
+    }
 </style>
 
 <!DOCTYPE html>
@@ -131,15 +135,16 @@
                     <thead>
                         <tr>
                             <th>결제 번호</th>
-                            <th>결제 날짜</th>
+                            <th style="text-align: center;">결제 날짜</th>
+                            <th style="text-align: center;">상품</th>
                             <th>결제 총액</th>
                             <th>결제 수량</th>
                             <th>배송지 이름</th>
                             <th>주문자 전화번호</th>
-                            <th>배송지 주소</th>
-                            <th>배송 메시지</th>
+                            <th style="text-align: center;" >배송지 주소</th>
+                            <th style="text-align: center;">배송 메시지</th>
                             <th>결제 상태</th>
-                            <th>관리</th>
+                            <th style="text-align: center;">관리</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -148,10 +153,12 @@
                                 <td colspan="10">결제 내역이 없습니다.</td>
                             </tr>
                         <% } else { %>
+                        <% ProductDTO product = ProductDAO.getDAO().selectProductByNo(memberId.getMemberNum()); %>
                             <% for (PaymentDTO payment : paymentList) { %>
                                 <tr>
                                     <td><%= payment.getPaymentNo() %></td>
                                     <td><%= payment.getPaymentDate() %></td>
+                                    <td><%= product.getPRODUCT_NAME()%></td>
                                     <%
                                         ProductStockDTO stock = ProductStockDAO.getDAO().selectProductStock(payment.getPaymentPsno());
                                         int total = stock.getpS_price();
