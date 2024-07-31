@@ -457,7 +457,7 @@ input[type="number"]::-webkit-inner-spin-button {
 						                        $("#review_count").text(product_count);
 						                        setupPagination(result.totalPages, result.currentPage);
 						                    } else {
-						                        $("#review_list").html("<div class='no_review'>" + result.message + "</div>");
+						                        //$("#review_list").html("<div class='no_review'>" + result.message + "</div>");
 						                    }
 						                },
 						                error: function(xhr) {
