@@ -313,7 +313,7 @@ small {
 
 <!-- 키보드 공중에 띄우기 -->
 <section class="keyup mt-5 mb-5 d-flex flex-column justify-content-center mx-auto">
-	<h3 class="text-center fs-2 fw-bold ">08.01 Cycle8 Open</h3>
+	<h3 class="text-center fs-2 fw-bold ">08.02 Cycle8 Open</h3>
 	<div class="text-center fs-3 d-flex justify-content-center fw-bold mb-2 mt-2" id="countdown"></div>
 	<div class="mt-2 d-flex align-items-center justify-content-center mt-3 mb-3">
 		<div id="frame" >
@@ -466,8 +466,8 @@ function mouseMove(e) {
 
     light.style.backgroundImage = 
         "radial-gradient(circle at " + left + "px " + top + "px, " +
-        "rgba(255, 0, 0, 0.1), rgba(255, 127, 0, 0.1), rgba(255, 255, 0, 0.1), " +
-        "rgba(0, 255, 0, 0.1), rgba(0, 0, 255, 0.1), rgba(75, 0, 130, 0.1), rgba(139, 0, 255, 0.1))";
+        "rgba(255, 0, 0, 0.2), rgba(255, 127, 0, 0.2), rgba(255, 255, 0, 0.2), " +
+        "rgba(0, 255, 0, 0.2), rgba(0, 0, 255, 0.2), rgba(75, 0, 130, 0.2), rgba(139, 0, 255, 0.2))";
 }
 
 frame.addEventListener('mouseenter', () => {

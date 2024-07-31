@@ -43,19 +43,11 @@ if (workgroup.equals("main")) {
 	crossorigin="anonymous" referrerpolicy="no-referrer"
 />
 
-<link rel="stylesheet" href="css/style.css" />
-
 <!-- jQuery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-<!-- Link to Bootstrap Toggle CSS -->
-<link
-href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css"
-rel="stylesheet"
-/>
+<link rel="stylesheet" href="css/style.css" />
 
-<!-- Link to Bootstrap Toggle JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 
 <!-- 주소 찾기(다음 API) -->
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -65,6 +57,7 @@ rel="stylesheet"
 
 <!-- ScrollOut -->
 <script src="https://unpkg.com/scroll-out/dist/scroll-out.min.js"></script>
+
 </head>
 <body class="d-flex flex-column min-vh-100" >
 	<%-- Header 영역 --%>
@@ -95,5 +88,13 @@ rel="stylesheet"
 		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
 		crossorigin="anonymous"
 	></script>
+
+<!-- 부트스트랩 토글 => 하단에 있어야 에러안남 -->
+<link
+href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css"
+rel="stylesheet"
+/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+	
 </body>
 </html>
