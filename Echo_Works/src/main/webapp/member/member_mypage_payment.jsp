@@ -153,14 +153,14 @@
                                 <td colspan="10">결제 내역이 없습니다.</td>
                             </tr>
                         <% } else { %>
-                        <% ProductDTO product = ProductDAO.getDAO().selectProductByNo(memberId.getMemberNum()); %>
                             <% for (PaymentDTO payment : paymentList) { %>
                                 <tr>
                                     <td><%= payment.getPaymentNo() %></td>
                                     <td><%= payment.getPaymentDate() %></td>
+                                      <%   ProductStockDTO stock = ProductStockDAO.getDAO().selectProductStock(payment.getPaymentPsno());%>
+                     			   <% ProductDTO product = ProductDAO.getDAO().selectProductByNo(stock.getpS_pNo()); %>
                                     <td><%= product.getPRODUCT_NAME()%></td>
                                     <%
-                                        ProductStockDTO stock = ProductStockDAO.getDAO().selectProductStock(payment.getPaymentPsno());
                                         int total = stock.getpS_price();
                                         int total2 = payment.getPaymentNum();
                                         int total3 = total * total2;

@@ -104,12 +104,16 @@
                         for (PaymentDTO payment : paymentList) { 
                             int memberNum = payment.getPaymentHno();
                             MemberDTO member = MemberDAO.getDAO().selectMemberByNum(memberNum);
-                            ProductDTO product = ProductDAO.getDAO().selectProductByNo(payment.getPaymentPsno());
-                %>
+                    
+%>
+
+               
                     <tr>
                         <td><%= payment.getPaymentNo() %></td>
                         <td><%= payment.getPaymentDate() %></td>
                         <td><%= member.getMemberId() %></td>
+                          <%  ProductStockDTO stock = ProductStockDAO.getDAO().selectProductStock(payment.getPaymentPsno());%>
+              			  <%   ProductDTO product = ProductDAO.getDAO().selectProductByNo(stock.getpS_pNo()); %>
                         <td><%= product.getPRODUCT_NAME() %></td>
                         <% if(payment.getPaymentStatus() == 0) { %>
                                     <td>결제취소</td>
