@@ -1,3 +1,6 @@
+<%@page import="echoworks.dao.CartDAO"%>
+<%@page import="echoworks.dto.CartDTO"%>
+<%@page import="java.util.List"%>
 <%@page import="echoworks.dto.MemberDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"
@@ -76,10 +79,41 @@
 body.offcanvas-open {
 	padding-right: 15px;
 }
+
+
+.position-relative {
+    position: relative;
+}
+
+.cart-count {
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    background-color: pink; 
+    color: white; 
+    border-radius: 50%; 
+    padding: 4px 7px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    line-height: 1;
+}
+
 </style>
 <%-- 자바 loginMember 불러오기(로그인 기능 추가되면 주석 해제)--%>
 <%
 MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
+%>
+
+<%
+List<CartDTO> cartList = null;
+if(loginMember != null){
+	 cartList = CartDAO.getDao().getCartList(loginMember.getMemberNum());
+}
 %>
 
 
@@ -136,11 +170,14 @@ MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 						<%
 						} else {
 						%>
-						<a href="<%=request.getContextPath()%>/index.jsp?workgroup=member&work=member_mypage" class="text-decoration-none text-white fs-5">
+						<a href="<%=request.getContextPath()%>/index.jsp?workgroup=member&work=member_mypage_info" class="text-decoration-none text-white fs-5">
 							<i class="fa-regular fa-circle-user" style="color: #ffffff"></i>
 						</a> 
-						<a href="<%=request.getContextPath()%>/index.jsp?workgroup=cart&work=cart" class="text-decoration-none text-white fs-5">
+						<a href="<%=request.getContextPath()%>/index.jsp?workgroup=cart&work=cart" class="text-decoration-none text-white fs-5 position-relative">
 							<i class="fa-solid fa-cart-shopping" style="color: #ffffff"></i>
+							<%if(cartList.size() > 0){ %>
+						    	<span class="cart-count"><%=cartList.size() %></span>
+						    <% } %>
 						</a>
 						<%
 						}
@@ -259,12 +296,13 @@ MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 						<%
 						} else {
 						%>
-						<a href="<%=request.getContextPath()%>/index.jsp?workgroup=member&work=member_mypage" class="text-decoration-none text-white fs-5">
+						<a href="<%=request.getContextPath()%>/index.jsp?workgroup=member&work=member_mypage_info" class="text-decoration-none text-white fs-5">
 							<!-- <i class="fa-regular fa-circle-user" style="color: #ffffff"></i> -->
 							My
-						</a> <a href="<%=request.getContextPath()%>/index.jsp?workgroup=cart&work=cart" class="text-decoration-none text-white fs-5">
-							<!-- <i class="fa-solid fa-cart-shopping" style="color: #ffffff"></i> -->
-							Cart
+						</a>
+						<a href="<%=request.getContextPath()%>/index.jsp?workgroup=cart&work=cart" class="text-decoration-none text-white fs-5">
+						    <!-- <i class="fa-solid fa-cart-shopping" style="color: #ffffff"></i> -->
+						    Cart
 						</a>
 						<%
 						}
@@ -292,4 +330,5 @@ MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 
 		}
 	}
+	
 </script>
