@@ -500,11 +500,15 @@
 	});
 	
 	//Q&A
-	$('#my_qna').change(function() {
-		memberNum = $('#my_qna').prop('checked') ? <%=memberNum%> : 0;
-		/* statusCheck();	 */
-		displayQnaList();
-	});
+	$(document).ready(function() {
+        $('#my_qna').bootstrapToggle();
+
+        $('#my_qna').change(function() {
+            memberNum = $('#my_qna').prop('checked') ? <%= memberNum %> : 0;
+            console.log(memberNum);
+            displayQnaList();
+        });
+    });
 	
 	//답글상태 눌렀을 때
 	$('#replyStatusSelect').change(function() {
