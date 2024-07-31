@@ -1,3 +1,5 @@
+<%@page import="echoworks.dao.ProductDAO"%>
+<%@page import="echoworks.dto.ProductDTO"%>
 <%@page import="java.util.List"%>
 <%@ page import="echoworks.dto.QnaDTO" %>
 <%@ page import="echoworks.dao.QnaDAO" %>
@@ -12,6 +14,7 @@
 
     MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
     List<QnaDTO> qnaList = QnaDAO.getDAO().selectQnaByMemberNo(loginMember.getMemberNum());
+    ProductDTO product = ProductDAO.getDAO().selectProductByNo(loginMember.getMemberNum());
 %>
 <style>
     body, html {
@@ -117,6 +120,7 @@
                     <thead>
                         <tr>
                             <th style="text-align: center;">제목</th>
+                            <th style="text-align: center;">문의한 상품</th>
                             <th style="text-align: center;">내용</th>
                             <th style="text-align: center;">날짜</th>
                             <th style="text-align: center;">답변유무</th>
@@ -131,6 +135,7 @@
                             <% for (QnaDTO qna : qnaList) { %>
                                 <tr>
                                     <td><%= qna.getQnaTitle() %></td>
+                                    <td><%= product.getPRODUCT_NAME() %></td>
                                     <td><%= qna.getQnaContent() %></td>
                                     <td><%= qna.getQnaDate() %></td>
                                     <td>

@@ -1,3 +1,5 @@
+<%@page import="echoworks.dao.ProductDAO"%>
+<%@page import="echoworks.dto.ProductDTO"%>
 <%@page import="java.util.List"%>
 <%@page import="echoworks.dao.QnaDAO"%>
 <%@page import="echoworks.dao.MemberDAO"%>
@@ -76,6 +78,7 @@
                 <tr>
                     <th>글번호</th>
                     <th>제목</th>
+                    <th>상품</th>
                     <th>내용</th>
                     <th>작성자아이디</th>
                     <th>작성자</th>
@@ -86,6 +89,7 @@
             </thead>
             <tbody>
                 <% 
+                	List<ProductDTO> productList = ProductDAO.getDAO().selectProductAll();
                     List<QnaDTO> qnaList = QnaDAO.getDAO().selectAllQnAList();
 
                     if (qnaList.isEmpty()) { 
@@ -98,10 +102,13 @@
                         for (QnaDTO qna : qnaList) { 
                             int memberNum = qna.getQnaMemberNo();
                             MemberDTO member = MemberDAO.getDAO().selectMemberByNum(memberNum);
+                            int productNo = qna.getQnaProductNo();
+                            ProductDTO product = ProductDAO.getDAO().selectProductByNo(productNo);
                 %>
                     <tr>
                         <td><%= qna.getQnaNo() %></td>
                         <td><%= qna.getQnaTitle() %></td>
+                        <td><%= product.getPRODUCT_NAME()%></td>
                         <td><%= qna.getQnaContent() %></td>
                         <td><%= member.getMemberId() %></td>
                         <td><%= member.getMemberName() %></td>
