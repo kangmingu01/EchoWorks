@@ -90,7 +90,7 @@ public class Utility {
 
 	// 문자열을 전달받아 JSON 형식의 문자값으로 표현 불가능한 문자를 회피문자로 변경하여 반환하는 정적메소드
 	public static String toJSON(String source) {
-		return source.replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n").replace("\r\n", "\\n");
+		return source.replace("\\", "\\\\").replace("\"", "\\\"").replace("\r\n", "\\n");
 	}
 	
 	public static String escapeContent(String source) {
