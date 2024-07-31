@@ -101,7 +101,7 @@
                             options.append(stock.getpS_Option()); // 옵션 추가
                             options.append(" - "); // 옵션 추가
                             options.append(stock.getpS_price()); // 옵션 추가
-                        }
+                        } 
                     }
                 %>
                     <tr>
