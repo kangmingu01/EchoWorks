@@ -23,11 +23,6 @@
 	// => MemberDTO 객체 반환 : 회원정보 검색 - 아이디 중복(아이디 사용 불가능)
 	MemberDTO member=MemberDAO.getDAO().selectMemberById(id);
 %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>JSP</title>
 <style type="text/css">
 div {
 	text-align: center;
@@ -39,8 +34,6 @@ div {
 	color: red;
 }
 </style>
-</head>
-<body>
 	<% if(member == null) {//전달받은 아이디가 중복되지 않은 경우 %>
 		<div>입력된 <span class="id">[<%=id %>]</span>는 사용 가능한 아이디입니다.</div>
 		<div>
@@ -87,5 +80,3 @@ div {
 		}
 		</script>
 	<% } %>
-</body>
-</html>
