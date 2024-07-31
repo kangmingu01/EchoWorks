@@ -44,6 +44,3 @@ font-size: 250px;
 </div>
 </div>
 </div>
-
-</body>
-</html>
