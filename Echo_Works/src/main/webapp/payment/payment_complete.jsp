@@ -15,11 +15,7 @@
     response.sendRedirect(request.getContextPath() + "/index.jsp?workgroup=payment&work=payment_complete");
 %>
 
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-<meta charset="UTF-8">
-<title>결제 완료</title>
+
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <style type="text/css">
 .show {
@@ -43,7 +39,4 @@ font-size: 250px;
 </div>
 </div>
 </div>
-</div>
-
-</body>
-</html>
+</div> 
