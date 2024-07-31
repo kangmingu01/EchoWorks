@@ -30,6 +30,9 @@ if (workgroup.equals("main")) {
 <head>
 <meta charset="UTF-8">
 <title>ECHO WORKS</title>
+<!-- Favicon -->
+<link rel="icon" href="<%=request.getContextPath()%>/assets/favicon.ico" type="image/x-icon"/>
+
 <!-- bootstrap -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"

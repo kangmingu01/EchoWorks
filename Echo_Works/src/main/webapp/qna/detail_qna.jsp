@@ -757,7 +757,7 @@
 	        html += '<hr class=mt-1 mb-1>'
 	        html += '<p id="qnaContent' + qna.qnaNo + '">' + qna.qnaContent + '</p>';
 	        if(qna.qnaAnswer!=""){
-	        	html += '<div id="adminAnswer' + qna.qnaNo + '">'
+	        	html += '<hr><div id="adminAnswer' + qna.qnaNo + '">'
 	            + '<p>👑<관리자>👑</p>'
 	            + '<span>' + qna.qnaAnswer.replace(/\n/g,"<br>") + '</span>'  // i 태그와 qna.qnaAnswer 사이에 공백 추가
 	            + '</div>';
