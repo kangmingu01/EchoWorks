@@ -243,9 +243,9 @@ MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 						<!-- 관리자 -->
 						<a href="<%=request.getContextPath()%>/index.jsp?workgroup=admin&work=admin_main" class="text-decoration-none text-black fs-5">DB</a>
 						<%
-						} else {
+						} else { 
 						%>
-						<a href="<%=request.getContextPath()%>/index.jsp?workgroup=member&work=member_mypage" class="text-decoration-none text-black fs-5">
+						<a href="<%=request.getContextPath()%>/index.jsp?workgroup=member&work=member_mypage_main" class="text-decoration-none text-black fs-5">
 							<!-- <i class="fa-regular fa-circle-user" style="color: #ffffff"></i> -->
 							My
 						</a> <a href="<%=request.getContextPath()%>/index.jsp?workgroup=cart&work=cart" class="text-decoration-none text-black fs-5">
