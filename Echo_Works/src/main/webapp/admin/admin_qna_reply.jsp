@@ -5,6 +5,8 @@
 <%@page import="echoworks.dto.MemberDTO"%>
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/security/admin_check.jspf" %>
+<%@page import="echoworks.util.Utility"%>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
