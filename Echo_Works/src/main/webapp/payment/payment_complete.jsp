@@ -39,7 +39,7 @@ font-size: 250px;
 <h1>결제 완료!</h1>
 <div>
 <a href="<%=request.getContextPath() %>/index.jsp?" class="btn btn-dark btn-custom">홈으로</a>
-<a href="<%=request.getContextPath() %>/index.jsp?workgroup=member&work=member_mypage&paymentreocord" class="btn btn-outline-dark btn-custom">주문내역</a>
+<a href="<%=request.getContextPath() %>/index.jsp?workgroup=member&work=member_mypage_payment" class="btn btn-outline-dark btn-custom">주문내역</a>
 </div>
 </div>
 </div>
