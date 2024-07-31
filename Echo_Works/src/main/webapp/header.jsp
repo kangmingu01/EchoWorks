@@ -278,7 +278,7 @@ if(loginMember != null){
 						<!-- 관리자 -->
 						<a href="<%=request.getContextPath()%>/index.jsp?workgroup=admin&work=admin_main" class="text-decoration-none text-black fs-5">DB</a>
 						<%
-						} else {
+						} else { 
 						%>
 						<a href="<%=request.getContextPath()%>/index.jsp?workgroup=member&work=member_mypage_info" class="text-decoration-none text-black fs-5">
 							<!-- <i class="fa-regular fa-circle-user" style="color: #ffffff"></i> -->
