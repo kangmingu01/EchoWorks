@@ -263,7 +263,7 @@ input[type="number"]::-webkit-inner-spin-button {
 							
 							<div>
 								
-								<select id="select_option" class="form-select form-select-lg mb-3" onchange="selected_item('1441177158', '1441177158', '1441177158','pc')">
+								<select id="select_option" class="form-select form-select-lg mb-3" onchange="selected_item('1441177158', '1441177158', '1441177158')">
 								<%if(productStockList.size() == 0) { %>
 									<option value="basic" selected disabled>상품옵션선택</option>
 								<% } else { %>
@@ -376,48 +376,48 @@ input[type="number"]::-webkit-inner-spin-button {
 						
 						<!-- 댓글 -->
 						<!-- 댓글 영역 -->
-<div id="order_reviews_area" class="container mt-3">
-    <div>
-        <span class="fw-normal fs-5">구매후기
-            <span class="text-danger fs-6 ms-1"></span>
-        </span>
-        <hr />
-        <ul>
-            <li>
-                <small>상품을 구매하신 분들이 작성한 리뷰입니다.</small>
-            </li>
-        </ul>
-        <hr>
-        <% if (loginMember != null) { %>
-        <div id="review_add" class="review-form">
-            <div class="form-header">리뷰 작성</div>
-            <textarea id="add_content" placeholder="리뷰를 입력하세요."></textarea>
-            <div>
-                <button type="button" id="add_btn" class="btn-submit">댓글등록</button>
-                <div id="add_message" class="message">&nbsp;</div>
-            </div>
-        </div>
-        <% } %>
-        <div id="review_list" class="review-list"></div>
-        <div id="pagination" class="pagination"></div>
-        <div id="review_modify" class="review-form" style="display:none;">
-            <input type="hidden" id="modify_num">
-            <div class="form-header">리뷰 수정</div>
-            <textarea id="modify_content" placeholder="리뷰를 수정하세요."></textarea>
-            <div>
-                <button type="button" id="modify_btn" class="btn-submit">변경</button>
-                <button type="button" id="modify_cancel_btn" class="btn-cancel">취소</button>
-                <div id="modify_message" class="message">&nbsp;</div>
-            </div>
-        </div>
-        <div id="review_remove" class="review-remove" style="display:none;">
-            <input type="hidden" id="remove_num">
-            <div id="remove_message" class="message">
-                <b>정말로 삭제 하시겠습니까?</b>
-                <button type="button" id="remove_btn" class="btn-submit">삭제</button>
-                <button type="button" id="remove_cancel_btn" class="btn-cancel">취소</button>
-            </div>
-        </div>
+						<div id="order_reviews_area" class="container mt-3">
+						    <div>
+						        <span class="fw-normal fs-5">구매후기
+						            <span class="text-danger fs-6 ms-1"></span>
+						        </span>
+						        <hr />
+						        <ul>
+						            <li>
+						                <small>상품을 구매하신 분들이 작성한 리뷰입니다.</small>
+						            </li>
+						        </ul>
+						        <hr>
+						        <% if (loginMember != null) { %>
+						        <div id="review_add" class="review-form">
+						            <div class="form-header">리뷰 작성</div>
+						            <textarea id="add_content" placeholder="리뷰를 입력하세요."></textarea>
+						            <div>
+						                <button type="button" id="add_btn" class="btn-submit">댓글등록</button>
+						                <div id="add_message" class="message">&nbsp;</div>
+						            </div>
+						        </div>
+						        <% } %>
+						        <div id="review_list" class="review-list"></div>
+						        <div id="pagination" class="pagination"></div>
+						        <div id="review_modify" class="review-form" style="display:none;">
+						            <input type="hidden" id="modify_num">
+						            <div class="form-header">리뷰 수정</div>
+						            <textarea id="modify_content" placeholder="리뷰를 수정하세요."></textarea>
+						            <div>
+						                <button type="button" id="modify_btn" class="btn-submit">변경</button>
+						                <button type="button" id="modify_cancel_btn" class="btn-cancel">취소</button>
+						                <div id="modify_message" class="message">&nbsp;</div>
+						            </div>
+						        </div>
+						        <div id="review_remove" class="review-remove" style="display:none;">
+						            <input type="hidden" id="remove_num">
+						            <div id="remove_message" class="message">
+						                <b>정말로 삭제 하시겠습니까?</b>
+						                <button type="button" id="remove_btn" class="btn-submit">삭제</button>
+						                <button type="button" id="remove_cancel_btn" class="btn-cancel">취소</button>
+						            </div>
+						        </div>
 						        <script type="text/javascript">
 						        var currentPage = 1;
 						        var itemsPerPage = 5; // 페이지당 리뷰 수 설정
@@ -655,15 +655,13 @@ function numberWithCommas() {
 
 //옵션 선택 값 출력 pc
 //var ea_count = 0;
-function selected_item(io_type, io_id, io_value,ver){
+function selected_item(io_type, io_id, io_value){
   var select_option=$("#select_option").val();
-  if(ver=='pc'){
       var str = select_option.split("||");
       var op=str[0];
       var price=str[1];
       var stock=str[2];
       var sid=str[3];
-  }
 
   opt = '<div class="shop_item_select" id="io_append'+sid+'" name="io_append['+sid+'][]" command='+sid+' >';
   opt += '<input type="hidden" name="io_type['+io_type+'][]" value="0">';
