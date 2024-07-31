@@ -6,5 +6,8 @@
 	//session.removeAttribute("loginMember");
 	session.invalidate();
 
-	request.setAttribute("returnUrl", request.getContextPath()+"/index.jsp?workgroup=main&work=main_page");
-%>
+	//request.setAttribute("returnUrl", request.getContextPath()+"/index.jsp?workgroup=main&work=main_page");
+	out.println("<script>");
+	out.println("location.href='index.jsp?workgroup=main&work=main_page';");
+	out.println("</script>");
+%> 
