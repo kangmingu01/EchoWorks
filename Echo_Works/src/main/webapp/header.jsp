@@ -166,9 +166,7 @@ if(loginMember != null){
 						</a> 
 						<a href="<%=request.getContextPath()%>/index.jsp?workgroup=cart&work=cart" class="text-decoration-none text-black fs-5 position-relative">
 							<i class="fa-solid fa-cart-shopping"></i>
-							<%if(cartList.size() > 0){ %>
-						    	<span class="cart-count"><%=cartList.size() %></span>
-						    <% } %>
+							<div id="cart-count"></div>
 						</a>
 						<%
 						}
@@ -313,4 +311,5 @@ if(loginMember != null){
 			location.href="<%=request.getContextPath()%>/index.jsp?workgroup=product&work=product&cateOne="+category;
 		}
 	}
+
 </script>
