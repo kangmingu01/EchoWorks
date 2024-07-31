@@ -90,6 +90,7 @@ if (workgroup.equals("main")) {
 	></script>
 
 <script type="text/javascript">
+
 cartCount();
 function cartCount() {
 	$.ajax({

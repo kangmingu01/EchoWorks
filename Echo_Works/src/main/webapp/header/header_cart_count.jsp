@@ -8,10 +8,12 @@
 MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
 
 List<CartDTO> cartList = null;
+int cnt = 0;
 if(loginMember != null){
 	 cartList = CartDAO.getDao().getCartList(loginMember.getMemberNum());
+	 cnt = cartList.size();
 }
 
 %>
 {"code":"success",
-"count":"<%=cartList.size() %>"}
+"count":<%=cnt %>}
