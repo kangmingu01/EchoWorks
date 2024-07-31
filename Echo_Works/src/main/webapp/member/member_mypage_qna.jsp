@@ -1,3 +1,4 @@
+<%@page import="echoworks.dto.ProductStockDTO"%>
 <%@page import="echoworks.dao.ProductDAO"%>
 <%@page import="echoworks.dto.ProductDTO"%>
 <%@page import="java.util.List"%>
@@ -14,7 +15,8 @@
 
     MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
     List<QnaDTO> qnaList = QnaDAO.getDAO().selectQnaByMemberNo(loginMember.getMemberNum());
-    ProductDTO product = ProductDAO.getDAO().selectProductByNo(loginMember.getMemberNum());
+
+ 
 %>
 <style>
     body, html {
@@ -135,6 +137,7 @@
                             <% for (QnaDTO qna : qnaList) { %>
                                 <tr>
                                     <td><%= qna.getQnaTitle() %></td>
+   									<%  ProductDTO product = ProductDAO.getDAO().selectProductByNo(qna.getQnaProductNo());%>
                                     <td><%= product.getPRODUCT_NAME() %></td>
                                     <td><%= qna.getQnaContent() %></td>
                                     <td><%= qna.getQnaDate() %></td>
