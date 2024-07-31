@@ -1,6 +1,8 @@
 <%@page import="echoworks.dao.PaymentDAO"%>
 <%@page import="echoworks.dto.PaymentDTO"%>
 <%@page import="echoworks.dto.MemberDTO"%>
+<%@page import="echoworks.util.Utility"%>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@include file="/security/admin_check.jspf" %>
@@ -20,5 +22,5 @@
     PaymentDAO.getDAO().updatePayment(payment);
     
     // 페이지 이동
-    response.sendRedirect(request.getContextPath() + "/index.jsp?workgroup=admin&work=admin_payment");
+    response.sendRedirect(request.getContextPath() + "/admin/admin_payment.jsp");
 %>

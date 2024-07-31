@@ -851,9 +851,9 @@
 	    var $titleElement = $('#qnaTitle' + qnaNo);
 	    var $contentElement = $('#qnaContent' + qnaNo);
 	    var $actionsElement = $('#qnaActions' + qnaNo);
-	
+		
 	    var title = $titleElement.text();
-	    var content = $contentElement.text();
+	    var content =$contentElement.html().replaceAll("<br>", "\n");
 	
 	    // 설정 데이터: $element.data('key', value')는 요소의 key와 연관된 value를 저장
 	    $titleElement.data('originalText', title);

@@ -290,7 +290,7 @@ if(loginMember != null){
 						if (loginMember.getMemberAuth() == 9) {
 						%>
 						<!-- 관리자 -->
-						<a href="<%=request.getContextPath()%>/index.jsp?workgroup=admin&work=admin_main" class="text-decoration-none text-white fs-5">DB</a>
+						<a href="<%=request.getContextPath()%>/admin/admin_main.jsp" class="text-decoration-none text-white fs-5">DB</a>
 						<%
 						} else {
 						%>

@@ -16,7 +16,7 @@
 	int productNo = Integer.parseInt(request.getParameter("productNo"));
 	int qnaNo = Integer.parseInt(request.getParameter("qnaNo"));
 	String qnaTitle = Utility.escapeTag(request.getParameter("editedTitle"));
-	String qnaContent = Utility.escapeTag(request.getParameter("editedContent"));
+	String qnaContent = Utility.escapeContent(request.getParameter("editedContent"));
 	
 	
 	QnaDTO updateQna = new QnaDTO();
