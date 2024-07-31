@@ -35,7 +35,6 @@
 	}
 	
 	int rows=QnaDAO.getDAO().insertQnaUser(qnaNew);	
-	System.out.println(rows);
 %>
 
 <%if(rows>0){//삽입행이 있는경우%>

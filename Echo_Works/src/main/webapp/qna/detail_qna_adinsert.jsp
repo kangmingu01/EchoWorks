@@ -11,7 +11,6 @@
 
 	int qnaNo=Integer.parseInt(request.getParameter("qnaNo"));
 	String answerContent =request.getParameter("answerContent");
-	System.out.println(answerContent);
 	//업데이트 dao 작성
 	QnaDTO qnaNew=new QnaDTO();	
 	qnaNew.setQnaNo(qnaNo);
