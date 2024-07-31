@@ -76,7 +76,6 @@
                 <th>상품번호</th>
                 <th>상품명</th>
                 <th>이미지</th>
-                <th>상세이미지</th>
                 <th>가격</th>
                 <th>메인 카테고리</th>
                 <th>서브 카테고리</th>
@@ -102,14 +101,13 @@
                             options.append(stock.getpS_Option()); // 옵션 추가
                             options.append(" - "); // 옵션 추가
                             options.append(stock.getpS_price()); // 옵션 추가
-                        }
+                        } 
                     }
                 %>
                     <tr>
                         <td><%= product.getPRODUCT_NO() %></td>
                         <td><%= product.getPRODUCT_NAME() %></td>
                         <td><img src="<%=request.getContextPath()%>/assets/img/<%=product.getPRODUCT_IMG()%>.jpg" alt="Product Image"></td>
-                        <td><img src="<%=request.getContextPath()%>/assets/img/detatil/product_detail<%=product.getPRODUCT_IMG_DETAIL()%>.jpg" alt="Product Image"></td>
                         <td><%= product.getPRODUCT_PRICE() %></td>
                         <td><%= product.getPRODUCT_CATEGORY_MAIN() %></td>
                         <td><%= product.getPRODUCT_CATEGORY_SUB() %></td>
