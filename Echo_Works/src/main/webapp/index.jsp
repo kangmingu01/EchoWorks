@@ -89,6 +89,30 @@ if (workgroup.equals("main")) {
 		crossorigin="anonymous"
 	></script>
 
+<script type="text/javascript">
+
+cartCount();
+function cartCount() {
+	$.ajax({
+		type: "post",
+		url: "<%=request.getContextPath()%>/header/header_cart_count.jsp",
+		dataType: "json",
+		success: function(result) {
+		    if(result.code == "success") {
+		        var html = '';
+		        if(result.count > 0){
+		            html = '<span class="cart-count">'+ result.count + '</span>';
+		        }
+		        $("#cart-count").append(html);
+		    }
+		},
+		error: function(xhr) {
+			alert("에러코드 = "+xhr.status);
+		}
+	});
+}
+</script>
+
 <!-- 부트스트랩 토글 => 하단에 있어야 에러안남 -->
 <link
 href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css"

@@ -84,7 +84,7 @@
 			,"qnaDate":"<%=sdf.format(qnaList.get(i).getQnaDate()) %>"
 			,"qnaAnswer":
 				<% if(qnaList.get(i).getQnaAnswer() != null) { %>
-					"<%=Utility.toJSON(qnaList.get(i).getQnaAnswer()) %>"
+					"<%=Utility.toJSON(qnaList.get(i).getQnaAnswer()).replace("\n", "") %>"
 				<% } else { %>
 					""
 				<% } %>	

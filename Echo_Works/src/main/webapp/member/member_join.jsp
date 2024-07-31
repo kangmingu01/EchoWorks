@@ -1,15 +1,8 @@
 ﻿<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<!doctype html>
-<html lang="en" data-bs-theme="auto">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script> <%-- 다음 우편번호 서비스 API 스크립트 --%>
-    <title>회원가입</title>
+
     <style>
-        body {
-            background: white; <%-- 배경 색상 설정 --%>
-        }
+       
         .form-container {
             margin-top: 50px; <%-- 상단 마진 설정 --%>
             display: flex;
@@ -90,8 +83,7 @@
             background: black; <%-- 버튼 호버 시 배경 색상 --%>
         }
     </style>
-</head>
-<body>
+
 <div class="container">
     <div class="row">
         <div class="col-md-6 offset-md-3 form-container">
@@ -317,5 +309,3 @@
     $("#zipcode").click(openPostcode);
     $("#address1").click(openPostcode);
 </script>
-</body>
-</html>

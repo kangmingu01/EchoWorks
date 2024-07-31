@@ -40,11 +40,7 @@
     int shippingCost = 2500; // 고정 배송비
 %>
 
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <title>결제하기</title>
+
     <style>
         .card {
             margin-bottom: 20px;
@@ -89,8 +85,6 @@
             height: 1.2em;
         }
     </style>
-</head>
-<body>
 <div class="container">
     <h2 class="section-title text-center mt-3">결제하기</h2>
     <form id="paymentForm" name="paymentForm" method="post" action="<%=request.getContextPath() %>/payment/payment_action.jsp?action=pay">
@@ -416,5 +410,3 @@
         });
     });
 </script>
-</body>
-</html>

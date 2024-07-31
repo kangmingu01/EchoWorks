@@ -1,3 +1,4 @@
+<%@page import="echoworks.util.Utility"%>
 <%@page import="java.sql.Date"%>
 <%@page import="echoworks.dao.QnaDAO"%>
 <%@page import="echoworks.dto.QnaDTO"%>

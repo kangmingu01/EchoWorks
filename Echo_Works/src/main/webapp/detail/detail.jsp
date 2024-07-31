@@ -457,7 +457,7 @@ input[type="number"]::-webkit-inner-spin-button {
 						                        $("#review_count").text(product_count);
 						                        setupPagination(result.totalPages, result.currentPage);
 						                    } else {
-						                        $("#review_list").html("<div class='no_review'>" + result.message + "</div>");
+						                        //$("#review_list").html("<div class='no_review'>" + result.message + "</div>");
 						                    }
 						                },
 						                error: function(xhr) {
@@ -866,7 +866,7 @@ $(".btn_cart").click(function() {
 			if(result.code == "success") {
 				alert("장바구니에 담았습니다.");
 				option_deleteAll();
-				
+				cartCount();
 			} else if(result.code == "notOption") {
 				alert("옵션을 선택해 주세요.");
 			} else {

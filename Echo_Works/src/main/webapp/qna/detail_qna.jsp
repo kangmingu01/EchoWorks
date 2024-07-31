@@ -755,7 +755,7 @@
 	        if(qna.qnaAnswer!=""){
 	        	html += '<div id="adminAnswer' + qna.qnaNo + '">'
 	            + '<p>👑<관리자>👑</p>'
-	            + '<span><i class="fa-regular fa-comment fa-flip-horizontal pe-1 me-2" style="color: #050505;"></i> ' + qna.qnaAnswer + '</span>'  // i 태그와 qna.qnaAnswer 사이에 공백 추가
+	            + '<span><i class="fa-regular fa-comment fa-flip-horizontal pe-1 me-2" style="color: #050505;"></i> ' + qna.qnaAnswer.replace(/\n/g,"<br>") + '</span>'  // i 태그와 qna.qnaAnswer 사이에 공백 추가
 	            + '</div>';
 	        }
 	        if(qna.qnaAnswer==""){

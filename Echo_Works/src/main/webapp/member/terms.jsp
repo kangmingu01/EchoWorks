@@ -1,9 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <title>이용약관</title>
+
   <style>
     .clause {
      max-width: 800px; /* 원하는 최대 너비 설정 */
@@ -80,8 +76,7 @@
       color: red;
     }
   </style>
-</head>
-<body>
+
 <div class="container mt-5 clause">
   <form id="termsForm" action="<%=request.getContextPath()%>/index.jsp?workgroup=member&work=member_join" method="post">
   															
@@ -264,5 +259,3 @@
   });
 </script>
 <br>
-</body>
-</html>
