@@ -17,7 +17,7 @@
 
 	
 	String title =Utility.escapeTag(request.getParameter("title"));
-	String content = request.getParameter("content");
+	String content = Utility.escapeContent(request.getParameter("content"));
 	int productNo=Integer.parseInt(request.getParameter("productNo"));
 	int secretCheck=Integer.parseInt(request.getParameter("secretCheck"));
 	

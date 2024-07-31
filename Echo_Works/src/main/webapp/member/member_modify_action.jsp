@@ -54,7 +54,7 @@
 	
 	//request 내장객체의 속성값으로 URL 주소를 저장하여 요청 JSP 문서(index.jsp)에게 제공
 	// => 요청 JSP 문서(index.jsp)에서 URL 주소를 반환받아 리다이렉트 이동 
-	request.setAttribute("returnUrl", request.getContextPath()+"/index.jsp?workgroup=member&work=member_mypage");
+	request.setAttribute("returnUrl", request.getContextPath()+"/index.jsp?workgroup=member&work=member_mypage_info");
 %>
 
 
