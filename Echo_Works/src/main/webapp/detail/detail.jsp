@@ -263,7 +263,7 @@ input[type="number"]::-webkit-inner-spin-button {
 							
 							<div>
 								
-								<select id="select_option" class="form-select form-select-lg mb-3" onchange="selected_item('1441177158', '1441177158', '1441177158')">
+								<select id="select_option" class="form-select form-select-lg mb-3" onchange="selected_item('1441177158', '1441177158', '1441177158','pc')">
 								<%if(productStockList.size() == 0) { %>
 									<option value="basic" selected disabled>상품옵션선택</option>
 								<% } else { %>
@@ -376,48 +376,48 @@ input[type="number"]::-webkit-inner-spin-button {
 						
 						<!-- 댓글 -->
 						<!-- 댓글 영역 -->
-						<div id="order_reviews_area" class="container mt-3">
-						    <div>
-						        <span class="fw-normal fs-5">구매후기
-						            <span class="text-danger fs-6 ms-1"></span>
-						        </span>
-						        <hr />
-						        <ul>
-						            <li>
-						                <small>상품을 구매하신 분들이 작성한 리뷰입니다.</small>
-						            </li>
-						        </ul>
-						        <hr>
-						        <% if (loginMember != null) { %>
-						        <div id="review_add" class="review-form">
-						            <div class="form-header">리뷰 작성</div>
-						            <textarea id="add_content" placeholder="리뷰를 입력하세요."></textarea>
-						            <div>
-						                <button type="button" id="add_btn" class="btn-submit">댓글등록</button>
-						                <div id="add_message" class="message">&nbsp;</div>
-						            </div>
-						        </div>
-						        <% } %>
-						        <div id="review_list" class="review-list"></div>
-						        <div id="pagination" class="pagination"></div>
-						        <div id="review_modify" class="review-form" style="display:none;">
-						            <input type="hidden" id="modify_num">
-						            <div class="form-header">리뷰 수정</div>
-						            <textarea id="modify_content" placeholder="리뷰를 수정하세요."></textarea>
-						            <div>
-						                <button type="button" id="modify_btn" class="btn-submit">변경</button>
-						                <button type="button" id="modify_cancel_btn" class="btn-cancel">취소</button>
-						                <div id="modify_message" class="message">&nbsp;</div>
-						            </div>
-						        </div>
-						        <div id="review_remove" class="review-remove" style="display:none;">
-						            <input type="hidden" id="remove_num">
-						            <div id="remove_message" class="message">
-						                <b>정말로 삭제 하시겠습니까?</b>
-						                <button type="button" id="remove_btn" class="btn-submit">삭제</button>
-						                <button type="button" id="remove_cancel_btn" class="btn-cancel">취소</button>
-						            </div>
-						        </div>
+<div id="order_reviews_area" class="container mt-3">
+    <div>
+        <span class="fw-normal fs-5">구매후기
+            <span class="text-danger fs-6 ms-1"></span>
+        </span>
+        <hr />
+        <ul>
+            <li>
+                <small>상품을 구매하신 분들이 작성한 리뷰입니다.</small>
+            </li>
+        </ul>
+        <hr>
+        <% if (loginMember != null) { %>
+        <div id="review_add" class="review-form">
+            <div class="form-header">리뷰 작성</div>
+            <textarea id="add_content" placeholder="리뷰를 입력하세요."></textarea>
+            <div>
+                <button type="button" id="add_btn" class="btn-submit">댓글등록</button>
+                <div id="add_message" class="message">&nbsp;</div>
+            </div>
+        </div>
+        <% } %>
+        <div id="review_list" class="review-list"></div>
+        <div id="pagination" class="pagination"></div>
+        <div id="review_modify" class="review-form" style="display:none;">
+            <input type="hidden" id="modify_num">
+            <div class="form-header">리뷰 수정</div>
+            <textarea id="modify_content" placeholder="리뷰를 수정하세요."></textarea>
+            <div>
+                <button type="button" id="modify_btn" class="btn-submit">변경</button>
+                <button type="button" id="modify_cancel_btn" class="btn-cancel">취소</button>
+                <div id="modify_message" class="message">&nbsp;</div>
+            </div>
+        </div>
+        <div id="review_remove" class="review-remove" style="display:none;">
+            <input type="hidden" id="remove_num">
+            <div id="remove_message" class="message">
+                <b>정말로 삭제 하시겠습니까?</b>
+                <button type="button" id="remove_btn" class="btn-submit">삭제</button>
+                <button type="button" id="remove_cancel_btn" class="btn-cancel">취소</button>
+            </div>
+        </div>
 						        <script type="text/javascript">
 						        var currentPage = 1;
 						        var itemsPerPage = 5; // 페이지당 리뷰 수 설정
@@ -457,7 +457,7 @@ input[type="number"]::-webkit-inner-spin-button {
 						                        $("#review_count").text(product_count);
 						                        setupPagination(result.totalPages, result.currentPage);
 						                    } else {
-						                        //$("#review_list").html("<div class='no_review'>" + result.message + "</div>");
+						                        /* $("#review_list").html("<div class='no_review'>" + result.message + "</div>"); */
 						                    }
 						                },
 						                error: function(xhr) {
@@ -655,13 +655,15 @@ function numberWithCommas() {
 
 //옵션 선택 값 출력 pc
 //var ea_count = 0;
-function selected_item(io_type, io_id, io_value){
+function selected_item(io_type, io_id, io_value,ver){
   var select_option=$("#select_option").val();
+  if(ver=='pc'){
       var str = select_option.split("||");
       var op=str[0];
       var price=str[1];
       var stock=str[2];
       var sid=str[3];
+  }
 
   opt = '<div class="shop_item_select" id="io_append'+sid+'" name="io_append['+sid+'][]" command='+sid+' >';
   opt += '<input type="hidden" name="io_type['+io_type+'][]" value="0">';
@@ -728,12 +730,12 @@ function item_minus(sid,price){
 }
 
 //선택한 옵션 삭제 
-function option_delete(opId,price){
+function option_delete(io_ano,price){
 
-    $("#ct_qty"+opId).val(0);
+    $("#ct_qty"+io_ano).val(0);
     numberWithCommas(price);
     
-    $("#io_append"+opId).remove();
+    $("#io_append"+io_ano).remove();
 
     $("#select_option").val('basic');//레이어 삭제하면  
 
@@ -864,9 +866,8 @@ $(".btn_cart").click(function() {
 		dataType: "json",
 		success: function(result) {
 			if(result.code == "success") {
-				alert("장바구니에 담았습니다.");
+				alert("장바구니에 담았습니다.")
 				option_deleteAll();
-				cartCount();
 			} else if(result.code == "notOption") {
 				alert("옵션을 선택해 주세요.");
 			} else {
@@ -927,12 +928,5 @@ function checkLogin() {
 		console.log("<%=contextPath%>" + "/index.jsp?workgroup=member&work=member_login&url=" + "<%=url%>");
     }
 }
-
-
-
-
-
-
-
 
 </script>
